@@ -1,0 +1,26 @@
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="../MEDIA/Web/logo.png" class="logo" alt="BlueEcoSim logo">
+        <div class="nav-links">
+            <a href="index.php">INICIO</a>
+            <a href="simulador.php">SIMULACION</a>
+            <a href="#">ESPECIES</a>
+            <a href="dashboard.php">ASIGNACIONES</a>
+        </div>
+    </div>
+
+   <div class="nav-right" id="navRight">
+         <?php 
+                if (isset($_SESSION['usuario'])): ?>
+                <div class="user-buttons" id="userButtons">
+                    <span class="user-name" id="userNameDisplay">👤 <?php echo $_SESSION['usuario']?> </span>
+                    <a href="../PHP/logout.php" class="btn btn-secondary" style="text-decoration: none;">Cerrar Sesión</a>
+                </div>
+            <?php else: ?>
+                <div class="auth-buttons" id="authButtons">
+                    <a href="login.php" class="btn btn-primary" style="text-decoration: none;">Iniciar Sesión</a>
+                    <a href="registro.php" class="btn btn-secondary" style="text-decoration: none;">Registrate</a>
+                </div>
+            <?php endif; ?>
+    </div>
+</nav>

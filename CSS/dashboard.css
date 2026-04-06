@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+html, body {
+  font-family: 'Poppins', sans-serif;
+  background-image: url('../MEDIA/backgrounds/backgroundNotificaciones.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+.welcome{
+    padding: 20px;
+    background-color: #ffffff7f;
+    justify-content: center;
+    margin: 9rem 10px 2.5rem;
+    border-radius: 10px;
+}
+.welcome h1{
+    text-align: center;
+}
+.cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin: 2rem 0 2.5rem;
+    border: solid transparent 10px;
+}
+.card-grid {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: #ffffff7f;
+    gap: 2rem;
+    justify-content: center;
+    margin: 2rem 0 2.5rem;
+    border: solid transparent 10px;
+    align-items: center;
+    margin: 10px;
+    border-radius: 15px;
+}
+.tittle-card{
+    flex: 1;
+    width: 50%;
+    background: #ffffff;
+    border-radius: 1.75rem;
+    padding: 1.8rem;
+    transition: 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+.tittle-card h2{
+    text-align: center;
+}
+.feature-card {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 1.75rem;
+    padding: 1.8rem;
+    transition: 0.3s ease;
+    border: 1px solid #e2e8f0;
+    max-height: fit-content;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.12);
+}
+.image-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-image{
+    width: 25%;
+}
+.card-image img{
+    width: 100%;
+}
+.button-wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+.card-btn {
+    display: inline-flex;
+    width: 11rem;
+    align-items: center;
+    gap: 0.6rem;
+    background: #071d50;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 60px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.card-btn:hover {
+    background: #074e88;
+}
