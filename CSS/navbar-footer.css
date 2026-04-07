@@ -121,7 +121,6 @@ body{
     color: white;
 }
 
-/* FOOTER BASE */
 #foot {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -132,10 +131,10 @@ body{
     width: 100%;
 }
 #foot a {
-    color: #ffffff;       /* texto blanco */
-    text-decoration: none; /* quita la raya */
+    color: #ffffff;      
+    text-decoration: none;
 }
-/* IZQUIERDA */
+
 .foot-left {
     display: flex;
     align-items: center;
@@ -154,7 +153,6 @@ body{
     opacity: 0.8;
 }
 
-/* CENTRO (PERFECTAMENTE CENTRADO) */
 #namepage {
     text-align: center;
 }
@@ -166,7 +164,7 @@ body{
     font-family: 'Franklin Gothic Medium', Arial, sans-serif;
 }
 
-/* DERECHA */
+
 .foot-right {
     display: flex;
     justify-content: flex-end;
@@ -174,24 +172,6 @@ body{
     gap: 10px;
 }
 
-/* IDIOMAS */
-.language img {
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    filter: grayscale(100%);
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-#active {
-    filter: grayscale(0%);
-}
-
-.language img:hover {
-    filter: grayscale(0%);
-    transform: scale(1.1);
-}
 
 @media (max-width: 768px) {
     .footer-container {

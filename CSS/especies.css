@@ -14,7 +14,6 @@ body {
     padding: 0;
 }
 
-/* ========== CANVAS DE BURBUJAS (decorativas, NO interactivas) ========== */
 #bubblesCanvas {
     position: fixed;
     top: 0;
@@ -25,7 +24,6 @@ body {
     z-index: 0;
 }
 
-/* ========== CONTENEDOR PRINCIPAL ========== */
 .species-container {
     position: relative;
     z-index: 2;
@@ -34,7 +32,6 @@ body {
     padding: 0 30px;
 }
 
-/* ========== ENCABEZADO ========== */
 .hero-species {
     text-align: center;
     margin-bottom: 50px;
@@ -59,7 +56,6 @@ body {
     font-weight: 500;
 }
 
-/* ========== BARRA DE BÚSQUEDA Y FILTROS ========== */
 .filter-bar {
     display: flex;
     flex-wrap: wrap;
@@ -136,7 +132,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* ========== GRID DE TARJETAS ========== */
 .species-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -144,7 +139,6 @@ body {
     margin-top: 20px;
 }
 
-/* ========== TARJETA INDIVIDUAL ========== */
 .species-card {
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(4px);
@@ -239,7 +233,6 @@ body {
     transform: scale(1.02);
 }
 
-/* ========== ESTADO VACÍO ========== */
 .no-results {
     text-align: center;
     padding: 70px 20px;
@@ -260,7 +253,7 @@ body {
     margin-bottom: 10px;
 }
 
-/* ========== ESTILOS DEL MODAL (NUEVO) ========== */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -487,7 +480,7 @@ body {
     border-radius: 10px;
 }
 
-/* ========== ANIMACIONES ========== */
+
 @keyframes fadeInDown {
     from {
         opacity: 0;
@@ -510,7 +503,6 @@ body {
     }
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
     .species-container {
         margin: 100px auto 40px;

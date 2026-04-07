@@ -51,7 +51,7 @@ body {
     z-index: 1;
 }
 
-/* Formulario en la IZQUIERDA */
+
 .form-wrapper {
     width: 100%;
     max-width: 500px;
@@ -65,7 +65,6 @@ body {
     padding: 0;
 }
 
-/* Animación de entrada para el contenedor principal */
 .form-wrapper {
     animation: slideInFromLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -81,7 +80,6 @@ body {
     }
 }
 
-/* Animación para cada elemento del formulario (entrada escalonada) */
 .form-wrapper .form-title,
 .form-wrapper .form-subtitle,
 .form-wrapper .campo,
@@ -111,7 +109,6 @@ body {
     }
 }
 
-/* Animación de salida */
 .form-wrapper.exit-animation {
     animation: slideOutToRight 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -138,7 +135,6 @@ body {
 }
 
 
-/* Campos del formulario - Estilo línea */
 .campo {
     margin-bottom: 35px;
 }
@@ -230,7 +226,6 @@ body {
 }
 
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
     .container {
         padding: 100px 50px 80px;

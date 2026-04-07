@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ========== BASE DE DATOS DE ESPECIES ==========
     const speciesData = [
         { id: 1, name: "Tortuga verde", category: "tortugas", habitat: "Arrecifes costeros", desc: "Especie herbívora que mantiene saludables los pastos marinos. Emblemática del Pacífico tropical.", icon: "🐢", color: "#2d6a4f", dieta: "Herbívora (pastos marinos, algas)", longevidad: "80-100 años", peligro: "En peligro de extinción" },
         { id: 2, name: "Pez payaso", category: "peces", habitat: "Arrecife de coral", desc: "Famoso por su simbiosis con anémonas. Vive en aguas cálidas y poco profundas.", icon: "🐠", color: "#f4a261", dieta: "Omnívoro (plancton, algas)", longevidad: "6-10 años", peligro: "Preocupación menor" },
@@ -16,17 +15,16 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: 12, name: "Mantarraya", category: "peces", habitat: "Aguas cálidas", desc: "Nadadora elegante y pacífica. Filtra plancton y pequeños peces.", icon: "🔷", color: "#2a9d8f", dieta: "Carnívoro (plancton, peces pequeños)", longevidad: "15-20 años", peligro: "Vulnerable" }
     ];
 
-    // ========== ELEMENTOS DOM ==========
     const speciesGrid = document.getElementById('speciesGrid');
     const searchInput = document.getElementById('searchInput');
     const filterButtons = document.querySelectorAll('.filter-btn');
     const noResultsDiv = document.getElementById('noResults');
 
-    // Estado actual
+    
     let currentCategory = 'todos';
     let currentSearch = '';
 
-    // ========== FUNCIÓN PARA TEXTO DE CATEGORÍA ==========
+  
     function getCategoryText(category) {
         switch(category) {
             case 'peces': return '🐟 Peces';
@@ -37,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ========== DATOS CURIOSOS POR ESPECIE ==========
     function getCuriosity(name) {
         const curiosities = {
             "Tortuga verde": "Pueden contener la respiración bajo el agua hasta 5 horas cuando están descansando.",
@@ -56,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return curiosities[name] || "Esta especie juega un papel crucial en el equilibrio del ecosistema marino.";
     }
 
-    // ========== FUNCIÓN PARA CREAR MODAL ==========
     function showModal(species) {
         const existingModal = document.getElementById('speciesModal');
         if (existingModal) existingModal.remove();
@@ -116,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
         modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
     }
 
-    // ========== RENDERIZAR TARJETAS ==========
     function renderCards() {
         let filtered = speciesData.filter(species => {
             if (currentCategory === 'todos') return true;
@@ -171,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ========== EVENTOS ==========
+
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             filterButtons.forEach(b => b.classList.remove('active'));
@@ -188,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderCards();
 
-    // ========== BURBUJAS DECORATIVAS ==========
+
     const canvas = document.getElementById('bubblesCanvas');
     const ctx = canvas.getContext('2d');
     

@@ -2,9 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.querySelector('.login-form');
     const formWrapper = document.querySelector('.form-wrapper');
     const switchToRegister = document.getElementById('switch-to-register');
-    const navRegisterBtn = document.getElementById('nav-register-btn');
     
-    // ========== BURBUJAS ==========
     const canvas = document.getElementById('bubblesCanvas');
     const ctx = canvas.getContext('2d');
     
@@ -141,13 +139,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     animate();
     
-    // ========== FUNCIONES DE SESIÓN ==========
+
     function loginUser(username) {
         localStorage.setItem('userSession', 'true');
         localStorage.setItem('currentUser', username);
     }
     
-    // ========== ANIMACIÓN DE SALIDA ==========
+
     function animateAndRedirect(url) {
         formWrapper.classList.add('exit-animation');
         setTimeout(function() {
@@ -169,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ========== VALIDACIONES ==========
+
     if (loginForm) {
         const loginEmail = document.getElementById('login-email');
         const loginPassword = document.getElementById('login-password');
@@ -212,7 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             if (isValid) {
-                // INICIAR SESIÓN - Guardar en localStorage
                 const username = loginEmail.value.split('@')[0];
                 loginUser(username);
                 

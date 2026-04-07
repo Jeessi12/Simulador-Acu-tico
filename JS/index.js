@@ -1,4 +1,3 @@
-// ================= PARTICLES HERO =================
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 const popSound = document.getElementById('popSound');
@@ -116,13 +115,11 @@ function animate(){
 animate();
 
 
-// ================= NAVBAR =================
 window.addEventListener("scroll", function(){
     const navbar = document.querySelector(".navbar");
     navbar.classList.toggle("scrolled", window.scrollY > 50);
 });
 
-// ================= PARTICLES SPECIES =================
 const canvasS = document.getElementById('particlesSpecies');
 const ctxS = canvasS.getContext('2d');
 

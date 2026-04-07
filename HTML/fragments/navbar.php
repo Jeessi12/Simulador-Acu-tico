@@ -5,7 +5,7 @@
             <a href="index.php">INICIO</a>
             <a href="simulador.php">SIMULACION</a>
             <a href="especies.php">ESPECIES</a>
-            <a href="dashboard.php">ASIGNACIONES</a>
+            <a href="asignaciones.php">ASIGNACIONES</a>
         </div>
     </div>
 

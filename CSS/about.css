@@ -92,7 +92,7 @@ main.container {
     transform: translateY(-2px);
 }
 
-/* ===== PANTALLAS GRANDES (FULL HD 1920x1080+) ===== */
+
 @media (min-width: 1600px) {
 
     main.container {
@@ -103,10 +103,10 @@ main.container {
     }
 
     .hero {
-        min-height: 80vh; /* ocupa más pantalla */
+        min-height: 80vh; 
         padding-left: 120px;
 
-        /* baja un poco el contenido */
+
         align-items: center;
     }
 
@@ -131,7 +131,7 @@ main.container {
         margin-right: 15px;
     }
 }
-/* ================= TABLET ================= */
+
 
 @media (max-width: 1024px) {
     .hero {
@@ -148,7 +148,6 @@ main.container {
     }
 }
 
-/* ================= CELULAR ================= */
 
 @media (max-width: 768px) {
     .hero {

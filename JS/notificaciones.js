@@ -1,6 +1,3 @@
-// ============================================
-// DATOS MEJORADOS (simula backend)
-// ============================================
 let notifications = [
   { id: 1, from: "Docente bachillerato", subject: "Nueva actividad: simulación sobre estrellas de mar", unread: true, destacado: false, archivado: false, importante: true, spam: false, fecha: new Date(2025, 3, 2, 10, 30) },
   { id: 2, from: "Sistema Ecosistemas", subject: "Actualización del módulo de arrecifes completada", unread: false, destacado: true, archivado: false, importante: false, spam: false, fecha: new Date(2025, 3, 1, 15, 20) },
@@ -28,9 +25,6 @@ const nextPageBtn = document.getElementById("nextPage");
 const pageInfo = document.getElementById("pageInfo");
 const emptyState = document.getElementById("emptyState");
 
-// ============================================
-// FUNCIONES DE FILTRADO
-// ============================================
 function filterNotifications() {
   let filtered = [...notifications];
   
@@ -61,7 +55,6 @@ function filterNotifications() {
       filtered = filtered.filter(n => !n.eliminado);
   }
   
-  // Búsqueda
   if (searchTerm) {
     filtered = filtered.filter(n => 
       n.from.toLowerCase().includes(searchTerm) || 
@@ -72,9 +65,6 @@ function filterNotifications() {
   return filtered;
 }
 
-// ============================================
-// ACTUALIZAR CONTADORES DEL SIDEBAR
-// ============================================
 function updateCounters() {
   const recibidos = notifications.filter(n => !n.eliminado && !n.archivado).length;
   const destacados = notifications.filter(n => n.destacado && !n.eliminado).length;
@@ -85,9 +75,7 @@ function updateCounters() {
   document.getElementById("noLeidosCount").textContent = noLeidos || "";
 }
 
-// ============================================
-// FORMATEAR FECHA RELATIVA
-// ============================================
+
 function formatDate(date) {
   const now = new Date();
   const diffMs = now - date;
@@ -103,16 +91,13 @@ function formatDate(date) {
   return date.toLocaleDateString();
 }
 
-// ============================================
-// RENDERIZAR NOTIFICACIONES CON PAGINACIÓN
-// ============================================
 function renderNotifications() {
   const filtered = filterNotifications();
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const start = (currentPage - 1) * itemsPerPage;
   const paginated = filtered.slice(start, start + itemsPerPage);
   
-  // Mostrar/ocultar empty state
+
   if (paginated.length === 0) {
     notificationList.style.display = "none";
     emptyState.style.display = "block";
@@ -124,7 +109,6 @@ function renderNotifications() {
   emptyState.style.display = "none";
   document.getElementById("pagination").style.display = "flex";
   
-  // Limpiar y renderizar
   notificationList.innerHTML = `
     <div class="row header-row">
       <span class="checkbox-cell"><input type="checkbox" id="headerCheckboxDynamic"></span>
@@ -150,10 +134,9 @@ function renderNotifications() {
     notificationList.appendChild(row);
   });
   
-  // Reasignar eventos a los checkboxes
+
   attachCheckboxEvents();
-  
-  // Actualizar checkbox del header
+
   const headerCheckboxDynamic = document.getElementById("headerCheckboxDynamic");
   if (headerCheckboxDynamic) {
     headerCheckboxDynamic.checked = selectedIds.size === paginated.length && paginated.length > 0;
@@ -168,22 +151,18 @@ function renderNotifications() {
     });
   }
   
-  // Actualizar información de página
+
   pageInfo.textContent = `Página ${currentPage} de ${totalPages || 1}`;
   prevPageBtn.disabled = currentPage === 1;
   nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
 }
 
-// Escapar HTML para seguridad
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
 
-// ============================================
-// EVENTOS DE CHECKBOXES
-// ============================================
 function attachCheckboxEvents() {
   document.querySelectorAll(".notif-checkbox").forEach(cb => {
     cb.addEventListener("change", (e) => {
@@ -199,9 +178,6 @@ function attachCheckboxEvents() {
   });
 }
 
-// ============================================
-// ACCIONES
-// ============================================
 function refreshNotifications() {
   const newNotif = {
     id: Date.now(),
@@ -258,9 +234,6 @@ function selectAll() {
   renderNotifications();
 }
 
-// ============================================
-// SIDEBAR Y DROPDOWN
-// ============================================
 const sidebarItems = document.querySelectorAll(".sidebar li:not(.more-container)");
 sidebarItems.forEach(item => {
   item.addEventListener("click", () => {
@@ -286,12 +259,12 @@ document.querySelectorAll(".dropdown li").forEach(item => {
     renderNotifications();
     document.querySelector(".dropdown").classList.remove("show");
     
-    // Actualizar active visual
+
     document.querySelector(".sidebar .active")?.classList.remove("active");
   });
 });
 
-// Dropdown "Más"
+
 const moreBtn = document.getElementById("moreBtn");
 const dropdown = document.getElementById("dropdownMenu");
 
@@ -304,18 +277,14 @@ document.addEventListener("click", () => {
   dropdown.classList.remove("show");
 });
 
-// ============================================
-// BÚSQUEDA
-// ============================================
+
 searchInput.addEventListener("input", (e) => {
   searchTerm = e.target.value.toLowerCase();
   currentPage = 1;
   renderNotifications();
 });
 
-// ============================================
-// PAGINACIÓN
-// ============================================
+
 prevPageBtn.addEventListener("click", () => {
   if (currentPage > 1) {
     currentPage--;
@@ -332,9 +301,6 @@ nextPageBtn.addEventListener("click", () => {
   }
 });
 
-// ============================================
-// EVENT LISTENERS PRINCIPALES
-// ============================================
 refreshBtn.addEventListener("click", refreshNotifications);
 markReadBtn.addEventListener("click", markSelectedAsRead);
 deleteSelectedBtn.addEventListener("click", deleteSelected);

@@ -1,23 +1,19 @@
-// ========== SISTEMA DE SESIÓN ==========
-
-// Verificar sesión
 function isLoggedIn() {
     return localStorage.getItem('userSession') === 'true';
 }
 
-// Obtener usuario
+
 function getCurrentUser() {
     return localStorage.getItem('currentUser');
 }
 
-// Login
+
 function loginUser(username) {
     localStorage.setItem('userSession', 'true');
     localStorage.setItem('currentUser', username);
     updateNavbarButtons();
 }
 
-// Logout
 function logoutUser() {
     localStorage.removeItem('userSession');
     localStorage.removeItem('currentUser');
@@ -30,7 +26,6 @@ function logoutUser() {
     }, 1500);
 }
 
-// Actualizar navbar
 function updateNavbarButtons() {
     const authButtons = document.getElementById('authButtons');
     const userButtons = document.getElementById('userButtons');
@@ -49,7 +44,7 @@ function updateNavbarButtons() {
     }
 }
 
-// 🔥 ESTA ES LA CLAVE (la llama navbar-footer.js)
+
 function initSessionUI() {
     updateNavbarButtons();
 
@@ -62,7 +57,6 @@ function initSessionUI() {
     }
 }
 
-// Mensaje logout (TU ESTILO ORIGINAL)
 function showLogoutMessage() {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'logout-message';
@@ -111,7 +105,7 @@ function showLogoutMessage() {
     }, 1500);
 }
 
-// 🔥 TUS ESTILOS (IGUAL QUE ANTES)
+
 const logoutStyles = document.createElement('style');
 logoutStyles.textContent = `
     @keyframes fadeInScale {

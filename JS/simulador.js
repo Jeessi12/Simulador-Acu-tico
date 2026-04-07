@@ -33,21 +33,19 @@ let expandBtn = document.getElementById("expandBtn");
 let closeBtn = document.getElementById("closeFullscreen");
 let simulator = document.querySelector(".simulator");
 
-/* ENTRAR FULLSCREEN */
 expandBtn.onclick = () => {
     if (!document.fullscreenElement) {
         simulator.requestFullscreen();
     }
 };
 
-/* SALIR FULLSCREEN */
+
 closeBtn.onclick = () => {
     if (document.fullscreenElement) {
         document.exitFullscreen();
     }
 };
 
-/* CONTROL VISUAL DEL BOTÓN */
 document.addEventListener("fullscreenchange", () => {
     if (document.fullscreenElement) {
         simulator.classList.add("fullscreen-active");

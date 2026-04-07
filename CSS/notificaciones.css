@@ -17,7 +17,6 @@ body {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-/* ========== CONTENEDOR PRINCIPAL MÁS GRANDE ========== */
 .container {
   display: flex;
   width: 95%;
@@ -31,7 +30,6 @@ body {
   animation: fadeIn 0.6s ease-in-out;
 }
 
-/* ========== SIDEBAR ========== */
 .sidebar {
   width: 300px;
   background: linear-gradient(180deg, #1a4b6e, #0d3b57);
@@ -109,7 +107,6 @@ body {
   font-weight: bold;
 }
 
-/* ========== MAIN - MÁS GRANDE ========== */
 .main {
   flex: 1;
   background: rgba(245, 248, 251, 0.96);
@@ -120,7 +117,7 @@ body {
   animation: slideUp 0.6s ease forwards;
 }
 
-/* ========== HEADER ACCIONES ========== */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -177,7 +174,6 @@ body {
   font-size: 15px;
 }
 
-/* ========== LISTA - MÁS GRANDE ========== */
 .list-container {
   flex: 1;
   background: white;
@@ -190,7 +186,6 @@ body {
   width: 100%;
 }
 
-/* Filas más grandes y espaciosas */
 .row {
   display: grid;
   grid-template-columns: 50px 200px 1fr 140px;
@@ -229,7 +224,6 @@ body {
   color: #0d3b57;
 }
 
-/* Checkbox más grande */
 .checkbox-cell input {
   width: 20px;
   height: 20px;
@@ -251,7 +245,7 @@ body {
   gap: 6px;
 }
 
-/* ========== EMPTY STATE ========== */
+
 .empty-state {
   text-align: center;
   padding: 70px 30px;
@@ -274,7 +268,6 @@ body {
   font-size: 15px;
 }
 
-/* ========== PAGINACIÓN ========== */
 .pagination {
   display: flex;
   justify-content: center;
@@ -315,7 +308,6 @@ body {
   height: 7rem;
 }
 
-/* ========== DROPDOWN ========== */
 .more-container {
   position: relative;
 }
@@ -359,7 +351,7 @@ body {
   animation: fadeIn 0.2s ease;
 }
 
-/* ========== ANIMACIONES ========== */
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -394,7 +386,6 @@ body {
   }
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 900px) {
   .container {
     width: 98%;

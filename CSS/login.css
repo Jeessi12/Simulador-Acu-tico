@@ -44,7 +44,6 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Canvas de burbujas */
 #bubblesCanvas {
     position: fixed;
     top: 0;
@@ -55,7 +54,6 @@ body {
     z-index: 0;
 }
 
-/* ========== CONTAINER PRINCIPAL ========== */
 .container {
     min-height: 100vh;
     display: flex;
@@ -66,7 +64,6 @@ body {
     z-index: 1;
 }
 
-/* Formulario en la DERECHA */
 .form-wrapper {
     width: 100%;
     max-width: 500px;
@@ -81,7 +78,6 @@ body {
     padding: 0;
 }
 
-/* Animación de entrada */
 .form-wrapper {
     animation: slideInFromRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -97,7 +93,6 @@ body {
     }
 }
 
-/* Animación para cada elemento del formulario */
 .form-wrapper .form-title,
 .form-wrapper .form-subtitle,
 .form-wrapper .campo,
@@ -125,7 +120,6 @@ body {
     }
 }
 
-/* Animación de salida */
 .form-wrapper.exit-animation {
     animation: slideOutToLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -160,7 +154,6 @@ body {
     text-align: center;
 }
 
-/* Campos del formulario - Estilo línea */
 .campo {
     margin-bottom: 35px;
 }
@@ -251,8 +244,6 @@ body {
     color: #4387ec;
 }
 
-
-/* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
     .container {
         padding: 100px 50px 80px;
@@ -323,10 +314,10 @@ body {
 
 @media (min-width: 1600px) {
     .container {
-        padding-right: 150px; /* lo empuja ligeramente a la izquierda */
+        padding-right: 150px;
     }
 
     .form-wrapper {
-        margin-right: 10px; /* ajuste fino */
+        margin-right: 10px; 
     }
 }

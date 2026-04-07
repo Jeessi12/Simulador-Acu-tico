@@ -4,24 +4,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const switchToLogin = document.getElementById('switch-to-login');
     const navLoginBtn = document.getElementById('nav-login-btn');
     
-    // ========== FUNCIONES DE SESIÓN ==========
+    
     function registerUser(username, email, password) {
-        // Obtener usuarios existentes o crear array vacío
+       
         let users = JSON.parse(localStorage.getItem('users') || '[]');
         
-        // Verificar si el email ya está registrado
         const emailExists = users.some(user => user.email === email);
         if (emailExists) {
             return { success: false, message: 'El email ya está registrado' };
         }
-        
-        // Verificar si el nombre de usuario ya existe
+
         const usernameExists = users.some(user => user.username === username);
         if (usernameExists) {
             return { success: false, message: 'El nombre de usuario ya está en uso' };
         }
         
-        // Guardar nuevo usuario
+
         users.push({ 
             username: username, 
             email: email, 
@@ -33,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return { success: true, message: 'Usuario registrado exitosamente' };
     }
     
-    // ========== BURBUJAS (IGUAL QUE EL INDEX) ==========
+  
     const canvas = document.getElementById('bubblesCanvas');
     const ctx = canvas.getContext('2d');
     
@@ -66,17 +64,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function createParticle() {
         let size = Math.random() * 6 + 4;
         
-        // REGISTRO: más burbujas en el CENTRO y DERECHA
+  
         let x;
         let rand = Math.random();
         if (rand < 0.5) {
-            // 50% en la mitad derecha
+          
             x = canvas.width * 0.5 + Math.random() * canvas.width * 0.5;
         } else if (rand < 0.75) {
-            // 25% en el centro
+
             x = canvas.width * 0.35 + Math.random() * canvas.width * 0.3;
         } else {
-            // 25% en la izquierda
+          
             x = Math.random() * canvas.width * 0.35;
         }
         
@@ -141,7 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (p.x > canvas.width + 50) p.x = -50;
                 if (p.x < -50) p.x = canvas.width + 50;
                 
-                // Reacción al mouse
                 if (mouse.x !== null && mouse.y !== null) {
                     let dx = p.x - mouse.x;
                     let dy = p.y - mouse.y;
@@ -180,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     animate();
     
-    // ========== ANIMACIÓN DE SALIDA ==========
+
     function animateAndRedirect(url) {
         formWrapper.classList.add('exit-animation');
         setTimeout(function() {
@@ -202,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ========== VALIDACIONES DEL FORMULARIO ==========
+
     if (registerForm) {
         const regEmail = document.getElementById('reg-email');
         const regUsername = document.getElementById('reg-username');
@@ -224,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Validaciones en tiempo real
+   
         if (regEmail) {
             regEmail.addEventListener('input', function() {
                 if (this.value && !validateEmail(this.value)) {
@@ -260,14 +257,12 @@ document.addEventListener('DOMContentLoaded', function() {
             regConfirm.addEventListener('input', validatePasswords);
         }
         
-        // Envío del formulario
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             let isValid = true;
             let errorMessage = '';
             
-            // Validaciones
             if (!validateEmail(regEmail.value)) {
                 isValid = false;
                 errorMessage = 'Por favor, ingresa un email válido';
@@ -287,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             if (isValid) {
-                // REGISTRAR USUARIO - Guardar en localStorage
+            
                 const result = registerUser(regUsername.value, regEmail.value, regPassword.value);
                 
                 if (result.success) {
@@ -333,7 +328,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Agregar animación CSS
 const style = document.createElement('style');
 style.textContent = `
     @keyframes fadeIn {

@@ -14,7 +14,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Efecto de partículas decorativas */
 body::before {
     content: '';
     position: fixed;
@@ -26,7 +25,6 @@ body::before {
     pointer-events: none;
 }
 
-/* LAYOUT MEJORADO */
 .container {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -37,7 +35,6 @@ body::before {
     margin: 0 auto;
 }
 
-/* SIMULATOR - VERSIÓN PREMIUM */
 .simulator {
     position: relative;
     overflow: hidden;
@@ -57,7 +54,6 @@ body::before {
     box-shadow: 0 30px 60px -12px rgba(0,0,0,0.3);
 }
 
-/* EFECTO LUZ MEJORADO */
 .simulator::before {
     content: "";
     position: absolute;
@@ -70,7 +66,7 @@ body::before {
     pointer-events: none;
 }
 
-/* Borde brillante animado */
+
 .simulator::after {
     content: '';
     position: absolute;
@@ -154,7 +150,6 @@ body::before {
     transform: scale(1.05);
 }
 
-/* ÁREA PRINCIPAL MEJORADA */
 .sim-area {
     flex: 1;
     min-height: 250px;
@@ -171,7 +166,6 @@ body::before {
     opacity: 0.7;
 }
 
-/* INPUT MEJORADO */
 .observations {
     margin-top: 20px;
     display: flex;
@@ -216,14 +210,12 @@ body::before {
     box-shadow: 0 5px 15px rgba(77,163,255,0.4);
 }
 
-/* PANEL MEJORADO */
 .panel {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* CARDS CON GLASSMORPHISM MEJORADO */
 .card {
     background: rgba(255,255,255,0.85);
     border-radius: 28px;
@@ -250,7 +242,6 @@ body::before {
     font-weight: 600;
 }
 
-/* TIMER ESTILIZADO */
 #timer {
     text-align: center;
     font-size: 32px;
@@ -264,7 +255,6 @@ body::before {
     letter-spacing: 2px;
 }
 
-/* CONTROLES MEJORADOS */
 .controls {
     display: flex;
     justify-content: space-around;
@@ -272,7 +262,6 @@ body::before {
     margin-top: 10px;
 }
 
-/* BOTONES CIRCULARES MEJORADOS */
 .circle {
     width: 80px;
     height: 80px;
@@ -295,7 +284,6 @@ body::before {
     overflow: hidden;
 }
 
-/* Efecto ripple al hacer clic */
 .circle::before {
     content: '';
     position: absolute;
@@ -326,7 +314,6 @@ body::before {
     transform: scale(0.95);
 }
 
-/* FONDOS DE BOTONES CON EFECTO */
 .green {
     background: linear-gradient(135deg, #1ee2cb, #96c93d);
     position: relative;
@@ -342,7 +329,6 @@ body::before {
     position: relative;
 }
 
-/* OPCIONES MEJORADAS */
 .option {
     display: flex;
     justify-content: space-between;
@@ -367,12 +353,10 @@ body::before {
     font-weight: 500;
 }
 
-/* Iconos decorativos para opciones */
 .option .left i {
     font-size: 18px;
 }
 
-/* ALERTAS MEJORADAS */
 .warning {
     color: #f39c12;
     font-weight: 600;
@@ -389,7 +373,6 @@ body::before {
     gap: 5px;
 }
 
-/* FULLSCREEN MEJORADO */
 .close-fullscreen {
     position: absolute;
     top: 20px;
@@ -418,12 +401,10 @@ body::before {
     display: flex;
 }
 
-/* ESPACIO NAV */
 .spacer {
     height: 7rem;
 }
 
-/* RESPONSIVE MEJORADO */
 @media (max-width: 1024px) {
     .container {
         gap: 20px;
@@ -485,7 +466,6 @@ body::before {
     }
 }
 
-/* Scrollbar personalizado */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -504,7 +484,6 @@ body::before {
     background: linear-gradient(135deg, #764ba2, #667eea);
 }
 
-/* Animaciones adicionales */
 @keyframes fadeInUp {
     from {
         opacity: 0;
