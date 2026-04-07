@@ -55,3 +55,4 @@ document.addEventListener("fullscreenchange", () => {
         simulator.classList.remove("fullscreen-active");
     }
 });
+

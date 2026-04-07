@@ -1,6 +1,9 @@
-<?php
-    include("conexion.php");
-    session_start();
+<?php 
+    include("../PHP/conexion.php");
+
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
     if (!isset($_SESSION['usuario'])) {
         header("Location: login.php?error=locked");

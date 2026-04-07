@@ -17,7 +17,7 @@
         </div>
 
         <div class="foot-right">
-            <a href="about.html" class="about-link">
+            <a href="about.php" class="about-link">
                 Sobre Nosotros
             </a>
         </div>

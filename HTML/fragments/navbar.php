@@ -4,7 +4,7 @@
         <div class="nav-links">
             <a href="index.php">INICIO</a>
             <a href="simulador.php">SIMULACION</a>
-            <a href="#">ESPECIES</a>
+            <a href="especies.php">ESPECIES</a>
             <a href="dashboard.php">ASIGNACIONES</a>
         </div>
     </div>
