@@ -1,10 +1,10 @@
 <footer class="site-footer">
     <div id="foot">
         <div class="foot-left">
-            <a href="https://www.instagram.com" target="_blank" rel="noreferrer">
+            <a href=" https://www.instagram.com/blue_ecosim/" target="_blank" rel="noreferrer">
                 <img class="foot-icons" src="../MEDIA/Web/Instagram.png" alt="Instagram">
             </a>
-            <a href="https://x.com" target="_blank" rel="noreferrer">
+            <a href="https://x.com/Blue_EcoSim" target="_blank" rel="noreferrer">
                 <img class="foot-icons" src="../MEDIA/Web/X.png" alt="Twitter">
             </a>
             <a href="https://www.facebook.com" target="_blank" rel="noreferrer">
