@@ -95,4 +95,8 @@
 
 <script src="../JS/session.js" defer></script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 76531618231e6e7177efcbb34f9d86dc17c42b75
