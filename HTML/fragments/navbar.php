@@ -13,7 +13,7 @@
          <?php 
                 if (isset($_SESSION['usuario'])): ?>
                 <div class="user-buttons" id="userButtons">
-                    <span class="user-name" id="userNameDisplay">👤 <?php echo $_SESSION['usuario']?> </span>
+                    <a href="perfilUsuario.php" class="user-name" id="userNameDisplay" style="text-decoration: none;">👤 <?php echo $_SESSION['usuario']?> </a>
                     <a href="../PHP/logout.php" class="btn btn-secondary" style="text-decoration: none;">Cerrar Sesión</a>
                 </div>
             <?php else: ?>

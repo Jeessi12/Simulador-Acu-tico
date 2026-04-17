@@ -81,8 +81,8 @@
     ?>
     <div id="footer-container"><?php include("fragments/footer.php"); ?></div>
 
-    <canvas id="bubblesCanvas"></canvas>
-
+    <canvas id="particles"></canvas>
+    <script src="../JS/burbujas.js" defer></script>
 
 </body>
 </html>

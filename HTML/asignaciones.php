@@ -54,7 +54,7 @@
     <div class="spacer"></div>
 
     <!-- Canvas de burbujas decorativas -->
-    <canvas id="bubblesCanvas"></canvas>
+    <canvas id="particles"></canvas>
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="asignaciones-container">
@@ -254,6 +254,7 @@
     <div id="footer-container"><?php include("fragments/footer.php"); ?></div>
 
     <!-- Scripts -->
+    <script src="../JS/burbujas.js" defer></script>
     <script src="../JS/asignaciones.js"></script>
     <script src="../JS/session.js" defer></script>
 

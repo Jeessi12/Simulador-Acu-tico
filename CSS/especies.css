@@ -19,7 +19,7 @@ body {
 }
 
 /* ========== BURBUJAS DE FONDO ========== */
-#bubblesCanvas {
+#particles {
     position: fixed;
     top: 0;
     left: 0;

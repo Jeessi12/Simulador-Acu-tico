@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="../CSS/index.css">
 <link rel="stylesheet" href="../CSS/navbar-footer.css">
 
-<script src="../JS/index.js" defer></script>
+<script src="../JS/burbujas.js" defer></script>
 </head>
 
 <body>
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="stat">
-                    <span class="stat-number">+20</span>
+                    <span class="stat-number">+150</span>
                     <span class="stat-label">Especies</span>
                 </div>
 

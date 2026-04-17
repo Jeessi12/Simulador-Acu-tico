@@ -44,7 +44,7 @@
     <div class="spacer"></div>
 
     <!-- Canvas de burbujas decorativas -->
-    <canvas id="bubblesCanvas"></canvas>
+    <canvas id="particles"></canvas>
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="species-container">
@@ -84,6 +84,7 @@
     <div id="footer-container"><?php include("fragments/footer.php"); ?></div>
 
     <!-- Scripts - IMPORTANTE: type="module" -->
+    <script src="../JS/burbujas.js" defer></script>
     <script type="module" src="../JS/especies.js"></script>
     <script src="../JS/session.js" defer></script>
 </body>

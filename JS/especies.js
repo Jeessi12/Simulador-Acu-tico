@@ -99,9 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
             dieta: "Carnívoro (pequeños crustáceos)", 
             longevidad: "1-4 años", 
             peligro: "Vulnerable",
-            modelPath: "../MEDIA/3D_Models/seahorse.glb",
-            scale: 1.0,
-            posY: -0.15,
+            modelPath: "../MEDIA/3D_Models/seahorse_sf.glb",
+            scale: 0.8,
+            posY: -0.55,
             rotY: 0,
             camDistance: 2.8,
             camHeight: 0.7
@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
             longevidad: "40-50 años", 
             peligro: "Preocupación menor",
             modelPath: "../MEDIA/3D_Models/dolphin.glb",
-            scale: 0.7,
-            posY: -0.15,
+            scale: 0.15,
+            posY: -0.50,
             rotY: 0,
             camDistance: 3.2,
             camHeight: 0.7
@@ -133,8 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
             dieta: "Omnívoro (detritus, algas)", 
             longevidad: "3-12 años", 
             peligro: "Preocupación menor",
-            modelPath: "../MEDIA/3D_Models/crab.glb",
-            scale: 0.8,
+            modelPath: "../MEDIA/3D_Models/little_hermit_crab.glb",
+            scale: 0.7,
             posY: -0.1,
             rotY: 0,
             camDistance: 2.5,
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
             longevidad: "15-20 años", 
             peligro: "Preocupación menor",
             modelPath: "../MEDIA/3D_Models/lobster.glb",
-            scale: 0.7,
+            scale: 0.15,
             posY: -0.15,
             rotY: 0,
             camDistance: 3.0,
@@ -184,8 +184,8 @@ document.addEventListener('DOMContentLoaded', function() {
             dieta: "Carnívoro (plancton, peces pequeños)", 
             longevidad: "15-20 años", 
             peligro: "Vulnerable",
-            modelPath: "../MEDIA/3D_Models/ray.glb",
-            scale: 0.7,
+            modelPath: "../MEDIA/3D_Models/mantarraya.glb",
+            scale: 1.5,
             posY: -0.2,
             rotY: 0,
             camDistance: 3.2,
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
             dieta: "Carnívoro (gusanos, peces)", 
             longevidad: "10-15 años", 
             peligro: "Preocupación menor",
-            modelPath: "../MEDIA/3D_Models/shell.glb",
+            modelPath: "../MEDIA/3D_Models/cone_snail_shell.glb",
             scale: 0.8,
             posY: -0.1,
             rotY: 0,
@@ -550,72 +550,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderCards();
 
-    // ========== BURBUJAS DE FONDO ==========
-    const canvas = document.getElementById('bubblesCanvas');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        
-        function resizeCanvasBubbles() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvasBubbles();
-        window.addEventListener('resize', resizeCanvasBubbles);
-        
-        let particles = [];
-        
-        function createParticle() {
-            return {
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                r: Math.random() * 10 + 5,
-                speed: Math.random() * 0.5 + 0.2,
-                dx: (Math.random() - 0.5) * 0.15,
-                opacity: Math.random() * 0.3 + 0.15
-            };
-        }
-        
-        for (let i = 0; i < 70; i++) {
-            particles.push(createParticle());
-        }
-        
-        function drawBubble(p) {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(70, 170, 230, ${p.opacity * 0.5})`;
-            ctx.fill();
-            ctx.strokeStyle = `rgba(50, 140, 210, ${p.opacity * 0.7})`;
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(p.x - p.r * 0.25, p.y - p.r * 0.25, p.r * 0.2, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity * 0.8})`;
-            ctx.fill();
-        }
-        
-        function animateBubbles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach((p, i) => {
-                p.y -= p.speed;
-                p.x += p.dx;
-                
-                if (p.y + p.r < 0) {
-                    particles[i] = createParticle();
-                    particles[i].y = canvas.height + p.r;
-                    particles[i].x = Math.random() * canvas.width;
-                }
-                if (p.x + p.r < 0) p.x = canvas.width + p.r;
-                if (p.x - p.r > canvas.width) p.x = -p.r;
-                
-                drawBubble(p);
-            });
-            
-            requestAnimationFrame(animateBubbles);
-        }
-        
-        animateBubbles();
-    } else {
-        console.error('Canvas de burbujas no encontrado');
-    }
+    // Las burbujas se gestionan desde `../JS/burbujas.js` para centralizar la funcionalidad.
 });
