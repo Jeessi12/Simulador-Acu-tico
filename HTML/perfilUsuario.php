@@ -29,32 +29,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../CSS/index.css">
     <link rel="stylesheet" href="../CSS/navbar-footer.css">
     <link rel="stylesheet" href="../CSS/perfilUsuario.css">
 </head>
 <body>
 
-    <div id="navbar-container"><?php include("fragments/navbar.php"); ?></div>
+    <!-- SOLO UN NAVBAR -->
+    <div id="navbar-container">
+        <?php include("fragments/navbar.php"); ?>
+    </div>
 
-    <main class="profile-container">
-        <div class="profile-header">
-            <div class="avatar"><?php echo strtoupper(substr($user['username'],0,1)); ?></div>
-            <div class="profile-info">
-                <h2><?php echo htmlspecialchars($user['username']); ?></h2>
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-                <p><strong>Rol:</strong> <?php echo htmlspecialchars($user['rol'] ?? 'Usuario'); ?></p>
+    <div class="main-container">
+        <main class="profile-container">
+            <div class="profile-header">
+                <div class="avatar"><?php echo strtoupper(substr($user['username'],0,1)); ?></div>
+                <div class="profile-info">
+                    <h2><?php echo htmlspecialchars($user['username']); ?></h2>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                    <p><strong>Rol:</strong> <?php echo htmlspecialchars($user['rol'] ?? 'Usuario'); ?></p>
+                </div>
             </div>
-        </div>
 
-        <div class="profile-actions">
-            <a href="perfilEditar.php" class="btn btn-primary">Editar perfil</a>
-            <a href="../PHP/logout.php" class="btn btn-secondary">Cerrar sesión</a>
-        </div>
-    </main>
+            <div class="profile-actions">
+                <a href="perfilEditar.php" class="btn btn-primary">Editar perfil</a>
+                <a href="../PHP/logout.php" class="btn btn-secondary">Cerrar sesión</a>
+            </div>
+        </main>
+    </div>
 
-    <div id="footer-container"><?php include("fragments/footer.php"); ?></div>
+    <div id="footer-container">
+        <?php include("fragments/footer.php"); ?>
+    </div>
 
-    <script src="../JS/session.js" defer></script>
-</body>
+    <script src
 </html>
