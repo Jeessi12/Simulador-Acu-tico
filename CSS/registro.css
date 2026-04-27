@@ -294,86 +294,113 @@ body {
     }
 }
 
-    .modal-overlay {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(10, 24, 56, 0.85);
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.25s ease, visibility 0.25s ease;
-        z-index: 200;
-    }
+ /* ===== MODAL MEJORADO - BLANCO, CENTRADO Y ELEGANTE ===== */
 
-    .modal-overlay.visible {
-        opacity: 1;
-        visibility: visible;
-    }
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* Sin background-color ni backdrop-filter - fondo completamente transparente */
+}
 
-    .modal-card {
-        width: min(480px, 88%);
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-        border-radius: 16px;
-        padding: 24px 24px 28px;
-        color: #f8fbff;
-        text-align: center;
-        position: relative;
-    }
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
 
-    .modal-card h2 {
-        margin-bottom: 10px;
-        font-size: 24px;
-    }
+.modal-card {
+    width: min(500px, 90%);
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.02);
+    padding: 32px 28px 36px;
+    text-align: center;
+    position: relative;
+    transform: scale(0.95);
+    transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
 
-    .modal-card p {
-        margin-bottom: 22px;
-        color: rgba(247, 249, 255, 0.8);
-        font-size: 14px;
-    }
+.modal-overlay.visible .modal-card {
+    transform: scale(1);
+}
 
-    .role-card-grid {
-        display: grid;
-        gap: 14px;
-        width: 100%;
-    }
+.modal-card h2 {
+    margin: 0 0 12px 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #0d5394;
+    letter-spacing: -0.3px;
+}
 
-    .role-card {
-        padding: 18px 20px;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(255, 255, 255, 0.05);
-        color: #fff;
-        cursor: pointer;
-        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-        font-size: 15px;
-        text-align: center;
-    }
+.modal-card p {
+    margin: 0 0 28px 0;
+    color: #5a6874;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+}
 
-    .role-card:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 255, 255, 0.3);
-    }
+.role-card-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    margin-bottom: 8px;
+}
 
-    .close-modal {
-        position: absolute;
-        top: 18px;
-        right: 18px;
-        width: 38px;
-        height: 38px;
-        border: none;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.08);
-        color: #fff;
-        font-size: 24px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-    }
+.role-card {
+    padding: 18px 20px;
+    border-radius: 60px;
+    background: #f5f7fb;
+    color: #1e2a3e;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
 
-    .close-modal:hover {
-        background: rgba(255, 255, 255, 0.16);
-    }
+.role-card:hover {
+    transform: translateY(-3px);
+    background: #ffffff;
+    border-color: #0d5394;
+    box-shadow: 0 12px 22px -12px rgba(13, 83, 148, 0.25);
+    color: #0d5394;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: #f0f2f5;
+    color: #5c6f87;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    background: #e6e9f0;
+    color: #0d2b4b;
+    transform: rotate(90deg);
+}

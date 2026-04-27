@@ -6,12 +6,7 @@
 }
 
 body {
-    background: url('../MEDIA/backgrounds/Simulador.jpg') no-repeat center center;
-    background-size: cover;
-
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
+    background: linear-gradient(145deg, #e8f4f8 0%, #d4eaf5 50%, #c5e0f0 100%);
 }
 
 body::before {
@@ -157,7 +152,7 @@ body::before {
     border-radius: 20px;
     position: relative;
     overflow: hidden;
-    background: url('../MEDIA/edited/Simulador.jpg') center/cover;
+    background: url('../MEDIA/backgrounds/ArreficeBase.png') center/cover;
     transition: all 0.3s ease;
 }
 

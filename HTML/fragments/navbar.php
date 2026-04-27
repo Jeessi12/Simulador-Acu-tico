@@ -12,9 +12,20 @@
    <div class="nav-right" id="navRight">
          <?php 
                 if (isset($_SESSION['usuario'])): ?>
-                <div class="user-buttons" id="userButtons">
-                    <a href="perfilUsuario.php" class="user-name" id="userNameDisplay" style="text-decoration: none;">👤 <?php echo $_SESSION['usuario']?> </a>
-                    <a href="../PHP/logout.php" class="btn btn-secondary" style="text-decoration: none;">Cerrar Sesión</a>
+                <div class="user-actions" id="userActions">
+                    <button type="button" class="icon-btn" id="darkModeBtn" title="Modo oscuro">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <a href="notificaciones.php" class="icon-btn" title="Notificaciones">
+                        <i class="fa-solid fa-bell"></i>
+                    </a>
+                    <button type="button" class="icon-btn" id="langBtn" title="Cambio de idioma">
+                        <i class="fa-solid fa-language"></i>
+                    </button>
+                    <a href="perfilUsuario.php" class="user-avatar" title="Perfil de <?php echo htmlspecialchars($_SESSION['usuario']); ?>">
+                        <img src="../MEDIA/Web/icon.jpeg" alt="Avatar de perfil">
+                    </a>
+                    <a href="../PHP/logout.php" class="btn btn-secondary logout-btn">Cerrar Sesión</a>
                 </div>
             <?php else: ?>
                 <div class="auth-buttons" id="authButtons">

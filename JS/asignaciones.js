@@ -2,10 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const simulacionBtns = document.querySelectorAll('.btn-simular');
-    const notificacionBtns = document.querySelectorAll('.btn-notificacion');
     const verTodoBtn = document.getElementById('verTodoBtn');
-    const guardarObservacionBtn = document.getElementById('guardarObservacionBtn');
-    const nuevaObservacion = document.getElementById('nuevaObservacion');
     const tareaCheckboxes = document.querySelectorAll('.tarea-checkbox input');
     const tareaAcciones = document.querySelectorAll('.tarea-accion');
 
@@ -126,17 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
   
-    notificacionBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const simulacionNombre = this.dataset.simulacion;
-            // Al confirmar, redirigir a la página de notificaciones
-            const onConfirmNot = function() {
-                window.location.href = `notificaciones.php`;
-            };
-            document.addEventListener('modalConfirm', onConfirmNot, { once: true });
-            showModal('Notificaciones', `Tienes nuevas actividades pendientes para "${simulacionNombre}". Revisa los detalles en tu bandeja.`, 'info');
-        });
-    });
     
    
     if (verTodoBtn) {
@@ -147,31 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
    
-    if (guardarObservacionBtn) {
-        guardarObservacionBtn.addEventListener('click', function() {
-            const observacion = nuevaObservacion.value.trim();
-            if (observacion === '') {
-                showModal('Campo vacío', 'Por favor, escribe una observación antes de guardar.', 'error');
-                return;
-            }
-            
-            // Agregar a la lista
-            const observacionesLista = document.getElementById('observacionesLista');
-            const newObs = document.createElement('div');
-            newObs.className = 'observacion-item';
-            newObs.innerHTML = `
-                <div class="observacion-header">
-                    <span class="simulacion-nombre">Nueva observación</span>
-                    <span class="observacion-fecha">Justo ahora</span>
-                </div>
-                <p class="observacion-texto">${escapeHtml(observacion)}</p>
-            `;
-            observacionesLista.insertBefore(newObs, observacionesLista.firstChild);
-            
-            nuevaObservacion.value = '';
-            showModal('Observación guardada', 'Tu observación ha sido registrada exitosamente.', 'success');
-        });
-    }
     
 
     tareaCheckboxes.forEach(checkbox => {

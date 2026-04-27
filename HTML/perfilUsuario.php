@@ -1,22 +1,32 @@
 <?php
-    // Conexión y sesión
-    include("../PHP/conexion.php");
+// Iniciar sesión correctamente
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-    // Redirigir si no hay sesión iniciada
-    if (!isset($_SESSION['id'])) {
-        header("Location: login.php");
-        exit();
-    }
+// Conexión
+include("../PHP/conexion.php");
 
-    $userId = $_SESSION['id'];
+// Verificar sesión
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
 
-    // Obtener datos del usuario junto con su rol
-    $sql = "SELECT u.id, u.username, u.email, r.rol FROM usuarios u LEFT JOIN roles r ON u.rol_id = r.id WHERE u.id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $userId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+$userId = $_SESSION['id'];
+
+// Consulta segura
+$sql = "SELECT u.id, u.username, u.email, r.rol 
+        FROM usuarios u 
+        LEFT JOIN roles r ON u.rol_id = r.id 
+        WHERE u.id = ?";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,33 +36,83 @@
     <title>Perfil de usuario - BlueEcoSim</title>
     <link rel="icon" href="../MEDIA/Web/logo.png" type="image/png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../CSS/navbar-footer.css">
     <link rel="stylesheet" href="../CSS/perfilUsuario.css">
 </head>
 <body>
 
-    <!-- SOLO UN NAVBAR -->
     <div id="navbar-container">
         <?php include("fragments/navbar.php"); ?>
     </div>
 
     <div class="main-container">
         <main class="profile-container">
-            <div class="profile-header">
-                <div class="avatar"><?php echo strtoupper(substr($user['username'],0,1)); ?></div>
-                <div class="profile-info">
-                    <h2><?php echo htmlspecialchars($user['username']); ?></h2>
-                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-                    <p><strong>Rol:</strong> <?php echo htmlspecialchars($user['rol'] ?? 'Usuario'); ?></p>
-                </div>
+            <!-- Banner fijo -->
+            <div class="profile-banner">
+                <div class="banner-overlay"></div>
+                <div class="banner-texture"></div>
             </div>
 
-            <div class="profile-actions">
-                <a href="perfilEditar.php" class="btn btn-primary">Editar perfil</a>
-                <a href="../PHP/logout.php" class="btn btn-secondary">Cerrar sesión</a>
+           <div class="profile-avatar">
+            <img src="../MEDIA/Web/icon.jpeg" alt="Avatar">
+    <div class="avatar-ring"></div>
+</div>
+
+            <div class="profile-card">
+
+                <!-- Datos básicos -->
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <div class="detail-icon">📧</div>
+                        <div>
+                            <strong>Email</strong>
+                            <span><?php echo htmlspecialchars($user['email']); ?></span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon">⭐</div>
+                        <div>
+                            <strong>Rol</strong>
+                            <span><?php echo htmlspecialchars($user['rol'] ?? 'Explorador Marino'); ?></span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon">📅</div>
+                        <div>
+                            <strong>Último acceso</strong>
+                            <span><?php echo date('d/m/Y'); ?></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secciones informativas -->
+                <div class="profile-sections">
+                    <section class="profile-box">
+                        <h2>🌟 Sobre mí</h2>
+                        <p>Aventurero apasionado por el océano y sus misterios. Disfruto explorando simulaciones acuáticas interactivas y aprendiendo cómo proteger los ecosistemas marinos.</p>
+                        <ul class="profile-list">
+                            <li><strong>🌊 Interés:</strong> Biodiversidad marina</li>
+                            <li><strong>🎯 Objetivo:</strong> Completar todas las asignaciones</li>
+                            <li><strong>🏆 Experiencia:</strong> Nivel principiante</li>
+                        </ul>
+                    </section>
+
+                    <section class="profile-box profile-box-alt">
+                        <h2>🏅 Insignias</h2>
+                        <div class="badges-empty">
+                            <div class="badge-icon">🌊</div>
+                            <p>Aún no has desbloqueado ninguna insignia</p>
+                            <span>¡Completa simulaciones para ganar tus primeras medallas!</span>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="profile-actions">
+                     <a href="#" class="btn-edit">✏️ Editar perfil</a>
+                     <a href="../PHP/logout.php" class="btn-logout">🚪 Cerrar sesión</a>
+                </div>
             </div>
         </main>
     </div>
@@ -61,5 +121,5 @@
         <?php include("fragments/footer.php"); ?>
     </div>
 
-    <script src
+</body>
 </html>
