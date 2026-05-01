@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 -- 1. Crear la base de datos (si no existe)
 CREATE DATABASE IF NOT EXISTS simulador;
 USE simulador;
@@ -7,18 +6,11 @@ USE simulador;
 DROP USER IF EXISTS 'Simulaciones'@'localhost';
 
 -- 3. Crear el usuario de la aplicación
-=======
-CREATE DATABASE simulador;
-USE simulador;
->>>>>>> 798a701f32e177c592e53a265113b3087c7cb5ee
 CREATE USER 'Simulaciones'@'localhost' IDENTIFIED BY 'bitesthedust';
 GRANT ALL PRIVILEGES ON simulador.* TO 'Simulaciones'@'localhost';
 FLUSH PRIVILEGES;
 
-<<<<<<< HEAD
 -- 4. Tabla de roles
-=======
->>>>>>> 798a701f32e177c592e53a265113b3087c7cb5ee
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     rol VARCHAR(50) NOT NULL
@@ -30,10 +22,7 @@ INSERT INTO roles (rol) VALUES
 ('Personal'),
 ('Admin');
 
-<<<<<<< HEAD
 -- 5. Tabla de usuarios
-=======
->>>>>>> 798a701f32e177c592e53a265113b3087c7cb5ee
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) UNIQUE,
@@ -41,7 +30,6 @@ CREATE TABLE usuarios (
     password VARCHAR(255),
     rol_id INT DEFAULT 1,
     FOREIGN KEY (rol_id) REFERENCES roles(id)
-<<<<<<< HEAD
 );
 
 -- 6. Tabla de simulaciones disponibles
@@ -100,6 +88,4 @@ CREATE TABLE espacio_estudiantes (
     PRIMARY KEY (id_espacio, id_estudiante),
     FOREIGN KEY (id_espacio) REFERENCES espacios(id) ON DELETE CASCADE,
     FOREIGN KEY (id_estudiante) REFERENCES usuarios(id) ON DELETE CASCADE
-=======
->>>>>>> 798a701f32e177c592e53a265113b3087c7cb5ee
 );
