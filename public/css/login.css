@@ -320,8 +320,6 @@ body {
     .form-wrapper {
         margin-right: 10px; 
     }
-<<<<<<< HEAD
-=======
 }
 
 /* ===== BOTÓN GOOGLE ===== */
@@ -368,5 +366,4 @@ body {
 .google-btn img {
     width: 20px;
     height: 20px;
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 }

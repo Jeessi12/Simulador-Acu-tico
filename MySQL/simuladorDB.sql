@@ -1,13 +1,3 @@
-<<<<<<< HEAD
--- 1. Crear la base de datos (si no existe)
-CREATE DATABASE IF NOT EXISTS simulador;
-USE simulador;
-
--- 2. Eliminar el usuario si ya existía (evita errores)
-DROP USER IF EXISTS 'Simulaciones'@'localhost';
-
--- 3. Crear el usuario de la aplicación
-=======
 -- ============================================================
 -- 1. Crear la base de datos (si no existe)
 -- ============================================================
@@ -22,18 +12,13 @@ DROP USER IF EXISTS 'Simulaciones'@'localhost';
 -- ============================================================
 -- 3. Crear el usuario de la aplicación
 -- ============================================================
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 CREATE USER 'Simulaciones'@'localhost' IDENTIFIED BY 'bitesthedust';
 GRANT ALL PRIVILEGES ON simulador.* TO 'Simulaciones'@'localhost';
 FLUSH PRIVILEGES;
 
-<<<<<<< HEAD
--- 4. Tabla de roles
-=======
 -- ============================================================
 -- 4. Tabla de roles
 -- ============================================================
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     rol VARCHAR(50) NOT NULL
@@ -45,33 +30,22 @@ INSERT INTO roles (rol) VALUES
 ('Personal'),
 ('Admin');
 
-<<<<<<< HEAD
--- 5. Tabla de usuarios
-=======
 -- ============================================================
 -- 5. Tabla de usuarios (AHORA CON google_id)
 -- ============================================================
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) UNIQUE,
     username VARCHAR(100) UNIQUE,
     password VARCHAR(255),
-<<<<<<< HEAD
-=======
     google_id VARCHAR(180) UNIQUE NULL,
->>>>>>> c72853d (Log in con cuenta de Google añadido)
     rol_id INT DEFAULT 1,
     FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
 
-<<<<<<< HEAD
--- 6. Tabla de simulaciones disponibles
-=======
 -- ============================================================
 -- 6. Tabla de simulaciones disponibles
 -- ============================================================
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 CREATE TABLE simulaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -84,13 +58,9 @@ INSERT INTO simulaciones (nombre, descripcion, ruta) VALUES
 ('Cadena alimenticia',      'Relación depredador-presa en el océano', 'simulador.php?id=2'),
 ('Contaminación marina',    'Efectos de residuos en el ecosistema',   'simulador.php?id=3');
 
-<<<<<<< HEAD
--- 7. Tabla de asignaciones (docente → estudiante + simulación)
-=======
 -- ============================================================
 -- 7. Tabla de asignaciones (docente → estudiante + simulación)
 -- ============================================================
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 CREATE TABLE asignaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_docente INT NOT NULL,
@@ -103,13 +73,9 @@ CREATE TABLE asignaciones (
     FOREIGN KEY (id_simulacion) REFERENCES simulaciones(id) ON DELETE CASCADE
 );
 
-<<<<<<< HEAD
--- 8. Tabla de notificaciones (con todas las columnas nuevas)
-=======
 -- ============================================================
 -- 8. Tabla de notificaciones
 -- ============================================================
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 CREATE TABLE notificaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
@@ -122,13 +88,9 @@ CREATE TABLE notificaciones (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
-<<<<<<< HEAD
--- 9. Tabla de espacios (creados por el docente)
-=======
 -- ============================================================
 -- 9. Tabla de espacios (creados por el docente)
 -- ============================================================
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 CREATE TABLE espacios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -137,13 +99,9 @@ CREATE TABLE espacios (
     FOREIGN KEY (id_docente) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
-<<<<<<< HEAD
--- 10. Tabla de relación espacio - estudiantes
-=======
 -- ============================================================
 -- 10. Tabla de relación espacio - estudiantes
 -- ============================================================
->>>>>>> c72853d (Log in con cuenta de Google añadido)
 CREATE TABLE espacio_estudiantes (
     id_espacio INT NOT NULL,
     id_estudiante INT NOT NULL,

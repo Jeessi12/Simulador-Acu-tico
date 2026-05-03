@@ -65,8 +65,6 @@ if (isset($_SESSION['usuario'])) {
                 </p>
 
             </form>
-<<<<<<< HEAD
-=======
 
             <!-- BOTÓN DE GOOGLE -->
             <div class="social-login">
@@ -77,7 +75,6 @@ if (isset($_SESSION['usuario'])) {
                 </a>
             </div>
 
->>>>>>> c72853d (Log in con cuenta de Google añadido)
         </div>
     </div>
 </div>
