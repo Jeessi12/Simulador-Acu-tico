@@ -1,0 +1,12 @@
+{
+    "name": "ryzen5/simulador-acu-tico-main",
+    "authors": [
+        {
+            "name": "Arturo",
+            "email": "eamelgar08@gmail.com"
+        }
+    ],
+    "require": {
+        "google/apiclient": "^1.1"
+    }
+}
