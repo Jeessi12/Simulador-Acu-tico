@@ -2,8 +2,8 @@
 session_start();
 require_once __DIR__ . '/../models/Conexion.php';
 
-$clientID = 'aqui va el id';
-$clientSecret = 'aqui va el secreto';
+$clientID = 'tu_client_id_aqui';
+$clientSecret = 'tu_client_secret_aqui';
 $redirectUri = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 
 // Si no hay código, volver al login

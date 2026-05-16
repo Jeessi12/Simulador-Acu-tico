@@ -21,7 +21,6 @@ if (!defined('ROL_ESTUDIANTE')) {
             <?php endif; ?>
 
             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == ROL_DOCENTE): ?>
-                <a href="docente.php">ASIGNAR</a>
                 <a href="espacios.php">ESPACIOS</a>
             <?php endif; ?>
 
