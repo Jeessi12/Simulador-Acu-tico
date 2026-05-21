@@ -168,3 +168,49 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Bubble animation moved to ../JS/burbujas.js — duplicate implementation removed.
 });
+
+// ── Código de aula: navegación entre celdas ───────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const chars  = document.querySelectorAll('.codigo-char');
+    const hidden = document.getElementById('codigoAulaHidden');
+    const form   = document.getElementById('codigoForm');
+
+    chars.forEach((input, idx) => {
+        input.addEventListener('input', () => {
+            input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (input.value && idx < chars.length - 1) chars[idx + 1].focus();
+            syncHidden();
+        });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !input.value && idx > 0) {
+                chars[idx - 1].focus();
+                chars[idx - 1].value = '';
+                syncHidden();
+            }
+        });
+        // Pegar código completo en el primer campo
+        input.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pasted = (e.clipboardData || window.clipboardData)
+                .getData('text').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+            chars.forEach((c, i) => { c.value = pasted[i] || ''; });
+            const next = Math.min(pasted.length, 5);
+            chars[next].focus();
+            syncHidden();
+        });
+    });
+
+    function syncHidden() {
+        hidden.value = Array.from(chars).map(c => c.value).join('');
+    }
+
+    form?.addEventListener('submit', (e) => {
+        syncHidden();
+        if (hidden.value.length !== 6) {
+            e.preventDefault();
+            chars[0].focus();
+            chars.forEach(c => c.classList.add('shake-char'));
+            setTimeout(() => chars.forEach(c => c.classList.remove('shake-char')), 500);
+        }
+    });
+});

@@ -11,7 +11,7 @@ use PHPMailer\PHPMailer\Exception;
 // ⚠️ CAMBIA ESTOS VALORES POR LOS REALES
 define('SMTP_HOST', 'smtp.gmail.com');
 define('SMTP_USER', 'correo@gmail.com');          // ← CORREO DE BLUE ECOSIM
-define('SMTP_PASS', 'cambiar por contra real');  // ← CONTRASEÑA DE APLICACIÓN (16 caracteres sin espacios)
+define('SMTP_PASS', 'cambiar por contra real');              // ← CONTRASEÑA DE APLICACIÓN (16 caracteres sin espacios)
 define('SMTP_PORT', 587);
 define('FROM_EMAIL', SMTP_USER);
 define('FROM_NAME', 'Blue EcoSim');
@@ -28,27 +28,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['rol'])) {
         die("Rol inválido");
     }
 
-    // 1. Verificar duplicados por email o username
-    $stmt = $conn->prepare("SELECT id, email, username FROM usuarios WHERE email = ? OR username = ?");
-    $stmt->bind_param("ss", $email, $nombre);
-    $stmt->execute();
-    $result = $stmt->get_result();
+// 1. Verificar duplicado solo por email
+$stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
-    $error = '';
-    if ($result->num_rows > 0) {
-        $dupEmail = false;
-        $dupUser  = false;
-        while ($row = $result->fetch_assoc()) {
-            if ($row['email'] === $email) $dupEmail = true;
-            if ($row['username'] === $nombre) $dupUser = true;
-        }
-        if ($dupEmail && $dupUser) $error = 'ambos';
-        elseif ($dupEmail) $error = 'email_duplicado';
-        else $error = 'username_duplicado';
-
-        header("Location: /Simulador-Acu-tico-main/views/registro.php?error=$error");
-        exit();
-    }
+if ($result->num_rows > 0) {
+    header("Location: /Simulador-Acu-tico-main/views/registro.php?error=email_duplicado");
+    exit();
+}
 
     // 2. Insertar usuario con estado pendiente
     $passwordHash = password_hash($password, PASSWORD_BCRYPT);

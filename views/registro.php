@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Mapeo de errores específicos
 $errores = [
     'email_duplicado'    => 'Este correo electrónico ya está registrado.',
     'username_duplicado' => 'Este nombre de usuario ya está en uso.',
@@ -27,24 +26,17 @@ if (isset($_SESSION['usuario'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro | BlueEcoSim</title>
-
     <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
     <link rel="stylesheet" href="../public/css/registro.css">
 </head>
-
 <body>
 
 <div id="navbar-container">
     <?php include(__DIR__ . "/fragments/navbar.php"); ?>
 </div>
-
-<div class="spacer"></div>
 
 <div class="container" id="container">
     <div class="form-wrapper register-wrapper" id="registerWrapper">
@@ -88,46 +80,38 @@ if (isset($_SESSION['usuario'])) {
                     <div class="linea"></div>
                 </div>
 
-                <p>
-                    Completa tus datos y selecciona el tipo de cuenta en el siguiente paso.
-                </p>
+                <!-- Selector de rol integrado -->
+<div class="campo">
+    <label>¿Cuál es tu rol?</label>
+    <div class="rol-selector">
+        <div class="rol-opcion" data-rol="1">
+            <i class="fa-solid fa-user-graduate rol-icono"></i>
+            <span class="rol-nombre">Academico</span>
+            <span class="rol-desc">Soy estudiante</span>
+        </div>
+        <div class="rol-opcion" data-rol="2">
+            <i class="fa-solid fa-chalkboard-user rol-icono"></i>
+            <span class="rol-nombre">Guía</span>
+            <span class="rol-desc">Soy docente</span>
+        </div>
+        <div class="rol-opcion" data-rol="3">
+            <i class="fa-solid fa-fish rol-icono"></i>
+            <span class="rol-nombre">Explorador</span>
+            <span class="rol-desc">Uso personal</span>
+        </div>
+    </div>
+    <p class="rol-error" id="rolError">Selecciona un tipo de cuenta para continuar.</p>
+</div>
 
                 <input type="hidden" name="rol" id="roleInput" value="">
 
-                <button type="button" id="open-role-modal" class="btn-submit">
-                    Registrar
-                </button>
+                <button type="submit" class="btn-submit">Registrar</button>
 
                 <p class="switch-link">
                     ¿Ya tienes una cuenta?
-                    <a href="/Simulador-Acu-tico-main/views/login.php">
-                        Inicia Sesión
-                    </a>
+                    <a href="/Simulador-Acu-tico-main/views/login.php">Inicia Sesión</a>
                 </p>
             </form>
-
-            <div class="modal-overlay" id="role-modal" aria-hidden="true">
-                <div class="modal-card">
-                    <button type="button" class="close-modal" id="close-role-modal">
-                        &times;
-                    </button>
-
-                    <h2>Elige tu tipo de cuenta</h2>
-                    <p>Selecciona una opción para completar el registro.</p>
-
-                    <div class="role-card-grid">
-                        <button type="button" class="role-card" data-role="1">
-                            Cuenta de Estudiante
-                        </button>
-                        <button type="button" class="role-card" data-role="2">
-                            Cuenta de Docente
-                        </button>
-                        <button type="button" class="role-card" data-role="3">
-                            Cuenta Personal
-                        </button>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>

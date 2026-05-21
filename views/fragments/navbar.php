@@ -5,6 +5,22 @@ if (!defined('ROL_ESTUDIANTE')) {
     define('ROL_PERSONAL',   3);
     define('ROL_ADMIN',      4);
 }
+
+
+if (!function_exists('getRoleAvatarSrc')) {
+    function getRoleAvatarSrc(?int $rol): string {
+        switch ($rol) {
+            case ROL_ESTUDIANTE:
+                return '/Simulador-Acu-tico-main/public/media/Web/estudiante.png';
+            case ROL_DOCENTE:
+                return '/Simulador-Acu-tico-main/public/media/Web/docente.png';
+            case ROL_PERSONAL:
+                return '/Simulador-Acu-tico-main/public/media/Web/usuario.png';
+            default:
+                return '/Simulador-Acu-tico-main/public/media/Web/icon.jpeg';
+        }
+    }
+}
 ?>
 
 <nav class="navbar">
@@ -37,19 +53,13 @@ if (!defined('ROL_ESTUDIANTE')) {
                     <i class="fa-solid fa-moon"></i>
                 </button>
 
-                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == ROL_ESTUDIANTE): ?>
-                    <a href="notificaciones.php" class="icon-btn" title="Notificaciones">
-                        <i class="fa-solid fa-bell"></i>
-                    </a>
-                <?php endif; ?>
-
                 <button type="button" class="icon-btn" id="langBtn" title="Cambio de idioma">
                     <i class="fa-solid fa-language"></i>
                 </button>
 
                 <a href="/Simulador-Acu-tico-main/views/perfilUsuario.php" class="user-avatar"
                    title="Perfil de <?php echo htmlspecialchars($_SESSION['usuario']); ?>">
-                    <img src="/Simulador-Acu-tico-main/public/media/Web/icon.jpeg" alt="Avatar de perfil">
+                    <img src="<?php echo htmlspecialchars(getRoleAvatarSrc($_SESSION['rol'] ?? null)); ?>" alt="Avatar de perfil">
                 </a>
 
                 <a href="/Simulador-Acu-tico-main/app/controllers/LogoutController.php" class="btn btn-secondary logout-btn">

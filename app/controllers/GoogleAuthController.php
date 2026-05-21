@@ -2,9 +2,9 @@
 session_start();
 require_once __DIR__ . '/../models/Conexion.php';
 
-$clientID = 'tu_client_id_aqui';
-$clientSecret = 'tu_client_secret_aqui';
-$redirectUri = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
+$clientID = 'aqui va el id';
+$clientSecret = 'aqui va el secreto';
+$redirectUri  = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 
 // Si no hay código, volver al login
 if (!isset($_GET['code'])) {
@@ -13,7 +13,7 @@ if (!isset($_GET['code'])) {
 }
 
 // Intercambiar código por token vía cURL
-$tokenUrl = 'https://oauth2.googleapis.com/token';
+$tokenUrl   = 'https://oauth2.googleapis.com/token';
 $postFields = [
     'code'          => $_GET['code'],
     'client_id'     => $clientID,
@@ -28,37 +28,23 @@ curl_setopt_array($ch, [
     CURLOPT_POSTFIELDS     => http_build_query($postFields),
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER     => ['Content-Type: application/x-www-form-urlencoded'],
-    CURLOPT_SSL_VERIFYPEER => false,   // Solo para desarrollo local
-    CURLOPT_SSL_VERIFYHOST => false,   // Solo para desarrollo local
+    CURLOPT_SSL_VERIFYPEER => false,
+    CURLOPT_SSL_VERIFYHOST => false,
 ]);
 $response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$httpCode  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-// --- DIAGNÓSTICO TEMPORAL (quitar cuando funcione) ---
 if ($httpCode !== 200) {
-    echo "<pre>";
-    echo "HTTP Code: " . $httpCode . "\n";
-    echo "Response: " . $response . "\n";
-    if (function_exists('curl_error')) {
-        echo "cURL Error: " . curl_error($ch) . "\n";
-    }
-    $errorData = json_decode($response, true);
-    if ($errorData) {
-        echo "Error: " . ($errorData['error'] ?? 'N/A') . "\n";
-        echo "Descripción: " . ($errorData['error_description'] ?? 'N/A') . "\n";
-    }
-    echo "</pre>";
+    header("Location: login.php?error=google_fallo");
     exit;
 }
-// --- FIN DIAGNÓSTICO ---
 
-$tokenData = json_decode($response, true);
+$tokenData   = json_decode($response, true);
 $accessToken = $tokenData['access_token'];
 
-// Obtener información del usuario con el access token
-$userInfoUrl = 'https://www.googleapis.com/oauth2/v2/userinfo';
-$ch = curl_init($userInfoUrl);
+// Obtener información del usuario
+$ch = curl_init('https://www.googleapis.com/oauth2/v2/userinfo');
 curl_setopt_array($ch, [
     CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $accessToken],
     CURLOPT_RETURNTRANSFER => true,
@@ -66,16 +52,15 @@ curl_setopt_array($ch, [
     CURLOPT_SSL_VERIFYHOST => false,
 ]);
 $userResponse = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$httpCode     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
 if ($httpCode !== 200) {
-    echo "Error al obtener información del usuario.";
+    header("Location: login.php?error=google_fallo");
     exit;
 }
 
 $userInfo = json_decode($userResponse, true);
-
 $googleId = $userInfo['id'];
 $email    = $userInfo['email'];
 $nombre   = $userInfo['name'];
@@ -112,22 +97,11 @@ if ($userByEmail = $resultEmail->fetch_assoc()) {
     exit;
 }
 
-// 3. Crear nuevo usuario (usar rol elegido si existe, sino Estudiante por defecto)
-$rolElegido = isset($_SESSION['google_rol_elegido']) ? intval($_SESSION['google_rol_elegido']) : 1;
-if (!in_array($rolElegido, [1, 2, 3])) {
-    $rolElegido = 1;
-}
-// Eliminar la variable de sesión después de usarla
-unset($_SESSION['google_rol_elegido']);
-
-$passwordAleatoria = password_hash(bin2hex(random_bytes(16)), PASSWORD_BCRYPT);
-$insert = $conn->prepare("INSERT INTO usuarios (email, username, password, rol_id, google_id, estado) VALUES (?, ?, ?, ?, ?, 'activo')");
-$insert->bind_param("sssis", $email, $nombre, $passwordAleatoria, $rolElegido, $googleId);
-$insert->execute();
-
-$_SESSION['usuario'] = $nombre;
-$_SESSION['rol']     = $rolElegido;
-$_SESSION['id']      = $insert->insert_id;
-
-header("Location: index.php");
+// 3. No existe — guardar datos de Google en sesión y redirigir al registro
+$_SESSION['google_prefill'] = [
+    'google_id' => $googleId,
+    'email'     => $email,
+    'nombre'    => $nombre,
+];
+header("Location: /Simulador-Acu-tico-main/views/registro.php?mensaje=google_no_registrado");
 exit;

@@ -9,8 +9,9 @@ if (isset($_GET['rol'])) {
     }
 }
 
-$clientID = 'tu_client_id_aqui';
-$clientSecret = 'tu_client_secret_aqui';
+
+$clientID = 'aqui va el id';
+$clientSecret = 'aqui va el secreto';
 $redirectUri = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 
 // Construir URL de autenticación de Google manualmente

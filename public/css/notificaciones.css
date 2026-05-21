@@ -245,6 +245,95 @@ html, body {
     background: #0a1425;
 }
 
+/* ── AGREGAR AL FINAL DE notificaciones.css ── */
+
+/* Fila de invitación */
+.invitacion-row {
+    border-left: 5px solid #2d9cdb !important;
+    background: #f0f8ff !important;
+}
+
+/* Badge "Invitación" */
+.inv-badge {
+    display: inline-block;
+    background: #2d9cdb;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-right: 8px;
+    vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Botones aceptar/rechazar */
+.inv-actions {
+    display: inline-flex;
+    gap: 8px;
+    margin-left: 10px;
+    vertical-align: middle;
+    flex-wrap: wrap;
+}
+
+.btn-aceptar-inv,
+.btn-rechazar-inv {
+    border: none;
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.18s ease;
+}
+
+.btn-aceptar-inv {
+    background: #34a853;
+    color: white;
+}
+.btn-aceptar-inv:hover {
+    background: #288a42;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(52, 168, 83, 0.3);
+}
+
+.btn-rechazar-inv {
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+.btn-rechazar-inv:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-color: #fca5a5;
+    transform: translateY(-1px);
+}
+
+/* Estado ya respondida */
+.inv-estado {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 999px;
+    vertical-align: middle;
+}
+.inv-estado--aceptado  { background: #e6f7ec; color: #0a5c2e; }
+.inv-estado--rechazado { background: #fee9e6; color: #b91c1c; }
+
+/* Spinner procesando */
+.inv-cargando {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #3d8fd1;
+    margin-left: 10px;
+}
+
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 

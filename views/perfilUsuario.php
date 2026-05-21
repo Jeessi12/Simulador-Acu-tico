@@ -13,7 +13,31 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
+if (!defined('ROL_ESTUDIANTE')) {
+    define('ROL_ESTUDIANTE', 1);
+    define('ROL_DOCENTE',    2);
+    define('ROL_PERSONAL',   3);
+    define('ROL_ADMIN',      4);
+}
+
+if (!function_exists('getRoleAvatarSrc')) {
+    function getRoleAvatarSrc(?int $rol): string {
+        switch ($rol) {
+            case ROL_ESTUDIANTE:
+                return '/Simulador-Acu-tico-main/public/media/Web/estudiante.png';
+            case ROL_DOCENTE:
+                return '/Simulador-Acu-tico-main/public/media/Web/docente.png';
+            case ROL_PERSONAL:
+                return '/Simulador-Acu-tico-main/public/media/Web/usuario.png';
+            default:
+                return '/Simulador-Acu-tico-main/public/media/Web/icon.jpeg';
+        }
+    }
+}
+
 $userId = $_SESSION['id'];
+
+$avatarSrc = getRoleAvatarSrc($_SESSION['rol'] ?? null);
 
 // Consulta segura
 $sql = "SELECT u.id, u.username, u.email, r.rol 
@@ -56,7 +80,7 @@ $user = $result->fetch_assoc();
             </div>
 
            <div class="profile-avatar">
-            <img src="../public/media/Web/icon.jpeg" alt="Avatar">
+            <img src="<?php echo htmlspecialchars($avatarSrc); ?>" alt="Avatar">
     <div class="avatar-ring"></div>
 </div>
 

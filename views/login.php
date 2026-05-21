@@ -3,24 +3,27 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Manejo de mensajes informativos
 $mensajes = [
     'pendiente_verificacion' => 'Registro exitoso. Revisa tu correo para verificar la cuenta.',
     'verificacion_exitosa'   => '¡Cuenta verificada con éxito! Ya puedes iniciar sesión.',
-    'cuenta_no_verificada'   => 'Debes verificar tu correo antes de iniciar sesión. Revisa tu bandeja de entrada.'
+    'cuenta_no_verificada'   => 'Debes verificar tu correo antes de iniciar sesión. Revisa tu bandeja de entrada.',
 ];
+
 $clase = 'valid';
 if (isset($_GET['mensaje'])) {
     $clave = $_GET['mensaje'];
-    $msg = $mensajes[$clave] ?? '';
+    $msg   = $mensajes[$clave] ?? '';
     if ($clave === 'cuenta_no_verificada') $clase = 'error';
-    if ($msg) {
-        echo "<div class='$clase'>$msg</div>";
-    }
+    if ($msg) echo "<div class='$clase'>$msg</div>";
 }
-// Manejo de errores
+
 if (isset($_GET['error'])) {
-    $msg = $_GET['error'] === 'credentials' ? 'Email o contraseña incorrectos' : 'Acceso denegado';
+    $errores = [
+        'credentials'  => 'Email o contraseña incorrectos.',
+        'denied'       => 'Acceso denegado.',
+        'google_fallo' => 'Hubo un problema al conectar con Google. Intenta de nuevo.',
+    ];
+    $msg = $errores[$_GET['error']] ?? 'Error desconocido.';
     echo "<div class='error'>$msg</div>";
 }
 
@@ -35,17 +38,12 @@ if (isset($_SESSION['usuario'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | BlueEcoSim</title>
-
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
     <link rel="stylesheet" href="../public/css/login.css">
-
     <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-
 <body>
 
 <div id="navbar-container">
@@ -87,27 +85,14 @@ if (isset($_SESSION['usuario'])) {
 
             </form>
 
-            <!-- BOTÓN DE GOOGLE (ahora con modal de rol) -->
+            <!-- Botón Google directo, sin modal -->
             <div class="social-login">
                 <div class="divider"><span>o</span></div>
-                <button type="button" id="google-login-btn" class="google-btn">
+                <a href="/Simulador-Acu-tico-main/app/controllers/GoogleLoginController.php"
+                   class="google-btn">
                     <img src="../public/media/Web/Logo-Google.png" alt="Google logo">
                     Iniciar sesión con Google
-                </button>
-            </div>
-
-            <!-- MODAL DE SELECCIÓN DE ROL PARA GOOGLE -->
-            <div class="modal-overlay" id="google-role-modal" aria-hidden="true">
-                <div class="modal-card">
-                    <button type="button" class="close-modal" id="close-google-modal">&times;</button>
-                    <h2>Elige tu tipo de cuenta</h2>
-                    <p>Selecciona una opción para continuar con Google.</p>
-                    <div class="role-card-grid">
-                        <button type="button" class="role-card" data-role="1">Cuenta de Estudiante</button>
-                        <button type="button" class="role-card" data-role="2">Cuenta de Docente</button>
-                        <button type="button" class="role-card" data-role="3">Cuenta Personal</button>
-                    </div>
-                </div>
+                </a>
             </div>
 
         </div>
@@ -120,7 +105,7 @@ if (isset($_SESSION['usuario'])) {
 
 <canvas id="particles"></canvas>
 <script src="/Simulador-Acu-tico-main/public/js/burbujas.js" defer></script>
-<script src="/Simulador-Acu-tico-main/public/js/google-role-modal.js" defer></script>
+<!-- google-role-modal.js eliminado -->
 
 </body>
 </html>
