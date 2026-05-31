@@ -124,8 +124,10 @@ const canvasS = document.getElementById('particlesSpecies');
 const ctxS = canvasS.getContext('2d');
 
 function resizeCanvasS(){
-    canvasS.width = canvasS.offsetWidth;
-    canvasS.height = canvasS.offsetHeight;
+    canvasS.style.width = '100%';
+    canvasS.style.height = '100%';
+    canvasS.width = canvasS.clientWidth;
+    canvasS.height = canvasS.clientHeight;
 }
 resizeCanvasS();
 window.addEventListener('resize', resizeCanvasS);

@@ -31,6 +31,11 @@
 </div>
 
 <section class="hero">
+
+    <video class="hero-video-bg" autoplay muted loop playsinline>
+        <source src="../public/media/backgrounds/index.mp4" type="video/mp4">
+    </video>
+
     <div class="hero-text">
         <h1 class="title">
             <span>Sumérgete</span>
@@ -47,7 +52,9 @@
             y observa cómo el ecosistema responde en tiempo real
         </p>
 
-        <a href="#eco" class="cta">Conoce más →</a>
+        <div class="cta-wrapper">
+            <a href="#eco" class="cta">Conoce más →</a>
+        </div>
     </div>
 
     <canvas id="particles"></canvas>
@@ -56,44 +63,49 @@
 <section class="eco-section" id="eco">
     <canvas id="particlesSpecies"></canvas>
 
+    <video class="eco-video-bg" autoplay muted loop playsinline>
+        <source src="../public/media/backgrounds/index2.mp4" type="video/mp4">
+    </video>
+
     <div class="eco-overlay">
-        <div class="eco-content">
 
-            <div class="eco-badge">
-                <span class="badge-icon">🌊</span> Simulación Educativa
-            </div>
+        <!-- DERECHA: texto -->
+        <div class="eco-right">
 
-            <h2>
-                Educación con 
-                <span class="eco-highlight">Simuladores Acuáticos</span>
-            </h2>
 
-            <p>
-                En El Salvador, los simuladores acuáticos permiten a los estudiantes 
-                explorar ecosistemas marinos y fomentar la conciencia sobre la 
-                biodiversidad y su conservación.
-            </p>
+<h2 class="eco-title">
+    El océano te<br>
+    <span class="eco-highlight">necesita</span> a ti
+</h2>
+<p class="eco-desc">
+    Cada especie tiene un rol  y cada 
+    decisión un impacto. Aprende las conexiones invisibles que mantienen 
+    vivo el mar y descubre, a través de la educación interactiva, cómo 
+    tus acciones pueden cambiar el equilibrio de toda una cadena de vida marina.
+</p>
 
             <div class="eco-stats">
                 <div class="stat">
                     <span class="stat-number">+5,000</span>
                     <span class="stat-label">Estudiantes</span>
                 </div>
-
+                <div class="stat-divider"></div>
                 <div class="stat">
                     <span class="stat-number">+150</span>
                     <span class="stat-label">Especies</span>
                 </div>
-
+                <div class="stat-divider"></div>
                 <div class="stat">
                     <span class="stat-number">100%</span>
                     <span class="stat-label">Interactivo</span>
                 </div>
             </div>
 
-            <a href="/Simulador-Acu-tico-main/views/login.php" class="eco-btn">
-                Únete a nosotros →
-            </a>
+            <div class="eco-actions">
+                <a href="/Simulador-Acu-tico-main/views/login.php" class="eco-btn-primary">
+                    Únete a nosotros →
+                </a>
+            </div>
 
         </div>
     </div>
