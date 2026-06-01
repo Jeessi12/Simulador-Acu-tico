@@ -10,7 +10,7 @@ if (isset($_GET['rol'])) {
 }
 
 
-$clientID = 'aqui va el id';
+$clientID = 'aqui va el secreto';
 $clientSecret = 'aqui va el secreto';
 $redirectUri = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 

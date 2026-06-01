@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../models/Conexion.php';
 
-$clientID = 'aqui va el id';
+$clientID = 'aqui va el secreto';
 $clientSecret = 'aqui va el secreto';
 $redirectUri  = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 

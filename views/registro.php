@@ -34,6 +34,12 @@ if (isset($_SESSION['usuario'])) {
 </head>
 <body>
 
+<!-- Video de fondo -->
+<video id="bg-video" autoplay muted loop playsinline>
+    <source src="../public/media/backgrounds/registro.mp4" type="video/mp4">
+</video>
+<div id="bg-video-overlay"></div>
+
 <div id="navbar-container">
     <?php include(__DIR__ . "/fragments/navbar.php"); ?>
 </div>
@@ -81,27 +87,27 @@ if (isset($_SESSION['usuario'])) {
                 </div>
 
                 <!-- Selector de rol integrado -->
-<div class="campo">
-    <label>¿Cuál es tu rol?</label>
-    <div class="rol-selector">
-        <div class="rol-opcion" data-rol="1">
-            <i class="fa-solid fa-user-graduate rol-icono"></i>
-            <span class="rol-nombre">Academico</span>
-            <span class="rol-desc">Soy estudiante</span>
-        </div>
-        <div class="rol-opcion" data-rol="2">
-            <i class="fa-solid fa-chalkboard-user rol-icono"></i>
-            <span class="rol-nombre">Guía</span>
-            <span class="rol-desc">Soy docente</span>
-        </div>
-        <div class="rol-opcion" data-rol="3">
-            <i class="fa-solid fa-fish rol-icono"></i>
-            <span class="rol-nombre">Explorador</span>
-            <span class="rol-desc">Uso personal</span>
-        </div>
-    </div>
-    <p class="rol-error" id="rolError">Selecciona un tipo de cuenta para continuar.</p>
-</div>
+                <div class="campo">
+                    <label>¿Cuál es tu rol?</label>
+                    <div class="rol-selector">
+                        <div class="rol-opcion" data-rol="1">
+                            <i class="fa-solid fa-user-graduate rol-icono"></i>
+                            <span class="rol-nombre">Academico</span>
+                            <span class="rol-desc">Soy estudiante</span>
+                        </div>
+                        <div class="rol-opcion" data-rol="2">
+                            <i class="fa-solid fa-chalkboard-user rol-icono"></i>
+                            <span class="rol-nombre">Guía</span>
+                            <span class="rol-desc">Soy docente</span>
+                        </div>
+                        <div class="rol-opcion" data-rol="3">
+                            <i class="fa-solid fa-fish rol-icono"></i>
+                            <span class="rol-nombre">Explorador</span>
+                            <span class="rol-desc">Uso personal</span>
+                        </div>
+                    </div>
+                    <p class="rol-error" id="rolError">Selecciona un tipo de cuenta para continuar.</p>
+                </div>
 
                 <input type="hidden" name="rol" id="roleInput" value="">
 

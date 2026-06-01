@@ -50,7 +50,6 @@ html {
     background: linear-gradient(to right, rgba(8, 113, 212, 0.486) 35%, rgba(9, 70, 236, 0.144) 55%, rgba(255,255,255,0) 75%);
     z-index: 1;
 }
-
 .hero-text {
     margin-top: 80px;
     margin-left: 45px;

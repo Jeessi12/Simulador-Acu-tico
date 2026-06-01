@@ -38,6 +38,7 @@ if (isset($_SESSION['usuario'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | BlueEcoSim</title>
+    <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
     <link rel="stylesheet" href="../public/css/login.css">
     <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
@@ -45,6 +46,12 @@ if (isset($_SESSION['usuario'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+
+<!-- Video de fondo -->
+<video id="bg-video" autoplay muted loop playsinline>
+    <source src="../public/media/backgrounds/login.mp4" type="video/mp4">
+</video>
+<div id="bg-video-overlay"></div>
 
 <div id="navbar-container">
     <?php include(__DIR__ . "/fragments/navbar.php"); ?>
@@ -105,7 +112,6 @@ if (isset($_SESSION['usuario'])) {
 
 <canvas id="particles"></canvas>
 <script src="/Simulador-Acu-tico-main/public/js/burbujas.js" defer></script>
-<!-- google-role-modal.js eliminado -->
 
 </body>
 </html>
