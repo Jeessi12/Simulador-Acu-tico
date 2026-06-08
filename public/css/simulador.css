@@ -44,6 +44,15 @@ body::before {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* ─── CANVAS BURBUJAS (simulador) ─── */
+#particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 32px;
+}
+
 .simulator:hover {
     transform: translateY(-5px);
     box-shadow: 0 30px 60px -12px rgba(0,0,0,0.3);
@@ -59,6 +68,7 @@ body::before {
     background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
     animation: rotateLight 12s linear infinite;
     pointer-events: none;
+    z-index: 1;
 }
 
 
@@ -74,6 +84,7 @@ body::before {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+    z-index: 2;
 }
 
 @keyframes rotateLight {
@@ -89,7 +100,7 @@ body::before {
     align-items: center;
     margin-bottom: 15px;
     position: relative;
-    z-index: 1;
+    z-index: 3;
 }
 
 .status {
@@ -154,6 +165,7 @@ body::before {
     overflow: hidden;
     background: url('../MEDIA/backgrounds/ArreficeBase.png') center/cover;
     transition: all 0.3s ease;
+    z-index: 3;
 }
 
 
@@ -166,7 +178,7 @@ body::before {
     display: flex;
     gap: 10px;
     position: relative;
-    z-index: 1;
+    z-index: 3;
 }
 
 .observations input {

@@ -35,6 +35,7 @@ if (!isset($_SESSION['usuario'])) {
 
 <main class="container">
     <section class="simulator">
+        <canvas id="particles"></canvas>
 
         <div class="sim-header">
             <h2>Ecosistema acuático</h2>
@@ -120,6 +121,7 @@ if (!isset($_SESSION['usuario'])) {
 </div>
 
 <script src="../public/js/simulador.js"></script>
+<script src="../public/js/burbujas.js" defer></script>
 <script src="../public/js/session.js" defer></script>
 
 </body>

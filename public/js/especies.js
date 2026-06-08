@@ -10,64 +10,134 @@ document.addEventListener('DOMContentLoaded', function () {
             desc: "La tortuga verde es una de las especies de tortugas marinas más grandes y la única herbívora en su etapa adulta. Realiza migraciones épicas de hasta 2,600 km entre sus áreas de alimentación y anidación.",
             dieta: "Herbívora (pastos marinos, algas)", longevidad: "80-100 años",
             peligro: "En peligro de extinción",
+            tamaño: "90-120 cm", peso: "80-150 kg",
+            reproduccion: "Anidación estacional", huevos: "100-200 huevos por nidada",
+            depredadores: "Tiburones, cocodrilos, humanos",
+            temperatura: "24 – 30 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
+            profundidad_min: "0", profundidad_max: "40", zona_geografica: "Trópicos globales",
+            map_x: 110, map_y: 55,
+            curiosidades: [
+                { icon: "fa-compass", title: "Navegación", text: "Detecta el campo magnético terrestre para orientarse en migraciones de miles de km." },
+                { icon: "fa-thermometer-half", title: "Temperatura", text: "El sexo de las crías depende de la temperatura de incubación de los huevos." },
+                { icon: "fa-lungs", title: "Apnea", text: "Pueden aguantar hasta 7 horas sumergidas mientras descansan." },
+                { icon: "fa-seedling", title: "Ecosistema", text: "Al pastar pastos marinos, los fertilizan y mantienen saludables los arrecifes." }
+            ],
+            amenazas: [
+                { label: "Captura incidental en redes de pesca", level: "high" },
+                { label: "Destrucción de playas de anidación", level: "high" },
+                { label: "Cambio climático y feminización", level: "medium" },
+                { label: "Contaminación por plásticos", level: "medium" }
+            ],
             modelPath: "../public/media/3D_Models/ridley_turtle_lepidochelys_olivacea.glb",
-            scale: 1.2, posY: -0.2, rotY: -1.57, camDistance: 3.2, camHeight: 0.8,
-            distribucion: "Océanos Atlántico, Pacífico e Índico. Principales playas de anidación: Costa Rica (Tortuguero), Australia, Islas Galápagos, Caribe mexicano.",
-            reproduccion: "Las hembras anidan en las mismas playas donde nacieron, cada 2-4 años. Depositan entre 100 y 200 huevos por nidada.",
-            amenazas: "Pérdida de hábitat por urbanización costera, pesca incidental, cambio climático, recolección ilegal de huevos.",
-            curiosidadExtra: "Pueden contener la respiración bajo el agua hasta 5 horas cuando están descansando."
+            scale: 1.2, posY: -0.2, rotY: -1.57, camDistance: 3.2, camHeight: 0.8
         },
         {
             id: 2, name: "Pez payaso", scientificName: "Amphiprioninae", category: "peces",
             habitat: "Arrecifes de coral (asociado a anémonas)",
-            desc: "Famoso por su simbiosis mutualista con anémonas marinas. Todos nacen machos y el dominante se vuelve hembra. Su color anaranjado con bandas blancas lo convierte en uno de los peces más reconocibles.",
+            desc: "Famoso por su simbiosis mutualista con anémonas marinas. Todos nacen machos y el dominante se vuelve hembra.",
             dieta: "Omnívoro (plancton, algas, restos)", longevidad: "6-10 años",
             peligro: "Preocupación menor",
+            tamaño: "8-12 cm", peso: "15-30 g",
+            reproduccion: "Puesta en anémonas", huevos: "100-1000 huevos por ciclo",
+            depredadores: "Peces más grandes, morenas",
+            temperatura: "24 – 28 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
+            profundidad_min: "1", profundidad_max: "15", zona_geografica: "Indo-Pacífico",
+            map_x: 165, map_y: 52,
+            curiosidades: [
+                { icon: "fa-venus-mars", title: "Hermafroditismo", text: "Todos nacen machos; el más dominante cambia de sexo al ser hembra del grupo." },
+                { icon: "fa-shield-alt", title: "Inmunidad", text: "Produce una capa de moco que los protege del veneno de la anémona." },
+                { icon: "fa-music", title: "Comunicación", text: "Se comunican con chasquidos y chirriados para establecer jerarquías." },
+                { icon: "fa-home", title: "Simbiosis", text: "La anémona los protege de depredadores; ellos la limpian y la alimentan." }
+            ],
+            amenazas: [
+                { label: "Blanqueamiento de coral por calentamiento", level: "high" },
+                { label: "Pesca excesiva para acuarios", level: "medium" },
+                { label: "Contaminación costera", level: "medium" },
+                { label: "Turismo sin regulación en arrecifes", level: "low" }
+            ],
             modelPath: "../public/media/3D_Models/clown_fish_low_poly_animated.glb",
-            scale: 13, posY: -0.1, rotY: 1.57, camDistance: 2.2, camHeight: 0.5,
-            distribucion: "Arrecifes del Indo-Pacífico, desde el Mar Rojo hasta las Islas Salomón y la Gran Barrera de Coral.",
-            reproduccion: "El macho cuida los huevos en la base de la anémona. Hermafroditismo secuencial protándrico.",
-            amenazas: "Sobreexplotación para acuariofilia, degradación de arrecifes por cambio climático, contaminación costera.",
-            curiosidadExtra: "Su inmunidad al veneno de las anémonas se debe a una capa de moco especial."
+            scale: 13, posY: -0.1, rotY: 1.57, camDistance: 2.2, camHeight: 0.5
         },
         {
             id: 3, name: "Pulpo", scientificName: "Octopoda", category: "moluscos",
             habitat: "Mar profundo, arrecifes rocosos",
-            desc: "Uno de los invertebrados más inteligentes del planeta. Puede cambiar el color y la textura de su piel en milisegundos gracias a células llamadas cromatóforos.",
-            dieta: "Carnívoro (crustáceos, peces, moluscos)", longevidad: "3-5 años",
+            desc: "Uno de los invertebrados más inteligentes del planeta. Puede cambiar el color y la textura de su piel.",
+            dieta: "Carnívoro (crustáceos, peces)", longevidad: "3-5 años",
             peligro: "Datos insuficientes",
+            tamaño: "30-90 cm", peso: "3-10 kg",
+            reproduccion: "Desove único", huevos: "100,000-500,000 huevos",
+            depredadores: "Tiburones, delfines, focas",
+            temperatura: "10 – 25 °C", salinidad: "Marina (~34 ppt)", zona_luz: "Zona fótica y mesopelágica",
+            profundidad_min: "0", profundidad_max: "200", zona_geografica: "Océanos globales",
+            map_x: 95, map_y: 40,
+            curiosidades: [
+                { icon: "fa-brain", title: "Inteligencia", text: "Tienen 9 cerebros: uno central y uno en cada tentáculo, que actúan de forma independiente." },
+                { icon: "fa-palette", title: "Camuflaje", text: "Pueden cambiar color, textura y forma en menos de 200 milisegundos." },
+                { icon: "fa-tint", title: "3 corazones", text: "Tienen tres corazones y sangre azul por la hemocianina con cobre." },
+                { icon: "fa-unlock", title: "Escapistas", text: "Pueden escapar de tanques y abrir frascos; resuelven problemas complejos." }
+            ],
+            amenazas: [
+                { label: "Pesca comercial excesiva", level: "high" },
+                { label: "Acidificación del océano", level: "medium" },
+                { label: "Contaminación por microplásticos", level: "medium" },
+                { label: "Captura incidental", level: "low" }
+            ],
             modelPath: "../public/media/3D_Models/octopus.glb",
-            scale: 0.1, posY: -1.4, rotY: Math.PI, camDistance: 5, camHeight: 0.6,
-            distribucion: "Océanos de todo el mundo, desde aguas tropicales hasta polares.",
-            reproduccion: "Las hembras ponen hasta 100,000 huevos y mueren poco después de cuidarlos.",
-            amenazas: "Sobrepesca, degradación de hábitats costeros, contaminación por plásticos.",
-            curiosidadExtra: "Tienen tres corazones y su sangre es azul por la hemocianina (cobre)."
+            scale: 0.1, posY: -1.4, rotY: Math.PI, camDistance: 5, camHeight: 0.6
         },
         {
             id: 4, name: "Tiburón martillo", scientificName: "Sphyrnidae", category: "peces",
             habitat: "Aguas tropicales y templadas",
-            desc: "Reconocible por su peculiar cabeza en forma de T que le proporciona visión de 360 grados. Depredador tope que regula las poblaciones de rayas, calamares y peces.",
+            desc: "Reconocible por su peculiar cabeza en forma de T que le proporciona visión de 360 grados.",
             dieta: "Carnívoro (rayas, peces, calamares)", longevidad: "20-30 años",
             peligro: "En peligro crítico",
+            tamaño: "3-6 m", peso: "300-580 kg",
+            reproduccion: "Vivípara", huevos: "10-40 crías por camada",
+            depredadores: "Orcas, humanos",
+            temperatura: "20 – 29 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
+            profundidad_min: "0", profundidad_max: "300", zona_geografica: "Trópicos y subtrópicos",
+            map_x: 70, map_y: 45,
+            curiosidades: [
+                { icon: "fa-eye", title: "Visión 360°", text: "Su cabeza en forma de T le da visión casi completa alrededor, sin punto ciego arriba." },
+                { icon: "fa-magnet", title: "Electrorecepción", text: "Detecta campos eléctricos de presas enterradas en la arena mediante ampollas de Lorenzini." },
+                { icon: "fa-users", title: "Cardúmenes", text: "Únicos tiburones que forman grandes grupos de hasta cientos de individuos." },
+                { icon: "fa-baby", title: "Vivíparos", text: "Las crías nacen vivas y completamente formadas, listas para sobrevivir." }
+            ],
+            amenazas: [
+                { label: "Pesca de aletas (finning)", level: "high" },
+                { label: "Pesca incidental en redes", level: "high" },
+                { label: "Destrucción de hábitat costero", level: "medium" },
+                { label: "Cambio climático oceánico", level: "medium" }
+            ],
             modelPath: "../public/media/3D_Models/hammerhead_shark.glb",
-            scale: 0.6, posY: -0.2, rotY: 1.57, camDistance: 3.0, camHeight: 0.7,
-            distribucion: "Océanos Atlántico, Pacífico e Índico, principalmente en zonas costeras y arrecifes.",
-            reproduccion: "Vivíparos con placenta. Las camadas tienen de 6 a 42 crías. Gestación de 9 a 11 meses.",
-            amenazas: "Pesca intensiva por sus aletas, pesca incidental, baja tasa reproductiva.",
-            curiosidadExtra: "Sus ojos están en los extremos de la cabeza, dándoles visión de 360 grados."
+            scale: 0.6, posY: -0.2, rotY: 1.57, camDistance: 3.0, camHeight: 0.7
         },
         {
             id: 5, name: "Cirujano azul", scientificName: "Paracanthurus hepatus", category: "peces",
             habitat: "Arrecifes de coral",
-            desc: "Pez de color azul eléctrico con distintiva mancha amarilla en la cola. Ayuda a controlar el crecimiento de algas sobre los corales.",
+            desc: "Pez de color azul eléctrico con distintiva mancha amarilla en la cola.",
             dieta: "Herbívoro (algas)", longevidad: "8-12 años",
             peligro: "Preocupación menor",
+            tamaño: "20-30 cm", peso: "200-600 g",
+            reproduccion: "Desove en grupo", huevos: "Miles de huevos flotantes",
+            depredadores: "Tiburones, barracudas",
+            temperatura: "24 – 28 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
+            profundidad_min: "2", profundidad_max: "40", zona_geografica: "Indo-Pacífico",
+            map_x: 162, map_y: 50,
+            curiosidades: [
+                { icon: "fa-cut", title: "Espina caudal", text: "Tienen una espina afilada en la cola con la que se defienden de depredadores." },
+                { icon: "fa-leaf", title: "Control de algas", text: "Al pastar algas, permiten el crecimiento de coral y mantienen el arrecife saludable." },
+                { icon: "fa-palette", title: "Color único", text: "Su pigmento azul real es uno de los más raros en peces de arrecife." },
+                { icon: "fa-film", title: "Fama mundial", text: "Popularizado por Dory en Buscando a Nemo, lo que aumentó su demanda en acuarios." }
+            ],
+            amenazas: [
+                { label: "Pesca para comercio de acuarios", level: "high" },
+                { label: "Blanqueamiento de coral", level: "high" },
+                { label: "Contaminación marina", level: "medium" },
+                { label: "Turismo irresponsable", level: "low" }
+            ],
             modelPath: "../public/media/3D_Models/hand_painted_surgeon_fish.glb",
-            scale: 10.0, posY: -0.2, rotY: 1.57, camDistance: 2.8, camHeight: 0.7,
-            distribucion: "Arrecifes del Indo-Pacífico, desde África Oriental hasta Japón.",
-            reproduccion: "Desove en grupos al atardecer. Los huevos son pelágicos y las larvas se dispersan con las corrientes.",
-            amenazas: "Captura para acuariofilia, blanqueamiento de corales, acidificación oceánica.",
-            curiosidadExtra: "Posee una espina afilada a ambos lados de la cola que usa para defenderse."
+            scale: 10.0, posY: -0.2, rotY: 1.57, camDistance: 2.8, camHeight: 0.7
         },
         {
             id: 6, name: "Caballito de mar", scientificName: "Hippocampus", category: "peces",
@@ -75,38 +145,80 @@ document.addEventListener('DOMContentLoaded', function () {
             desc: "Pez único que nada en posición vertical. El macho es el responsable de la gestación.",
             dieta: "Carnívoro (pequeños crustáceos)", longevidad: "1-4 años",
             peligro: "Vulnerable",
+            tamaño: "5-15 cm", peso: "5-15 g",
+            reproduccion: "Gestación masculina", huevos: "50-150 crías",
+            depredadores: "Cangrejos, peces grandes",
+            temperatura: "20 – 28 °C", salinidad: "Marina (~33-35 ppt)", zona_luz: "Zona fótica",
+            profundidad_min: "0", profundidad_max: "30", zona_geografica: "Costas tropicales",
+            map_x: 100, map_y: 50,
+            curiosidades: [
+                { icon: "fa-baby", title: "Machos gestantes", text: "El único animal donde el macho lleva y da a luz a las crías en su bolsa ventral." },
+                { icon: "fa-eye", title: "Ojos independientes", text: "Pueden mover cada ojo de forma independiente, como los camaleones." },
+                { icon: "fa-anchor", title: "Cola prensil", text: "Se aferran a corales y algas con su cola para no ser arrastrados por corrientes." },
+                { icon: "fa-swimmer", title: "Mal nadador", text: "Son los peces más lentos del mundo, se mueven por batido de la aleta dorsal." }
+            ],
+            amenazas: [
+                { label: "Medicina tradicional y coleccionismo", level: "high" },
+                { label: "Destrucción de praderas marinas", level: "high" },
+                { label: "Pesca incidental", level: "medium" },
+                { label: "Acuarios y curios marinos", level: "medium" }
+            ],
             modelPath: "../public/media/3D_Models/seahorse_from_poly_by_google.glb",
-            scale: 0.0050, posY: -0.3, rotY: 1.57, camDistance: 2.8, camHeight: 0.7,
-            distribucion: "Aguas templadas y tropicales de todo el mundo, en hábitats costeros.",
-            reproduccion: "El macho incuba los huevos en una bolsa ventral. Da a luz hasta 1,500 crías.",
-            amenazas: "Pesca incidental, pérdida de manglares, uso en medicina tradicional.",
-            curiosidadExtra: "Son monógamos y realizan danzas nupciales cada mañana, enlazando sus colas."
+            scale: 0.0050, posY: -0.3, rotY: 1.57, camDistance: 2.8, camHeight: 0.7
         },
         {
             id: 7, name: "Delfín nariz de botella", scientificName: "Tursiops truncatus", category: "peces",
             habitat: "Océano abierto, zonas costeras",
-            desc: "Mamífero marino extremadamente inteligente. Vive en manadas y se comunica mediante silbidos y clicks únicos.",
+            desc: "Mamífero marino extremadamente inteligente. Vive en manadas y se comunica mediante silbidos.",
             dieta: "Carnívoro (peces, calamares)", longevidad: "40-50 años",
             peligro: "Preocupación menor",
+            tamaño: "2-4 m", peso: "150-650 kg",
+            reproduccion: "Vivípara", huevos: "1 cría cada 2-3 años",
+            depredadores: "Tiburones, orcas",
+            temperatura: "10 – 32 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
+            profundidad_min: "0", profundidad_max: "500", zona_geografica: "Océanos globales",
+            map_x: 75, map_y: 42,
+            curiosidades: [
+                { icon: "fa-satellite-dish", title: "Ecolocalización", text: "Emiten clicks ultrasónicos y analizan el eco para detectar presas con precisión milimétrica." },
+                { icon: "fa-moon", title: "Sueño hemisférico", text: "Duermen con medio cerebro a la vez para seguir respirando en superficie." },
+                { icon: "fa-id-badge", title: "Identidad", text: "Cada delfín tiene un silbido único que funciona como su 'nombre' personal." },
+                { icon: "fa-heart", title: "Empatía", text: "Ayudan a compañeros heridos y han rescatado humanos en el mar." }
+            ],
+            amenazas: [
+                { label: "Redes de pesca y captura incidental", level: "high" },
+                { label: "Contaminación acústica submarina", level: "medium" },
+                { label: "Derrames de petróleo", level: "medium" },
+                { label: "Turismo de avistamiento irresponsable", level: "low" }
+            ],
             modelPath: "../public/media/3D_Models/cute_dolphin.glb",
-            scale: 1.5, posY: -0.3, rotY: 1.57, camDistance: 4.5, camHeight: 0.8,
-            distribucion: "Océanos y mares templados y tropicales de todo el mundo.",
-            reproduccion: "Gestación de 12 meses, una cría por parto. Amamantamiento hasta los 18 meses.",
-            amenazas: "Contaminación acústica, redes de pesca, tráfico marítimo.",
-            curiosidadExtra: "Cada delfín tiene un silbido único que funciona como nombre."
+            scale: 1.5, posY: -0.3, rotY: 1.57, camDistance: 4.5, camHeight: 0.8
         },
         {
             id: 8, name: "Cangrejo ermitaño", scientificName: "Paguroidea", category: "crustaceos",
             habitat: "Zonas intermareales, fondos arenosos",
             desc: "Utiliza conchas vacías como refugio. A medida que crece, debe buscar conchas más grandes.",
-            dieta: "Omnívoro (detritus, algas, pequeños invertebrados)", longevidad: "3-12 años",
+            dieta: "Omnívoro (detritus, algas)", longevidad: "3-12 años",
             peligro: "Preocupación menor",
+            tamaño: "5-15 cm", peso: "10-50 g",
+            reproduccion: "Puesta de huevos", huevos: "Miles de huevos",
+            depredadores: "Pulpos, peces, aves",
+            temperatura: "18 – 27 °C", salinidad: "Marina o estuarina", zona_luz: "Intermareal",
+            profundidad_min: "0", profundidad_max: "10", zona_geografica: "Costas tropicales",
+            map_x: 100, map_y: 55,
+            curiosidades: [
+                { icon: "fa-home", title: "Casa prestada", text: "Usan conchas de gasterópodos vacías; organizan intercambios masivos en cadena." },
+                { icon: "fa-hand-rock", title: "Sociabilidad", text: "Se reúnen en grupos para intercambiar conchas de forma ordenada y pacífica." },
+                { icon: "fa-recycle", title: "Recicladores", text: "Son descomponedores clave; procesan materia orgánica en el sedimento." },
+                { icon: "fa-shield-alt", title: "Defensa", text: "Se retraen dentro de la concha y bloquean la entrada con su pinza más grande." }
+            ],
+            amenazas: [
+                { label: "Recolección de conchas (privación de hogar)", level: "high" },
+                { label: "Contaminación de playas", level: "medium" },
+                { label: "Captura para comercio de mascotas", level: "medium" },
+                { label: "Pérdida de hábitat costero", level: "low" }
+            ],
             modelPath: "../public/media/3D_Models/little_hermit_crab.glb",
-            scale: 33.0, posY: 0.3, rotY: -25, camDistance: 2.5, camHeight: 0.5,
-            distribucion: "Costas de todo el mundo, desde aguas tropicales hasta templadas.",
-            reproduccion: "Las hembras transportan los huevos en el abdomen. Las larvas son planctónicas.",
-            amenazas: "Contaminación costera, recolecta para acuarios, acidificación oceánica.",
-            curiosidadExtra: "Forman cadenas de adopción de conchas: el más grande deja su concha y otros la ocupan."
+            scale: 33.0, posY: 0.3, rotY: -25, camDistance: 2.5, camHeight: 0.5
         },
         {
             id: 9, name: "Estrella de mar", scientificName: "Asteroidea", category: "moluscos",
@@ -114,78 +226,138 @@ document.addEventListener('DOMContentLoaded', function () {
             desc: "Equinodermo con gran capacidad regenerativa. Puede perder un brazo y volver a crecerlo.",
             dieta: "Carnívoro (mejillones, almejas)", longevidad: "5-35 años",
             peligro: "Preocupación menor",
+            tamaño: "10-30 cm", peso: "50-500 g",
+            reproduccion: "Reproducción sexual y asexual", huevos: "Miles de huevos",
+            depredadores: "Gaviotas, nutrias, peces",
+            temperatura: "5 – 25 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona bentónica",
+            profundidad_min: "0", profundidad_max: "200", zona_geografica: "Océanos globales",
+            map_x: 95, map_y: 40,
+            curiosidades: [
+                { icon: "fa-hand-paper", title: "Regeneración", text: "Pueden regenerar un brazo perdido en meses; algunos regeneran el cuerpo entero desde un brazo." },
+                { icon: "fa-stomach", title: "Digestión externa", text: "Expulsan su estómago fuera del cuerpo para digerir presas dentro de sus conchas." },
+                { icon: "fa-shoe-prints", title: "Sin cerebro", text: "No tienen cerebro ni sangre; usan agua de mar a presión para moverse y funcionar." },
+                { icon: "fa-eye", title: "Ojos en tentáculos", text: "Tienen pequeños fotorreceptores en las puntas de sus brazos para detectar luz." }
+            ],
+            amenazas: [
+                { label: "Coleccionismo y souvenirs marinos", level: "high" },
+                { label: "Contaminación y acidificación", level: "medium" },
+                { label: "Enfermedades como el síndrome de marchitamiento", level: "medium" },
+                { label: "Alteración de hábitat bentónico", level: "low" }
+            ],
             modelPath: "../public/media/3D_Models/starfish.glb",
-            scale: 0.9, posY: -0.1, rotY: 0, camDistance: 2.8, camHeight: 0.5,
-            distribucion: "Todos los océanos, desde la zona intermareal hasta profundidades abisales.",
-            reproduccion: "Liberan gametos al agua (fecundación externa).",
-            amenazas: "Acidificación oceánica, contaminación, cambio climático.",
-            curiosidadExtra: "Pueden regenerar un brazo perdido, e incluso un cuerpo entero a partir de un brazo."
+            scale: 0.9, posY: -0.1, rotY: 0, camDistance: 2.8, camHeight: 0.5
         },
         {
             id: 10, name: "Langosta espinosa", scientificName: "Palinuridae", category: "crustaceos",
             habitat: "Arrecifes rocosos, fondos duros",
-            desc: "Carece de pinzas grandes, usa sus largas antenas para defenderse. Importante en la pesca artesanal.",
-            dieta: "Omnívoro (moluscos, algas, carroña)", longevidad: "15-20 años",
+            desc: "Carece de pinzas grandes, usa sus largas antenas para defenderse.",
+            dieta: "Omnívoro (moluscos, algas)", longevidad: "15-20 años",
             peligro: "Preocupación menor",
+            tamaño: "20-40 cm", peso: "0.5-3 kg",
+            reproduccion: "Puesta de huevos", huevos: "50,000-500,000 huevos",
+            depredadores: "Pulpos, peces grandes, humanos",
+            temperatura: "18 – 28 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona bentónica",
+            profundidad_min: "1", profundidad_max: "90", zona_geografica: "Trópicos y subtrópicos",
+            map_x: 80, map_y: 50,
+            curiosidades: [
+                { icon: "fa-compass", title: "Navegación magnética", text: "Pueden orientarse usando el campo magnético terrestre durante migraciones." },
+                { icon: "fa-music", title: "Estridulación", text: "Producen sonidos frotando sus antenas contra el caparazón para espantar depredadores." },
+                { icon: "fa-users", title: "Migraciones en fila", text: "Migran en filas de hasta 50 individuos tomados de las antenas del de delante." },
+                { icon: "fa-hard-hat", title: "Muda", text: "Mudan su exoesqueleto para crecer; quedan vulnerables durante horas hasta que se endurece." }
+            ],
+            amenazas: [
+                { label: "Sobrepesca y pesca ilegal", level: "high" },
+                { label: "Destrucción de arrecifes de coral", level: "high" },
+                { label: "Contaminación costera", level: "medium" },
+                { label: "Cambio climático y blanqueamiento", level: "medium" }
+            ],
             modelPath: "../public/media/3D_Models/lobster.glb",
-            scale: 0.15, posY: -0.15, rotY: 0, camDistance: 3.0, camHeight: 0.6,
-            distribucion: "Aguas tropicales y templadas del Atlántico, Pacífico e Índico.",
-            reproduccion: "Las hembras llevan los huevos en el abdomen hasta la eclosión.",
-            amenazas: "Sobrepesca, pérdida de hábitat rocoso, contaminación costera.",
-            curiosidadExtra: "Migran en fila india por el fondo marino durante cientos de kilómetros."
+            scale: 0.15, posY: -0.15, rotY: 0, camDistance: 3.0, camHeight: 0.6
         },
         {
             id: 11, name: "Mantarraya", scientificName: "Mobula birostris", category: "peces",
             habitat: "Aguas cálidas tropicales",
-            desc: "Una de las rayas más grandes del mundo. Filtradora de plancton conocida por sus impresionantes saltos fuera del agua.",
+            desc: "Una de las rayas más grandes del mundo. Filtradora de plancton conocida por sus impresionantes saltos.",
             dieta: "Carnívoro (plancton, peces pequeños)", longevidad: "15-20 años",
             peligro: "Vulnerable",
+            tamaño: "3-5 m", peso: "500-1500 kg",
+            reproduccion: "Vivípara", huevos: "1-2 crías por camada",
+            depredadores: "Tiburones, orcas",
+            temperatura: "20 – 30 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica y epipelágica",
+            profundidad_min: "0", profundidad_max: "1000", zona_geografica: "Trópicos globales",
+            map_x: 105, map_y: 52,
+            curiosidades: [
+                { icon: "fa-brain", title: "Mayor cerebro", text: "Tienen el mayor cerebro en proporción al cuerpo de todos los peces." },
+                { icon: "fa-rocket", title: "Saltos", text: "Pueden saltar varios metros fuera del agua; aún se desconoce la razón exacta." },
+                { icon: "fa-filter", title: "Filtración", text: "Filtran hasta 30 kg de plancton por hora pasando agua por sus branquias modificadas." },
+                { icon: "fa-graduation-cap", title: "Curiosas", text: "Se acercan a buzos voluntariamente; parecen mostrar curiosidad hacia humanos." }
+            ],
+            amenazas: [
+                { label: "Pesca dirigida por branquias (medicina)", level: "high" },
+                { label: "Enredamiento en redes de pesca", level: "high" },
+                { label: "Colisiones con embarcaciones", level: "medium" },
+                { label: "Contaminación y pérdida de plancton", level: "low" }
+            ],
             modelPath: "../public/media/3D_Models/mantarraya.glb",
-            scale: 1.5, posY: -0.2, rotY: 0, camDistance: 3.2, camHeight: 0.6,
-            distribucion: "Océanos Atlántico, Pacífico e Índico, en zonas tropicales y subtropicales.",
-            reproduccion: "Ovovivíparas. Nace una cría por parto.",
-            amenazas: "Pesca accidental, colisión con embarcaciones, contaminación marina.",
-            curiosidadExtra: "Filtran hasta 13,000 litros de agua por hora para alimentarse."
+            scale: 1.5, posY: -0.2, rotY: 0, camDistance: 3.2, camHeight: 0.6
         },
         {
             id: 12, name: "Caracol cono", scientificName: "Conus geographus", category: "moluscos",
             habitat: "Arenas y arrecifes",
-            desc: "Molusco depredador que usa un arpón modificado para inyectar veneno. Su toxina se estudia para desarrollar analgésicos no adictivos.",
+            desc: "Molusco depredador que usa un arpón modificado para inyectar veneno.",
             dieta: "Carnívoro (gusanos, peces)", longevidad: "10-15 años",
             peligro: "Preocupación menor",
+            tamaño: "10-15 cm", peso: "50-150 g",
+            reproduccion: "Puesta de huevos", huevos: "Miles de huevos",
+            depredadores: "Peces, tortugas",
+            temperatura: "22 – 30 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Bentónica fótica",
+            profundidad_min: "0", profundidad_max: "50", zona_geografica: "Indo-Pacífico",
+            map_x: 160, map_y: 55,
+            curiosidades: [
+                { icon: "fa-syringe", title: "Veneno letal", text: "Produce conotoxinas que atacan el sistema nervioso; no hay antídoto conocido." },
+                { icon: "fa-crosshairs", title: "Arpón harpaxóforo", text: "Su 'diente' es un arpón retráctil que puede disparar en cualquier dirección." },
+                { icon: "fa-pills", title: "Medicina", text: "Sus conotoxinas son base de Ziconotide, un analgésico más potente que la morfina." },
+                { icon: "fa-moon", title: "Caza nocturna", text: "Son activos de noche; detectan presas con un sifón que analiza partículas en el agua." }
+            ],
+            amenazas: [
+                { label: "Recolección de conchas por coleccionismo", level: "high" },
+                { label: "Degradación de arrecifes de coral", level: "medium" },
+                { label: "Contaminación de sedimentos", level: "medium" },
+                { label: "Turismo sin regulación", level: "low" }
+            ],
             modelPath: "../public/media/3D_Models/cone_snail_shell.glb",
-            scale: 0.8, posY: -0.1, rotY: 0, camDistance: 2.5, camHeight: 0.5,
-            distribucion: "Arrecifes del Indo-Pacífico tropical, desde el este de África hasta Polinesia.",
-            reproduccion: "Ponen cápsulas de huevos adheridas a sustratos duros.",
-            amenazas: "Recolección por su concha, pérdida de hábitat, contaminación.",
-            curiosidadExtra: "Su veneno contiene más de 100 toxinas, algunas usadas en investigación médica."
+            scale: 0.8, posY: -0.1, rotY: 0, camDistance: 2.5, camHeight: 0.5
         }
     ];
 
-    // ========== ESTADO EN MEMORIA ==========
+    // ========== ESTADO ==========
     let state = {
         currentCategory: 'todos',
         currentSearch: '',
         favorites: new Set(),
-        notes: [],
+        notes: JSON.parse(localStorage.getItem('blueEcoNotes') || '[]'),
         currentView: 'home',
         currentSpecies: null
     };
 
-    // ========== ELEMENTOS DOM ==========
+    function persistNotes() {
+        localStorage.setItem('blueEcoNotes', JSON.stringify(state.notes));
+    }
+
+    // ========== DOM ==========
     const searchInput  = document.getElementById('searchInput');
     const filterBtns   = document.querySelectorAll('.ftab');
     const speciesGrid  = document.getElementById('speciesGrid');
     const noResultsDiv = document.getElementById('noResults');
 
-    // ========== UTILIDADES ==========
+    // ========== UTILS ==========
     function getCoverClass(cat) {
-        const map = { peces: 'cover-peces', tortugas: 'cover-tortugas', crustaceos: 'cover-crustaceos', moluscos: 'cover-moluscos' };
-        return map[cat] || 'cover-default';
+        const m = { peces:'cover-peces', tortugas:'cover-tortugas', crustaceos:'cover-crustaceos', moluscos:'cover-moluscos' };
+        return m[cat] || 'cover-default';
     }
     function getCategoryText(cat) {
-        const map = { peces: '🐟 Peces', tortugas: '🐢 Tortugas', crustaceos: '🦞 Crustáceos', moluscos: '🐚 Moluscos' };
-        return map[cat] || '🌊 Marina';
+        const m = { peces:'🐟 Peces', tortugas:'🐢 Tortugas', crustaceos:'🦞 Crustáceos', moluscos:'🐚 Moluscos' };
+        return m[cat] || '🌊 Marina';
     }
     function getDangerClass(p) {
         if (p === 'En peligro crítico') return 'critico';
@@ -200,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return '🟢';
     }
     function escapeHtml(t) {
+        if (!t) return '';
         const d = document.createElement('div');
         d.textContent = t;
         return d.innerHTML;
@@ -220,6 +393,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const slug = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         return `../public/media/Species/${slug}.png`;
     }
+    function getCitesLevel(id) {
+        if (id === 1) return 'Apéndice I';
+        if (id === 4 || id === 11) return 'Apéndice II';
+        return 'No listado';
+    }
+
+    function initSidebarTooltips() {
+        const tooltips = { navInicio: 'Catálogo', navFavoritos: 'Favoritos', navNotas: 'Notas' };
+        Object.entries(tooltips).forEach(([id, label]) => {
+            const el = document.getElementById(id);
+            if (el) el.setAttribute('data-tooltip', label);
+        });
+    }
+    initSidebarTooltips();
 
     // ========== VISTA SWITCHER ==========
     window.showView = function (viewName) {
@@ -237,7 +424,609 @@ document.addEventListener('DOMContentLoaded', function () {
         if (viewName === 'notes') renderNotes();
     };
 
-    // ========== RENDER TARJETAS HOME ==========
+    // ========== MODELO 3D ==========
+    async function init3DModel(containerId, modelPath, scaleValue = 0.7, posYValue = 0, rotYValue = 0, camDistance = 3.5, camHeight = 1, isDetail = false) {
+        try {
+            const THREE = await import('three');
+            const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
+            const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const bubbleLayer = container.querySelector('.bubble-overlay-layer');
+            while (container.firstChild) container.removeChild(container.firstChild);
+            delete container.dataset.initialized;
+
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            if (w === 0 || h === 0) {
+                setTimeout(() => init3DModel(containerId, modelPath, scaleValue, posYValue, rotYValue, camDistance, camHeight, isDetail), 100);
+                return;
+            }
+
+            const scene = new THREE.Scene();
+
+            const imagePaths = ['../public/media/backgrounds/ocean-background.jpeg'];
+            let bgTexture = null;
+            for (const imagePath of imagePaths) {
+                try {
+                    const textureLoader = new THREE.TextureLoader();
+                    bgTexture = await new Promise((resolve, reject) => {
+                        textureLoader.load(imagePath, resolve, undefined, reject);
+                    });
+                    break;
+                } catch(e) { /* continuar */ }
+            }
+            if (bgTexture) scene.background = bgTexture;
+            else scene.background = new THREE.Color(0x071828);
+
+            const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+            camera.position.set(0, camHeight, camDistance);
+            camera.lookAt(0, 0, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+            renderer.setSize(w, h);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.inset = '0';
+            renderer.domElement.style.zIndex = '1';
+            container.style.position = 'relative';
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(isDetail ? 0x88ccff : 0xffffff, isDetail ? 0.65 : 0.6);
+            scene.add(ambientLight);
+            const mainLight = new THREE.DirectionalLight(isDetail ? 0xaaddff : 0xffffff, isDetail ? 1.4 : 1);
+            mainLight.position.set(3, 5, 2);
+            scene.add(mainLight);
+            const fillLight = new THREE.PointLight(isDetail ? 0x44aaff : 0x88aaff, isDetail ? 0.9 : 0.5);
+            fillLight.position.set(-2, 2, 3);
+            scene.add(fillLight);
+            if (isDetail) {
+                const backLight = new THREE.PointLight(0x0066cc, 0.7);
+                backLight.position.set(0, -2, -2);
+                scene.add(backLight);
+                const rimLight = new THREE.PointLight(0x00aaff, 0.6);
+                rimLight.position.set(2, 2, -3);
+                scene.add(rimLight);
+                const biolumLight = new THREE.PointLight(0x7df9f0, 0.4);
+                biolumLight.position.set(-3, 0, 2);
+                scene.add(biolumLight);
+            }
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = isDetail ? 0.8 : 1.5;
+            controls.enableZoom = isDetail;
+            controls.enablePan = false;
+
+            const loader = new GLTFLoader();
+            loader.load(modelPath,
+                (gltf) => {
+                    const model = gltf.scene;
+                    model.scale.set(scaleValue, scaleValue, scaleValue);
+                    model.position.set(0, posYValue, 0);
+                    model.rotation.y = rotYValue;
+                    model.traverse(c => {
+                        if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; }
+                    });
+                    scene.add(model);
+                },
+                undefined,
+                (error) => {
+                    console.error('Error cargando modelo:', error);
+                    container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(125,249,240,0.6);font-size:0.9rem;text-align:center;position:relative;z-index:20;">🐠 Modelo 3D no disponible</div>`;
+                }
+            );
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            const resizeObserver = new ResizeObserver(() => {
+                const nw = container.clientWidth;
+                const nh = container.clientHeight;
+                if (nw > 0 && nh > 0) {
+                    camera.aspect = nw / nh;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(nw, nh);
+                }
+            });
+            resizeObserver.observe(container);
+            container._cleanup3d = () => resizeObserver.disconnect();
+
+        } catch (e) {
+            console.error('Error en init3DModel:', e);
+            const container = document.getElementById(containerId);
+            if (container) container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(125,249,240,0.6);font-size:0.9rem;text-align:center;">⚠️ Error al cargar el modelo 3D</div>`;
+        }
+    }
+
+    // ========== BURBUJAS PANEL 3D ==========
+    function generateUnderwaterBubbles() {
+        const panel = document.getElementById('detail3dPanel');
+        if (!panel) return;
+        const existing = panel.querySelector('.bubble-overlay-layer');
+        if (existing) existing.remove();
+
+        const layer = document.createElement('div');
+        layer.className = 'bubble-overlay-layer';
+        layer.style.cssText = `position:absolute;inset:0;pointer-events:none;z-index:25;overflow:hidden;border-radius:inherit;`;
+
+        const count = Math.floor(Math.random() * 12) + 8;
+        for (let i = 0; i < count; i++) {
+            const b = document.createElement('div');
+            b.className = 'underwater-bubble';
+            const size = Math.random() * 16 + 5;
+            b.style.cssText = `width:${size}px;height:${size}px;left:${(Math.random()*88+6).toFixed(1)}%;top:${(Math.random()*60+30).toFixed(1)}%;--rise:${(-(Math.random()*140+80)).toFixed(0)}px;--sway:${((Math.random()-.5)*50).toFixed(1)}px;--duration:${(Math.random()*4+2.5).toFixed(1)}s;--delay:${(Math.random()*7).toFixed(1)}s;`;
+            layer.appendChild(b);
+        }
+        panel.appendChild(layer);
+    }
+
+    // ========== PANEL INTERACTIVO ==========
+    function buildInteractivePanel(species) {
+        const curiosidades = species.curiosidades || [
+            { icon: 'fa-bolt',   title: 'Dato 1', text: 'Información no disponible' },
+            { icon: 'fa-brain',  title: 'Dato 2', text: 'Información no disponible' },
+            { icon: 'fa-heart',  title: 'Dato 3', text: 'Información no disponible' },
+            { icon: 'fa-eye',    title: 'Dato 4', text: 'Información no disponible' },
+        ];
+        const amenazas = species.amenazas || [
+            { label: 'Pesca ilegal y sobreexplotación', level: 'high' },
+            { label: 'Contaminación del hábitat',        level: 'high' },
+            { label: 'Cambio climático',                 level: 'medium' },
+            { label: 'Turismo sin regulación',           level: 'low' },
+        ];
+
+        // Mini mapa SVG con punto animado
+        const mx = species.map_x || 95;
+        const my = species.map_y || 40;
+        const mapSVG = `
+        <svg viewBox="0 0 220 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <rect width="220" height="110" fill="#071828"/>
+          <g fill="rgba(125,249,240,0.14)" stroke="rgba(86,207,225,0.28)" stroke-width="0.5">
+            <path d="M12,22 L38,18 L45,30 L52,26 L58,38 L48,52 L38,55 L25,48 L15,38 Z"/>
+            <path d="M60,15 L90,12 L98,20 L105,18 L112,30 L108,45 L98,52 L82,55 L68,48 L58,35 L55,25 Z"/>
+            <path d="M65,58 L80,54 L90,62 L88,78 L78,88 L62,85 L58,72 Z"/>
+            <path d="M118,20 L145,16 L155,28 L158,42 L148,52 L132,56 L120,45 L115,32 Z"/>
+            <path d="M150,58 L165,54 L172,66 L168,80 L155,84 L145,74 Z"/>
+            <path d="M170,22 L198,18 L206,30 L208,44 L195,50 L178,48 L168,38 L165,28 Z"/>
+            <path d="M180,58 L205,54 L210,68 L205,82 L188,86 L176,76 L175,64 Z"/>
+          </g>
+          <circle cx="${mx}" cy="${my}" r="4" fill="rgba(125,249,240,0.95)"/>
+          <circle cx="${mx}" cy="${my}" r="4" fill="none" stroke="rgba(125,249,240,0.6)" stroke-width="1.5">
+            <animate attributeName="r" values="4;11;4" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.9;0;0.9" dur="2.2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="${mx}" y="${my + 17}" text-anchor="middle" fill="rgba(125,249,240,0.65)" font-size="5.5" font-family="sans-serif">${escapeHtml(species.zona_geografica || 'Océano')}</text>
+        </svg>`;
+
+        const habitatRows = [
+            { icon: 'fa-water',              label: 'Zona',         value: species.habitat.split(',')[0].trim() },
+            { icon: 'fa-thermometer-half',   label: 'Temperatura',  value: species.temperatura   || '— °C' },
+            { icon: 'fa-tint',               label: 'Salinidad',    value: species.salinidad     || 'Marina' },
+            { icon: 'fa-sun',                label: 'Luz',          value: species.zona_luz      || 'Zona fótica' },
+        ];
+
+        const sciItems = [
+            { value: species.profundidad_min  || '0',   label: 'Prof. mín (m)' },
+            { value: species.profundidad_max  || '—',   label: 'Prof. máx (m)' },
+            { value: species.longevidad       || '—',   label: 'Longevidad' },
+            { value: species.tamaño           || '—',   label: 'Tamaño' },
+            { value: species.peso             || '—',   label: 'Peso' },
+            { value: getCitesLevel(species.id),          label: 'CITES' },
+        ];
+
+        return `
+        <div class="detail-interactive-panel">
+            <div class="interact-tabs">
+                <button class="interact-tab active" data-tab="habitat">
+                    <i class="fas fa-map-marked-alt"></i> Hábitat
+                </button>
+                <button class="interact-tab" data-tab="curiosidades">
+                    <i class="fas fa-lightbulb"></i> Curiosidades
+                </button>
+                <button class="interact-tab" data-tab="amenazas">
+                    <i class="fas fa-exclamation-triangle"></i> Amenazas
+                </button>
+                <button class="interact-tab" data-tab="datos">
+                    <i class="fas fa-flask"></i> Datos
+                </button>
+            </div>
+            <div class="interact-content">
+
+                <div class="interact-pane active" id="pane-habitat">
+                    <div class="habitat-map-wrap">
+                        <div class="habitat-map-svg">${mapSVG}</div>
+                        <div class="habitat-info-list">
+                            ${habitatRows.map(r => `
+                            <div class="habitat-info-row">
+                                <i class="fas ${r.icon}"></i>
+                                <span><strong>${escapeHtml(r.label)}:</strong> ${escapeHtml(r.value)}</span>
+                            </div>`).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interact-pane" id="pane-curiosidades">
+                    <div class="curiosities-grid">
+                        ${curiosidades.map(c => `
+                        <div class="curiosity-card">
+                            <div class="curiosity-icon"><i class="fas ${c.icon}"></i></div>
+                            <div class="curiosity-text">
+                                <strong>${escapeHtml(c.title)}</strong>
+                                <span>${escapeHtml(c.text)}</span>
+                            </div>
+                        </div>`).join('')}
+                    </div>
+                </div>
+
+                <div class="interact-pane" id="pane-amenazas">
+                    <div class="threats-list">
+                        ${amenazas.map(a => `
+                        <div class="threat-item ${a.level}">
+                            <div class="threat-dot"></div>
+                            <span class="threat-label">${escapeHtml(a.label)}</span>
+                            <span class="threat-level">${a.level === 'high' ? 'Alto' : a.level === 'medium' ? 'Medio' : 'Bajo'}</span>
+                        </div>`).join('')}
+                    </div>
+                </div>
+
+                <div class="interact-pane" id="pane-datos">
+                    <div class="sci-data-grid">
+                        ${sciItems.map(d => `
+                        <div class="sci-data-item">
+                            <div class="sci-data-value">${escapeHtml(String(d.value))}</div>
+                            <div class="sci-data-label">${escapeHtml(d.label)}</div>
+                        </div>`).join('')}
+                    </div>
+                </div>
+
+            </div>
+        </div>`;
+    }
+
+    function initInteractiveTabs(container) {
+        const tabs  = container.querySelectorAll('.interact-tab');
+        const panes = container.querySelectorAll('.interact-pane');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                panes.forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                const target = container.querySelector(`#pane-${tab.dataset.tab}`);
+                if (target) target.classList.add('active');
+            });
+        });
+    }
+
+    // ========== DETALLE COMPLETO ==========
+    function openDetail(species) {
+        state.currentSpecies = species;
+        showView('detail');
+
+        const badge = document.getElementById('detailBadge');
+        if (badge) badge.textContent = species.scientificName;
+
+        const isFav = state.favorites.has(species.id);
+        const dangerClass = getDangerClass(species.peligro);
+        const dangerIcon  = getDangerIcon(species.peligro);
+        const dangerColor = dangerClass === 'critico' ? '#b91c1c' : dangerClass === 'peligro' ? '#c2410c' : dangerClass === 'vulnerable' ? '#a16207' : '#15803d';
+        const dangerBg    = dangerClass === 'critico' ? '#fee2e2' : dangerClass === 'peligro' ? '#ffede0' : dangerClass === 'vulnerable' ? '#fef9e3' : '#dcfce7';
+
+        // ── Reconstruir layout de detalle con detail-left-col ──
+        const detailTopArea = document.querySelector('.detail-top-area');
+        if (detailTopArea) {
+            detailTopArea.innerHTML = `
+                <div class="detail-left-col">
+                    <div class="detail-3d-panel" id="detail3dPanel">
+                        <div id="detail3dContainer"></div>
+                        <div class="detail-species-badge" id="detailBadge">${escapeHtml(species.scientificName)}</div>
+                    </div>
+                    <div id="interactivePanelSlot"></div>
+                </div>
+                <div class="detail-info-sidebar" id="detailInfoSidebar"></div>
+            `;
+        }
+
+        // ── Chips flotantes ──
+        const panel3d = document.getElementById('detail3dPanel');
+        if (panel3d) {
+            panel3d.querySelectorAll('.floating-chip').forEach(c => c.remove());
+            const chips = [
+                { cls: 'chip-category',           icon: 'fas fa-tag',           text: getCategoryText(species.category) },
+                { cls: 'chip-habitat',             icon: 'fas fa-map-marker-alt',text: species.habitat.split(',')[0].trim() },
+                { cls: 'chip-longevity',           icon: 'fas fa-clock',         text: species.longevidad },
+                { cls: 'chip-dieta',               icon: 'fas fa-utensils',      text: species.dieta.split('(')[0].trim() },
+                { cls: 'chip-danger danger-chip',  icon: 'fas fa-shield-alt',    text: species.peligro },
+            ];
+            chips.forEach(({ cls, icon, text }) => {
+                const chip = document.createElement('div');
+                chip.className = `floating-chip ${cls}`;
+                chip.innerHTML = `<i class="${icon}"></i><span>${escapeHtml(text)}</span>`;
+                panel3d.appendChild(chip);
+            });
+        }
+
+        // ── Panel interactivo ──
+        const slot = document.getElementById('interactivePanelSlot');
+        if (slot) {
+            slot.innerHTML = buildInteractivePanel(species);
+            initInteractiveTabs(slot);
+        }
+
+        // ── Sidebar derecho ──
+        const sidebar = document.getElementById('detailInfoSidebar');
+        if (sidebar) {
+            sidebar.innerHTML = `
+                <div class="detail-header-block">
+                    <div class="detail-title-row">
+                        <h2 class="detail-species-name">${escapeHtml(species.name)}</h2>
+                        <button class="fav-btn-detail ${isFav ? 'active' : ''}" id="detailFavBtn">
+                            <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                            <span>Favorito</span>
+                        </button>
+                    </div>
+                    <span class="detail-scientific">${escapeHtml(species.scientificName)}</span>
+                    <div style="display:inline-flex;align-items:center;gap:8px;background:${dangerBg};padding:6px 14px;border-radius:100px;margin-top:10px;">
+                        <span style="font-size:1rem;">${dangerIcon}</span>
+                        <span style="font-weight:700;font-size:0.75rem;color:${dangerColor};">${escapeHtml(species.peligro)}</span>
+                        <span style="font-size:0.65rem;color:#6a8aaa;">CITES ${getCitesLevel(species.id)}</span>
+                    </div>
+                </div>
+
+                <div class="detail-desc-block">
+                    <p>${escapeHtml(species.desc)}</p>
+                </div>
+
+                <div class="detail-stats-grid">
+                    <div class="detail-stat-card">
+                        <div class="detail-stat-label"><i class="fas fa-utensils"></i> Dieta</div>
+                        <div class="detail-stat-value">${escapeHtml(species.dieta.split('(')[0].trim())}</div>
+                        ${species.dieta.includes('(') ? `<div class="detail-stat-sub">${escapeHtml(species.dieta.match(/\((.+)\)/)?.[1] || '')}</div>` : ''}
+                    </div>
+                    <div class="detail-stat-card">
+                        <div class="detail-stat-label"><i class="fas fa-clock"></i> Longevidad</div>
+                        <div class="detail-stat-value">${escapeHtml(species.longevidad)}</div>
+                        <div class="detail-stat-sub">Silvestre</div>
+                    </div>
+                    <div class="detail-stat-card">
+                        <div class="detail-stat-label"><i class="fas fa-ruler"></i> Tamaño</div>
+                        <div class="detail-stat-value">${escapeHtml(species.tamaño || 'Variable')}</div>
+                    </div>
+                    <div class="detail-stat-card">
+                        <div class="detail-stat-label"><i class="fas fa-weight-hanging"></i> Peso</div>
+                        <div class="detail-stat-value">${escapeHtml(species.peso || 'Variable')}</div>
+                    </div>
+                    <div class="detail-stat-card full-width">
+                        <div class="detail-stat-label"><i class="fas fa-map-marker-alt"></i> Hábitat</div>
+                        <div class="detail-stat-value">${escapeHtml(species.habitat)}</div>
+                    </div>
+                    <div class="detail-stat-card">
+                        <div class="detail-stat-label"><i class="fas fa-egg"></i> Reproducción</div>
+                        <div class="detail-stat-value" style="font-size:0.85rem;">${escapeHtml(species.reproduccion)}</div>
+                        <div class="detail-stat-sub">${escapeHtml(species.huevos)}</div>
+                    </div>
+                    <div class="detail-stat-card">
+                        <div class="detail-stat-label"><i class="fas fa-skull-crossbones"></i> Depredadores</div>
+                        <div class="detail-stat-value" style="font-size:0.82rem;line-height:1.4;">${escapeHtml(species.depredadores)}</div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <button class="btn-action primary" id="btnSimulacion">
+                        <i class="fas fa-play-circle"></i> Iniciar simulación
+                    </button>
+                    <button class="btn-action secondary" id="addNoteFromDetailBtn">
+                        <i class="fas fa-sticky-note"></i> Nota
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('detailFavBtn')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(species.id);
+                const now = state.favorites.has(species.id);
+                const btn = document.getElementById('detailFavBtn');
+                btn.innerHTML = `<i class="${now ? 'fas' : 'far'} fa-heart"></i><span>Favorito</span>`;
+                btn.classList.toggle('active', now);
+            });
+            document.getElementById('addNoteFromDetailBtn')?.addEventListener('click', () => {
+                addNote(species.name, `Nota sobre ${species.name}`);
+                showView('notes');
+            });
+            document.getElementById('btnSimulacion')?.addEventListener('click', () => {
+                alert(`🌊 Simulación de ecosistema para ${species.name} próximamente`);
+            });
+        }
+
+        // ── Canvas 3D ──
+        const c3d = document.getElementById('detail3dContainer');
+        if (c3d) {
+            if (c3d._cleanup3d) { c3d._cleanup3d(); delete c3d._cleanup3d; }
+            c3d.innerHTML = '';
+            delete c3d.dataset.initialized;
+        }
+
+        generateUnderwaterBubbles();
+
+        setTimeout(() => {
+            init3DModel('detail3dContainer', species.modelPath, species.scale, species.posY, species.rotY, species.camDistance, species.camHeight, true);
+        }, 120);
+    }
+
+    // ========== FAVORITOS ==========
+    function toggleFavorite(id) {
+        if (state.favorites.has(id)) state.favorites.delete(id);
+        else state.favorites.add(id);
+    }
+
+    function renderFavorites() {
+        const grid  = document.getElementById('favoritesGrid');
+        const noFav = document.getElementById('noFavorites');
+        const favSpecies = speciesData.filter(s => state.favorites.has(s.id));
+
+        if (favSpecies.length === 0) {
+            grid.style.display = 'none';
+            noFav.style.display = 'flex';
+            noFav.innerHTML = `
+                <div class="empty-favorites-message">
+                    <i class="fas fa-heart-broken"></i>
+                    <div class="message-text">
+                        <h4>No tienes favoritos aún</h4>
+                        <p>Explora las especies y pulsa el corazón ❤️ para guardar tus favoritas</p>
+                        <div class="empty-hint">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Descubre las especies marinas y crea tu colección</span>
+                        </div>
+                    </div>
+                </div>`;
+            return;
+        }
+
+        grid.style.display = 'grid';
+        noFav.style.display = 'none';
+        noFav.innerHTML = '';
+
+        grid.innerHTML = favSpecies.map((s, idx) => {
+            const imgSrc = getImgSrc(s.name);
+            const dangerClass = getDangerClass(s.peligro);
+            const dangerIcon  = getDangerIcon(s.peligro);
+            return `
+            <article class="book-card" data-id="${s.id}" style="animation-delay:${idx * 0.05}s">
+                <div class="book-cover ${getCoverClass(s.category)}" style="background-image:url('${imgSrc}');">
+                    <div class="cover-overlay"></div>
+                    ${makeCardBubbles(5)}
+                    <span class="category-chip">${getCategoryText(s.category)}</span>
+                    <button class="fav-badge-card" data-id="${s.id}" title="Quitar de favoritos">❤️</button>
+                </div>
+                <div class="book-info">
+                    <h3>${escapeHtml(s.name)}</h3>
+                    <div class="book-scientific">${escapeHtml(s.scientificName)}</div>
+                    <span class="book-habitat-tag"><i class="fas fa-map-marker-alt"></i>${escapeHtml(s.habitat.split(',')[0].trim())}</span>
+                    <div class="book-info-divider"></div>
+                    <div class="book-card-footer">
+                        <span class="badge-danger-mini ${dangerClass}">${dangerIcon} ${escapeHtml(s.peligro)}</span>
+                        <button class="btn-ver-especie" data-id="${s.id}"><i class="fas fa-eye"></i> Ver especie</button>
+                    </div>
+                </div>
+            </article>`;
+        }).join('');
+
+        grid.querySelectorAll('.btn-ver-especie').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const sp = speciesData.find(x => x.id === parseInt(btn.dataset.id));
+                if (sp) openDetail(sp);
+            });
+        });
+        grid.querySelectorAll('.fav-badge-card').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                toggleFavorite(parseInt(btn.dataset.id));
+                renderFavorites();
+                renderCards();
+            });
+        });
+        grid.querySelectorAll('.book-card').forEach(card => {
+            card.addEventListener('click', e => {
+                if (e.target.closest('.fav-badge-card') || e.target.closest('.btn-ver-especie')) return;
+                const sp = speciesData.find(x => x.id === parseInt(card.dataset.id));
+                if (sp) openDetail(sp);
+            });
+        });
+    }
+
+    // ========== NOTAS ==========
+    function addNote(speciesName = '', title = 'Nueva nota') {
+        state.notes.unshift({
+            id: Date.now(), title, species: speciesName, text: '',
+            date: new Date().toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' }),
+            collapsed: false
+        });
+        persistNotes();
+        renderNotes();
+    }
+
+    function renderNotes() {
+        const container = document.getElementById('notesContainer');
+        if (!container) return;
+
+        if (state.notes.length === 0) {
+            container.innerHTML = `
+                <div class="empty-notes-wrapper">
+                    <div class="empty-notes-message">
+                        <i class="fas fa-journal-whills"></i>
+                        <div class="message-text">
+                            <h4>Sin notas aún</h4>
+                            <p>Entra al detalle de una especie y agrega tu primera nota</p>
+                            <div class="empty-hint">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Explora las especies y documenta tus observaciones</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = state.notes.map((n, idx) => `
+            <div class="note-card" data-note-id="${n.id}" style="animation-delay:${idx * 0.05}s">
+                <div class="note-header">
+                    <div class="note-title-display" onclick="window.toggleNoteCollapse(${n.id})">${escapeHtml(n.title)}</div>
+                    <div class="note-actions">
+                        <button class="note-edit-btn" onclick="window.editNoteTitle(${n.id})" title="Editar título"><i class="fas fa-pen"></i></button>
+                        <button class="note-delete-btn" onclick="window.deleteNote(${n.id})" title="Eliminar"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="note-content ${n.collapsed ? 'collapsed' : ''}">
+                    ${n.species ? `<div class="note-species-tag"><i class="fas fa-fish"></i> ${escapeHtml(n.species)}</div>` : ''}
+                    <textarea class="note-textarea" data-note-id="${n.id}" placeholder="Escribe tu nota aquí...">${escapeHtml(n.text)}</textarea>
+                    <div class="note-date">${n.date}</div>
+                </div>
+            </div>`).join('');
+
+        container.querySelectorAll('.note-textarea').forEach(ta => {
+            ta.addEventListener('input', () => {
+                const note = state.notes.find(n => n.id === parseInt(ta.dataset.noteId));
+                if (note) { note.text = ta.value; persistNotes(); }
+            });
+        });
+    }
+
+    window.deleteNote = function(noteId) {
+        state.notes = state.notes.filter(n => n.id !== noteId);
+        persistNotes(); renderNotes();
+    };
+    window.toggleNoteCollapse = function(noteId) {
+        const note = state.notes.find(n => n.id === noteId);
+        if (note) { note.collapsed = !note.collapsed; renderNotes(); }
+    };
+    window.editNoteTitle = function(noteId) {
+        const note = state.notes.find(n => n.id === noteId);
+        if (!note) return;
+        const card = document.querySelector(`.note-card[data-note-id="${noteId}"]`);
+        const titleDiv = card.querySelector('.note-title-display');
+        const input = document.createElement('input');
+        input.type = 'text'; input.className = 'note-title-input'; input.value = note.title;
+        titleDiv.replaceWith(input);
+        input.focus();
+        const save = () => { const v = input.value.trim(); if (v) note.title = v; persistNotes(); renderNotes(); };
+        input.addEventListener('blur', save);
+        input.addEventListener('keypress', e => { if (e.key === 'Enter') save(); });
+    };
+
+    document.getElementById('addNoteBtn')?.addEventListener('click', () => {
+        addNote('', 'Nueva nota'); renderNotes();
+    });
+
+    // ========== RENDER TARJETAS ==========
     function renderCards() {
         let filtered = speciesData.filter(s => {
             if (state.currentCategory !== 'todos' && s.category !== state.currentCategory) return false;
@@ -259,22 +1048,28 @@ document.addEventListener('DOMContentLoaded', function () {
         speciesGrid.innerHTML = filtered.map((s, idx) => {
             const isFav = state.favorites.has(s.id);
             const imgSrc = getImgSrc(s.name);
+            const dangerClass = getDangerClass(s.peligro);
+            const dangerIcon  = getDangerIcon(s.peligro);
             return `
-            <article class="book-card" data-id="${s.id}" style="animation-delay:${idx * 0.04}s">
-                <div class="book-cover ${getCoverClass(s.category)}" style="background-image: url('${imgSrc}');">
+            <article class="book-card" data-id="${s.id}" style="animation-delay:${idx * 0.05}s">
+                <div class="book-cover ${getCoverClass(s.category)}" style="background-image:url('${imgSrc}');background-size:cover;background-position:center;">
                     <div class="cover-overlay"></div>
                     ${makeCardBubbles(5)}
                     <span class="category-chip">${getCategoryText(s.category)}</span>
                     <button class="fav-badge-card" data-id="${s.id}" title="${isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'}">${isFav ? '❤️' : '🤍'}</button>
                 </div>
                 <div class="book-info">
-                    <h3>${s.name}</h3>
-                    <div class="book-scientific">${s.scientificName}</div>
-                    <span class="book-habitat-tag"><i class="fas fa-map-marker-alt"></i>${s.habitat.split(',')[0]}</span>
-                    <p class="book-desc">${s.desc.substring(0, 90)}${s.desc.length > 90 ? '…' : ''}</p>
-                    <button class="btn-ver-especie" data-id="${s.id}">
-                        <i class="fas fa-eye"></i> Ver especie
-                    </button>
+                    <h3>${escapeHtml(s.name)}</h3>
+                    <div class="book-scientific">${escapeHtml(s.scientificName)}</div>
+                    <span class="book-habitat-tag"><i class="fas fa-map-marker-alt"></i>${escapeHtml(s.habitat.split(',')[0].trim())}</span>
+                    <p class="book-desc">${escapeHtml(s.desc.substring(0, 100))}${s.desc.length > 100 ? '...' : ''}</p>
+                    <div class="book-info-divider"></div>
+                    <div class="book-card-footer">
+                        <span class="badge-danger-mini ${dangerClass}">${dangerIcon} ${escapeHtml(s.peligro)}</span>
+                        <button class="btn-ver-especie" data-id="${s.id}">
+                            <i class="fas fa-eye"></i> Ver especie
+                        </button>
+                    </div>
                 </div>
             </article>`;
         }).join('');
@@ -302,431 +1097,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ========== DETALLE (REDISEÑADO) ==========
-    function openDetail(species) {
-        state.currentSpecies = species;
-        showView('detail');
-
-        // Badge científico
-        const badge = document.getElementById('detailBadge');
-        if (badge) badge.textContent = species.scientificName;
-
-        const isFav = state.favorites.has(species.id);
-        const dangerClass = getDangerClass(species.peligro);
-        const dangerIcon  = getDangerIcon(species.peligro);
-
-        // ── 1. Chips flotantes sobre el panel 3D ──────────────
-        const panel3d = document.getElementById('detail3dPanel');
-        panel3d.querySelectorAll('.floating-chip').forEach(c => c.remove());
-
-        const chips = [
-            { cls: 'chip-category',               icon: 'fas fa-tag',           text: getCategoryText(species.category) },
-            { cls: 'chip-habitat',                icon: 'fas fa-map-marker-alt', text: species.habitat.split(',')[0] },
-            { cls: 'chip-longevity',              icon: 'fas fa-clock',          text: species.longevidad },
-            { cls: 'chip-dieta',                  icon: 'fas fa-utensils',       text: species.dieta.split('(')[0].trim() },
-            { cls: 'chip-danger danger-chip',     icon: 'fas fa-shield-alt',     text: species.peligro },
-        ];
-        chips.forEach(({ cls, icon, text }) => {
-            const chip = document.createElement('div');
-            chip.className = `floating-chip ${cls}`;
-            chip.innerHTML = `<i class="${icon}"></i><span>${text}</span>`;
-            panel3d.appendChild(chip);
-        });
-
-        // ── 2. Sidebar derecho ── nombre + desc + stats + acciones ──
-        const sidebar = document.getElementById('detailInfoSidebar');
-        sidebar.innerHTML = `
-            <div>
-                <h2 class="detail-species-name">${species.name}</h2>
-                <div class="detail-scientific">${species.scientificName}</div>
-                <button class="fav-btn-detail ${isFav ? 'active' : ''}" id="detailFavBtn">
-                    ${isFav ? '❤️ En favoritos' : '🤍 Agregar a favoritos'}
-                </button>
-            </div>
-
-            <div class="detail-desc-block">${species.desc}</div>
-
-            <div class="detail-stats-grid">
-                <div class="detail-stat-card">
-                    <div class="detail-stat-label"><i class="fas fa-utensils"></i> Dieta</div>
-                    <div class="detail-stat-value">${species.dieta.split('(')[0].trim()}</div>
-                    ${species.dieta.includes('(') ? `<div class="detail-stat-sub">${species.dieta.match(/\((.+)\)/)?.[1] || ''}</div>` : ''}
-                </div>
-                <div class="detail-stat-card">
-                    <div class="detail-stat-label"><i class="fas fa-clock"></i> Longevidad</div>
-                    <div class="detail-stat-value">${species.longevidad}</div>
-                </div>
-                <div class="detail-stat-card full-width">
-                    <div class="detail-stat-label"><i class="fas fa-shield-alt"></i> Conservación</div>
-                    <span class="danger-badge ${dangerClass}">${dangerIcon} ${species.peligro}</span>
-                </div>
-            </div>
-
-            <div class="detail-actions">
-                <button class="btn-action primary" id="btnSimulacion">
-                    <i class="fas fa-flask"></i> Iniciar simulación
-                </button>
-                <button class="btn-action secondary" id="addNoteFromDetailBtn">
-                    <i class="fas fa-sticky-note"></i> Nota
-                </button>
-            </div>
-        `;
-
-        document.getElementById('detailFavBtn').addEventListener('click', () => {
-            toggleFavorite(species.id);
-            const btn = document.getElementById('detailFavBtn');
-            const now = state.favorites.has(species.id);
-            if (btn) {
-                btn.textContent = now ? '❤️ En favoritos' : '🤍 Agregar a favoritos';
-                btn.classList.toggle('active', now);
-            }
-        });
-        document.getElementById('addNoteFromDetailBtn').addEventListener('click', () => {
-            addNote(species.name);
-            showView('notes');
-        });
-
-        // ── 3. Ocultar área antigua, montar TABS ──────────────
-        const oldBottom = document.getElementById('detailBottomArea');
-        if (oldBottom) oldBottom.classList.add('hidden');
-
-        let tabsArea = document.getElementById('detailTabsArea');
-        if (!tabsArea) {
-            tabsArea = document.createElement('div');
-            tabsArea.id = 'detailTabsArea';
-            tabsArea.className = 'detail-tabs-area';
-            if (oldBottom) oldBottom.insertAdjacentElement('afterend', tabsArea);
-        }
-
-        tabsArea.innerHTML = `
-            <div class="detail-tab-nav">
-                <button class="dtab active" data-tab="distribucion"><i class="fas fa-globe-americas"></i> Distribución</button>
-                <button class="dtab" data-tab="reproduccion"><i class="fas fa-egg"></i> Reproducción</button>
-                <button class="dtab" data-tab="amenazas"><i class="fas fa-exclamation-triangle"></i> Amenazas</button>
-                <button class="dtab" data-tab="curiosidad"><i class="fas fa-lightbulb"></i> Dato curioso</button>
-            </div>
-            <div class="detail-tab-pane active" id="tab-distribucion">
-                <div class="tab-content-block"><p>${species.distribucion}</p></div>
-            </div>
-            <div class="detail-tab-pane" id="tab-reproduccion">
-                <div class="tab-content-block"><p>${species.reproduccion}</p></div>
-            </div>
-            <div class="detail-tab-pane" id="tab-amenazas">
-                <div class="tab-content-block"><p>${species.amenazas}</p></div>
-            </div>
-            <div class="detail-tab-pane" id="tab-curiosidad">
-                <div class="tab-content-block curiosity"><p>${species.curiosidadExtra}</p></div>
-            </div>
-        `;
-
-        tabsArea.querySelectorAll('.dtab').forEach(btn => {
-            btn.addEventListener('click', () => {
-                tabsArea.querySelectorAll('.dtab').forEach(b => b.classList.remove('active'));
-                tabsArea.querySelectorAll('.detail-tab-pane').forEach(p => p.classList.remove('active'));
-                btn.classList.add('active');
-                const pane = document.getElementById('tab-' + btn.dataset.tab);
-                if (pane) pane.classList.add('active');
-            });
-        });
-
-        // ── 4. Modelo 3D ──────────────────────────────────────
-        const c3d = document.getElementById('detail3dContainer');
-        if (c3d) { c3d.innerHTML = ''; delete c3d.dataset.initialized; }
-        generateUnderwaterBubbles();
-        setTimeout(() => {
-            init3DModel('detail3dContainer', species.modelPath, species.scale, species.posY, species.rotY, species.camDistance, species.camHeight, true);
-        }, 120);
-    }
-
-    // ========== BURBUJAS PANEL 3D ==========
-    function generateUnderwaterBubbles() {
-        const panel = document.getElementById('detail3dPanel');
-        if (!panel) return;
-        panel.querySelectorAll('.underwater-bubble').forEach(b => b.remove());
-        const count = Math.floor(Math.random() * 10) + 6;
-        for (let i = 0; i < count; i++) {
-            const b = document.createElement('div');
-            b.className = 'underwater-bubble';
-            const size = Math.random() * 15 + 5;
-            b.style.cssText = `
-                width:${size}px; height:${size}px;
-                left:${(Math.random()*88+6).toFixed(1)}%;
-                top:${(Math.random()*70+20).toFixed(1)}%;
-                --rise:${(-(Math.random()*120+60)).toFixed(0)}px;
-                --sway:${((Math.random()-.5)*40).toFixed(1)}px;
-                --duration:${(Math.random()*4+2).toFixed(1)}s;
-                --delay:${(Math.random()*6).toFixed(1)}s;
-            `;
-            panel.appendChild(b);
-        }
-    }
-
-    // ========== FAVORITOS ==========
-    function toggleFavorite(id) {
-        if (state.favorites.has(id)) state.favorites.delete(id);
-        else state.favorites.add(id);
-    }
-
-    function renderFavorites() {
-        const grid  = document.getElementById('favoritesGrid');
-        const noFav = document.getElementById('noFavorites');
-        const favSpecies = speciesData.filter(s => state.favorites.has(s.id));
-
-        if (favSpecies.length === 0) {
-            grid.style.display = 'none';
-            noFav.style.display = 'flex';
-            return;
-        }
-        grid.style.display = 'grid';
-        noFav.style.display = 'none';
-
-        grid.innerHTML = favSpecies.map((s, idx) => {
-            const imgSrc = getImgSrc(s.name);
-            return `
-            <article class="book-card" data-id="${s.id}" style="animation-delay:${idx*0.04}s">
-                <div class="book-cover ${getCoverClass(s.category)}" style="background-image: url('${imgSrc}');">
-                    <div class="cover-overlay"></div>
-                    ${makeCardBubbles(5)}
-                    <span class="category-chip">${getCategoryText(s.category)}</span>
-                    <button class="fav-badge-card" data-id="${s.id}" title="Quitar de favoritos">❤️</button>
-                </div>
-                <div class="book-info">
-                    <h3>${s.name}</h3>
-                    <div class="book-scientific">${s.scientificName}</div>
-                    <span class="book-habitat-tag"><i class="fas fa-map-marker-alt"></i>${s.habitat.split(',')[0]}</span>
-                    <button class="btn-ver-especie" data-id="${s.id}"><i class="fas fa-eye"></i> Ver especie</button>
-                </div>
-            </article>`;
-        }).join('');
-
-        grid.querySelectorAll('.btn-ver-especie').forEach(btn => {
-            btn.addEventListener('click', e => {
-                e.stopPropagation();
-                const sp = speciesData.find(x => x.id === parseInt(btn.dataset.id));
-                if (sp) openDetail(sp);
-            });
-        });
-        grid.querySelectorAll('.fav-badge-card').forEach(btn => {
-            btn.addEventListener('click', e => {
-                e.stopPropagation();
-                toggleFavorite(parseInt(btn.dataset.id));
-                renderFavorites();
-            });
-        });
-        grid.querySelectorAll('.book-card').forEach(card => {
-            card.addEventListener('click', e => {
-                if (e.target.closest('.fav-badge-card') || e.target.closest('.btn-ver-especie')) return;
-                const sp = speciesData.find(x => x.id === parseInt(card.dataset.id));
-                if (sp) openDetail(sp);
-            });
-        });
-    }
-
-    // ========== NOTAS ==========
-    function addNote(speciesName = '', title = 'Nueva nota') {
-        state.notes.unshift({
-            id: Date.now(),
-            title,
-            species: speciesName,
-            text: '',
-            date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }),
-            collapsed: false
-        });
-    }
-
-    function renderNotes() {
-        const container = document.getElementById('notesContainer');
-        if (!container) return;
-        if (state.notes.length === 0) {
-            container.innerHTML = `
-                <div class="no-results no-results-centered" style="grid-column:1/-1;">
-                    <i class="fas fa-sticky-note"></i>
-                    <h3>Sin notas aún</h3>
-                    <p>Entra al detalle de una especie y agrega tu primera nota</p>
-                </div>`;
-            return;
-        }
-        container.innerHTML = state.notes.map((n, idx) => `
-            <div class="note-card" data-note-id="${n.id}" style="animation-delay:${idx*0.04}s">
-                <div class="note-header">
-                    <div class="note-title-display" onclick="window.toggleNoteCollapse(${n.id})">${escapeHtml(n.title)}</div>
-                    <div class="note-actions">
-                        <button class="note-edit-btn" onclick="window.editNoteTitle(${n.id})" title="Editar título"><i class="fas fa-pen"></i></button>
-                        <button class="note-delete-btn" onclick="window.deleteNote(${n.id})" title="Eliminar"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-                <div class="note-content ${n.collapsed ? 'collapsed' : ''}">
-                    ${n.species ? `<div class="note-species-tag"><i class="fas fa-fish"></i> ${escapeHtml(n.species)}</div>` : ''}
-                    <textarea class="note-textarea" data-note-id="${n.id}" placeholder="Escribe tu nota aquí...">${escapeHtml(n.text)}</textarea>
-                    <div class="note-date">${n.date}</div>
-                </div>
-            </div>`).join('');
-
-        container.querySelectorAll('.note-textarea').forEach(ta => {
-            ta.addEventListener('input', () => {
-                const note = state.notes.find(n => n.id === parseInt(ta.dataset.noteId));
-                if (note) note.text = ta.value;
-            });
-        });
-    }
-
-    window.deleteNote = function (noteId) {
-        state.notes = state.notes.filter(n => n.id !== noteId);
-        renderNotes();
-    };
-    window.toggleNoteCollapse = function (noteId) {
-        const note = state.notes.find(n => n.id === noteId);
-        if (note) { note.collapsed = !note.collapsed; renderNotes(); }
-    };
-    window.editNoteTitle = function (noteId) {
-        const note = state.notes.find(n => n.id === noteId);
-        if (!note) return;
-        const card     = document.querySelector(`.note-card[data-note-id="${noteId}"]`);
-        const titleDiv = card.querySelector('.note-title-display');
-        const input    = document.createElement('input');
-        input.type      = 'text';
-        input.className = 'note-title-input';
-        input.value     = note.title;
-        titleDiv.replaceWith(input);
-        input.focus();
-        const save = () => {
-            const v = input.value.trim();
-            if (v) note.title = v;
-            renderNotes();
-        };
-        input.addEventListener('blur', save);
-        input.addEventListener('keypress', e => { if (e.key === 'Enter') save(); });
-    };
-
-    const addNoteBtn = document.getElementById('addNoteBtn');
-    if (addNoteBtn) addNoteBtn.addEventListener('click', () => { addNote('', 'Nueva nota'); renderNotes(); });
-
-    // ========== MODELO 3D ==========
-    async function init3DModel(containerId, modelPath, scaleValue = 0.7, posYValue = 0, rotYValue = 0, camDistance = 3.5, camHeight = 1, isDetail = false) {
-        try {
-            const check = await fetch(modelPath, { method: 'HEAD' });
-            if (!check.ok) {
-                const c = document.getElementById(containerId);
-                if (c) c.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.45);font-size:12px;text-align:center;">⚠️ Modelo no disponible</div>`;
-                return;
-            }
-            const THREE = await import('three');
-            const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
-            const { GLTFLoader }    = await import('three/addons/loaders/GLTFLoader.js');
-
-            const container = document.getElementById(containerId);
-            if (!container || container.dataset.initialized === 'true') return;
-            container.dataset.initialized = 'true';
-
-            const w = container.clientWidth, h = container.clientHeight;
-            if (w === 0 || h === 0) return;
-
-            const scene = new THREE.Scene();
-            scene.background = null;
-
-            const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
-            camera.position.set(0, camHeight, camDistance);
-            camera.lookAt(0, 0, 0);
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(w, h);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.setClearColor(0x000000, 0);
-            container.innerHTML = '';
-            container.appendChild(renderer.domElement);
-
-            scene.add(new THREE.AmbientLight(isDetail ? 0x88ccff : 0xffffff, isDetail ? 0.55 : 0.6));
-            const main = new THREE.DirectionalLight(isDetail ? 0xaaddff : 0xffffff, isDetail ? 1.3 : 1);
-            main.position.set(3, 5, 2);
-            scene.add(main);
-            const fill = new THREE.PointLight(isDetail ? 0x44aaff : 0x88aaff, isDetail ? 0.8 : 0.5);
-            fill.position.set(-2, 2, 3);
-            scene.add(fill);
-            if (isDetail) {
-                const bot = new THREE.PointLight(0x0066cc, 0.6);
-                bot.position.set(0, -3, 0);
-                scene.add(bot);
-                const rim = new THREE.PointLight(0x00aaff, 0.5);
-                rim.position.set(2, 2, -3);
-                scene.add(rim);
-            }
-
-            const controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping    = true;
-            controls.dampingFactor    = 0.05;
-            controls.autoRotate       = true;
-            controls.autoRotateSpeed  = isDetail ? 1.2 : 1.5;
-            controls.enableZoom       = isDetail;
-            controls.enablePan        = false;
-
-            const loader = new GLTFLoader();
-            loader.load(modelPath,
-                (gltf) => {
-                    const model = gltf.scene;
-                    model.scale.set(scaleValue, scaleValue, scaleValue);
-                    model.position.set(0, posYValue, 0);
-                    model.rotation.y = rotYValue;
-                    model.traverse(c => { if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; } });
-                    scene.add(model);
-                    function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); }
-                    animate();
-                    new ResizeObserver(() => {
-                        const nw = container.clientWidth, nh = container.clientHeight;
-                        if (nw > 0 && nh > 0) { camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh); }
-                    }).observe(container);
-                },
-                undefined,
-                () => {
-                    container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.4);">⚠️ Error al cargar modelo</div>`;
-                }
-            );
-        } catch (e) { console.error('Error 3D:', e); }
-    }
-
-    // ========== BURBUJAS DE FONDO (canvas) ==========
-    function initBackgroundBubbles() {
-        const canvas = document.getElementById('staticBubblesCanvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        let W = window.innerWidth, H = window.innerHeight;
-        function resize() { W = window.innerWidth; H = window.innerHeight; canvas.width = W; canvas.height = H; }
-        window.addEventListener('resize', resize);
-        resize();
-        const bubbles = Array.from({ length: 55 }, () => ({
-            x: Math.random() * W, y: Math.random() * H,
-            r: Math.random() * 18 + 5,
-            speed: Math.random() * 0.45 + 0.12,
-            opacity: Math.random() * 0.28 + 0.07
-        }));
-        function drawBubble(b) {
-            ctx.beginPath();
-            ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-            const g = ctx.createRadialGradient(b.x - b.r/3, b.y - b.r/3, b.r/10, b.x, b.y, b.r);
-            g.addColorStop(0, `rgba(255,255,255,${b.opacity + 0.2})`);
-            g.addColorStop(1, `rgba(180,230,255,${b.opacity * 0.5})`);
-            ctx.fillStyle = g;
-            ctx.fill();
-            ctx.strokeStyle = `rgba(255,255,255,${b.opacity + 0.2})`;
-            ctx.lineWidth = 1.1;
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(b.x - b.r/3, b.y - b.r/3, b.r/5, 0, Math.PI*2);
-            ctx.fillStyle = `rgba(255,255,255,${b.opacity + 0.2})`;
-            ctx.fill();
-        }
-        function loop() {
-            ctx.clearRect(0, 0, W, H);
-            for (const b of bubbles) {
-                drawBubble(b);
-                b.y -= b.speed;
-                if (b.y + b.r < 0) { b.y = H + b.r; b.x = Math.random() * W; }
-            }
-            requestAnimationFrame(loop);
-        }
-        loop();
-    }
-
-    // ========== EVENTOS FILTROS Y BÚSQUEDA ==========
+    // ========== FILTROS Y BÚSQUEDA ==========
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
@@ -735,12 +1106,13 @@ document.addEventListener('DOMContentLoaded', function () {
             renderCards();
         });
     });
-    searchInput.addEventListener('input', e => {
-        state.currentSearch = e.target.value;
-        renderCards();
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', e => {
+            state.currentSearch = e.target.value;
+            renderCards();
+        });
+    }
 
     // ========== INICIO ==========
     renderCards();
-    initBackgroundBubbles();
 });
