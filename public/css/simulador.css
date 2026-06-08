@@ -494,3 +494,39 @@ body::before {
     animation: fadeInUp 0.6s ease-out;
 }
 
+
+
+/* lo nuevo we */
+
+/* Sliders ambientales */
+.environmental-controls {
+    margin-top: 20px;
+}
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.control-group input {
+    width: 100%;
+    cursor: pointer;
+}
+
+.range-hint {
+    font-size: 11px;
+    color: #7f8c8d;
+    margin-top: 4px;
+}
+
+/* Canvas de Godot */
+#godot-canvas canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
