@@ -1,205 +1,151 @@
-// ========== TIMER Y FULLSCREEN ==========
+// ========== VARIABLES GLOBALES GODOT ==========
+// Se declaran primero para que Godot las lea desde el inicio
+window.godot_temperature = 24;
+window.godot_salinity    = 35;
+window.godot_oxygen      = 6;
 
-let timer = document.getElementById("timer");
-let seconds = 0;
-let interval = null;
+// ========== TODO DENTRO DE DOMContentLoaded ==========
+// Garantiza que el DOM esté disponible antes de buscar cualquier elemento
 
-function updateTimer() {
-    seconds++;
-    let hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
-    let mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-    let secs = String(seconds % 60).padStart(2, '0');
-    if (timer) timer.textContent = `${hrs}:${mins}:${secs}`;
-}
+document.addEventListener('DOMContentLoaded', function () {
 
-const startBtn = document.getElementById("start");
-const pauseBtn = document.getElementById("pause");
-const resetBtn = document.getElementById("reset");
+    // ─── TIMER ───
+    const timerDisplay = document.getElementById("timer");
+    let seconds  = 0;
+    let interval = null;
 
-if (startBtn) {
-    startBtn.onclick = () => {
-        if (!interval) interval = setInterval(updateTimer, 1000);
-    };
-}
+    function updateTimer() {
+        seconds++;
+        const hrs  = String(Math.floor(seconds / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+        const secs = String(seconds % 60).padStart(2, '0');
+        if (timerDisplay) timerDisplay.textContent = `${hrs}:${mins}:${secs}`;
+    }
 
-if (pauseBtn) {
-    pauseBtn.onclick = () => {
-        clearInterval(interval);
-        interval = null;
-    };
-}
+    const startBtn = document.getElementById("start");
+    const pauseBtn = document.getElementById("pause");
+    const resetBtn = document.getElementById("reset");
 
-if (resetBtn) {
-    resetBtn.onclick = () => {
+    if (startBtn) startBtn.onclick = () => { if (!interval) interval = setInterval(updateTimer, 1000); };
+    if (pauseBtn) pauseBtn.onclick = () => { clearInterval(interval); interval = null; };
+    if (resetBtn) resetBtn.onclick = () => {
         clearInterval(interval);
         interval = null;
         seconds = 0;
-        if (timer) timer.textContent = "00:00:00";
+        if (timerDisplay) timerDisplay.textContent = "00:00:00";
     };
-}
 
-let expandBtn = document.getElementById("expandBtn");
-let closeBtn = document.getElementById("closeFullscreen");
-let simulator = document.querySelector(".simulator");
+    // ─── FULLSCREEN ───
+    const expandBtn  = document.getElementById("expandBtn");
+    const closeBtn   = document.getElementById("closeFullscreen");
+    const simulator  = document.querySelector(".simulator");
 
-if (expandBtn) {
-    expandBtn.onclick = () => {
-        if (simulator && !document.fullscreenElement) {
-            simulator.requestFullscreen();
-        }
-    };
-}
+    if (expandBtn) expandBtn.onclick = () => { if (simulator && !document.fullscreenElement) simulator.requestFullscreen(); };
+    if (closeBtn)  closeBtn.onclick  = () => { if (document.fullscreenElement) document.exitFullscreen(); };
 
-if (closeBtn) {
-    closeBtn.onclick = () => {
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
-        }
-    };
-}
+    document.addEventListener("fullscreenchange", () => {
+        if (simulator) simulator.classList.toggle("fullscreen-active", !!document.fullscreenElement);
+    });
 
-document.addEventListener("fullscreenchange", () => {
-    if (simulator) {
-        if (document.fullscreenElement) {
-            simulator.classList.add("fullscreen-active");
-        } else {
-            simulator.classList.remove("fullscreen-active");
-        }
-    }
-});
+    // ─── SLIDERS — PUENTE HACIA GODOT ───
+    // Los sliders actualizan window.godot_* que Godot lee vía JavaScriptBridge
+    // y también disparan actualizarAlertas para feedback visual inmediato.
 
-// ========== PUENTE GODOT (variables globales) ==========
+    function bindSlider(sliderId, valId, globalKey, low, high, label) {
+        const slider = document.getElementById(sliderId);
+        const valEl  = document.getElementById(valId);
+        if (!slider) { console.warn(`❌ Slider #${sliderId} no encontrado`); return; }
 
-// Inicializar variables globales que Godot leerá
-window.godot_temperature = 24;
-window.godot_salinity = 35;
-window.godot_oxygen = 6;
-
-function inicializarControles() {
-    console.log("🎮 Buscando sliders...");
-    
-    // Temperatura
-    const tempSlider = document.getElementById('tempSlider');
-    const tempVal = document.getElementById('tempVal');
-    
-    if (tempSlider) {
-        tempSlider.addEventListener('input', function(e) {
-            const val = parseFloat(e.target.value);
-            if (tempVal) tempVal.textContent = val;
-            window.godot_temperature = val;
-            console.log('📤 Temperatura actualizada:', val);
+        slider.addEventListener('input', function () {
+            const val = parseFloat(this.value);
+            if (valEl) valEl.textContent = val;
+            window[globalKey] = val;
+            // Notificar a Godot si el puente está disponible
+            if (window.godotBridge && typeof window.godotBridge.notify === 'function') {
+                window.godotBridge.notify(globalKey, val);
+            }
+            actualizarAlertas(window.godot_temperature, window.godot_salinity, window.godot_oxygen);
+            console.log(`📤 ${label}: ${val}`);
         });
-        console.log("✅ Slider temperatura configurado");
-    } else {
-        console.log("❌ Slider temperatura NO encontrado");
-    }
-    
-    // Salinidad
-    const salSlider = document.getElementById('salSlider');
-    const salVal = document.getElementById('salVal');
-    
-    if (salSlider) {
-        salSlider.addEventListener('input', function(e) {
-            const val = parseFloat(e.target.value);
-            if (salVal) salVal.textContent = val;
-            window.godot_salinity = val;
-            console.log('📤 Salinidad actualizada:', val);
-        });
-        console.log("✅ Slider salinidad configurado");
-    } else {
-        console.log("❌ Slider salinidad NO encontrado");
-    }
-    
-    // Oxígeno
-    const oxSlider = document.getElementById('oxSlider');
-    const oxVal = document.getElementById('oxVal');
-    
-    if (oxSlider) {
-        oxSlider.addEventListener('input', function(e) {
-            const val = parseFloat(e.target.value);
-            if (oxVal) oxVal.textContent = val;
-            window.godot_oxygen = val;
-            console.log('📤 Oxígeno actualizado:', val);
-        });
-        console.log("✅ Slider oxígeno configurado");
-    } else {
-        console.log("❌ Slider oxígeno NO encontrado");
-    }
-    
-    console.log('🎮 Controles inicializados');
-}
 
-// Función para actualizar alertas (opcional)
-function actualizarAlertas(temperatura, salinidad, oxigeno) {
-    const alertsContainer = document.querySelector('.card.alerts');
-    if (!alertsContainer) return;
-    
-    alertsContainer.innerHTML = '';
-    let alertasActivas = false;
-    
-    if (temperatura < 22 || temperatura > 28) {
-        alertsContainer.innerHTML += '<p class="warning">⚠️ Temperatura fuera de rango óptimo</p>';
-        alertasActivas = true;
+        console.log(`✅ Slider #${sliderId} listo`);
     }
-    
-    if (salinidad < 32 || salinidad > 38) {
-        alertsContainer.innerHTML += '<p class="warning">⚠️ Salinidad fuera de rango óptimo</p>';
-        alertasActivas = true;
-    }
-    
-    if (oxigeno < 5 || oxigeno > 8) {
-        alertsContainer.innerHTML += '<p class="warning">⚠️ Nivel de oxígeno fuera de rango</p>';
-        alertasActivas = true;
-    }
-    
-    if (!alertasActivas) {
-        alertsContainer.innerHTML = '<p class="ok">✔ Todos los parámetros en rango óptimo</p>';
-    }
-}
 
-// ========== INICIAR GODOT ==========
+    bindSlider('tempSlider', 'tempVal', 'godot_temperature', 22, 28, 'Temperatura');
+    bindSlider('salSlider',  'salVal',  'godot_salinity',    32, 38, 'Salinidad');
+    bindSlider('oxSlider',   'oxVal',   'godot_oxygen',       5,  8, 'Oxígeno');
 
-var canvas = (function() {
-    var container = document.getElementById("godot-canvas");
-    if (container && container.tagName !== "CANVAS") {
-        var c = document.createElement("canvas");
-        c.id = "canvas";
-        container.appendChild(c);
-        return c;
+    // ─── ALERTAS ───
+    function actualizarAlertas(temp, sal, ox) {
+        const alertsContainer = document.querySelector('.card.alerts');
+        if (!alertsContainer) return;
+
+        // Preservar el h3 si existe
+        const heading = alertsContainer.querySelector('h3');
+        alertsContainer.innerHTML = '';
+        if (heading) alertsContainer.appendChild(heading);
+
+        let alertasActivas = false;
+
+        if (temp < 22 || temp > 28) {
+            alertsContainer.insertAdjacentHTML('beforeend', '<p class="warning">⚠️ Temperatura fuera de rango óptimo</p>');
+            alertasActivas = true;
+        }
+        if (sal < 32 || sal > 38) {
+            alertsContainer.insertAdjacentHTML('beforeend', '<p class="warning">⚠️ Salinidad fuera de rango óptimo</p>');
+            alertasActivas = true;
+        }
+        if (ox < 5 || ox > 8) {
+            alertsContainer.insertAdjacentHTML('beforeend', '<p class="warning">⚠️ Nivel de oxígeno fuera de rango</p>');
+            alertasActivas = true;
+        }
+        if (!alertasActivas) {
+            alertsContainer.insertAdjacentHTML('beforeend', '<p class="ok">✔ Todos los parámetros en rango óptimo</p>');
+        }
     }
-    return container;
-})();
 
-function startGodot() {
-    console.log("Engine =", typeof Engine);
-    if (typeof Engine !== 'undefined' && Engine) {
-        var engine = new Engine(canvas);
-        
+    // ─── INICIAR GODOT ───
+    // Crea el <canvas> hijo dentro de #godot-canvas y arranca el Engine.
+    // Las rutas son relativas a la ubicación de index.js en /public/godot/,
+    // por lo que se pasan como rutas absolutas desde la raíz del servidor.
+
+    const godotContainer = document.getElementById("godot-canvas");
+    let   godotCanvas    = null;
+
+    if (godotContainer) {
+        godotCanvas = document.createElement("canvas");
+        godotCanvas.id = "canvas";
+        godotCanvas.style.width  = "100%";
+        godotCanvas.style.height = "100%";
+        godotCanvas.style.display = "block";
+        godotContainer.appendChild(godotCanvas);
+    }
+
+    function startGodot() {
+        if (typeof Engine === 'undefined' || !Engine) {
+            console.log("⏳ Esperando Engine de Godot...");
+            setTimeout(startGodot, 200);
+            return;
+        }
+
+        const base = (window.APP_BASE || '') + '/public/godot/index';
+        console.log("🚀 Iniciando Godot con ruta base:", base);
+
+        const engine = new Engine(godotCanvas);
+
         engine.startGame({
-            executable: "index",
-            mainPack: "index.pck",
+            executable: base,
+            mainPack:   base + '.pck',
             canvasResizePolicy: 2,
-            locale: "en",
+            locale: "es",
             args: []
-        }).then(function() {
+        }).then(function () {
             console.log("✅ Godot iniciado correctamente");
-        }).catch(function(error) {
-            console.error("❌ Error iniciando Godot:", error);
+        }).catch(function (err) {
+            console.error("❌ Error iniciando Godot:", err);
         });
-    } else {
-        console.log("⏳ Esperando Engine...");
-        setTimeout(startGodot, 100);
     }
-}
 
-// ========== EJECUTAR TODO ==========
-
-// Inicializar controles inmediatamente
-console.log('🚀 Inicializando controles...');
-inicializarControles();
-
-// Iniciar Godot cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM listo, iniciando Godot...");
     startGodot();
+    console.log("🎮 simulador.js listo");
 });

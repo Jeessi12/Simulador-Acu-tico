@@ -1,12 +1,15 @@
 const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 const popSound = document.getElementById('popSound');
 
-function resizeCanvas(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
+if (!canvas || !ctx) {
+    console.warn('⚠️ burbujas.js: canvas #particles no encontrado o contexto no disponible.');
+} else {
+    function resizeCanvas(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 let mouse = { x: null, y: null };
@@ -113,7 +116,7 @@ function animate(){
 }
 
 animate();
-
+}
 
 window.addEventListener("scroll", function(){
     const navbar = document.querySelector(".navbar");

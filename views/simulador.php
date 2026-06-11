@@ -14,7 +14,7 @@ if (!isset($_SESSION['usuario'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulación Acuática</title>
+    <title>Simulación Acuática | BlueEcoSim</title>
 
     <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
 
@@ -25,25 +25,32 @@ if (!isset($_SESSION['usuario'])) {
     <!-- Tipografía -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <style>
-        #godot-canvas {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background: black;
+
+    <!--
+        Godot exporta sus archivos a /public/godot/:
+          index.js   → el Engine (carga .wasm y .pck)
+          index.wasm → binario compilado
+          index.pck  → paquete del juego / escenas
+          index.audio.worklet.js, index.audio.position.worklet.js → audio worklets
+
+        index.js se carga en el <head> SIN defer para que la clase Engine
+        esté disponible globalmente cuando simulador.js la invoque.
+        No usar async ni defer aquí.
+    -->
+    <script src="../public/godot/index.js"></script>
+    <?php
+        $appBase = dirname(dirname($_SERVER['SCRIPT_NAME']));
+        if ($appBase === '/' || $appBase === '\\') {
+            $appBase = '';
         }
-        
-        #godot-canvas canvas {
-            width: 100% !important;
-            height: 100% !important;
-            display: block;
-        }
-    </style>
+    ?>
+    <script>
+        window.APP_BASE = '<?php echo $appBase; ?>';
+    </script>
 </head>
 
 <body>
@@ -58,8 +65,10 @@ if (!isset($_SESSION['usuario'])) {
 <main class="container">
 
     <!-- ===== SIMULADOR (izquierda) ===== -->
-    <section class="simulator" aria-label="Simulador de ecosistema acuático">
+    <section class="simulator">
+        <canvas id="particles"></canvas>
 
+        <!-- Header -->
         <div class="sim-header">
             <h2>Ecosistema acuático</h2>
 
@@ -79,23 +88,28 @@ if (!isset($_SESSION['usuario'])) {
             </button>
         </div>
 
-        <!-- Canvas donde Godot renderiza -->
+        <!--
+            Zona de renderizado de Godot.
+            #godot-canvas es un <div> contenedor — simulador.js crea el <canvas>
+            real dentro de él dinámicamente, lo que permite que Godot tenga
+            control total del elemento y lo redimensione con canvasResizePolicy: 2.
+        -->
         <div class="sim-area">
             <div id="godot-canvas" role="img" aria-label="Simulación 3D del ecosistema acuático"></div>
         </div>
 
-        <!-- Botón salir de fullscreen (visible sólo en ese modo) -->
+        <!-- Botón salir fullscreen (visible solo en modo fullscreen vía CSS) -->
         <button id="closeFullscreen" class="close-fullscreen" title="Salir de pantalla completa" aria-label="Cerrar pantalla completa">
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
 
-        <!-- Campo de observaciones -->
+        <!-- Observaciones -->
         <div class="observations">
             <label for="obsInput" class="sr-only">Escribe tus observaciones</label>
             <input
                 type="text"
                 id="obsInput"
-                placeholder="Escribe tus observaciones..."
+                placeholder="Escribe tus observaciones del ecosistema…"
                 autocomplete="off"
                 maxlength="300"
             >
@@ -111,9 +125,8 @@ if (!isset($_SESSION['usuario'])) {
 
         <!-- Temporizador -->
         <div class="card timer-card">
-            <h3>Tiempo de simulación</h3>
+            <h3><i class="fa-regular fa-clock" style="margin-right:6px;opacity:.6;"></i>Tiempo de simulación</h3>
             <div id="timer" role="timer" aria-live="off" aria-label="Tiempo transcurrido">00:00:00</div>
-
             <div class="controls">
                 <button id="start" class="circle green" title="Iniciar" aria-label="Iniciar temporizador">
                     <i class="fa-solid fa-play" aria-hidden="true"></i>
@@ -129,59 +142,49 @@ if (!isset($_SESSION['usuario'])) {
 
         <!-- Parámetros ambientales -->
         <div class="card environmental-controls">
-            <h3>🌊 Parámetros del agua</h3>
+            <h3><i class="fa-solid fa-droplet" style="margin-right:6px;opacity:.6;"></i>Parámetros del agua</h3>
 
-            <!-- Temperatura -->
             <div class="control-group">
                 <label for="tempSlider">
                     🌡️ Temperatura
                     <span class="val-display"><span id="tempVal">24</span> °C</span>
                 </label>
-                <input
-                    type="range"
-                    id="tempSlider"
+                <input type="range" id="tempSlider"
                     min="15" max="35" step="0.5" value="24"
                     aria-label="Temperatura del agua"
-                    aria-valuemin="15" aria-valuemax="35" aria-valuenow="24"
-                >
-                <div class="range-hint">Óptimo: 22–28 °C</div>
+                    aria-valuemin="15" aria-valuemax="35" aria-valuenow="24">
+                <div class="range-hint">Óptimo: 22 – 28 °C</div>
             </div>
 
-            <!-- Salinidad -->
             <div class="control-group">
                 <label for="salSlider">
                     🧂 Salinidad
                     <span class="val-display"><span id="salVal">35</span> PSU</span>
                 </label>
-                <input
-                    type="range"
-                    id="salSlider"
+                <input type="range" id="salSlider"
                     min="30" max="40" step="0.5" value="35"
                     aria-label="Salinidad del agua"
-                    aria-valuemin="30" aria-valuemax="40" aria-valuenow="35"
-                >
-                <div class="range-hint">Óptimo: 32–38 PSU</div>
+                    aria-valuemin="30" aria-valuemax="40" aria-valuenow="35">
+                <div class="range-hint">Óptimo: 32 – 38 PSU</div>
             </div>
 
-            <!-- Oxígeno -->
             <div class="control-group">
                 <label for="oxSlider">
-                    💨 Oxígeno
+                    💨 Oxígeno disuelto
                     <span class="val-display"><span id="oxVal">6</span> mg/L</span>
                 </label>
-                <input
-                    type="range"
-                    id="oxSlider"
+                <input type="range" id="oxSlider"
                     min="4" max="10" step="0.2" value="6"
                     aria-label="Nivel de oxígeno"
-                    aria-valuemin="4" aria-valuemax="10" aria-valuenow="6"
-                >
-                <div class="range-hint">Óptimo: 5–8 mg/L</div>
+                    aria-valuemin="4" aria-valuemax="10" aria-valuenow="6">
+                <div class="range-hint">Óptimo: 5 – 8 mg/L</div>
             </div>
         </div>
 
         <!-- Acciones rápidas -->
         <div class="card options">
+            <h3><i class="fa-solid fa-bolt" style="margin-right:6px;opacity:.6;"></i>Acciones</h3>
+
             <div class="option" role="button" tabindex="0" aria-label="Gestionar especies">
                 <div class="left">
                     <i class="fa-solid fa-fish" aria-hidden="true"></i>
@@ -199,9 +202,10 @@ if (!isset($_SESSION['usuario'])) {
             </div>
         </div>
 
-        <!-- Alertas del ecosistema (actualizadas dinámicamente por JS) -->
+        <!-- Alertas — actualizadas dinámicamente por JS al mover sliders -->
         <div class="card alerts" aria-live="polite" aria-label="Alertas del ecosistema">
-            <p class="ok">✔ Ecosistema estable</p>
+            <h3><i class="fa-solid fa-wave-square" style="margin-right:6px;opacity:.6;"></i>Estado del ecosistema</h3>
+            <p class="ok">✔ Todos los parámetros en rango óptimo</p>
         </div>
 
     </aside>
@@ -215,29 +219,16 @@ if (!isset($_SESSION['usuario'])) {
 </div>
 
 <!--
-    ORDEN DE CARGA CORRECTO:
-    1. Engine de Godot (sin defer para que esté disponible cuando simulador.js lo necesite)
-    2. simulador.js (defer: se ejecuta al terminar el HTML, con Engine ya disponible)
-    3. session.js (defer: gestión de sesión, independiente)
-    
-    Nota: Todo el código JavaScript ha sido movido a public/js/simulador.js
+    ORDEN DE CARGA:
+    1. index.js (Godot Engine) → ya está en el <head> sin defer
+    2. simulador.js (defer) → se ejecuta tras parsear el HTML completo,
+       con Engine ya disponible y el DOM listo
+    3. burbujas.js (defer) → independiente, no interfiere con Godot
+    4. session.js (defer) → gestión de sesión, independiente
 -->
-<script src="../public/godot/index.js"></script>
 <script src="../public/js/simulador.js" defer></script>
-<script src="../public/js/session.js" defer></script>
-
-<!-- Clase utilitaria para screen readers -->
-<style>
-.sr-only {
-    position: absolute;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border: 0;
-}
-</style>
+<script src="../public/js/burbujas.js"  defer></script>
+<script src="../public/js/session.js"   defer></script>
 
 </body>
 </html>

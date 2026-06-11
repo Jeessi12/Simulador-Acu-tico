@@ -116,7 +116,8 @@ CREATE TABLE espacios (
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_docente) REFERENCES usuarios(id) ON DELETE CASCADE
 );
-
+ALTER TABLE espacios
+ADD portada VARCHAR(255) DEFAULT 'default.jpg';
 -- ============================================================
 -- 12. Tabla de relación espacio - estudiantes
 -- ============================================================
@@ -127,4 +128,21 @@ CREATE TABLE espacio_estudiantes (
     PRIMARY KEY (id_espacio, id_estudiante),
     FOREIGN KEY (id_espacio) REFERENCES espacios(id) ON DELETE CASCADE,
     FOREIGN KEY (id_estudiante) REFERENCES usuarios(id) ON DELETE CASCADE
+    
 );
+ALTER TABLE asignaciones ADD COLUMN id_espacio INT NULL DEFAULT NULL;
+-- 1. Estado en espacio_estudiantes
+ALTER TABLE espacio_estudiantes
+  ADD COLUMN estado ENUM('pendiente','aceptado','rechazado') NOT NULL DEFAULT 'aceptado';
+
+-- 2. Tipo en notificaciones
+ALTER TABLE notificaciones
+  ADD COLUMN tipo VARCHAR(30) NOT NULL DEFAULT 'general';
+
+-- 3. id_espacio en notificaciones
+ALTER TABLE notificaciones
+  ADD COLUMN id_espacio INT NULL DEFAULT NULL;
+
+-- 4. Foreign key de id_espacio
+ALTER TABLE notificaciones
+  ADD FOREIGN KEY (id_espacio) REFERENCES espacios(id) ON DELETE CASCADE;
