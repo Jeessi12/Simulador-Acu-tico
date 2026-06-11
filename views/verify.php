@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../app/models/Conexion.php';
+$conexion = new Conexion();
+$conn = $conexion->getConnection();
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

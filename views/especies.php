@@ -6,6 +6,7 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.php?error=locked");
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -127,7 +128,7 @@ if (!isset($_SESSION['usuario'])) {
             </div>
         </div>
 
-        <!-- FAVORITOS - CORREGIDO -->
+        <!-- FAVORITOS -->
         <div class="view-section" id="view-favorites">
             <div class="section-header">
                 <h2><i class="fas fa-heart" style="color:#d45a7a;"></i> Mis Favoritos</h2>
@@ -138,16 +139,16 @@ if (!isset($_SESSION['usuario'])) {
             </div>
         </div>
 
-       <!-- NOTAS -->
-<div class="view-section" id="view-notes">
-    <div class="notes-header">
-        <h2><i class="fas fa-sticky-note" style="color:#2d9cdb;"></i> Mis Notas</h2>
-        <button class="btn-add-note" id="addNoteBtn">
-            <i class="fas fa-plus"></i> Nueva nota
-        </button>
-    </div>
-    <div id="notesContainer" class="notes-container"></div>
-</div>
+        <!-- NOTAS -->
+        <div class="view-section" id="view-notes">
+            <div class="notes-header">
+                <h2><i class="fas fa-sticky-note" style="color:#2d9cdb;"></i> Mis Notas</h2>
+                <button class="btn-add-note" id="addNoteBtn">
+                    <i class="fas fa-plus"></i> Nueva nota
+                </button>
+            </div>
+            <div id="notesContainer" class="notes-container"></div>
+        </div>
 
     </div><!-- fin .main-content -->
 </div><!-- fin .app-layout -->

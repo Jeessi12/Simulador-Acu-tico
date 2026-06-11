@@ -1,9 +1,11 @@
 <?php
 session_start();
 require_once __DIR__ . '/../models/Conexion.php';
+$conexion = new Conexion();
+$conn = $conexion->getConnection();
 
-$clientID = 'aqui va el secreto';
-$clientSecret = 'aqui va el secreto';
+$clientID = 'el secreto va aqui';
+$clientSecret = 'el secreto va aqui';
 $redirectUri  = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 
 // Si no hay código, volver al login

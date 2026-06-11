@@ -1,13 +1,31 @@
 <?php
 
-$servidor = "localhost";
-$usuario = "Simulaciones";
-$contrasena = "bitesthedust";
-$base_datos = "simulador";
+class Conexion {
+    private $servidor  = "localhost";
+    private $usuario   = "Simulaciones";
+    private $contrasena = "bitesthedust";
+    private $base_datos = "simulador";
 
-$conn = new mysqli($servidor, $usuario, $contrasena, $base_datos);
+    private $conn;
 
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
+    public function getConnection(): mysqli {
+        if ($this->conn === null) {
+            $this->conn = new mysqli(
+                $this->servidor,
+                $this->usuario,
+                $this->contrasena,
+                $this->base_datos
+            );
+
+            if ($this->conn->connect_error) {
+                die(json_encode([
+                    'error' => 'Error de conexión: ' . $this->conn->connect_error
+                ]));
+            }
+
+            $this->conn->set_charset('utf8mb4');
+        }
+
+        return $this->conn;
+    }
 }
-?>

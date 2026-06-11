@@ -1,336 +1,10 @@
 // ========== NO PONGAS IMPORTS AQUÍ - Van en el HTML con importmap ==========
 
-document.addEventListener('DOMContentLoaded', function () {
-
-    // ========== DATOS DE ESPECIES ==========
-    const speciesData = [
-        {
-            id: 1, name: "Tortuga verde", scientificName: "Chelonia mydas", category: "tortugas",
-            habitat: "Arrecifes costeros, pastos marinos",
-            desc: "La tortuga verde es una de las especies de tortugas marinas más grandes y la única herbívora en su etapa adulta. Realiza migraciones épicas de hasta 2,600 km entre sus áreas de alimentación y anidación.",
-            dieta: "Herbívora (pastos marinos, algas)", longevidad: "80-100 años",
-            peligro: "En peligro de extinción",
-            tamaño: "90-120 cm", peso: "80-150 kg",
-            reproduccion: "Anidación estacional", huevos: "100-200 huevos por nidada",
-            depredadores: "Tiburones, cocodrilos, humanos",
-            temperatura: "24 – 30 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
-            profundidad_min: "0", profundidad_max: "40", zona_geografica: "Trópicos globales",
-            map_x: 110, map_y: 55,
-            curiosidades: [
-                { icon: "fa-compass", title: "Navegación", text: "Detecta el campo magnético terrestre para orientarse en migraciones de miles de km." },
-                { icon: "fa-thermometer-half", title: "Temperatura", text: "El sexo de las crías depende de la temperatura de incubación de los huevos." },
-                { icon: "fa-lungs", title: "Apnea", text: "Pueden aguantar hasta 7 horas sumergidas mientras descansan." },
-                { icon: "fa-seedling", title: "Ecosistema", text: "Al pastar pastos marinos, los fertilizan y mantienen saludables los arrecifes." }
-            ],
-            amenazas: [
-                { label: "Captura incidental en redes de pesca", level: "high" },
-                { label: "Destrucción de playas de anidación", level: "high" },
-                { label: "Cambio climático y feminización", level: "medium" },
-                { label: "Contaminación por plásticos", level: "medium" }
-            ],
-            modelPath: "../public/media/3D_Models/ridley_turtle_lepidochelys_olivacea.glb",
-            scale: 1.2, posY: -0.2, rotY: -1.57, camDistance: 3.2, camHeight: 0.8
-        },
-        {
-            id: 2, name: "Pez payaso", scientificName: "Amphiprioninae", category: "peces",
-            habitat: "Arrecifes de coral (asociado a anémonas)",
-            desc: "Famoso por su simbiosis mutualista con anémonas marinas. Todos nacen machos y el dominante se vuelve hembra.",
-            dieta: "Omnívoro (plancton, algas, restos)", longevidad: "6-10 años",
-            peligro: "Preocupación menor",
-            tamaño: "8-12 cm", peso: "15-30 g",
-            reproduccion: "Puesta en anémonas", huevos: "100-1000 huevos por ciclo",
-            depredadores: "Peces más grandes, morenas",
-            temperatura: "24 – 28 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
-            profundidad_min: "1", profundidad_max: "15", zona_geografica: "Indo-Pacífico",
-            map_x: 165, map_y: 52,
-            curiosidades: [
-                { icon: "fa-venus-mars", title: "Hermafroditismo", text: "Todos nacen machos; el más dominante cambia de sexo al ser hembra del grupo." },
-                { icon: "fa-shield-alt", title: "Inmunidad", text: "Produce una capa de moco que los protege del veneno de la anémona." },
-                { icon: "fa-music", title: "Comunicación", text: "Se comunican con chasquidos y chirriados para establecer jerarquías." },
-                { icon: "fa-home", title: "Simbiosis", text: "La anémona los protege de depredadores; ellos la limpian y la alimentan." }
-            ],
-            amenazas: [
-                { label: "Blanqueamiento de coral por calentamiento", level: "high" },
-                { label: "Pesca excesiva para acuarios", level: "medium" },
-                { label: "Contaminación costera", level: "medium" },
-                { label: "Turismo sin regulación en arrecifes", level: "low" }
-            ],
-            modelPath: "../public/media/3D_Models/clown_fish_low_poly_animated.glb",
-            scale: 13, posY: -0.1, rotY: 1.57, camDistance: 2.2, camHeight: 0.5
-        },
-        {
-            id: 3, name: "Pulpo", scientificName: "Octopoda", category: "moluscos",
-            habitat: "Mar profundo, arrecifes rocosos",
-            desc: "Uno de los invertebrados más inteligentes del planeta. Puede cambiar el color y la textura de su piel.",
-            dieta: "Carnívoro (crustáceos, peces)", longevidad: "3-5 años",
-            peligro: "Datos insuficientes",
-            tamaño: "30-90 cm", peso: "3-10 kg",
-            reproduccion: "Desove único", huevos: "100,000-500,000 huevos",
-            depredadores: "Tiburones, delfines, focas",
-            temperatura: "10 – 25 °C", salinidad: "Marina (~34 ppt)", zona_luz: "Zona fótica y mesopelágica",
-            profundidad_min: "0", profundidad_max: "200", zona_geografica: "Océanos globales",
-            map_x: 95, map_y: 40,
-            curiosidades: [
-                { icon: "fa-brain", title: "Inteligencia", text: "Tienen 9 cerebros: uno central y uno en cada tentáculo, que actúan de forma independiente." },
-                { icon: "fa-palette", title: "Camuflaje", text: "Pueden cambiar color, textura y forma en menos de 200 milisegundos." },
-                { icon: "fa-tint", title: "3 corazones", text: "Tienen tres corazones y sangre azul por la hemocianina con cobre." },
-                { icon: "fa-unlock", title: "Escapistas", text: "Pueden escapar de tanques y abrir frascos; resuelven problemas complejos." }
-            ],
-            amenazas: [
-                { label: "Pesca comercial excesiva", level: "high" },
-                { label: "Acidificación del océano", level: "medium" },
-                { label: "Contaminación por microplásticos", level: "medium" },
-                { label: "Captura incidental", level: "low" }
-            ],
-            modelPath: "../public/media/3D_Models/octopus.glb",
-            scale: 0.1, posY: -1.4, rotY: Math.PI, camDistance: 5, camHeight: 0.6
-        },
-        {
-            id: 4, name: "Tiburón martillo", scientificName: "Sphyrnidae", category: "peces",
-            habitat: "Aguas tropicales y templadas",
-            desc: "Reconocible por su peculiar cabeza en forma de T que le proporciona visión de 360 grados.",
-            dieta: "Carnívoro (rayas, peces, calamares)", longevidad: "20-30 años",
-            peligro: "En peligro crítico",
-            tamaño: "3-6 m", peso: "300-580 kg",
-            reproduccion: "Vivípara", huevos: "10-40 crías por camada",
-            depredadores: "Orcas, humanos",
-            temperatura: "20 – 29 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
-            profundidad_min: "0", profundidad_max: "300", zona_geografica: "Trópicos y subtrópicos",
-            map_x: 70, map_y: 45,
-            curiosidades: [
-                { icon: "fa-eye", title: "Visión 360°", text: "Su cabeza en forma de T le da visión casi completa alrededor, sin punto ciego arriba." },
-                { icon: "fa-magnet", title: "Electrorecepción", text: "Detecta campos eléctricos de presas enterradas en la arena mediante ampollas de Lorenzini." },
-                { icon: "fa-users", title: "Cardúmenes", text: "Únicos tiburones que forman grandes grupos de hasta cientos de individuos." },
-                { icon: "fa-baby", title: "Vivíparos", text: "Las crías nacen vivas y completamente formadas, listas para sobrevivir." }
-            ],
-            amenazas: [
-                { label: "Pesca de aletas (finning)", level: "high" },
-                { label: "Pesca incidental en redes", level: "high" },
-                { label: "Destrucción de hábitat costero", level: "medium" },
-                { label: "Cambio climático oceánico", level: "medium" }
-            ],
-            modelPath: "../public/media/3D_Models/hammerhead_shark.glb",
-            scale: 0.6, posY: -0.2, rotY: 1.57, camDistance: 3.0, camHeight: 0.7
-        },
-        {
-            id: 5, name: "Cirujano azul", scientificName: "Paracanthurus hepatus", category: "peces",
-            habitat: "Arrecifes de coral",
-            desc: "Pez de color azul eléctrico con distintiva mancha amarilla en la cola.",
-            dieta: "Herbívoro (algas)", longevidad: "8-12 años",
-            peligro: "Preocupación menor",
-            tamaño: "20-30 cm", peso: "200-600 g",
-            reproduccion: "Desove en grupo", huevos: "Miles de huevos flotantes",
-            depredadores: "Tiburones, barracudas",
-            temperatura: "24 – 28 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
-            profundidad_min: "2", profundidad_max: "40", zona_geografica: "Indo-Pacífico",
-            map_x: 162, map_y: 50,
-            curiosidades: [
-                { icon: "fa-cut", title: "Espina caudal", text: "Tienen una espina afilada en la cola con la que se defienden de depredadores." },
-                { icon: "fa-leaf", title: "Control de algas", text: "Al pastar algas, permiten el crecimiento de coral y mantienen el arrecife saludable." },
-                { icon: "fa-palette", title: "Color único", text: "Su pigmento azul real es uno de los más raros en peces de arrecife." },
-                { icon: "fa-film", title: "Fama mundial", text: "Popularizado por Dory en Buscando a Nemo, lo que aumentó su demanda en acuarios." }
-            ],
-            amenazas: [
-                { label: "Pesca para comercio de acuarios", level: "high" },
-                { label: "Blanqueamiento de coral", level: "high" },
-                { label: "Contaminación marina", level: "medium" },
-                { label: "Turismo irresponsable", level: "low" }
-            ],
-            modelPath: "../public/media/3D_Models/hand_painted_surgeon_fish.glb",
-            scale: 10.0, posY: -0.2, rotY: 1.57, camDistance: 2.8, camHeight: 0.7
-        },
-        {
-            id: 6, name: "Caballito de mar", scientificName: "Hippocampus", category: "peces",
-            habitat: "Praderas marinas, manglares",
-            desc: "Pez único que nada en posición vertical. El macho es el responsable de la gestación.",
-            dieta: "Carnívoro (pequeños crustáceos)", longevidad: "1-4 años",
-            peligro: "Vulnerable",
-            tamaño: "5-15 cm", peso: "5-15 g",
-            reproduccion: "Gestación masculina", huevos: "50-150 crías",
-            depredadores: "Cangrejos, peces grandes",
-            temperatura: "20 – 28 °C", salinidad: "Marina (~33-35 ppt)", zona_luz: "Zona fótica",
-            profundidad_min: "0", profundidad_max: "30", zona_geografica: "Costas tropicales",
-            map_x: 100, map_y: 50,
-            curiosidades: [
-                { icon: "fa-baby", title: "Machos gestantes", text: "El único animal donde el macho lleva y da a luz a las crías en su bolsa ventral." },
-                { icon: "fa-eye", title: "Ojos independientes", text: "Pueden mover cada ojo de forma independiente, como los camaleones." },
-                { icon: "fa-anchor", title: "Cola prensil", text: "Se aferran a corales y algas con su cola para no ser arrastrados por corrientes." },
-                { icon: "fa-swimmer", title: "Mal nadador", text: "Son los peces más lentos del mundo, se mueven por batido de la aleta dorsal." }
-            ],
-            amenazas: [
-                { label: "Medicina tradicional y coleccionismo", level: "high" },
-                { label: "Destrucción de praderas marinas", level: "high" },
-                { label: "Pesca incidental", level: "medium" },
-                { label: "Acuarios y curios marinos", level: "medium" }
-            ],
-            modelPath: "../public/media/3D_Models/seahorse_from_poly_by_google.glb",
-            scale: 0.0050, posY: -0.3, rotY: 1.57, camDistance: 2.8, camHeight: 0.7
-        },
-        {
-            id: 7, name: "Delfín nariz de botella", scientificName: "Tursiops truncatus", category: "peces",
-            habitat: "Océano abierto, zonas costeras",
-            desc: "Mamífero marino extremadamente inteligente. Vive en manadas y se comunica mediante silbidos.",
-            dieta: "Carnívoro (peces, calamares)", longevidad: "40-50 años",
-            peligro: "Preocupación menor",
-            tamaño: "2-4 m", peso: "150-650 kg",
-            reproduccion: "Vivípara", huevos: "1 cría cada 2-3 años",
-            depredadores: "Tiburones, orcas",
-            temperatura: "10 – 32 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica",
-            profundidad_min: "0", profundidad_max: "500", zona_geografica: "Océanos globales",
-            map_x: 75, map_y: 42,
-            curiosidades: [
-                { icon: "fa-satellite-dish", title: "Ecolocalización", text: "Emiten clicks ultrasónicos y analizan el eco para detectar presas con precisión milimétrica." },
-                { icon: "fa-moon", title: "Sueño hemisférico", text: "Duermen con medio cerebro a la vez para seguir respirando en superficie." },
-                { icon: "fa-id-badge", title: "Identidad", text: "Cada delfín tiene un silbido único que funciona como su 'nombre' personal." },
-                { icon: "fa-heart", title: "Empatía", text: "Ayudan a compañeros heridos y han rescatado humanos en el mar." }
-            ],
-            amenazas: [
-                { label: "Redes de pesca y captura incidental", level: "high" },
-                { label: "Contaminación acústica submarina", level: "medium" },
-                { label: "Derrames de petróleo", level: "medium" },
-                { label: "Turismo de avistamiento irresponsable", level: "low" }
-            ],
-            modelPath: "../public/media/3D_Models/cute_dolphin.glb",
-            scale: 1.5, posY: -0.3, rotY: 1.57, camDistance: 4.5, camHeight: 0.8
-        },
-        {
-            id: 8, name: "Cangrejo ermitaño", scientificName: "Paguroidea", category: "crustaceos",
-            habitat: "Zonas intermareales, fondos arenosos",
-            desc: "Utiliza conchas vacías como refugio. A medida que crece, debe buscar conchas más grandes.",
-            dieta: "Omnívoro (detritus, algas)", longevidad: "3-12 años",
-            peligro: "Preocupación menor",
-            tamaño: "5-15 cm", peso: "10-50 g",
-            reproduccion: "Puesta de huevos", huevos: "Miles de huevos",
-            depredadores: "Pulpos, peces, aves",
-            temperatura: "18 – 27 °C", salinidad: "Marina o estuarina", zona_luz: "Intermareal",
-            profundidad_min: "0", profundidad_max: "10", zona_geografica: "Costas tropicales",
-            map_x: 100, map_y: 55,
-            curiosidades: [
-                { icon: "fa-home", title: "Casa prestada", text: "Usan conchas de gasterópodos vacías; organizan intercambios masivos en cadena." },
-                { icon: "fa-hand-rock", title: "Sociabilidad", text: "Se reúnen en grupos para intercambiar conchas de forma ordenada y pacífica." },
-                { icon: "fa-recycle", title: "Recicladores", text: "Son descomponedores clave; procesan materia orgánica en el sedimento." },
-                { icon: "fa-shield-alt", title: "Defensa", text: "Se retraen dentro de la concha y bloquean la entrada con su pinza más grande." }
-            ],
-            amenazas: [
-                { label: "Recolección de conchas (privación de hogar)", level: "high" },
-                { label: "Contaminación de playas", level: "medium" },
-                { label: "Captura para comercio de mascotas", level: "medium" },
-                { label: "Pérdida de hábitat costero", level: "low" }
-            ],
-            modelPath: "../public/media/3D_Models/little_hermit_crab.glb",
-            scale: 33.0, posY: 0.3, rotY: -25, camDistance: 2.5, camHeight: 0.5
-        },
-        {
-            id: 9, name: "Estrella de mar", scientificName: "Asteroidea", category: "moluscos",
-            habitat: "Fondos rocosos, arenosos",
-            desc: "Equinodermo con gran capacidad regenerativa. Puede perder un brazo y volver a crecerlo.",
-            dieta: "Carnívoro (mejillones, almejas)", longevidad: "5-35 años",
-            peligro: "Preocupación menor",
-            tamaño: "10-30 cm", peso: "50-500 g",
-            reproduccion: "Reproducción sexual y asexual", huevos: "Miles de huevos",
-            depredadores: "Gaviotas, nutrias, peces",
-            temperatura: "5 – 25 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona bentónica",
-            profundidad_min: "0", profundidad_max: "200", zona_geografica: "Océanos globales",
-            map_x: 95, map_y: 40,
-            curiosidades: [
-                { icon: "fa-hand-paper", title: "Regeneración", text: "Pueden regenerar un brazo perdido en meses; algunos regeneran el cuerpo entero desde un brazo." },
-                { icon: "fa-stomach", title: "Digestión externa", text: "Expulsan su estómago fuera del cuerpo para digerir presas dentro de sus conchas." },
-                { icon: "fa-shoe-prints", title: "Sin cerebro", text: "No tienen cerebro ni sangre; usan agua de mar a presión para moverse y funcionar." },
-                { icon: "fa-eye", title: "Ojos en tentáculos", text: "Tienen pequeños fotorreceptores en las puntas de sus brazos para detectar luz." }
-            ],
-            amenazas: [
-                { label: "Coleccionismo y souvenirs marinos", level: "high" },
-                { label: "Contaminación y acidificación", level: "medium" },
-                { label: "Enfermedades como el síndrome de marchitamiento", level: "medium" },
-                { label: "Alteración de hábitat bentónico", level: "low" }
-            ],
-            modelPath: "../public/media/3D_Models/starfish.glb",
-            scale: 0.9, posY: -0.1, rotY: 0, camDistance: 2.8, camHeight: 0.5
-        },
-        {
-            id: 10, name: "Langosta espinosa", scientificName: "Palinuridae", category: "crustaceos",
-            habitat: "Arrecifes rocosos, fondos duros",
-            desc: "Carece de pinzas grandes, usa sus largas antenas para defenderse.",
-            dieta: "Omnívoro (moluscos, algas)", longevidad: "15-20 años",
-            peligro: "Preocupación menor",
-            tamaño: "20-40 cm", peso: "0.5-3 kg",
-            reproduccion: "Puesta de huevos", huevos: "50,000-500,000 huevos",
-            depredadores: "Pulpos, peces grandes, humanos",
-            temperatura: "18 – 28 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona bentónica",
-            profundidad_min: "1", profundidad_max: "90", zona_geografica: "Trópicos y subtrópicos",
-            map_x: 80, map_y: 50,
-            curiosidades: [
-                { icon: "fa-compass", title: "Navegación magnética", text: "Pueden orientarse usando el campo magnético terrestre durante migraciones." },
-                { icon: "fa-music", title: "Estridulación", text: "Producen sonidos frotando sus antenas contra el caparazón para espantar depredadores." },
-                { icon: "fa-users", title: "Migraciones en fila", text: "Migran en filas de hasta 50 individuos tomados de las antenas del de delante." },
-                { icon: "fa-hard-hat", title: "Muda", text: "Mudan su exoesqueleto para crecer; quedan vulnerables durante horas hasta que se endurece." }
-            ],
-            amenazas: [
-                { label: "Sobrepesca y pesca ilegal", level: "high" },
-                { label: "Destrucción de arrecifes de coral", level: "high" },
-                { label: "Contaminación costera", level: "medium" },
-                { label: "Cambio climático y blanqueamiento", level: "medium" }
-            ],
-            modelPath: "../public/media/3D_Models/lobster.glb",
-            scale: 0.15, posY: -0.15, rotY: 0, camDistance: 3.0, camHeight: 0.6
-        },
-        {
-            id: 11, name: "Mantarraya", scientificName: "Mobula birostris", category: "peces",
-            habitat: "Aguas cálidas tropicales",
-            desc: "Una de las rayas más grandes del mundo. Filtradora de plancton conocida por sus impresionantes saltos.",
-            dieta: "Carnívoro (plancton, peces pequeños)", longevidad: "15-20 años",
-            peligro: "Vulnerable",
-            tamaño: "3-5 m", peso: "500-1500 kg",
-            reproduccion: "Vivípara", huevos: "1-2 crías por camada",
-            depredadores: "Tiburones, orcas",
-            temperatura: "20 – 30 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Zona fótica y epipelágica",
-            profundidad_min: "0", profundidad_max: "1000", zona_geografica: "Trópicos globales",
-            map_x: 105, map_y: 52,
-            curiosidades: [
-                { icon: "fa-brain", title: "Mayor cerebro", text: "Tienen el mayor cerebro en proporción al cuerpo de todos los peces." },
-                { icon: "fa-rocket", title: "Saltos", text: "Pueden saltar varios metros fuera del agua; aún se desconoce la razón exacta." },
-                { icon: "fa-filter", title: "Filtración", text: "Filtran hasta 30 kg de plancton por hora pasando agua por sus branquias modificadas." },
-                { icon: "fa-graduation-cap", title: "Curiosas", text: "Se acercan a buzos voluntariamente; parecen mostrar curiosidad hacia humanos." }
-            ],
-            amenazas: [
-                { label: "Pesca dirigida por branquias (medicina)", level: "high" },
-                { label: "Enredamiento en redes de pesca", level: "high" },
-                { label: "Colisiones con embarcaciones", level: "medium" },
-                { label: "Contaminación y pérdida de plancton", level: "low" }
-            ],
-            modelPath: "../public/media/3D_Models/mantarraya.glb",
-            scale: 1.5, posY: -0.2, rotY: 0, camDistance: 3.2, camHeight: 0.6
-        },
-        {
-            id: 12, name: "Caracol cono", scientificName: "Conus geographus", category: "moluscos",
-            habitat: "Arenas y arrecifes",
-            desc: "Molusco depredador que usa un arpón modificado para inyectar veneno.",
-            dieta: "Carnívoro (gusanos, peces)", longevidad: "10-15 años",
-            peligro: "Preocupación menor",
-            tamaño: "10-15 cm", peso: "50-150 g",
-            reproduccion: "Puesta de huevos", huevos: "Miles de huevos",
-            depredadores: "Peces, tortugas",
-            temperatura: "22 – 30 °C", salinidad: "Marina (~35 ppt)", zona_luz: "Bentónica fótica",
-            profundidad_min: "0", profundidad_max: "50", zona_geografica: "Indo-Pacífico",
-            map_x: 160, map_y: 55,
-            curiosidades: [
-                { icon: "fa-syringe", title: "Veneno letal", text: "Produce conotoxinas que atacan el sistema nervioso; no hay antídoto conocido." },
-                { icon: "fa-crosshairs", title: "Arpón harpaxóforo", text: "Su 'diente' es un arpón retráctil que puede disparar en cualquier dirección." },
-                { icon: "fa-pills", title: "Medicina", text: "Sus conotoxinas son base de Ziconotide, un analgésico más potente que la morfina." },
-                { icon: "fa-moon", title: "Caza nocturna", text: "Son activos de noche; detectan presas con un sifón que analiza partículas en el agua." }
-            ],
-            amenazas: [
-                { label: "Recolección de conchas por coleccionismo", level: "high" },
-                { label: "Degradación de arrecifes de coral", level: "medium" },
-                { label: "Contaminación de sedimentos", level: "medium" },
-                { label: "Turismo sin regulación", level: "low" }
-            ],
-            modelPath: "../public/media/3D_Models/cone_snail_shell.glb",
-            scale: 0.8, posY: -0.1, rotY: 0, camDistance: 2.5, camHeight: 0.5
-        }
-    ];
+document.addEventListener('DOMContentLoaded', async function () {
 
     // ========== ESTADO ==========
+    let speciesData = [];
+
     let state = {
         currentCategory: 'todos',
         currentSearch: '',
@@ -349,6 +23,48 @@ document.addEventListener('DOMContentLoaded', function () {
     const filterBtns   = document.querySelectorAll('.ftab');
     const speciesGrid  = document.getElementById('speciesGrid');
     const noResultsDiv = document.getElementById('noResults');
+
+    // ========== CARGA DE DATOS DESDE LA API ==========
+    async function loadSpeciesData() {
+        // Mostrar esqueleto de carga
+        speciesGrid.style.display = 'grid';
+        speciesGrid.innerHTML = Array.from({ length: 6 }).map(() => `
+            <article class="book-card skeleton-card">
+                <div class="book-cover skeleton-cover"></div>
+                <div class="book-info">
+                    <div class="skeleton-line wide"></div>
+                    <div class="skeleton-line medium"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
+            </article>`).join('');
+
+        try {
+            const res  = await fetch('./api_especies.php');
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            speciesData = await res.json();
+
+            if (!Array.isArray(speciesData) || speciesData.length === 0) {
+                throw new Error('La API devolvió datos vacíos o inválidos');
+            }
+
+        } catch (err) {
+            console.error('Error cargando especies:', err);
+            speciesGrid.style.display = 'none';
+            noResultsDiv.style.display = 'block';
+            noResultsDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle" style="color:#f97316;"></i>
+                <h3>Error al cargar las especies</h3>
+                <p>No se pudo conectar con la base de datos. Por favor recarga la página.</p>
+                <button onclick="location.reload()" style="margin-top:12px;padding:8px 20px;border-radius:100px;border:none;background:#2d9cdb;color:#fff;cursor:pointer;font-size:0.9rem;">
+                    <i class="fas fa-redo"></i> Reintentar
+                </button>`;
+            return false;
+        }
+
+        return true;
+    }
 
     // ========== UTILS ==========
     function getCoverClass(cat) {
@@ -584,7 +300,6 @@ document.addEventListener('DOMContentLoaded', function () {
             { label: 'Turismo sin regulación',           level: 'low' },
         ];
 
-        // Mini mapa SVG con punto animado
         const mx = species.map_x || 95;
         const my = species.map_y || 40;
         const mapSVG = `
@@ -615,12 +330,12 @@ document.addEventListener('DOMContentLoaded', function () {
         ];
 
         const sciItems = [
-            { value: species.profundidad_min  || '0',   label: 'Prof. mín (m)' },
-            { value: species.profundidad_max  || '—',   label: 'Prof. máx (m)' },
-            { value: species.longevidad       || '—',   label: 'Longevidad' },
-            { value: species.tamaño           || '—',   label: 'Tamaño' },
-            { value: species.peso             || '—',   label: 'Peso' },
-            { value: getCitesLevel(species.id),          label: 'CITES' },
+            { value: species.profundidad_min  ?? '0',  label: 'Prof. mín (m)' },
+            { value: species.profundidad_max  ?? '—',  label: 'Prof. máx (m)' },
+            { value: species.longevidad       || '—',  label: 'Longevidad' },
+            { value: species.tamaño           || '—',  label: 'Tamaño' },
+            { value: species.peso             || '—',  label: 'Peso' },
+            { value: getCitesLevel(species.id),         label: 'CITES' },
         ];
 
         return `
@@ -720,7 +435,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const dangerColor = dangerClass === 'critico' ? '#b91c1c' : dangerClass === 'peligro' ? '#c2410c' : dangerClass === 'vulnerable' ? '#a16207' : '#15803d';
         const dangerBg    = dangerClass === 'critico' ? '#fee2e2' : dangerClass === 'peligro' ? '#ffede0' : dangerClass === 'vulnerable' ? '#fef9e3' : '#dcfce7';
 
-        // ── Reconstruir layout de detalle con detail-left-col ──
         const detailTopArea = document.querySelector('.detail-top-area');
         if (detailTopArea) {
             detailTopArea.innerHTML = `
@@ -735,7 +449,6 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
         }
 
-        // ── Chips flotantes ──
         const panel3d = document.getElementById('detail3dPanel');
         if (panel3d) {
             panel3d.querySelectorAll('.floating-chip').forEach(c => c.remove());
@@ -754,14 +467,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // ── Panel interactivo ──
         const slot = document.getElementById('interactivePanelSlot');
         if (slot) {
             slot.innerHTML = buildInteractivePanel(species);
             initInteractiveTabs(slot);
         }
 
-        // ── Sidebar derecho ──
         const sidebar = document.getElementById('detailInfoSidebar');
         if (sidebar) {
             sidebar.innerHTML = `
@@ -846,7 +557,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // ── Canvas 3D ──
         const c3d = document.getElementById('detail3dContainer');
         if (c3d) {
             if (c3d._cleanup3d) { c3d._cleanup3d(); delete c3d._cleanup3d; }
@@ -1113,6 +823,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ========== INICIO ==========
-    renderCards();
+    // ========== INICIO: cargar API y luego renderizar ==========
+    const ok = await loadSpeciesData();
+    if (ok) renderCards();
 });
