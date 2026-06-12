@@ -94,7 +94,7 @@ $user = $result->fetch_assoc();
                         <div class="detail-icon">📧</div>
                         <div>
                             <strong>Email</strong>
-                            <span><?php echo htmlspecialchars($user['email']); ?></span>
+                            <span><?php echo htmlspecialchars($user['email'] ?? ''); ?></span>
                         </div>
                     </div>
                     <div class="detail-item">

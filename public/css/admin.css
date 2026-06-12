@@ -561,3 +561,21 @@ body.admin-page {
         min-width: 700px;
     }
 }
+
+/* ==================================================
+   FORZAR FOOTER ABAJO SOLO EN ADMIN (sin afectar al resto)
+   ================================================== */
+body.admin-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body.admin-page .admin-container {
+    flex: 1;  /* Empuja el footer hacia abajo */
+}
+
+/* Aseguramos que el footer tenga margen superior automático */
+body.admin-page footer.site-footer {
+    margin-top: auto;
+}

@@ -7,32 +7,12 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* ===== ESTRUCTURA BASE PARA QUE EL FOOTER QUEDE SIEMPRE ABAJO ===== */
-html, body {
-    height: 100%;
+body {
     margin: 0;
     padding: 0;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
     min-height: 100vh;
 }
 
-/* Los contenedores principales de cada página deben ocupar el espacio restante */
-main, 
-.container, 
-.admin-container,
-.classroom-container,
-.asignaciones-container,
-.profile-container,
-.dashboard-container,
-.simulator {
-    flex: 1;
-}
-
-/* ===== NAVBAR ===== */
 .navbar {
     position: fixed;
     top: 20px;
@@ -182,11 +162,12 @@ main,
 
 .logout-btn {
     font-weight: 600;
-    background: #d6ecff7e;
-    color: #1b5283;
+    background: #d6ecff7e;           /* celestito */
+    color: #1b5283;                /* azul bonito */
     border: 1px solid #b5dbffc7;
 }
 
+/* HOVER */
 .logout-btn:hover {
     background: #c4e4ff;
     color: #155a96;
@@ -199,13 +180,43 @@ main,
     gap: 12px;
 }
 
-/* ===== FOOTER (siempre abajo) ===== */
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .navbar {
+        padding: 10px 20px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .navbar {
+        max-width: 1500px;
+        padding: 16px 80px;
+        width: 95%;
+    }
+    
+    .nav-left {
+        gap: 50px;
+    }
+    
+    .nav-links a {
+        font-size: 16px;
+        margin: 0 16px;
+    }
+    
+    .logo {
+        height: 55px;
+    }
+}
+
 footer.site-footer {
     width: 100%;
-    background-color: #0a1425;
-    margin-top: auto;       /* Empuja el footer hacia abajo en flex column */
-    position: relative;
-    z-index: 2;            /* Asegura que esté por encima de las burbujas pero por debajo del contenido */
+    box-sizing: border-box;
+    padding: 12px 0; /* espacio vertical para el strip */
+    background-color: #0a1425; /* fondo de barra completo */
 }
 
 #foot {
@@ -213,16 +224,15 @@ footer.site-footer {
     grid-template-columns: auto 1fr auto;
     align-items: center;
     justify-content: space-between;
-    background-color: transparent;
-    padding: 12px 20px;
+    background-color: transparent; /* contenido centrado sin repetir fondo */
+    padding: 0 20px; /* padding horizontal interno */
     width: 100%;
-    max-width: 100%;
+    max-width: 100%; /* ancho completo del strip */
     margin: 0;
     box-sizing: border-box;
 }
-
 #foot a {
-    color: #ffffff;
+    color: #ffffff;      
     text-decoration: none;
 }
 
@@ -257,6 +267,7 @@ footer.site-footer {
     font-family: 'Poppins', sans-serif;
 }
 
+
 .foot-right {
     display: flex;
     justify-content: flex-end;
@@ -265,74 +276,95 @@ footer.site-footer {
     justify-self: end;
 }
 
-.about-link {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-.about-link:hover {
-    color: #2d9cdb;
-}
 
-/* ===== CANVAS DE BURBUJAS (detrás de todo excepto footer) ===== */
-#particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;  /* Las burbujas quedan detrás del contenido y del footer */
-    opacity: 0.6;
-}
-
-/* Aseguramos que el footer tenga un z-index mayor que las burbujas */
-.site-footer {
-    z-index: 2;
-}
-
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-    .navbar {
-        padding: 10px 20px;
-    }
-    #foot {
+    #footer-container,
+    .footer-container {
+        display: grid;
         grid-template-columns: 1fr;
         gap: 15px;
         text-align: center;
     }
-    .foot-left, .foot-right {
+
+    .footer-left,
+    .footer-right {
         justify-self: center;
     }
 }
-
 @media (min-width: 1920px) {
-    .navbar {
-        max-width: 1500px;
-        padding: 16px 80px;
-        width: 95%;
+
+    .navbar{
+        max-width:1500px;
+        padding:16px 80px;
+        width:95%;
     }
-    .nav-left {
-        gap: 50px;
+
+    .nav-left{
+        gap:50px;
     }
-    .nav-links a {
-        font-size: 16px;
-        margin: 0 16px;
+
+    .nav-links a{
+        font-size:16px;
+        margin:0 16px;
     }
-    .btn {
-        padding: 12px 32px;
-        font-size: 15px;
-        border-radius: 14px;
+
+    .btn{
+        padding:12px 32px;
+        font-size:15px;
+        border-radius:14px;
     }
-    .logo {
-        height: 55px;
+
+    .hero{
+        padding:0 140px;
     }
-    #foot {
+
+    .hero-text{
+        margin-left:40px;
+        max-width:700px;
+        margin-top:60px;
+    }
+
+    .hero-text h1{
+        font-size:72px;
+        line-height:1.15;
+        margin-bottom:25px;
+        margin-top:0;
+    }
+
+    .hero-text p{
+        font-size:24px;
+        line-height:1.9;
+        margin-bottom:40px;
+    }
+
+    .cta{
+        margin-left:130px;
+        margin-top:30px;
+        padding:20px 56px;
+        font-size:18px;
+        font-weight:700;
+        background:#0d5fc7;
+        box-shadow:0 10px 30px rgba(13, 95, 199, 0.4);
+    }
+
+    .cta:hover{
+        background:#0a4aa0;
+        box-shadow:0 14px 40px rgba(13, 95, 199, 0.6);
+    }
+
+    .logo{
+        height:55px;
+    }
+        #foot {
         max-width: 100%;
-        padding: 12px 40px;
+        padding: 0 40px;  /* poco padding = contenido pegado a los bordes */
+    }
+
+    .foot-left {
+        justify-self: start;
+    }
+
+    .foot-right {
+        justify-self: end;
     }
 }
