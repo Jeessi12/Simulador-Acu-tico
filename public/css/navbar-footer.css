@@ -1,0 +1,338 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== ESTRUCTURA BASE PARA QUE EL FOOTER QUEDE SIEMPRE ABAJO ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Los contenedores principales de cada página deben ocupar el espacio restante */
+main, 
+.container, 
+.admin-container,
+.classroom-container,
+.asignaciones-container,
+.profile-container,
+.dashboard-container,
+.simulator {
+    flex: 1;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 30px;
+    background: rgba(255, 255, 255, 1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(6, 64, 119, 0.253);
+    z-index: 1000;
+    transition: all 0.4s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.411);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 8px 30px rgba(6, 83, 155, 0.164);
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.logo {
+    height: 45px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #30343a;
+    margin: 0 12px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #256fdd;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 40%;
+    border: 1px solid rgba(37, 111, 221, 0.103);
+    background: #f5f9ff00;
+    color: #38507c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.icon-btn:hover {
+    background: #eaf3ff;
+    transform: translateY(-2px);
+}
+
+.icon-btn i {
+    font-size: 1.1rem;
+}
+
+.user-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 10px 20px rgba(31, 92, 153, 0.16);
+    transition: transform 0.25s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #3b5b8c;
+    color: white;
+    box-shadow: 0 6px 15px rgba(59, 91, 140, 0.3);
+}
+
+.btn-primary:hover {
+    background: #2a3f5f;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 120px;
+    padding: 10px 22px;
+    background: #e5e7eb;
+    color: #333;
+    border-radius: 14px;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background: #d1d5db;
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    font-weight: 600;
+    background: #d6ecff7e;
+    color: #1b5283;
+    border: 1px solid #b5dbffc7;
+}
+
+.logout-btn:hover {
+    background: #c4e4ff;
+    color: #155a96;
+    transform: translateY(-2px);
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ===== FOOTER (siempre abajo) ===== */
+footer.site-footer {
+    width: 100%;
+    background-color: #0a1425;
+    margin-top: auto;       /* Empuja el footer hacia abajo en flex column */
+    position: relative;
+    z-index: 2;            /* Asegura que esté por encima de las burbujas pero por debajo del contenido */
+}
+
+#foot {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    justify-content: space-between;
+    background-color: transparent;
+    padding: 12px 20px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#foot a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.foot-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-self: start;
+}
+
+.foot-icons {
+    border-radius: 10px;
+    width: 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s;
+}
+
+.foot-icons:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+#namepage {
+    text-align: center;
+    justify-self: center;
+}
+
+#foot-title {
+    color: white;
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.foot-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    justify-self: end;
+}
+
+.about-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.about-link:hover {
+    color: #2d9cdb;
+}
+
+/* ===== CANVAS DE BURBUJAS (detrás de todo excepto footer) ===== */
+#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;  /* Las burbujas quedan detrás del contenido y del footer */
+    opacity: 0.6;
+}
+
+/* Aseguramos que el footer tenga un z-index mayor que las burbujas */
+.site-footer {
+    z-index: 2;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .navbar {
+        padding: 10px 20px;
+    }
+    #foot {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        text-align: center;
+    }
+    .foot-left, .foot-right {
+        justify-self: center;
+    }
+}
+
+@media (min-width: 1920px) {
+    .navbar {
+        max-width: 1500px;
+        padding: 16px 80px;
+        width: 95%;
+    }
+    .nav-left {
+        gap: 50px;
+    }
+    .nav-links a {
+        font-size: 16px;
+        margin: 0 16px;
+    }
+    .btn {
+        padding: 12px 32px;
+        font-size: 15px;
+        border-radius: 14px;
+    }
+    .logo {
+        height: 55px;
+    }
+    #foot {
+        max-width: 100%;
+        padding: 12px 40px;
+    }
+}

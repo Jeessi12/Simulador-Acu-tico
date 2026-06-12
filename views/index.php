@@ -1,0 +1,120 @@
+<?php 
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlueEcoSim</title>
+
+<link rel="icon" href="../public/media/Web/logo.png" type="image/png">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../public/css/index.css">
+<link rel="stylesheet" href="../public/css/navbar-footer.css">
+
+<script src="../public/js/burbujas.js" defer></script>
+</head>
+
+<body>
+
+<div id="navbar-container">
+    <?php include(__DIR__ . "/fragments/navbar.php"); ?>
+</div>
+
+<section class="hero">
+
+    <video class="hero-video-bg" autoplay muted loop playsinline>
+        <source src="../public/media/backgrounds/index.mp4" type="video/mp4">
+    </video>
+
+    <div class="hero-text">
+        <h1 class="title">
+            <span>Sumérgete</span>
+            <span>en</span>
+            <span>la</span>
+            <span>experiencia</span>
+            <span class="highlight">acuática</span>
+            <span>en</span>
+            <span>minutos</span>
+        </h1>
+
+        <p>
+            Explora un mundo submarino lleno de vida, modifica ecosistemas 
+            y observa cómo el ecosistema responde en tiempo real
+        </p>
+
+        <div class="cta-wrapper">
+            <a href="#eco" class="cta">Conoce más →</a>
+        </div>
+    </div>
+
+    <canvas id="particles"></canvas>
+</section>
+
+<section class="eco-section" id="eco">
+    <canvas id="particlesSpecies"></canvas>
+
+    <video class="eco-video-bg" autoplay muted loop playsinline>
+        <source src="../public/media/backgrounds/index2.mp4" type="video/mp4">
+    </video>
+
+    <div class="eco-overlay">
+
+        <!-- DERECHA: texto -->
+        <div class="eco-right">
+
+
+<h2 class="eco-title">
+    El océano te<br>
+    <span class="eco-highlight">necesita</span> a ti
+</h2>
+<p class="eco-desc">
+    Cada especie tiene un rol  y cada 
+    decisión un impacto. Aprende las conexiones invisibles que mantienen 
+    vivo el mar y descubre, a través de la educación interactiva, cómo 
+    tus acciones pueden cambiar el equilibrio de toda una cadena de vida marina.
+</p>
+
+            <div class="eco-stats">
+                <div class="stat">
+                    <span class="stat-number">+5,000</span>
+                    <span class="stat-label">Estudiantes</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">+150</span>
+                    <span class="stat-label">Especies</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Interactivo</span>
+                </div>
+            </div>
+
+            <div class="eco-actions">
+                <a href="/Simulador-Acu-tico-main/views/login.php" class="eco-btn-primary">
+                    Únete a nosotros →
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div id="footer-container">
+    <?php include(__DIR__ . "/fragments/footer.php"); ?>
+</div>
+
+<script src="/Simulador-Acu-tico-main/JS/session.js" defer></script>
+</body>
+</html>
