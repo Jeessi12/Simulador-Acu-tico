@@ -72,55 +72,144 @@
         document.getElementById('formCrearEspacio').submit();
     });
 
-    // ── SweetAlert eliminar espacio (lista) ─────────────────────────────────────
-    document.querySelectorAll('.btn-delete-space').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.preventDefault(); e.stopPropagation();
-            const { id, nombre } = btn.dataset;
-            Swal.fire({
-                title: '¿Eliminar espacio?',
-                html: `<p style="font-size:1rem">Estás por eliminar <strong>"${nombre}"</strong></p>
-                       <p style="color:#1a3f9a">⚠️ Se eliminarán también todas las asignaciones</p>`,
-                icon: 'warning', iconColor: '#1a73e8', buttonsStyling: false, showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar',
-                customClass: { popup:'swal2-custom-popup', confirmButton:'swal2-custom-confirm',
-                               cancelButton:'swal2-custom-cancel', title:'swal2-custom-title',
-                               htmlContainer:'swal2-custom-html' }
-            }).then(r => { if (r.isConfirmed) document.getElementById(`deleteForm_${id}`).submit(); });
-        });
-    });
-
-    // ── SweetAlert eliminar espacio (detalle) ───────────────────────────────────
-    const btnDetalle = document.getElementById('btnEliminarDetalle');
-    if (btnDetalle) {
-        btnDetalle.addEventListener('click', () => {
-            const nombre = btnDetalle.dataset.nombre;
-            Swal.fire({
-                title: '¿Eliminar espacio?',
-                html: `<p style="font-size:1rem">Estás por eliminar <strong>"${nombre}"</strong></p>
-                       <p style="color:#1a3f9a">⚠️ Se eliminarán miembros y asignaciones</p>`,
-                icon: 'warning', iconColor: '#006eff', buttonsStyling: false, showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar',
-                customClass: { popup:'swal2-custom-popup', confirmButton:'swal2-custom-confirm',
-                               cancelButton:'swal2-custom-cancel', title:'swal2-custom-title',
-                               htmlContainer:'swal2-custom-html' }
-            }).then(r => { if (r.isConfirmed) document.getElementById('formEliminarDetalle').submit(); });
-        });
+  // ── Estilos base compartidos para los 3 modales ──────────────────────────────
+const swalBase = {
+    buttonsStyling: false,
+    showCancelButton: true,
+    title: '',          // ← vacío, el título va dentro del html
+    customClass: {
+        popup:         'swal2-ecosim-popup',
+        confirmButton: 'swal2-ecosim-confirm',
+        cancelButton:  'swal2-ecosim-cancel',
+        htmlContainer: 'swal2-ecosim-html'
     }
+};
 
-    // ── SweetAlert eliminar miembro ─────────────────────────────────────────────
-    document.querySelectorAll('.btn-remove-member').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const { id, nombre } = btn.dataset;
-            Swal.fire({
-                title: '¿Quitar miembro?',
-                html: `<p style="font-size:1rem">Estás por quitar a <strong>"${nombre}"</strong> del espacio</p>
-                       <p style="color:#1a3f9a">⚠️ También se eliminarán sus asignaciones en este espacio</p>`,
-                icon: 'warning', iconColor: '#004eb4', buttonsStyling: false, showCancelButton: true,
-                confirmButtonText: 'Sí, quitar', cancelButtonText: 'Cancelar',
-                customClass: { popup:'swal2-custom-popup', confirmButton:'swal2-custom-confirm',
-                               cancelButton:'swal2-custom-cancel', title:'swal2-custom-title',
-                               htmlContainer:'swal2-custom-html' }
-            }).then(r => { if (r.isConfirmed) document.getElementById(`removeMemberForm_${id}`).submit(); });
-        });
+function iconCircle(svg) {
+    return `
+        <div style="
+            width:72px; height:72px;
+            background:linear-gradient(145deg,#dff3ff,#b8e6ff);
+            border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 16px;
+            box-shadow:0 4px 18px rgba(45,156,219,0.2);
+            border:2px solid rgba(45,156,219,0.15)">
+            ${svg}
+        </div>`;
+}
+
+function modalTitle(texto) {
+    return `<p style="
+        font-size:1.1rem; font-weight:600;
+        color:#0f172a; margin:0 0 12px;
+        line-height:1.3">${texto}</p>`;
+}
+
+function modalBody(nombre) {
+    return `<p style="
+        font-size:0.95rem; color:#334155;
+        margin:0 0 4px; line-height:1.5">
+        Estás por eliminar<br>
+        <strong style="
+            color:#0f172a; font-size:1rem;
+            display:block; margin-top:6px">
+            "${nombre}"
+        </strong>
+    </p>`;
+}
+
+function warnBox(texto) {
+    return `
+        <div style="
+            display:flex; gap:10px; align-items:flex-start;
+            background:#f0f9ff;
+            border:1px solid rgba(45,156,219,0.2);
+            border-radius:14px;
+            padding:12px 14px;
+            margin-top:14px; text-align:left">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="#2d9cdb" stroke-width="2"
+                 style="flex-shrink:0;margin-top:1px">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span style="font-size:0.82rem;color:#475569;line-height:1.5">${texto}</span>
+        </div>`;
+}
+
+const trashIcon = `<svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+    stroke="#1a6fa3" stroke-width="1.8">
+    <path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 0 0 2 2h8
+             a2 2 0 0 0 2-2l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
+</svg>`;
+
+// ── SweetAlert eliminar espacio (lista) ──────────────────────────────────────
+document.querySelectorAll('.btn-delete-space').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault(); e.stopPropagation();
+        const { id, nombre } = btn.dataset;
+        Swal.fire({
+            ...swalBase,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText:  'Cancelar',
+            html: `
+                ${iconCircle(trashIcon)}
+                ${modalTitle('¿Eliminar espacio?')}
+                ${modalBody(nombre)}
+                ${warnBox('Las asignaciones de todos los miembros en este espacio también serán eliminadas permanentemente.')}
+            `,
+        }).then(r => { if (r.isConfirmed) document.getElementById(`deleteForm_${id}`).submit(); });
     });
+});
+
+// ── SweetAlert eliminar espacio (detalle) ────────────────────────────────────
+const btnDetalle = document.getElementById('btnEliminarDetalle');
+if (btnDetalle) {
+    btnDetalle.addEventListener('click', () => {
+        const nombre = btnDetalle.dataset.nombre;
+        Swal.fire({
+            ...swalBase,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText:  'Cancelar',
+            html: `
+                ${iconCircle(trashIcon)}
+                ${modalTitle('¿Eliminar espacio?')}
+                ${modalBody(nombre)}
+                ${warnBox('Se eliminarán los miembros y todas sus asignaciones en este espacio permanentemente.')}
+            `,
+        }).then(r => { if (r.isConfirmed) document.getElementById('formEliminarDetalle').submit(); });
+    });
+}
+
+// ── SweetAlert eliminar miembro ──────────────────────────────────────────────
+const memberIcon = `<svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+    stroke="#1a6fa3" stroke-width="1.8">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+    <circle cx="9" cy="7" r="4"/>
+    <line x1="17" y1="11" x2="22" y2="16"/>
+    <line x1="22" y1="11" x2="17" y2="16"/>
+</svg>`;
+
+document.querySelectorAll('.btn-remove-member').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const { id, nombre } = btn.dataset;
+        Swal.fire({
+            ...swalBase,
+            confirmButtonText: 'Sí, quitar',
+            cancelButtonText:  'Cancelar',
+            html: `
+                ${iconCircle(memberIcon)}
+                ${modalTitle('¿Quitar miembro?')}
+                <p style="font-size:0.95rem;color:#334155;margin:0;line-height:1.5">
+                    Estás por quitar a<br>
+                    <strong style="color:#0f172a;font-size:1rem;display:block;margin-top:6px">
+                        "${nombre}"
+                    </strong>
+                </p>
+                ${warnBox('Sus asignaciones en este espacio también serán eliminadas.')}
+            `,
+        }).then(r => { if (r.isConfirmed) document.getElementById(`removeMemberForm_${id}`).submit(); });
+    });
+});

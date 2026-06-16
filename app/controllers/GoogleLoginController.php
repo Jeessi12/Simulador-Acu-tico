@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-$clientID = 'aqui va el secreto';
-$clientSecret = 'aqui va el secreto';
+$clientID = 'el secreto va aqui';
+$clientSecret = 'el secreto va aqui';
 $redirectUri = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 
 // Construir URL de autenticación de Google manualmente

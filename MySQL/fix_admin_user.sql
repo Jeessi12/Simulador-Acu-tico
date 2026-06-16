@@ -54,3 +54,79 @@ SET SQL_SAFE_UPDATES = 1;
 SELECT id, email, username, rol_id, estado 
 FROM usuarios 
 WHERE email = 'blueecosim67@gmail.com';
+
+-- ============================================================
+-- BLUE ECOSIM — Setup completo para admin.php
+-- Ejecutar en phpMyAdmin → pestaña SQL
+-- Autor: generado para Simulador-Acuático-main
+-- ============================================================
+
+USE simulador;
+
+-- ============================================================
+-- 1. COLUMNAS FALTANTES EN TABLA usuarios
+-- ============================================================
+ALTER TABLE usuarios
+    ADD COLUMN IF NOT EXISTS fecha_registro   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ADD COLUMN IF NOT EXISTS ultima_actividad DATETIME NULL;
+
+-- ============================================================
+-- 2. TABLA logs
+-- ============================================================
+CREATE TABLE IF NOT EXISTS logs (
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id     INT          NULL,
+    usuario_nombre VARCHAR(100) NULL,
+    accion         VARCHAR(255) NOT NULL,
+    detalles       TEXT         NULL,
+    ip             VARCHAR(45)  NULL,
+    fecha          DATETIME     DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Por si la tabla ya existía pero sin la columna usuario_nombre
+ALTER TABLE logs
+    ADD COLUMN IF NOT EXISTS usuario_nombre VARCHAR(100) NULL AFTER usuario_id;
+
+-- ============================================================
+-- 3. TABLA config
+-- ============================================================
+CREATE TABLE IF NOT EXISTS config (
+    clave       VARCHAR(100) PRIMARY KEY,
+    valor       TEXT         NOT NULL,
+    descripcion VARCHAR(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT IGNORE INTO config (clave, valor, descripcion) VALUES
+    ('limite_estudiantes_espacio', '30',          'Número máximo de estudiantes por espacio'),
+    ('tiempo_simulacion_maximo',   '0',           'Tiempo máximo en segundos (0 = sin límite)'),
+    ('registro_abierto',           '1',           'Permitir registro de nuevos usuarios (1=Si, 0=No)'),
+    ('modo_mantenimiento',         '0',           'Modo mantenimiento (1=Activo, 0=Inactivo)'),
+    ('logo_url',    '/Simulador-Acu-tico-main/public/media/Web/logo.png', 'URL del logo'),
+    ('favicon_url', '/Simulador-Acu-tico-main/public/media/Web/logo.png', 'URL del favicon');
+
+-- ============================================================
+-- 4. TABLA sesiones_activas
+-- ============================================================
+CREATE TABLE IF NOT EXISTS sesiones_activas (
+    id           VARCHAR(128) PRIMARY KEY,
+    usuario_id   INT          NOT NULL,
+    ip           VARCHAR(45),
+    user_agent   TEXT,
+    ultimo_acceso DATETIME,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+USE simulador;
+ALTER TABLE logs ADD COLUMN detalles TEXT NULL AFTER accion;
+
+-- ============================================================
+-- 5. VERIFICACIÓN FINAL
+-- ============================================================
+SELECT 'usuarios'         AS tabla, COUNT(*) AS columnas FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='simulador' AND TABLE_NAME='usuarios'
+UNION ALL
+SELECT 'logs',             COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='simulador' AND TABLE_NAME='logs'
+UNION ALL
+SELECT 'config',           COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='simulador' AND TABLE_NAME='config'
+UNION ALL
+SELECT 'sesiones_activas', COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='simulador' AND TABLE_NAME='sesiones_activas';

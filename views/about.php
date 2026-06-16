@@ -39,9 +39,9 @@
        
     <div id="footer-container"><?php include("fragments/footer.php"); ?></div>
 
-    <script src="../JS/simulador.js"></script>
     <script src="../JS/session.js" defer></script>
-
+<canvas id="particles"></canvas>
+<script src="/Simulador-Acu-tico-main/public/js/burbujas.js" defer></script>
 </body>
 
 </html>

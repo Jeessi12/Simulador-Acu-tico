@@ -73,9 +73,6 @@ CREATE TABLE IF NOT EXISTS amenazas (
 --  DATOS
 -- =============================================================
 
--- Nota: rot_y de id=3 es Math.PI ≈ 3.14159
---       rot_y de id=8 es -25 (valor original en el JS)
-
 INSERT INTO especies
     (id, nombre, nombre_cientifico, categoria, habitat, descripcion, dieta, longevidad, peligro,
      tamanio, peso, reproduccion, huevos, depredadores,
@@ -132,7 +129,7 @@ VALUES
  '../public/media/3D_Models/hammerhead_shark.glb',
  0.6, -0.2, 1.57, 3.0, 0.7),
 
--- 5 · Cirujano azul
+-- 5 · Cirujano azul  ← model_path y scale corregidos desde JS
 (5, 'Cirujano azul', 'Paracanthurus hepatus', 'peces',
  'Arrecifes de coral',
  'Pez de color azul eléctrico con distintiva mancha amarilla en la cola.',
@@ -141,8 +138,8 @@ VALUES
  'Tiburones, barracudas',
  '24 – 28 °C', 'Marina (~35 ppt)', 'Zona fótica', 2, 40, 'Indo-Pacífico',
  162, 50,
- '../public/media/3D_Models/hand_painted_surgeon_fish.glb',
- 10.0, -0.2, 1.57, 2.8, 0.7),
+ '../public/media/3D_Models/blue fish.glb',
+ 3.0, -0.2, 1.57, 2.8, 0.7),
 
 -- 6 · Caballito de mar
 (6, 'Caballito de mar', 'Hippocampus', 'peces',
@@ -156,7 +153,7 @@ VALUES
  '../public/media/3D_Models/seahorse_from_poly_by_google.glb',
  0.005, -0.3, 1.57, 2.8, 0.7),
 
--- 7 · Delfín nariz de botella
+-- 7 · Delfín nariz de botella  ← model_path, scale, pos_y corregidos desde JS
 (7, 'Delfín nariz de botella', 'Tursiops truncatus', 'peces',
  'Océano abierto, zonas costeras',
  'Mamífero marino extremadamente inteligente. Vive en manadas y se comunica mediante silbidos.',
@@ -165,10 +162,10 @@ VALUES
  'Tiburones, orcas',
  '10 – 32 °C', 'Marina (~35 ppt)', 'Zona fótica', 0, 500, 'Océanos globales',
  75, 42,
- '../public/media/3D_Models/cute_dolphin.glb',
- 1.5, -0.3, 1.57, 4.5, 0.8),
+ '../public/media/3D_Models/delfin.glb',
+ 6.0, -0.1, 1.57, 4.5, 0.8),
 
--- 8 · Cangrejo ermitaño
+-- 8 · Cangrejo ermitaño  ← model_path, scale, pos_y corregidos desde JS
 (8, 'Cangrejo ermitaño', 'Paguroidea', 'crustaceos',
  'Zonas intermareales, fondos arenosos',
  'Utiliza conchas vacías como refugio. A medida que crece, debe buscar conchas más grandes.',
@@ -177,8 +174,8 @@ VALUES
  'Pulpos, peces, aves',
  '18 – 27 °C', 'Marina o estuarina', 'Intermareal', 0, 10, 'Costas tropicales',
  100, 55,
- '../public/media/3D_Models/little_hermit_crab.glb',
- 33.0, 0.3, -25.0, 2.5, 0.5),
+ '../public/media/3D_Models/hermit crab.glb',
+ 2.3, -0.1, -25.0, 2.5, 0.5),
 
 -- 9 · Estrella de mar
 (9, 'Estrella de mar', 'Asteroidea', 'moluscos',
@@ -192,7 +189,7 @@ VALUES
  '../public/media/3D_Models/starfish.glb',
  0.9, -0.1, 0.0, 2.8, 0.5),
 
--- 10 · Langosta espinosa
+-- 10 · Langosta espinosa  ← model_path y scale corregidos desde JS
 (10, 'Langosta espinosa', 'Palinuridae', 'crustaceos',
  'Arrecifes rocosos, fondos duros',
  'Carece de pinzas grandes, usa sus largas antenas para defenderse.',
@@ -201,10 +198,10 @@ VALUES
  'Pulpos, peces grandes, humanos',
  '18 – 28 °C', 'Marina (~35 ppt)', 'Zona bentónica', 1, 90, 'Trópicos y subtrópicos',
  80, 50,
- '../public/media/3D_Models/lobster.glb',
- 0.15, -0.15, 0.0, 3.0, 0.6),
+ '../public/media/3D_Models/langosta.glb',
+ 4.0, -0.15, 0.0, 3.0, 0.6),
 
--- 11 · Mantarraya
+-- 11 · Mantarraya  ← scale, pos_y, rot_y, cam_distance, cam_height corregidos desde JS
 (11, 'Mantarraya', 'Mobula birostris', 'peces',
  'Aguas cálidas tropicales',
  'Una de las rayas más grandes del mundo. Filtradora de plancton conocida por sus impresionantes saltos.',
@@ -214,9 +211,9 @@ VALUES
  '20 – 30 °C', 'Marina (~35 ppt)', 'Zona fótica y epipelágica', 0, 1000, 'Trópicos globales',
  105, 52,
  '../public/media/3D_Models/mantarraya.glb',
- 1.5, -0.2, 0.0, 3.2, 0.6),
+ 4.5, -0.1, 1.57, 4.5, 0.8),
 
--- 12 · Caracol cono
+-- 12 · Caracol cono  ← model_path, scale, rot_y, cam_distance, cam_height corregidos desde JS
 (12, 'Caracol cono', 'Conus geographus', 'moluscos',
  'Arenas y arrecifes',
  'Molusco depredador que usa un arpón modificado para inyectar veneno.',
@@ -225,8 +222,8 @@ VALUES
  'Peces, tortugas',
  '22 – 30 °C', 'Marina (~35 ppt)', 'Bentónica fótica', 0, 50, 'Indo-Pacífico',
  160, 55,
- '../public/media/3D_Models/cone_snail_shell.glb',
- 0.8, -0.1, 0.0, 2.5, 0.5);
+ '../public/media/3D_Models/cone.glb',
+ 4.0, -0.1, 1.57, 4.5, 0.8);
 
 
 -- =============================================================
@@ -386,14 +383,11 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (12, 3, 'Contaminación de sedimentos',            'medium'),
 (12, 4, 'Turismo sin regulación',                 'low');
 
-USE simulador;
 
+-- =============================================================
+--  VERIFICACIÓN
+-- =============================================================
 SELECT COUNT(*) FROM especies;      -- debe dar 12
-USE simulador;
-
 SELECT COUNT(*) FROM curiosidades;  -- debe dar 48
-USE simulador;
-
 SELECT COUNT(*) FROM amenazas;      -- debe dar 48
-USE simulador;
 

@@ -1,8 +1,9 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 include __DIR__ . '/../app/models/Conexion.php';
+$conn = (new Conexion())->getConnection();
 
-if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != 1) {
+if (!isset($_SESSION['id']) || $_SESSION['rol'] != 1) {
     header("Location: login.php?error=locked");
     exit;
 }
@@ -78,7 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['unirse_codigo'])) {
                 if ($row_e['estado'] === 'aceptado') {
                     $error = 'Ya eres miembro de este espacio.';
                 } elseif ($row_e['estado'] === 'pendiente') {
-                    // Aceptar directo si ya tenía invitación pendiente
                     mysqli_query($conn,
                         "UPDATE espacio_estudiantes SET estado = 'aceptado'
                          WHERE id_espacio = $id_esp AND id_estudiante = $id_estudiante"
@@ -183,6 +183,7 @@ $pendientes_count = $total - $completadas;
 
     <!-- HERO -->
     <section class="dashboard-hero">
+         <canvas id="particles"></canvas>
         <div class="hero-content">
             <h1>Bienvenido, <?php echo htmlspecialchars($username); ?></h1>
             <p>Gestiona tus espacios, acepta invitaciones y accede a tus simulaciones ecológicas.</p>
@@ -322,67 +323,6 @@ $pendientes_count = $total - $completadas;
                 <?php endif; ?>
             </section>
 
-            <!-- Simulaciones -->
-            <section class="section-card simulaciones-panel">
-                <div class="panel-header">
-                    <h2><i class="fas fa-fish"></i> Simulaciones asignadas</h2>
-                    <p>Accede a tus actividades y registra tu avance.</p>
-                </div>
-                <?php if (!empty($simulaciones)): ?>
-                <div class="simulaciones-grid">
-                    <?php foreach ($simulaciones as $sim): ?>
-                    <article class="simulacion-card">
-                        <div class="card-main">
-                            <div class="card-icon">
-                                <i class="fas fa-water"></i>
-                            </div>
-                            <div class="card-title">
-                                <h3><?php echo htmlspecialchars($sim['sim_nombre']); ?></h3>
-                                <span class="estado-badge estado-badge--<?php echo $sim['estado']; ?>">
-                                    <?php
-                                    echo match($sim['estado']) {
-                                        'completada'  => 'Completada',
-                                        'en_progreso' => 'En progreso',
-                                        default       => 'Pendiente'
-                                    };
-                                    ?>
-                                </span>
-                            </div>
-                        </div>
-                        <?php if (!empty($sim['espacio_nombre'])): ?>
-                        <div class="sim-espacio-tag">
-                            <i class="fas fa-chalkboard"></i>
-                            <?php echo htmlspecialchars($sim['espacio_nombre']); ?>
-                        </div>
-                        <?php endif; ?>
-                        <p class="descripcion">
-                            <?php echo htmlspecialchars($sim['descripcion'] ?? 'Sin descripción'); ?>
-                        </p>
-                        <div class="fecha-entrega">
-                            <i class="fas fa-calendar-alt"></i>
-                            <?php echo date('d/m/Y', strtotime($sim['fecha_asignacion'])); ?>
-                        </div>
-                        <div class="card-actions">
-                            <a href="<?php echo htmlspecialchars($sim['ruta']); ?>" class="btn-simular">
-                                Entrar <i class="fas fa-arrow-right"></i>
-                            </a>
-                            <?php if ($sim['estado'] !== 'completada'): ?>
-                            <a href="?completar=<?php echo $sim['id']; ?>" class="btn-completar">
-                                <i class="fas fa-check"></i> Completar
-                            </a>
-                            <?php endif; ?>
-                        </div>
-                    </article>
-                    <?php endforeach; ?>
-                </div>
-                <?php else: ?>
-                <div class="no-tareas">
-                    <i class="fas fa-water"></i>
-                    <p>No tienes simulaciones asignadas todavía.</p>
-                </div>
-                <?php endif; ?>
-            </section>
-
         </div><!-- fin left-col -->
 
         <!-- ══════════════════════════════════════════
@@ -463,13 +403,74 @@ $pendientes_count = $total - $completadas;
 
     </div><!-- fin dashboard-grid -->
 
+    <!-- ══════════════════════════════════════════
+         SIMULACIONES — ancho completo, fuera del grid
+         ══════════════════════════════════════════ -->
+    <section class="section-card simulaciones-panel">
+        <div class="panel-header">
+            <h2><i class="fas fa-fish"></i> Simulaciones asignadas</h2>
+            <p>Accede a tus actividades y registra tu avance.</p>
+        </div>
+        <?php if (!empty($simulaciones)): ?>
+        <div class="simulaciones-grid">
+            <?php foreach ($simulaciones as $sim): ?>
+            <article class="simulacion-card">
+                <div class="card-main">
+                    <div class="card-icon">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <div class="card-title">
+                        <h3><?php echo htmlspecialchars($sim['sim_nombre']); ?></h3>
+                        <span class="estado-badge estado-badge--<?php echo $sim['estado']; ?>">
+                            <?php
+                            echo match($sim['estado']) {
+                                'completada'  => 'Completada',
+                                'en_progreso' => 'En progreso',
+                                default       => 'Pendiente'
+                            };
+                            ?>
+                        </span>
+                    </div>
+                </div>
+                <?php if (!empty($sim['espacio_nombre'])): ?>
+                <div class="sim-espacio-tag">
+                    <i class="fas fa-chalkboard"></i>
+                    <?php echo htmlspecialchars($sim['espacio_nombre']); ?>
+                </div>
+                <?php endif; ?>
+                <p class="descripcion">
+                    <?php echo htmlspecialchars($sim['descripcion'] ?? 'Sin descripción'); ?>
+                </p>
+                <div class="fecha-entrega">
+                    <i class="fas fa-calendar-alt"></i>
+                    <?php echo date('d/m/Y', strtotime($sim['fecha_asignacion'])); ?>
+                </div>
+                <div class="card-actions">
+                    <a href="<?php echo htmlspecialchars($sim['ruta']); ?>" class="btn-simular">
+                        Entrar <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <?php if ($sim['estado'] !== 'completada'): ?>
+                    <a href="?completar=<?php echo $sim['id']; ?>" class="btn-completar">
+                        <i class="fas fa-check"></i> Completar
+                    </a>
+                    <?php endif; ?>
+                </div>
+            </article>
+            <?php endforeach; ?>
+        </div>
+        <?php else: ?>
+        <div class="no-tareas">
+            <i class="fas fa-water"></i>
+            <p>No tienes simulaciones asignadas todavía.</p>
+        </div>
+        <?php endif; ?>
+    </section>
+
 </main>
 
 <?php include("fragments/footer.php"); ?>
-
+<script src="../public/js/burbujas.js" defer></script>
 <script src="../public/js/asignaciones.js" defer></script>
-
-</script>
 
 </body>
 </html>

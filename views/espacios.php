@@ -7,12 +7,13 @@ if (!defined('ROL_ESTUDIANTE')) {
     define('ROL_PERSONAL', 3);
     define('ROL_ADMIN', 4);
 }
-
+// ── Conexión ─────────────────────────────────────────────────────────────────
 $ruta_conexion = __DIR__ . '/../app/models/Conexion.php';
 if (!file_exists($ruta_conexion)) {
     $ruta_conexion = __DIR__ . '/../PHP/conexion.php';
 }
 include $ruta_conexion;
+$conn = (new Conexion())->getConnection();
 
 if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != ROL_DOCENTE) {
     header("Location: login.php?error=locked");

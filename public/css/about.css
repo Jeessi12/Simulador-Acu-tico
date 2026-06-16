@@ -13,7 +13,7 @@ html, body {
 body {
     min-height: 100vh;
 
-    background-image: url('../MEDIA/backgrounds/about.jpg');
+    background-image: url('../MEDIA/backgrounds/about.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -25,7 +25,14 @@ body {
 
     overflow-x: hidden;
 }
-
+#particles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
 /* CONTENEDOR PRINCIPAL */
 main.container {
     flex: 1;

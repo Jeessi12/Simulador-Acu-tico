@@ -218,31 +218,46 @@ document.addEventListener('DOMContentLoaded', async function () {
             controls.enableZoom = isDetail;
             controls.enablePan = false;
 
-            const loader = new GLTFLoader();
-            loader.load(modelPath,
-                (gltf) => {
-                    const model = gltf.scene;
-                    model.scale.set(scaleValue, scaleValue, scaleValue);
-                    model.position.set(0, posYValue, 0);
-                    model.rotation.y = rotYValue;
-                    model.traverse(c => {
-                        if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; }
-                    });
-                    scene.add(model);
-                },
-                undefined,
-                (error) => {
-                    console.error('Error cargando modelo:', error);
-                    container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(125,249,240,0.6);font-size:0.9rem;text-align:center;position:relative;z-index:20;">🐠 Modelo 3D no disponible</div>`;
-                }
-            );
+           let mixer = null;
+const clock = new THREE.Clock();
 
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            animate();
+const loader = new GLTFLoader();
+loader.load(modelPath,
+    (gltf) => {
+        const model = gltf.scene;
+        model.scale.set(scaleValue, scaleValue, scaleValue);
+        model.position.set(0, posYValue, 0);
+        model.rotation.y = rotYValue;
+        model.traverse(c => {
+            if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; }
+        });
+        scene.add(model);
+
+        // ── Reproducir animaciones si existen ──
+        if (gltf.animations && gltf.animations.length > 0) {
+            mixer = new THREE.AnimationMixer(model);
+            gltf.animations.forEach(clip => {
+                const action = mixer.clipAction(clip);
+                action.play();
+            });
+            console.log(`✅ ${gltf.animations.length} animación(es) cargadas para ${modelPath}`);
+        }
+    },
+    undefined,
+    (error) => {
+        console.error('Error cargando modelo:', error);
+        container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(125,249,240,0.6);font-size:0.9rem;text-align:center;position:relative;z-index:20;">🐠 Modelo 3D no disponible</div>`;
+    }
+);
+
+function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);   // ← actualiza las animaciones
+    controls.update();
+    renderer.render(scene, camera);
+}
+animate();
 
             const resizeObserver = new ResizeObserver(() => {
                 const nw = container.clientWidth;
