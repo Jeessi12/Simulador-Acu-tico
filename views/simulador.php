@@ -208,6 +208,38 @@ if (!isset($_SESSION['usuario'])) {
             <p class="ok">✔ Todos los parámetros en rango óptimo</p>
         </div>
 
+        <!-- Estado biológico — actualizado por Godot vía onGodotStats -->
+        <div class="card" id="bio-stats" aria-label="Estado biológico de la especie">
+            <h3>
+                <i class="fa-solid fa-heart-pulse" style="margin-right:6px;opacity:.6;"></i>
+                Estado biológico
+            </h3>
+
+            <div class="stat-row">
+                <span class="stat-label">❤️ Salud</span>
+                <span class="stat-value" id="health-val">—</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="stat-label">⚡ Estrés</span>
+                <span class="stat-value" id="stress-val">—</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="stat-label">🌟 Bienestar</span>
+                <span class="stat-value" id="wellbeing-val">—</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="stat-label">🔬 Etapa</span>
+                <span class="stat-value" id="stage-val">—</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="stat-label">🐠 Población</span>
+                <span class="stat-value" id="population-val">—</span>
+            </div>
+        </div>  
     </aside>
 </main>
 

@@ -1,4 +1,0 @@
-# MIME types requeridos por Godot Web Export
-AddType application/wasm         .wasm
-AddType application/octet-stream .pck
-AddType application/javascript   .js

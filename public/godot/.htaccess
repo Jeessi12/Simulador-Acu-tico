@@ -1,0 +1,15 @@
+<IfModule mod_headers.c>
+    # Requerido por SharedArrayBuffer (Godot 4 web export)
+    Header set Cross-Origin-Opener-Policy "same-origin"
+    Header set Cross-Origin-Embedder-Policy "require-corp"
+
+    # MIME types correctos para que el navegador cargue los archivos
+    AddType application/wasm                .wasm
+    AddType application/octet-stream        .pck
+    AddType application/javascript          .js
+</IfModule>
+
+# Permitir compresión si está disponible
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/wasm application/javascript
+</IfModule>
