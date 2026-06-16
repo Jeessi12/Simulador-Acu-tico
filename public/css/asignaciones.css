@@ -10,17 +10,45 @@
 }
 
 html, body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(145deg, #c8eeff 0%, #e8f5fd 60%, #f0faff 100%);
-    background-attachment: fixed;
     min-height: 100vh;
+}
+
+body {
+    font-family: 'Poppins', 'Google Sans', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #1e293b;
+    min-height: 100vh;
+    background-image: url('../MEDIA/backgrounds/espaciosfondo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     position: relative;
     overflow-x: hidden;
-    color: #1e293b;
 }
+
 
 .spacer { height: 0; display: none; }
 
+.dashboard-hero {
+    position: relative;
+    overflow: hidden;
+}
+
+#particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.dashboard-hero .hero-content,
+.dashboard-hero .hero-widgets {
+    position: relative;
+    z-index: 1;
+}
 /* ── Contenedor principal ─────────────────────────────────── */
 .asignaciones-container {
     position: relative;
@@ -84,7 +112,6 @@ html, body {
     overflow: hidden;
     animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-/* Overlay de luz igual al de espacios */
 .dashboard-hero::before {
     content: '';
     position: absolute;
@@ -96,7 +123,6 @@ html, body {
     z-index: 0;
     pointer-events: none;
 }
-/* Burbuja decorativa igual al de espacios */
 .dashboard-hero::after {
     content: '';
     position: absolute;
@@ -146,9 +172,7 @@ html, body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     transition: transform 0.2s;
 }
-.hero-widget:hover {
-    transform: translateY(-2px);
-}
+.hero-widget:hover { transform: translateY(-2px); }
 .hero-widget--alert {
     background: white;
     border: 2px solid rgba(251, 188, 4, 0.6);
@@ -171,7 +195,7 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   GRID PRINCIPAL
+   GRID PRINCIPAL  (izquierda + sidebar)
    ═══════════════════════════════════════════════════════════ */
 .dashboard-grid {
     display: grid;
@@ -190,8 +214,26 @@ html, body {
 .left-col > .section-card:nth-child(1) { animation: fadeUp 0.45s 0.05s cubic-bezier(0.22,1,0.36,1) both; }
 .left-col > .section-card:nth-child(2) { animation: fadeUp 0.45s 0.10s cubic-bezier(0.22,1,0.36,1) both; }
 .left-col > .section-card:nth-child(3) { animation: fadeUp 0.45s 0.15s cubic-bezier(0.22,1,0.36,1) both; }
-.left-col > .section-card:nth-child(4) { animation: fadeUp 0.45s 0.20s cubic-bezier(0.22,1,0.36,1) both; }
-.sidebar-panel { animation: fadeUp 0.45s 0.12s cubic-bezier(0.22,1,0.36,1) both; }
+.sidebar-panel                          { animation: fadeUp 0.45s 0.12s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* ═══════════════════════════════════════════════════════════
+   SIMULACIONES — ancho completo bajo el grid
+   ═══════════════════════════════════════════════════════════ */
+.simulaciones-panel {
+    margin-top: 24px;
+    animation: fadeUp 0.45s 0.20s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.simulaciones-panel .panel-header {
+    border-bottom: 1px solid rgba(45, 156, 219, 0.1);
+}
+
+.simulaciones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 1rem 1.2rem 1.2rem;
+}
 
 /* ═══════════════════════════════════════════════════════════
    TARJETA BASE
@@ -253,9 +295,7 @@ html, body {
 /* ═══════════════════════════════════════════════════════════
    INVITACIONES
    ═══════════════════════════════════════════════════════════ */
-.invitaciones-panel {
-    border-left: 4px solid #2d9cdb;
-}
+.invitaciones-panel { border-left: 4px solid #2d9cdb; }
 
 .invitaciones-lista {
     padding: 1rem 1.2rem 1.2rem;
@@ -299,10 +339,7 @@ html, body {
     text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-.inv-card-info {
-    flex: 1;
-    min-width: 130px;
-}
+.inv-card-info { flex: 1; min-width: 130px; }
 .inv-card-info strong {
     display: block;
     font-size: 0.92rem;
@@ -317,16 +354,9 @@ html, body {
     align-items: center;
     gap: 5px;
 }
-.inv-card-info span i {
-    color: #2d9cdb;
-    font-size: 0.75rem;
-}
+.inv-card-info span i { color: #2d9cdb; font-size: 0.75rem; }
 
-.inv-card-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
+.inv-card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .btn-inv {
     padding: 9px 18px;
@@ -438,9 +468,7 @@ html, body {
     transform: translateY(-2px);
     box-shadow: 0 8px 22px rgba(45, 156, 219, 0.42);
 }
-.btn-unirse:active {
-    transform: translateY(0);
-}
+.btn-unirse:active { transform: translateY(0); }
 
 /* ═══════════════════════════════════════════════════════════
    MIS ESPACIOS
@@ -523,25 +551,11 @@ html, body {
     align-items: center;
     gap: 4px;
 }
-.espacio-card-info span i {
-    font-size: 0.68rem;
-    opacity: 0.85;
-}
+.espacio-card-info span i { font-size: 0.68rem; opacity: 0.85; }
 
 /* ═══════════════════════════════════════════════════════════
-   SIMULACIONES
+   TARJETAS DE SIMULACIÓN
    ═══════════════════════════════════════════════════════════ */
-.simulaciones-panel .panel-header {
-    border-bottom: 1px solid rgba(45, 156, 219, 0.1);
-}
-
-.simulaciones-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
-    gap: 16px;
-    padding: 1rem 1.2rem 1.2rem;
-}
-
 .simulacion-card {
     background: #f8fafc;
     border: 1px solid rgba(45, 156, 219, 0.14);
@@ -569,9 +583,7 @@ html, body {
     border-color: rgba(45, 156, 219, 0.28);
     background: white;
 }
-.simulacion-card:hover::before {
-    opacity: 1;
-}
+.simulacion-card:hover::before { opacity: 1; }
 
 .card-main {
     display: flex;
@@ -593,10 +605,7 @@ html, body {
     box-shadow: 0 2px 8px rgba(45, 156, 219, 0.12);
 }
 
-.card-title {
-    flex: 1;
-    min-width: 0;
-}
+.card-title { flex: 1; min-width: 0; }
 .card-title h3 {
     font-size: 0.9rem;
     font-weight: 700;
@@ -634,7 +643,6 @@ html, body {
     border: 1px solid rgba(52, 168, 83, 0.3);
 }
 
-/* ─── Etiqueta espacio ───────────────────────────────────── */
 .sim-espacio-tag {
     display: inline-flex;
     align-items: center;
@@ -648,9 +656,7 @@ html, body {
     font-weight: 600;
     border: 1px solid rgba(45, 156, 219, 0.2);
 }
-.sim-espacio-tag i {
-    font-size: 0.68rem;
-}
+.sim-espacio-tag i { font-size: 0.68rem; }
 
 .descripcion {
     font-size: 0.8rem;
@@ -670,9 +676,7 @@ html, body {
     align-items: center;
     gap: 5px;
 }
-.fecha-entrega i {
-    color: #b8d4e8;
-}
+.fecha-entrega i { color: #b8d4e8; }
 
 .card-actions {
     display: flex;
@@ -706,9 +710,7 @@ html, body {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(45, 156, 219, 0.38);
 }
-.btn-simular:active {
-    transform: translateY(0);
-}
+.btn-simular:active { transform: translateY(0); }
 
 .btn-completar {
     background: #e6f7ec;
@@ -746,18 +748,10 @@ html, body {
     gap: 20px;
 }
 
-/* ─── Tarjeta de progreso ────────────────────────────────── */
-.tareas-panel {
-    border-top: 4px solid #2d9cdb;
-}
+.tareas-panel { border-top: 4px solid #2d9cdb; }
+.tareas-panel .panel-header { border-bottom: 1px solid rgba(45, 156, 219, 0.1); }
 
-.tareas-panel .panel-header {
-    border-bottom: 1px solid rgba(45, 156, 219, 0.1);
-}
-
-.progress-card {
-    padding: 1.2rem 1.2rem 0.5rem;
-}
+.progress-card { padding: 1.2rem 1.2rem 0.5rem; }
 
 .progress-circle {
     position: relative;
@@ -779,7 +773,6 @@ html, body {
 }
 .progress-ring .fill {
     fill: none;
-    stroke: url(#progressGrad);
     stroke: #2d9cdb;
     stroke-width: 3;
     stroke-linecap: round;
@@ -825,9 +818,7 @@ html, body {
     padding: 10px 8px;
     border-right: 1px solid rgba(45, 156, 219, 0.1);
 }
-.progress-stat:last-child {
-    border-right: none;
-}
+.progress-stat:last-child { border-right: none; }
 .stat-val {
     display: block;
     font-size: 1.15rem;
@@ -847,9 +838,7 @@ html, body {
 .progress-stat--warn .stat-val { color: #f59e0b; }
 
 /* ─── Lista de pendientes ────────────────────────────────── */
-.tareas-lista {
-    padding: 0.4rem 1.2rem 1rem;
-}
+.tareas-lista { padding: 0.4rem 1.2rem 1rem; }
 
 .tarea-item {
     display: flex;
@@ -859,10 +848,7 @@ html, body {
     border-bottom: 1px solid rgba(45, 156, 219, 0.08);
     transition: background 0.15s;
 }
-.tarea-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
+.tarea-item:last-child { border-bottom: none; padding-bottom: 0; }
 
 .tarea-info {
     flex: 1;
@@ -976,22 +962,10 @@ html, body {
    RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-    .sidebar-panel {
-        position: static;
-        order: -1;
-    }
-    .progress-card {
-        display: flex;
-        align-items: center;
-        gap: 24px;
-    }
-    .progress-circle {
-        margin: 0;
-        flex-shrink: 0;
-    }
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .sidebar-panel { position: static; order: -1; }
+    .progress-card { display: flex; align-items: center; gap: 24px; }
+    .progress-circle { margin: 0; flex-shrink: 0; }
     .progress-stats {
         flex: 1;
         flex-direction: column;
@@ -1010,14 +984,12 @@ html, body {
         text-align: left;
     }
     .progress-stat:last-child { border-bottom: none; }
+    .simulaciones-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 }
 
 @media (max-width: 768px) {
     .asignaciones-container { padding: 16px 14px 40px; }
-    .dashboard-hero {
-        padding: 32px 24px;
-        border-radius: 20px;
-    }
+    .dashboard-hero { padding: 32px 24px; border-radius: 20px; }
     .hero-content h1 { font-size: 2rem; }
     .hero-widgets { gap: 8px; }
     .hero-widget { padding: 10px 16px; min-width: 76px; }

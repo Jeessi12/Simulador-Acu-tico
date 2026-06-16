@@ -1,6 +1,6 @@
 /* ============================================
    ADMIN PANEL - Blue EcoSim
-   Estilo original mejorado (tablas, espaciado, burbujas detrás del footer)
+   SECCIONES FIJAS Y ESTABLES - VERSIÓN CORREGIDA
    ============================================ */
 
 * {
@@ -10,14 +10,18 @@
 }
 
 body.admin-page {
-    background-image: url('../media/backgrounds/especies.jpeg');
+    background-image: url('../media/backgrounds/espaciosfondo.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* Burbujas: fijas y detrás de todo (incluido footer) */
+/* Burbujas: fijas y detrás de todo */
 #particles {
     position: fixed;
     top: 0;
@@ -29,17 +33,18 @@ body.admin-page {
     opacity: 0.6;
 }
 
-/* Contenedor principal */
+/* Contenedor principal - estructura fija */
 .admin-container {
     position: relative;
     z-index: 2;
     max-width: 1400px;
+    width: 90%;
     margin: 100px auto 40px;
     padding: 0 30px;
     flex: 1;
 }
 
-/* Header */
+/* Header fijo y consistente */
 .admin-header {
     background: linear-gradient(135deg, rgba(45,156,219,0.12), rgba(86,207,225,0.06));
     backdrop-filter: blur(12px);
@@ -48,7 +53,9 @@ body.admin-page {
     margin-bottom: 32px;
     border: 1px solid rgba(45,156,219,0.25);
     box-shadow: 0 8px 28px rgba(45,156,219,0.1);
+    width: 100%;
 }
+
 .admin-header-content h1 {
     font-size: 2.2rem;
     font-weight: 700;
@@ -58,12 +65,13 @@ body.admin-page {
     color: transparent;
     margin-bottom: 8px;
 }
+
 .admin-header-content p {
     color: #4a7a9c;
     font-size: 1rem;
 }
 
-/* Pestañas */
+/* Pestañas de navegación - fijas */
 .admin-tabs {
     display: flex;
     gap: 12px;
@@ -71,7 +79,10 @@ body.admin-page {
     flex-wrap: wrap;
     border-bottom: 1px solid rgba(45,156,219,0.2);
     padding-bottom: 10px;
+    position: relative;
+    width: 100%;
 }
+
 .admin-tab {
     padding: 10px 28px;
     border-radius: 40px;
@@ -81,16 +92,41 @@ body.admin-page {
     text-decoration: none;
     transition: all 0.2s;
     font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border: none;
 }
+
 .admin-tab i { margin-right: 8px; }
+
 .admin-tab.active {
     background: #2d9cdb;
     color: white;
     box-shadow: 0 4px 12px rgba(45,156,219,0.3);
 }
+
 .admin-tab:hover:not(.active) {
     background: rgba(45,156,219,0.15);
     transform: translateY(-2px);
+}
+
+/* CONTENEDOR DE SECCIONES - TODAS FIJAS Y ESTABLES */
+.section-container {
+    width: 100%;
+    position: relative;
+}
+
+/* Cada sección individual */
+.admin-section {
+    width: 100%;
+    position: relative;
+    display: none;
+}
+
+.admin-section.active-section {
+    display: block;
 }
 
 /* Tarjetas de estadísticas */
@@ -99,7 +135,9 @@ body.admin-page {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 24px;
     margin-bottom: 40px;
+    width: 100%;
 }
+
 .stat-card {
     background: rgba(255,255,255,0.92);
     backdrop-filter: blur(8px);
@@ -112,10 +150,12 @@ body.admin-page {
     transition: 0.3s;
     box-shadow: 0 6px 18px rgba(0,0,0,0.04);
 }
+
 .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 16px 32px rgba(45,156,219,0.15);
 }
+
 .stat-card i {
     font-size: 3rem;
     background: linear-gradient(135deg, #2d9cdb, #56cfe1);
@@ -123,12 +163,14 @@ body.admin-page {
     background-clip: text;
     color: transparent;
 }
+
 .stat-number {
     font-size: 2rem;
     font-weight: 800;
     color: #1a6fa3;
     line-height: 1.2;
 }
+
 .stat-label {
     font-size: 0.85rem;
     font-weight: 500;
@@ -147,23 +189,27 @@ body.admin-page {
     gap: 12px;
     font-weight: 500;
     animation: fadeInDown 0.3s ease;
+    width: 100%;
 }
+
 .alert-success {
     background: #e6f7ec;
     color: #0a5c2e;
     border-left: 5px solid #34a853;
 }
+
 .alert-error {
     background: #fee9e6;
     color: #b91c1c;
     border-left: 5px solid #ea4335;
 }
+
 @keyframes fadeInDown {
     from { opacity:0; transform:translateY(-15px); }
     to   { opacity:1; transform:translateY(0); }
 }
 
-/* Tarjetas generales */
+/* Tarjeta contenedora de contenido */
 .admin-card {
     background: rgba(255,255,255,0.96);
     backdrop-filter: blur(8px);
@@ -172,7 +218,9 @@ body.admin-page {
     overflow: hidden;
     margin-bottom: 32px;
     transition: 0.2s;
+    width: 100%;
 }
+
 .admin-card-header {
     display: flex;
     justify-content: space-between;
@@ -181,12 +229,19 @@ body.admin-page {
     border-bottom: 1px solid rgba(45,156,219,0.15);
     flex-wrap: wrap;
     gap: 12px;
+    background: rgba(255,255,255,0.5);
 }
+
 .admin-card-header h2 {
     font-size: 1.3rem;
     font-weight: 700;
     color: #1a6fa3;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
+
 .badge {
     background: #e8f5fd;
     color: #2d9cdb;
@@ -195,20 +250,58 @@ body.admin-page {
     font-size: 0.75rem;
     font-weight: 600;
 }
+
 .admin-card-body {
     padding: 24px 28px;
 }
 
-/* Tablas mejoradas (separación y legibilidad) */
+/* ============================================
+   TABLA DE USUARIOS - CORREGIDA
+   ============================================ */
 .table-responsive {
     overflow-x: auto;
+    width: 100%;
 }
+
 .admin-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     font-size: 0.85rem;
+    table-layout: fixed;
 }
+
+/* Anchos fijos para cada columna */
+.admin-table th:nth-child(1) { width: 8%; }
+.admin-table th:nth-child(2) { width: 26%; }
+.admin-table th:nth-child(3) { width: 13%; }
+.admin-table th:nth-child(4) { width: 10%; }
+.admin-table th:nth-child(5) { width: 10%; }
+.admin-table th:nth-child(6) { width: 33%; }
+
+/* Celda Email: una sola línea con ellipsis si es muy largo */
+.admin-table td:nth-child(2) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 0;
+    font-size: 0.8rem;
+    color: #4a7a9c;
+}
+
+/* Celda de Rol: badge completo sin recorte */
+.admin-table td:nth-child(3) {
+    white-space: nowrap;
+    min-width: 110px;
+}
+
+/* Celda de Estado: separada del rol */
+.admin-table td:nth-child(4) {
+    white-space: nowrap;
+    min-width: 80px;
+    padding-left: 14px;
+}
+
 .admin-table th {
     text-align: left;
     padding: 16px 16px;
@@ -217,22 +310,25 @@ body.admin-page {
     font-weight: 600;
     border-bottom: 2px solid rgba(45,156,219,0.2);
 }
+
 .admin-table td {
     padding: 14px 16px;
     border-bottom: 1px solid rgba(45,156,219,0.1);
     vertical-align: middle;
     color: #2c3e66;
 }
+
 .admin-table tr:hover td {
     background: #f8fbfe;
 }
 
-/* Avatar de usuario */
+/* Celda de usuario */
 .user-cell {
     display: flex;
     align-items: center;
     gap: 12px;
 }
+
 .user-avatar-mini {
     width: 36px;
     height: 36px;
@@ -248,7 +344,25 @@ body.admin-page {
     flex-shrink: 0;
 }
 
-/* Badges de roles */
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #1a6fa3;
+}
+
+.user-email-small {
+    font-size: 0.7rem;
+    color: #8aaec8;
+}
+
+/* ============================================
+   BADGES DE ROL - SEPARADOS Y CON ÍCONO CORRECTO
+   (restaurado del CSS original)
+   ============================================ */
 .role-badge {
     display: inline-flex;
     align-items: center;
@@ -257,212 +371,60 @@ body.admin-page {
     border-radius: 40px;
     font-size: 0.75rem;
     font-weight: 600;
+    white-space: nowrap;
 }
+
+/* El ícono dentro del badge tiene su propio margen para no pegarse al texto */
+.role-badge i {
+    margin-right: 5px;
+    font-size: 0.8rem;
+}
+
 .role-estudiante { background: #e3f2fd; color: #1565a3; }
 .role-docente     { background: #e8f5e9; color: #2e7d32; }
 .role-personal    { background: #fff3e0; color: #e65100; }
 .role-admin       { background: #fce4ec; color: #c2185b; }
 
-/* Formulario creación simulación */
-.form-crear-simulacion {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: flex-end;
-}
-.form-crear-simulacion input {
-    flex: 1;
-    min-width: 180px;
-    padding: 12px 18px;
-    border: 1px solid rgba(45,156,219,0.3);
-    border-radius: 40px;
-    font-family: 'Poppins', sans-serif;
-    background: white;
-}
-.form-crear-simulacion button {
-    background: #2d9cdb;
-    padding: 12px 28px;
-    border: none;
-    border-radius: 40px;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.form-crear-simulacion button:hover {
-    background: #1a6fa3;
-    transform: translateY(-2px);
-}
-
-/* Tabla de simulaciones editable */
-.simulaciones-tabla input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #cce4f5;
-    border-radius: 30px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.8rem;
-    background: white;
-}
-.simulaciones-tabla input:focus {
-    border-color: #2d9cdb;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(45,156,219,0.1);
-}
-.btn-mini {
+/* Estado del usuario */
+.status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
+    gap: 5px;
+    padding: 4px 12px;
     border-radius: 30px;
     font-size: 0.7rem;
     font-weight: 600;
-    background: #e8f5fd;
-    color: #1a6fa3;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-    text-decoration: none;
-}
-.btn-mini:hover {
-    background: #2d9cdb;
-    color: white;
-    transform: translateY(-2px);
-}
-.btn-mini-danger {
-    background: #fee9e6;
-    color: #b91c1c;
-}
-.btn-mini-danger:hover {
-    background: #fecaca;
-    color: #b91c1c;
 }
 
-/* Configuración del sistema */
-.config-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-.config-group {
-    background: rgba(255,255,255,0.7);
-    border-radius: 28px;
-    padding: 20px 28px;
-    border: 1px solid rgba(45,156,219,0.15);
-}
-.config-group label {
-    font-weight: 600;
-    color: #1a6fa3;
-    display: block;
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-}
-.config-group input[type="text"],
-.config-group input[type="number"] {
-    width: 100%;
-    padding: 12px 18px;
-    border: 1px solid #cce4f5;
-    border-radius: 40px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
-}
-.config-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    margin-bottom: 12px;
-}
-.config-checkbox input {
-    width: 18px;
-    height: 18px;
-    accent-color: #2d9cdb;
-}
-.btn-guardar-config {
-    background: linear-gradient(135deg, #2d9cdb, #1a6fa3);
-    border: none;
-    padding: 14px 32px;
-    border-radius: 40px;
-    color: white;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.2s;
-    display: inline-block;
-    margin-top: 8px;
-}
-.btn-guardar-config:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(45,156,219,0.4);
-}
+.status-active   { background: #e6f7ec; color: #0a5c2e; }
+.status-inactive { background: #fee9e6; color: #b91c1c; }
+.status-pending  { background: #fff3e0; color: #e65100; }
 
-/* Grid de dos columnas (dashboard) */
-.admin-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-    margin-top: 10px;
-}
-.recent-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.recent-list li {
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(45,156,219,0.1);
+/* ============================================
+   ACCIONES DE TABLA - BOTONES CORREGIDOS
+   ============================================ */
+.actions-cell {
+    white-space: normal;
+    vertical-align: middle;
     display: flex;
-    align-items: center;
-    gap: 10px;
     flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
 }
-.recent-list li .date {
-    margin-left: auto;
-    font-size: 0.7rem;
-    color: #8aaec8;
-}
-
-/* Footer siempre abajo y burbujas detrás */
-.site-footer {
-    position: relative;
-    z-index: 2;
-    background: #0a1425;
-    margin-top: auto;
-}
-#particles {
-    z-index: 0;
-}
-
-/* Responsive */
-@media (max-width: 1000px) {
-    .admin-container { padding: 0 20px; margin-top: 80px; }
-    .admin-stats { grid-template-columns: repeat(2,1fr); gap: 16px; }
-    .admin-grid-2 { grid-template-columns: 1fr; gap: 20px; }
-    .admin-tabs { justify-content: center; }
-}
-@media (max-width: 700px) {
-    .admin-stats { grid-template-columns: 1fr; }
-    .admin-card-header { flex-direction: column; align-items: flex-start; }
-    .admin-table th, .admin-table td { padding: 10px 12px; }
-}
-
-/* ==================================================
-   ESTILOS PARA SELECTOR DE ROL Y BOTONES DE ACCIÓN
-   ================================================== */
 
 /* Selector de rol */
 .select-small {
-    padding: 6px 12px;
+    padding: 8px 12px;
     border-radius: 30px;
     border: 1px solid rgba(45, 156, 219, 0.4);
     background: white;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 500;
     color: #1a6fa3;
     cursor: pointer;
     transition: all 0.2s;
-    margin-right: 6px;
+    vertical-align: middle;
 }
 
 .select-small:hover {
@@ -476,12 +438,12 @@ body.admin-page {
     box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.2);
 }
 
-/* Botones de acción dentro de la tabla */
+/* Botones de acción */
 .btn-mini {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 5px 12px;
+    padding: 8px 14px;
     border-radius: 30px;
     font-size: 0.7rem;
     font-weight: 600;
@@ -491,7 +453,12 @@ body.admin-page {
     cursor: pointer;
     transition: 0.2s;
     text-decoration: none;
+    vertical-align: middle;
     margin: 2px;
+}
+
+.btn-mini i {
+    font-size: 0.75rem;
 }
 
 .btn-mini:hover {
@@ -510,9 +477,42 @@ body.admin-page {
     color: #b91c1c;
 }
 
-/* Espaciado en la celda de acciones */
-.admin-table td:last-child {
-    white-space: nowrap;
+.btn-mini-warning {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.btn-mini-warning:hover {
+    background: #ffe0b2;
+    color: #bf360c;
+}
+
+.btn-mini-success {
+    background: #e6f7ec;
+    color: #0a5c2e;
+}
+
+.btn-mini-success:hover {
+    background: #c8e6d9;
+    color: #0a5c2e;
+}
+
+/* Botón cerrar sesión especial */
+.btn-logout {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+}
+
+.btn-logout:hover {
+    background: linear-gradient(135deg, #e53935, #c62828);
+    transform: translateY(-2px);
+}
+
+/* Formularios inline */
+.inline-form {
+    display: inline-block;
+    margin: 0 2px;
+    vertical-align: middle;
 }
 
 /* Ajuste para formularios inline dentro de la tabla */
@@ -521,61 +521,518 @@ body.admin-page {
     margin: 0 2px;
 }
 
-/* ==================================================
-   MEJORAS PARA TABLA DE USUARIOS (alineación, iconos, acciones)
-   ================================================== */
+/* ============================================
+   SECCIÓN DE SIMULACIONES - CORREGIDA
+   ============================================ */
 
-/* Celda de acciones: evitar saltos de línea y mantener compacto */
-.actions-cell {
-    white-space: nowrap;
-    vertical-align: middle;
+/* Formulario de creación */
+.form-crear-simulacion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    background: rgba(45,156,219,0.04);
+    border: 1px solid rgba(45,156,219,0.15);
+    border-radius: 28px;
+    padding: 20px 24px;
 }
 
-/* Formularios en línea dentro de la tabla */
-.inline-form {
-    display: inline-block;
-    margin: 0 3px;
-    vertical-align: middle;
+.form-group {
+    flex: 1;
+    min-width: 180px;
 }
 
-/* Asegurar que los botones y el select tengan la misma altura */
-.select-small, .btn-mini {
-    vertical-align: middle;
+.form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1a6fa3;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Inputs del formulario superior: pill con sombra sutil */
+.form-crear-simulacion .form-group input,
+.form-crear-simulacion input[type="text"],
+.form-crear-simulacion input[type="number"],
+.form-crear-simulacion input {
+    width: 100%;
+    padding: 11px 18px;
+    border: 1.5px solid rgba(45, 156, 219, 0.35);
+    border-radius: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: white;
+    color: #2c3e66;
+    box-shadow: 0 2px 8px rgba(45,156,219,0.08);
+    transition: all 0.2s;
+}
+
+.form-crear-simulacion .form-group input:focus,
+.form-crear-simulacion input:focus {
+    outline: none;
+    border-color: #2d9cdb;
+    box-shadow: 0 0 0 3px rgba(45,156,219,0.15), 0 2px 8px rgba(45,156,219,0.1);
+}
+
+.form-crear-simulacion .form-group input::placeholder,
+.form-crear-simulacion input::placeholder {
+    color: #a0bdd0;
+    font-weight: 400;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid rgba(45, 156, 219, 0.3);
+    border-radius: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    background: white;
+    transition: all 0.2s;
+}
+
+.form-crear-simulacion button {
+    background: linear-gradient(135deg, #2d9cdb, #1a6fa3);
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 12px 28px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(45,156,219,0.3);
 }
 
-/* Icono de rol dentro del badge */
-.role-badge i {
-    margin-right: 5px;
+.form-crear-simulacion button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(45, 156, 219, 0.4);
+}
+
+.form-group textarea {
+    border-radius: 24px;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2d9cdb;
+    box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.1);
+}
+
+.btn-crear {
+    background: linear-gradient(135deg, #2d9cdb, #1a6fa3);
+    padding: 12px 32px;
+    border: none;
+    border-radius: 40px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.btn-crear:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(45, 156, 219, 0.4);
+}
+
+/* ============================================
+   TABLA DE SIMULACIONES
+   (incluye clase .simulaciones-tabla del CSS original
+    para los inputs inline y btn-mini dentro de ella)
+   ============================================ */
+.simulaciones-table,
+.simulaciones-tabla {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.85rem;
+}
+
+.simulaciones-table th,
+.simulaciones-tabla th {
+    text-align: left;
+    padding: 16px 16px;
+    background: #f0f8fe;
+    color: #1a6fa3;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(45,156,219,0.2);
+}
+
+.simulaciones-table td,
+.simulaciones-tabla td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(45,156,219,0.1);
+    vertical-align: middle;
+    color: #2c3e66;
+}
+
+.simulaciones-table tr:hover td,
+.simulaciones-tabla tr:hover td {
+    background: #f8fbfe;
+}
+
+.simulaciones-table th:nth-child(1),
+.simulaciones-tabla th:nth-child(1) { width: 5%; }
+.simulaciones-table th:nth-child(2),
+.simulaciones-tabla th:nth-child(2) { width: 20%; }
+.simulaciones-table th:nth-child(3),
+.simulaciones-tabla th:nth-child(3) { width: 35%; }
+.simulaciones-table th:nth-child(4),
+.simulaciones-tabla th:nth-child(4) { width: 20%; }
+.simulaciones-table th:nth-child(5),
+.simulaciones-tabla th:nth-child(5) { width: 20%; }
+
+/* Inputs inline dentro de la tabla de simulaciones
+   (restaurado del CSS original) */
+.simulaciones-table input,
+.simulaciones-tabla input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cce4f5;
+    border-radius: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    background: white;
+}
+
+.simulaciones-table input:focus,
+.simulaciones-tabla input:focus {
+    border-color: #2d9cdb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(45,156,219,0.1);
+}
+
+.desc-textarea-inline {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cce4f5;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    background: white;
+    resize: vertical;
+    min-height: 60px;
+}
+
+.acciones-simulacion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-guardar-sim {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #2d9cdb, #1a6fa3);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(45,156,219,0.25);
+}
+
+.btn-guardar-sim:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(45, 156, 219, 0.4);
+}
+
+.btn-eliminar-sim {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #fee9e6;
+    color: #b91c1c;
+    border: 1px solid rgba(185, 28, 28, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(185,28,28,0.1);
+}
+
+.btn-eliminar-sim:hover {
+    background: #fecaca;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(185,28,28,0.2);
+}
+
+/* ============================================
+   OTRAS SECCIONES
+   ============================================ */
+
+/* Grid de dos columnas */
+.admin-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.recent-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recent-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(45,156,219,0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.recent-list li .date {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: #8aaec8;
+}
+
+/* Configuración */
+.config-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.config-group {
+    background: rgba(255,255,255,0.7);
+    border-radius: 28px;
+    padding: 20px 28px;
+    border: 1px solid rgba(45,156,219,0.15);
+}
+
+.config-group label {
+    font-weight: 600;
+    color: #1a6fa3;
+    display: block;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.config-group input[type="text"],
+.config-group input[type="number"],
+.config-group select {
+    width: 100%;
+    padding: 12px 18px;
+    border: 1px solid #cce4f5;
+    border-radius: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+}
+
+.config-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.config-checkbox input {
+    width: 18px;
+    height: 18px;
+    accent-color: #2d9cdb;
+}
+
+.btn-guardar-config {
+    background: linear-gradient(135deg, #2d9cdb, #1a6fa3);
+    border: none;
+    padding: 14px 32px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.btn-guardar-config:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(45,156,219,0.4);
+}
+
+/* Footer */
+.site-footer {
+    position: relative;
+    z-index: 2;
+    background: #0a1425;
+    margin-top: auto;
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    color: #8aaec8;
     font-size: 0.8rem;
 }
 
-/* Ajuste para pantallas pequeñas: que la tabla pueda hacer scroll */
-@media (max-width: 900px) {
-    .table-responsive {
-        overflow-x: auto;
+/* ============================================
+   RESPONSIVE COMPLETO
+   ============================================ */
+@media (max-width: 1200px) {
+    .admin-table th:nth-child(5) { width: 15%; }
+    .admin-table th:nth-child(6) { width: 35%; }
+}
+
+@media (max-width: 1000px) {
+    .admin-container { 
+        padding: 0 20px; 
+        margin-top: 80px;
+        width: 95%;
     }
-    .admin-table {
-        min-width: 700px;
+    .admin-stats { 
+        grid-template-columns: repeat(2,1fr); 
+        gap: 16px; 
+    }
+    .admin-grid-2 { 
+        grid-template-columns: 1fr; 
+        gap: 20px; 
+    }
+    .admin-tabs { 
+        justify-content: center; 
+    }
+    
+    .admin-table,
+    .simulaciones-table,
+    .simulaciones-tabla {
+        min-width: 800px;
     }
 }
 
-/* ==================================================
-   FORZAR FOOTER ABAJO SOLO EN ADMIN (sin afectar al resto)
-   ================================================== */
-body.admin-page {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+@media (max-width: 768px) {
+    .admin-stats { 
+        grid-template-columns: 1fr; 
+    }
+    
+    .admin-card-header { 
+        flex-direction: column; 
+        align-items: flex-start; 
+    }
+    
+    .admin-table th, 
+    .admin-table td,
+    .simulaciones-table th,
+    .simulaciones-table td,
+    .simulaciones-tabla th,
+    .simulaciones-tabla td { 
+        padding: 10px 12px; 
+    }
+    
+    .actions-cell {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .select-small, .btn-mini {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .form-crear-simulacion {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-crear {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .acciones-simulacion {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-guardar-sim,
+    .btn-eliminar-sim {
+        justify-content: center;
+        width: 100%;
+    }
 }
 
-body.admin-page .admin-container {
-    flex: 1;  /* Empuja el footer hacia abajo */
+@media (max-width: 480px) {
+    .admin-header {
+        padding: 20px 24px;
+    }
+    
+    .admin-header-content h1 {
+        font-size: 1.5rem;
+    }
+    
+    .admin-card-body {
+        padding: 16px 20px;
+    }
+    
+    .stat-card {
+        padding: 16px 20px;
+    }
+    
+    .stat-card i {
+        font-size: 2rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
 }
 
-/* Aseguramos que el footer tenga margen superior automático */
-body.admin-page footer.site-footer {
-    margin-top: auto;
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
+
+::-webkit-scrollbar-track {
+    background: rgba(45,156,219,0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #2d9cdb, #1a6fa3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1a6fa3;
+}
+
+/* Selection */
+::selection {
+    background: rgba(45,156,219,0.3);
+    color: #1a6fa3;
+}
+
+/* Utilidades */
+.text-center { text-align: center; }
+.text-right  { text-align: right; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 16px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 16px; }

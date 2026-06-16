@@ -50,18 +50,6 @@ body {
     color: var(--deep);
 }
 
-/* ─── OVERLAY BACKGROUND ─── */
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(160deg,
-        rgba(4,17,31,0.18) 0%,
-        rgba(7,24,40,0.08) 50%,
-        rgba(2,9,15,0.15) 100%);
-    z-index: 0;
-    pointer-events: none;
-}
 
 /* ─── CANVAS BURBUJAS ─── */
 #particles {
@@ -210,7 +198,6 @@ body::before {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(86,207,225,0.1);
     border: 1px solid rgba(86,207,225,0.22);
     padding: 5px 16px;
     border-radius: var(--radius-pill);
@@ -231,7 +218,7 @@ body::before {
     letter-spacing: -0.03em;
     line-height: 1.08;
     margin-bottom: 12px;
-    text-shadow: 0 4px 15px rgba(25,132,194,0.904);
+    text-shadow: 0 4px 15px rgba(25, 132, 194, 0.712);
 }
 .hero-title p {
     font-size: 1rem;
@@ -368,8 +355,8 @@ body::before {
     inset: 0;
     background: linear-gradient(180deg,
         rgba(6,57,110,0.05) 0%,
-        rgba(5,118,255,0.26) 55%,
-        rgba(14,118,179,0.479) 100%);
+        rgba(5, 155, 255, 0.26) 55%,
+        rgba(14, 118, 179, 0.404) 100%);
     z-index: 4;
     pointer-events: none;
 }
@@ -1261,7 +1248,7 @@ body::before {
     letter-spacing: -0.03em;
     line-height: 1.08;
     margin-bottom: 12px;
-    text-shadow: 0 4px 20px rgba(25,132,194,0.904);
+    text-shadow: 0 4px 20px rgba(25, 132, 194, 0.664);
 }
 .section-header p { color: rgba(255,255,255,0.85); font-size: 0.93rem; }
 
@@ -1335,7 +1322,7 @@ body::before {
     color: white;
     letter-spacing: -0.03em;
     line-height: 1.08;
-    text-shadow: 0 4px 20px rgba(25,132,194,0.904);
+    text-shadow: 0 4px 20px rgba(25, 132, 194, 0.664);
     flex: 1;
 }
 
@@ -1504,7 +1491,7 @@ body::before {
 @media (min-width: 1600px) {
     .species-grid-home { grid-template-columns: repeat(4, 1fr); gap: 24px; }
     .detail-top-area { grid-template-columns: 1fr 420px; }
-    .hero-title h1 { font-size: 3.6rem; }
+    .hero-title h1 { font-size: 4.2rem; }
 }
 
 /* 1080p ajuste fino */

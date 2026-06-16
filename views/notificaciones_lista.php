@@ -1,10 +1,11 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 include __DIR__ . '/../app/models/Conexion.php';
+$conn = (new Conexion())->getConnection();
 
 if (!defined('ROL_ESTUDIANTE')) define('ROL_ESTUDIANTE', 1);
 
-if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != ROL_ESTUDIANTE) {
+if (!isset($_SESSION['id']) || $_SESSION['rol'] != ROL_ESTUDIANTE) {
     exit('Acceso no autorizado');
 }
 

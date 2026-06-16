@@ -86,12 +86,12 @@
 
             <div class="eco-stats">
                 <div class="stat">
-                    <span class="stat-number">+5,000</span>
+                    <span class="stat-number">+1,000</span>
                     <span class="stat-label">Estudiantes</span>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat">
-                    <span class="stat-number">+150</span>
+                    <span class="stat-number">+50</span>
                     <span class="stat-label">Especies</span>
                 </div>
                 <div class="stat-divider"></div>

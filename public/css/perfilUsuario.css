@@ -11,7 +11,7 @@ html, body {
 
 /* ================= BODY ================= */
 body {
-    background-image: url('../MEDIA/backgrounds/perfilusuario.jpg'); /* tu imagen */
+    background-image: url('../MEDIA/backgrounds/perfiluu.png'); /* tu imagen */
     background-size: cover;        /* que cubra todo */
     background-position: center;   /* centrada */
     background-repeat: no-repeat;  
@@ -25,6 +25,25 @@ body {
     color: #11355f;
 }
 
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(160deg,
+        rgba(8, 113, 212, 0.349) 0%,
+        rgba(9, 115, 236, 0.144) 50%,
+        rgba(255, 255, 255, 0) 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+#particles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
 /* ================= MAIN ================= */
 .main-container {
     flex: 1;
@@ -50,7 +69,7 @@ body {
     height: 160px;
     position: relative;
     overflow: hidden;
-    background-image: url('../MEDIA/Web/banner.jpeg');
+    background-image: url('../MEDIA/Web/banners.jpeg');
     background-size: cover;
     background-position: center 30%;
     background-repeat: no-repeat;
@@ -300,7 +319,12 @@ body {
     background: #d0e4f4;
     transform: translateY(-2px);
 }
-
+/* ================= PANTALLAS GRANDES (1920x1080) ================= */
+@media (min-width: 1900px) and (min-height: 1000px) {
+    .profile-container {
+        margin-top: 100px;
+    }
+}
 /* ================= RESPONSIVE ================= */
 @media (max-width: 700px) {
     .profile-avatar {
@@ -334,3 +358,15 @@ body {
         grid-template-columns: 1fr;
     }
 }
+.role-badge-inline {
+    display: inline-block;
+    margin-top: 14px;
+    background: linear-gradient(120deg, #5baae3, #3d8fd1);
+    color: white;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 12px rgba(61, 143, 209, 0.3);
+} 

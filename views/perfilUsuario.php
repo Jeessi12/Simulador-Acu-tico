@@ -1,15 +1,12 @@
 <?php
-// Iniciar sesión correctamente
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Conexión
 include __DIR__ . '/../app/models/Conexion.php';
 $conexion = new Conexion();
 $conn = $conexion->getConnection();
 
-// Verificar sesión
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
@@ -37,11 +34,57 @@ if (!function_exists('getRoleAvatarSrc')) {
     }
 }
 
-$userId = $_SESSION['id'];
+if (!function_exists('getProfileInfo')) {
+    function getProfileInfo(?int $rol): array {
+        switch ($rol) {
+            case ROL_ESTUDIANTE:
+                return [
+                    'titulo' => 'Estudiante BlueEcoSim',
+                    'desc'   => 'Explorador del mundo acuático en formación. Participas en simulaciones interactivas para aprender sobre ecosistemas marinos y desarrollar conciencia ambiental.',
+                    'items'  => [
+                        ['label' => 'Área',     'value' => 'Ciencias del mar'],
+                        ['label' => 'Objetivo', 'value' => 'Completar todas las asignaciones'],
+                        ['label' => 'Nivel',    'value' => 'Principiante'],
+                    ],
+                ];
+            case ROL_DOCENTE:
+                return [
+                    'titulo' => 'Docente BlueEcoSim',
+                    'desc'   => 'Guía y formador de nuevos exploradores marinos. Diseñas y asignas actividades de simulación para que tus estudiantes descubran los ecosistemas acuáticos.',
+                    'items'  => [
+                        ['label' => 'Función',  'value' => 'Gestión de asignaciones'],
+                        ['label' => 'Rol',      'value' => 'Facilitador de aprendizaje'],
+                        ['label' => 'Acceso',   'value' => 'Seguimiento de estudiantes'],
+                    ],
+                ];
+            case ROL_PERSONAL:
+                return [
+                    'titulo' => 'Personal de Apoyo',
+                    'desc'   => 'Miembro del equipo de soporte de BlueEcoSim. Contribuyes al funcionamiento de la plataforma y brindas asistencia a la comunidad educativa.',
+                    'items'  => [
+                        ['label' => 'Función',  'value' => 'Soporte y administración'],
+                        ['label' => 'Acceso',   'value' => 'Panel de gestión'],
+                        ['label' => 'Área',     'value' => 'Operaciones internas'],
+                    ],
+                ];
+            default:
+                return [
+                    'titulo' => 'Usuario BlueEcoSim',
+                    'desc'   => 'Bienvenido a BlueEcoSim. Tienes acceso general a la plataforma y puedes explorar el contenido disponible sobre ecosistemas acuáticos.',
+                    'items'  => [
+                        ['label' => 'Acceso',  'value' => 'Contenido general'],
+                        ['label' => 'Modo',    'value' => 'Exploración libre'],
+                        ['label' => 'Estado',  'value' => 'Usuario registrado'],
+                    ],
+                ];
+        }
+    }
+}
 
-$avatarSrc = getRoleAvatarSrc($_SESSION['rol'] ?? null);
+$userId      = $_SESSION['id'];
+$avatarSrc   = getRoleAvatarSrc($_SESSION['rol'] ?? null);
+$profileInfo = getProfileInfo($_SESSION['rol'] ?? null);
 
-// Consulta segura
 $sql = "SELECT u.id, u.username, u.email, r.rol 
         FROM usuarios u 
         LEFT JOIN roles r ON u.rol_id = r.id 
@@ -52,7 +95,7 @@ $stmt->bind_param("i", $userId);
 $stmt->execute();
 
 $result = $stmt->get_result();
-$user = $result->fetch_assoc();
+$user   = $result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -75,20 +118,18 @@ $user = $result->fetch_assoc();
 
     <div class="main-container">
         <main class="profile-container">
-            <!-- Banner fijo -->
             <div class="profile-banner">
                 <div class="banner-overlay"></div>
                 <div class="banner-texture"></div>
             </div>
 
-           <div class="profile-avatar">
-            <img src="<?php echo htmlspecialchars($avatarSrc); ?>" alt="Avatar">
-    <div class="avatar-ring"></div>
-</div>
+            <div class="profile-avatar">
+                <img src="<?php echo htmlspecialchars($avatarSrc); ?>" alt="Avatar">
+                <div class="avatar-ring"></div>
+            </div>
 
             <div class="profile-card">
 
-                <!-- Datos básicos -->
                 <div class="profile-details">
                     <div class="detail-item">
                         <div class="detail-icon">📧</div>
@@ -113,15 +154,18 @@ $user = $result->fetch_assoc();
                     </div>
                 </div>
 
-                <!-- Secciones informativas -->
                 <div class="profile-sections">
+
                     <section class="profile-box">
-                        <h2>🌟 Sobre mí</h2>
-                        <p>Aventurero apasionado por el océano y sus misterios. Disfruto explorando simulaciones acuáticas interactivas y aprendiendo cómo proteger los ecosistemas marinos.</p>
+                        <h2><?php echo htmlspecialchars($profileInfo['titulo']); ?></h2>
+                        <p><?php echo htmlspecialchars($profileInfo['desc']); ?></p>
                         <ul class="profile-list">
-                            <li><strong>🌊 Interés:</strong> Biodiversidad marina</li>
-                            <li><strong>🎯 Objetivo:</strong> Completar todas las asignaciones</li>
-                            <li><strong>🏆 Experiencia:</strong> Nivel principiante</li>
+                            <?php foreach ($profileInfo['items'] as $item): ?>
+                                <li>
+                                    <strong><?php echo htmlspecialchars($item['label']); ?>:</strong>
+                                    <?php echo htmlspecialchars($item['value']); ?>
+                                </li>
+                            <?php endforeach; ?>
                         </ul>
                     </section>
 
@@ -133,12 +177,13 @@ $user = $result->fetch_assoc();
                             <span>¡Completa simulaciones para ganar tus primeras medallas!</span>
                         </div>
                     </section>
+
                 </div>
 
                 <div class="profile-actions">
-                     <a href="#" class="btn-edit">✏️ Editar perfil</a>
-                     <a href="/Simulador-Acu-tico-main//app/Controllers/LogoutController.php" class="btn-logout">🚪 Cerrar sesión</a>
+                    <a href="/Simulador-Acu-tico-main//app/Controllers/LogoutController.php" class="btn-logout">🚪 Cerrar sesión</a>
                 </div>
+
             </div>
         </main>
     </div>
@@ -146,6 +191,7 @@ $user = $result->fetch_assoc();
     <div id="footer-container">
         <?php include("fragments/footer.php"); ?>
     </div>
-
+<canvas id="particles"></canvas>
+<script src="/Simulador-Acu-tico-main/public/js/burbujas.js" defer></script>
 </body>
 </html>

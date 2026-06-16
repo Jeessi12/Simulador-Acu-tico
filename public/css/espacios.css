@@ -18,14 +18,17 @@ body {
     font-family: 'Poppins', 'Google Sans', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: #1e293b;
     min-height: 100vh;
-    background: linear-gradient(145deg, #c8eeff 100%);
+    background-image: url('../MEDIA/backgrounds/espaciosfondo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     background-attachment: fixed;
     position: relative;
     overflow-x: hidden;
 }
 
 #particles {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -33,6 +36,7 @@ body {
     pointer-events: none;
     z-index: 0;
     opacity: 0.95;
+    border-radius: inherit;
 }
 
 .classroom-container {
@@ -62,7 +66,7 @@ body {
    ============================================ */
 
 .classroom-hero {
-    background-image: url('../media/backgrounds/espacios.jpeg');
+    background-image: url('../media/backgrounds/espacios.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -72,19 +76,22 @@ body {
     color: white;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 12px 36px rgba(8, 128, 158, 0.473);
+    box-shadow: 0 12px 36px rgba(8, 103, 158, 0.473);
 }
 
+/* Overlay con degradados radiales para la imagen */
 .classroom-hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 15% 25%, rgba(255,255,255,0.30), transparent 18%),
-                radial-gradient(circle at 80% 20%, rgba(173, 236, 255, 0.24), transparent 14%),
-                radial-gradient(circle at 60% 75%, rgba(255,255,255,0.16), transparent 16%);
-    opacity: 0.75;
-    z-index: -1;
+    z-index: 1;
     pointer-events: none;
+}
+
+/* Asegura que el contenido del hero quede por encima del overlay */
+.classroom-hero > * {
+    position: relative;
+    z-index: 2;
 }
 
 .classroom-hero::after {
@@ -107,14 +114,14 @@ body {
 }
 
 .hero-content h1 {
-    font-size: 3rem;
+    font-size: 3.3rem;
     font-weight: 800;
     margin-bottom: 12px;
     letter-spacing: -0.5px;
     -webkit-background-clip: text;
     background-clip: text;
     color: #ffffff;
-    text-shadow: 0 2px 10px rgba(28, 98, 138, 0.719);
+    text-shadow: 0 4px 15px rgba(20, 91, 150, 0.658);
 }
 
 .hero-content p {
@@ -180,7 +187,7 @@ body {
 }
 
 .btn-create:hover {
-    background: #1a8fa0;
+    background: #1a7aa0;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(45, 156, 219, 0.4);
 }
@@ -458,7 +465,7 @@ body {
         135deg,
         rgba(8, 22, 44, 0.55) 0%,
         rgba(8, 22, 44, 0.30) 60%,
-        rgba(8, 22, 44, 0.55) 100%
+        rgba(12, 60, 136, 0.55) 100%
     );
     padding: 1.75rem 2rem 2rem;
     min-height: 200px;
@@ -1326,13 +1333,6 @@ button:active {
     animation: shake 0.45s ease;
 }
 
-/* ============================================
-   FOOTER FIX
-   ============================================ */
-
-footer {
-    margin-top: 0 !important;
-}
 
 /* ============================================
    SCROLLBAR
@@ -1351,6 +1351,87 @@ footer {
     border-radius: 10px;
 }
 
+/* ── SweetAlert Ecosim ───────────────────────────────────── */
+
+.swal2-ecosim-popup{
+    border-radius:24px !important;
+    padding:24px !important;
+    max-width:480px;
+    box-shadow:0 20px 60px rgba(15,23,42,.15);
+}
+
+.swal2-ecosim-title{
+    color:#0f172a !important;
+    font-size:1.4rem !important;
+    font-weight:700 !important;
+    margin-bottom:8px !important;
+}
+
+.swal2-ecosim-html{
+    color:#475569 !important;
+    font-size:.95rem !important;
+}
+
+.swal2-actions{
+    gap:12px;
+    margin-top:24px !important;
+}
+
+.swal2-ecosim-confirm{
+    background:linear-gradient(135deg,#2d9cdb,#1a6fa3) !important;
+    color:#fff !important;
+    border:none !important;
+    border-radius:12px !important;
+    padding:12px 24px !important;
+    font-weight:600 !important;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.swal2-ecosim-confirm:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(45,156,219,.35);
+}
+
+.swal2-ecosim-cancel{
+    background:#f8fafc !important;
+    color:#475569 !important;
+    border:1px solid #cbd5e1 !important;
+    border-radius:12px !important;
+    padding:12px 24px !important;
+    font-weight:600 !important;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.swal2-ecosim-cancel:hover{
+    background:#eef2f7 !important;
+}
+
+/* ── Caja de advertencia ─────────────────────────────────── */
+
+.swal-warning-box{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:#f0f9ff;
+    border:1px solid rgba(45,156,219,.2);
+    border-radius:14px;
+    padding:12px 14px;
+    margin-top:14px;
+    text-align:left;
+}
+
+.swal-warning-box svg{
+    flex-shrink:0;
+    margin-top:1px;
+}
+
+.swal-warning-box span{
+    font-size:.82rem;
+    color:#475569;
+    line-height:1.5;
+}
 /* ============================================
    ANIMACIONES
    ============================================ */
@@ -1376,7 +1457,58 @@ footer {
         transform: translateY(0);
     }
 }
+/* ============================================
+   PANTALLAS GRANDES (1600px+, incluye 1920x1080)
+   ============================================ */
 
+@media (min-width: 1600px) {
+    .classroom-container {
+        max-width: 1600px;
+        margin-top: 120px;
+        padding: 0 40px 80px;
+    }
+
+    .classroom-hero {
+        padding: 60px 70px;
+        margin-bottom: 48px;
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        max-width: 600px;
+    }
+
+    .spaces-grid {
+        gap: 36px;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    }
+
+    .space-card {
+        min-height: 220px;
+    }
+
+    .space-card h2 {
+        font-size: 1.4rem;
+    }
+
+    .space-link {
+        padding: 0 32px 28px;
+    }
+
+    .space-header {
+        padding: 28px 32px 20px;
+    }
+
+    .space-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+}
 /* ============================================
    RESPONSIVE
    ============================================ */
@@ -1482,4 +1614,26 @@ footer {
         width: 100%;
         justify-content: center;
     }
+}
+
+/* ============================================
+   FIX GRID Y CONTAINER
+   ============================================ */
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.classroom-container {
+    flex: 1;
+    width: 100%;
+}
+
+.spaces-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
+    margin-top: 16px;
 }
