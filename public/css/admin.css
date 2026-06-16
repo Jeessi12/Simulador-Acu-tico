@@ -280,7 +280,7 @@ body.admin-page {
 .admin-table th:nth-child(3) { width: 13%; }
 .admin-table th:nth-child(4) { width: 10%; }
 .admin-table th:nth-child(5) { width: 14%; }
-.admin-table th:nth-child(6) { width: 25%; }
+.admin-table th:nth-child(6) { width: 24%; }
 
 /* Celda Email: una sola línea con ellipsis si es muy largo */
 .admin-table td:nth-child(2) {
@@ -424,15 +424,19 @@ body.admin-page {
    ACCIONES DE TABLA - BOTONES CORREGIDOS
    ============================================ */
 .actions-cell {
-    white-space: normal;
+    white-space: nowrap;
     vertical-align: middle;
     display: table-cell;
-    min-width: 280px;
+    min-width: 300px;
 }
 
 .actions-cell .inline-form,
 .actions-cell > a {
-    margin: 4px 6px 4px 0;
+    margin: 0 8px 0 0;
+}
+
+.actions-cell .inline-form:last-child {
+    margin-right: 0;
 }
 
 /* Selector de rol */
@@ -536,7 +540,7 @@ body.admin-page {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin: 2px 4px;
+    margin: 0 8px 0 0;
     vertical-align: middle;
 }
 
@@ -545,7 +549,7 @@ body.admin-page {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin: 2px 4px;
+    margin: 0 8px 0 0;
 }
 
 

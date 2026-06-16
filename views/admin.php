@@ -118,15 +118,7 @@ if (isset($_GET['exportar_csv'])) {
     exit();
 }
 
-// ---------- 5. Forzar cierre de sesión ----------
-if (isset($_GET['forzar_cierre']) && is_numeric($_GET['forzar_cierre'])) {
-    $id_usuario = intval($_GET['forzar_cierre']);
-    $conn->query("DELETE FROM sesiones_activas WHERE usuario_id = $id_usuario");
-    $mensaje = "Se ha forzado el cierre de sesión del usuario.";
-    registrarLog($conn, $id_admin, $_SESSION['usuario'], "Forzó cierre de sesión del usuario ID $id_usuario");
-}
-
-// ---------- 6. Configuración del sistema ----------
+// ---------- 5. Configuración del sistema ----------
 if (isset($_POST['guardar_config'])) {
     $limite = intval($_POST['limite_estudiantes']);
     $tiempo = intval($_POST['tiempo_simulacion']);
@@ -145,7 +137,7 @@ if (isset($_POST['guardar_config'])) {
     registrarLog($conn, $id_admin, $_SESSION['usuario'], "Actualizó configuración del sistema");
 }
 
-// ---------- 7. Obtener datos para estadísticas ----------
+// ---------- 6. Obtener datos para estadísticas ----------
 // Usuarios registrados por mes (últimos 6 meses)
 $meses = [];
 $usuariosPorMes = [];
@@ -325,9 +317,6 @@ $tab_activa = $_GET['tab'] ?? 'dashboard';
                                         <input type="hidden" name="usuario_id" value="<?php echo $u['id']; ?>">
                                         <button type="submit" name="eliminar" class="btn-mini btn-mini-danger">Eliminar</button>
                                     </form>
-                                    <?php if ($u['id'] != $id_admin): ?>
-                                    <a href="?forzar_cierre=<?php echo $u['id']; ?>&tab=usuarios" class="btn-mini" onclick="return confirm('¿Forzar cierre de sesión?')">Cerrar sesión</a>
-                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php endwhile; ?>
