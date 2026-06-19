@@ -5,7 +5,6 @@
 -- =============================================================
 
 USE simulador;
-
 -- -------------------------------------------------------------
 -- TABLA: especies
 -- -------------------------------------------------------------
@@ -93,17 +92,18 @@ VALUES
  '../public/media/3D_Models/ridley_turtle_lepidochelys_olivacea.glb',
  1.2, -0.2, -1.57, 3.2, 0.8),
 
--- 2 · Pez payaso
-(2, 'Pez payaso', 'Amphiprioninae', 'peces',
- 'Arrecifes de coral (asociado a anémonas)',
- 'Famoso por su simbiosis mutualista con anémonas marinas. Todos nacen machos y el dominante se vuelve hembra.',
- 'Omnívoro (plancton, algas, restos)', '6-10 años', 'Preocupación menor',
- '8-12 cm', '15-30 g', 'Puesta en anémonas', '100-1000 huevos por ciclo',
- 'Peces más grandes, morenas',
- '24 – 28 °C', 'Marina (~35 ppt)', 'Zona fótica', 1, 15, 'Indo-Pacífico',
- 165, 52,
- '../public/media/3D_Models/clown_fish_low_poly_animated.glb',
- 13.0, -0.1, 1.57, 2.2, 0.5),
+
+(2, 'Botete bonito' , 'Canthigaster punctatissima', 'peces',
+ 'Arrecifes rocosos y coralinos de Los Cobanos, 1-30 m',
+ 'Pez globo de pequeño tamaño con cuerpo redondeado y hocico prominente que le da su nombre. Es de color marron con puntos blancos brillantes y lineas azules alrededor de los ojos. A diferencia de otros peces globo, tiene espinas fijas que siempre estan erectas. Es un pez curioso que nada lentamente entre las rocas y corales en busca de alimento. Posee tetrodotoxina en sus organos, lo que lo hace toxico para depredadores.',
+ 'Omnivora (algas, esponjas, crustaceos, gusanos)', '3-5 anos', 'Preocupacion menor',
+ '8-12 cm', '30-80 g', 'Puesta de huevos demersales en nido', 'Cientos de huevos',
+ 'Peces grandes, morenas (inmunes a toxina)',
+ '22 - 28 C', 'Marina (~34 ppt)', 'Zona fotica', 1, 30, 'Los Cobanos, El Salvador',
+ 92, 47,
+ '../public/media/3D_Models/pufferfish.glb',
+ 1.0, -0.1, 0.0, 2.5, 0.6);
+
 
 -- 3 · Pulpo
 (3, 'Pulpo', 'Octopoda', 'moluscos',
@@ -115,7 +115,7 @@ VALUES
  '10 – 25 °C', 'Marina (~34 ppt)', 'Zona fótica y mesopelágica', 0, 200, 'Océanos globales',
  95, 40,
  '../public/media/3D_Models/octopus.glb',
- 0.1, -1.4, 3.1416, 5.0, 0.6),
+ 1.0, -1.4, 3.1416, 5.0, 0.6),
 
 -- 4 · Tiburón martillo
 (4, 'Tiburón martillo', 'Sphyrnidae', 'peces',
@@ -129,17 +129,18 @@ VALUES
  '../public/media/3D_Models/hammerhead_shark.glb',
  0.6, -0.2, 1.57, 3.0, 0.7),
 
--- 5 · Cirujano azul  ← model_path y scale corregidos desde JS
-(5, 'Cirujano azul', 'Paracanthurus hepatus', 'peces',
- 'Arrecifes de coral',
- 'Pez de color azul eléctrico con distintiva mancha amarilla en la cola.',
- 'Herbívoro (algas)', '8-12 años', 'Preocupación menor',
- '20-30 cm', '200-600 g', 'Desove en grupo', 'Miles de huevos flotantes',
- 'Tiburones, barracudas',
- '24 – 28 °C', 'Marina (~35 ppt)', 'Zona fótica', 2, 40, 'Indo-Pacífico',
- 162, 50,
- '../public/media/3D_Models/blue fish.glb',
- 3.0, -0.2, 1.57, 2.8, 0.7),
+
+(5, 'Jurel Toro', 'Caranx caballus', 'peces',
+ 'Aguas costeras abiertas y arrecifes de Los Cobanos, 1-50 m',
+ 'Pez de cuerpo robusto y comprimido, de color plateado con tonos azul-verdosos en el dorso. Es un depredador rapido y agresivo que caza en cardumenes. Su nombre "toro" viene de su fuerza y tenacidad al ser capturado. Es uno de los peces mas importantes para la pesca deportiva y artesanal en Los Cobanos. Se alimenta de peces pequeños y crustaceos, y puede formar grandes cardumenes cerca de la superficie.',
+ 'Carnivora (peces pequeños, crustaceos, calamares)', '10-15 anos', 'Preocupacion menor',
+ '40-80 cm', '2-8 kg', 'Puesta de huevos pelagicos', 'Miles de huevos',
+ 'Tiburones, peces grandes, humanos',
+ '20 - 30 C', 'Marina (~35 ppt)', 'Epipelagica', 1, 50, 'Los Cobanos, El Salvador',
+ 92, 47,
+ '../public/media/3D_Models/jack.glb',
+ 1.5, -0.15, 0.0, 3.0, 0.7);
+
 
 -- 6 · Caballito de mar
 (6, 'Caballito de mar', 'Hippocampus', 'peces',
@@ -165,17 +166,19 @@ VALUES
  '../public/media/3D_Models/delfin.glb',
  6.0, -0.1, 1.57, 4.5, 0.8),
 
--- 8 · Cangrejo ermitaño  ← model_path, scale, pos_y corregidos desde JS
-(8, 'Cangrejo ermitaño', 'Paguroidea', 'crustaceos',
- 'Zonas intermareales, fondos arenosos',
- 'Utiliza conchas vacías como refugio. A medida que crece, debe buscar conchas más grandes.',
- 'Omnívoro (detritus, algas)', '3-12 años', 'Preocupación menor',
- '5-15 cm', '10-50 g', 'Puesta de huevos', 'Miles de huevos',
- 'Pulpos, peces, aves',
- '18 – 27 °C', 'Marina o estuarina', 'Intermareal', 0, 10, 'Costas tropicales',
- 100, 55,
- '../public/media/3D_Models/hermit crab.glb',
- 2.3, -0.1, -25.0, 2.5, 0.5),
+
+-- 8 · Jaiba Roja del Pacífico
+(8, 'Jaiba Roja del Pacifico', 'Cronius ruber', 'crustaceos',
+ 'Arrecifes rocosos y fondos arenosos de Los Cobanos, 0-30 m',
+ 'Cangrejo nadador de caparazon rojo intenso con manchas mas oscuras, muy llamativo en el arrecife. Sus patas traseras aplanadas en forma de paleta le permiten nadar activamente entre rocas y arena. Es un depredador activo que caza pequeños peces y crustaceos. En Los Cobanos es abundante en fondos mixtos de roca y arena, siendo una especie clave en la cadena alimenticia del arrecife.',
+ 'Carnivora (peces pequeños, crustaceos, moluscos)', '3-5 anos', 'Preocupacion menor',
+ '8-15 cm', '100-300 g', 'Puesta de huevos en abdomen', 'Miles de huevos',
+ 'Pulpos, peces grandes, humanos',
+ '20 - 30 C', 'Marina (~34 ppt)', 'Zona fotica bentonica', 0, 30, 'Los Cobanos, El Salvador',
+ 92, 47,
+ '../public/media/3D_Models/crab.glb',
+ 2.5, -0.15, 0.0, 3.0, 0.6),
+
 
 -- 9 · Estrella de mar
 (9, 'Estrella de mar', 'Asteroidea', 'moluscos',
@@ -189,17 +192,17 @@ VALUES
  '../public/media/3D_Models/starfish.glb',
  0.9, -0.1, 0.0, 2.8, 0.5),
 
--- 10 · Langosta espinosa  ← model_path y scale corregidos desde JS
-(10, 'Langosta espinosa', 'Palinuridae', 'crustaceos',
- 'Arrecifes rocosos, fondos duros',
- 'Carece de pinzas grandes, usa sus largas antenas para defenderse.',
- 'Omnívoro (moluscos, algas)', '15-20 años', 'Preocupación menor',
- '20-40 cm', '0.5-3 kg', 'Puesta de huevos', '50,000-500,000 huevos',
+-- 10 · Camarón Mantis del Pacífico
+(10, 'Camaron Mantis del Pacifico', 'Squilla aculeata', 'crustaceos',
+ 'Fondos arenosos y fangosos de Los Cobanos, 1-40 m',
+ 'Crustaceo depredador con apendices raptoriales en forma de garrote que usa para golpear a sus presas con una fuerza brutal. Su golpe es tan rapido que genera cavitacion en el agua, produciendo una onda de choque y luz. Es uno de los golpeadores mas poderosos del reino animal. En Los Cobanos excava madrigueras en fondos blandos y es un depredador temido por otros crustaceos y peces pequeños.',
+ 'Carnivora (cangrejos, camarones, peces pequeños, moluscos)', '4-6 anos', 'Preocupacion menor',
+ '10-20 cm', '50-150 g', 'Puesta de huevos en madriguera', 'Miles de huevos',
  'Pulpos, peces grandes, humanos',
- '18 – 28 °C', 'Marina (~35 ppt)', 'Zona bentónica', 1, 90, 'Trópicos y subtrópicos',
- 80, 50,
- '../public/media/3D_Models/langosta.glb',
- 4.0, -0.15, 0.0, 3.0, 0.6),
+ '20 - 29 C', 'Marina (~34 ppt)', 'Zona bentonica', 1, 40, 'Los Cobanos, El Salvador',
+ 92, 47,
+ '../public/media/3D_Models/mantis_shrimp.glb',
+ 1.5, -0.1, 0.0, 2.8, 0.6);
 
 -- 11 · Mantarraya  ← scale, pos_y, rot_y, cam_distance, cam_height corregidos desde JS
 (11, 'Mantarraya', 'Mobula birostris', 'peces',
@@ -1223,11 +1226,10 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (1, 4, 'fa-seedling',       'Ecosistema',    'Al pastar pastos marinos, los fertilizan y mantienen saludables los arrecifes.'),
 
 -- Especie 2
-(2, 1, 'fa-venus-mars',     'Hermafroditismo','Todos nacen machos; el más dominante cambia de sexo al ser hembra del grupo.'),
-(2, 2, 'fa-shield-alt',     'Inmunidad',     'Produce una capa de moco que los protege del veneno de la anémona.'),
-(2, 3, 'fa-music',          'Comunicación',  'Se comunican con chasquidos y chirriados para establecer jerarquías.'),
-(2, 4, 'fa-home',           'Simbiosis',     'La anémona los protege de depredadores; ellos la limpian y la alimentan.'),
-
+(2, 1, 'fa-nose', 'Narigon', 'Su hocico prominente y puntiagudo le da su nombre comun.'),
+(2, 2, 'fa-spider', 'Espinas fijas', 'A diferencia de otros peces globo, sus espinas siempre estan erectas.'),
+(2, 3, 'fa-spot', 'Puntos brillantes', 'Su cuerpo marron con puntos blancos brillantes lo hace inconfundible.'),
+(2, 4, 'fa-skull', 'Tetrodotoxina', 'Posee tetrodotoxina en sus organos, una neurotoxina letal para depredadores.');
 -- Especie 3
 (3, 1, 'fa-brain',          'Inteligencia',  'Tienen 9 cerebros: uno central y uno en cada tentáculo, que actúan de forma independiente.'),
 (3, 2, 'fa-palette',        'Camuflaje',     'Pueden cambiar color, textura y forma en menos de 200 milisegundos.'),
@@ -1241,10 +1243,10 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (4, 4, 'fa-baby',           'Vivíparos',     'Las crías nacen vivas y completamente formadas, listas para sobrevivir.'),
 
 -- Especie 5
-(5, 1, 'fa-cut',            'Espina caudal', 'Tienen una espina afilada en la cola con la que se defienden de depredadores.'),
-(5, 2, 'fa-leaf',           'Control de algas','Al pastar algas, permiten el crecimiento de coral y mantienen el arrecife saludable.'),
-(5, 3, 'fa-palette',        'Color único',   'Su pigmento azul real es uno de los más raros en peces de arrecife.'),
-(5, 4, 'fa-film',           'Fama mundial',  'Popularizado por Dory en Buscando a Nemo, lo que aumentó su demanda en acuarios.'),
+(5, 1, 'fa-bull', 'El Toro del mar', 'Su nombre viene de su fuerza y tenacidad al ser capturado, luchando como un toro.'),
+(5, 2, 'fa-users', 'Cardumenes', 'Forma grandes cardumenes que cazan coordinadamente, rodeando a sus presas.'),
+(5, 3, 'fa-rocket', 'Rapido', 'Es un depredador extremadamente rapido que puede alcanzar altas velocidades.'),
+(5, 4, 'fa-trophy', 'Pesca deportiva', 'Es una de las especies mas codiciadas por la pesca deportiva en El Salvador.');
 
 -- Especie 6
 (6, 1, 'fa-baby',           'Machos gestantes','El único animal donde el macho lleva y da a luz a las crías en su bolsa ventral.'),
@@ -1258,11 +1260,11 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (7, 3, 'fa-id-badge',       'Identidad',     'Cada delfín tiene un silbido único que funciona como su nombre personal.'),
 (7, 4, 'fa-heart',          'Empatía',       'Ayudan a compañeros heridos y han rescatado humanos en el mar.'),
 
--- Especie 8
-(8, 1, 'fa-home',           'Casa prestada', 'Usan conchas de gasterópodos vacías; organizan intercambios masivos en cadena.'),
-(8, 2, 'fa-hand-rock',      'Sociabilidad',  'Se reúnen en grupos para intercambiar conchas de forma ordenada y pacífica.'),
-(8, 3, 'fa-recycle',        'Recicladores',  'Son descomponedores clave; procesan materia orgánica en el sedimento.'),
-(8, 4, 'fa-shield-alt',     'Defensa',       'Se retraen dentro de la concha y bloquean la entrada con su pinza más grande.'),
+-- 8 · Jaiba Roja del Pacífico
+(8, 1, 'fa-palette', 'Color rojo intenso', 'Su caparazon rojo brillante lo hace inconfundible en el arrecife de Los Cobanos.'),
+(8, 2, 'fa-swimmer', 'Nadador activo', 'Sus patas traseras en paleta le permiten nadar agilmente entre rocas y arena.'),
+(8, 3, 'fa-fighter-jet', 'Depredador rapido', 'Es un cazador activo que persigue a sus presas con gran velocidad.'),
+(8, 4, 'fa-utensils', 'Pesca local', 'Es capturado por pescadores artesanales de Los Cobanos por su carne apreciada.'),
 
 -- Especie 9
 (9, 1, 'fa-hand-paper',     'Regeneración',  'Pueden regenerar un brazo perdido en meses; algunos regeneran el cuerpo entero desde un brazo.'),
@@ -1270,11 +1272,12 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (9, 3, 'fa-shoe-prints',    'Sin cerebro',   'No tienen cerebro ni sangre; usan agua de mar a presión para moverse y funcionar.'),
 (9, 4, 'fa-eye',            'Ojos en tentáculos','Tienen pequeños fotorreceptores en las puntas de sus brazos para detectar luz.'),
 
--- Especie 10
-(10, 1, 'fa-compass',       'Navegación magnética','Pueden orientarse usando el campo magnético terrestre durante migraciones.'),
-(10, 2, 'fa-music',         'Estridulación', 'Producen sonidos frotando sus antenas contra el caparazón para espantar depredadores.'),
-(10, 3, 'fa-users',         'Migraciones en fila','Migran en filas de hasta 50 individuos tomados de las antenas del de delante.'),
-(10, 4, 'fa-hard-hat',      'Muda',          'Mudan su exoesqueleto para crecer; quedan vulnerables durante horas hasta que se endurece.'),
+
+-- 10 · Camarón Mantis del Pacífico
+(10, 1, 'fa-fist-raised', 'Golpeador brutal', 'Su golpe es tan rapido que genera cavitacion y luz en el agua.'),
+(10, 2, 'fa-sun', 'Cavitacion', 'El golpe produce burbujas que colapsan generando temperaturas similares al sol.'),
+(10, 3, 'fa-rocket', 'Velocidad', 'Su golpe alcanza 80 km/h, comparable a una bala de calibre 22.'),
+(10, 4, 'fa-eye', 'Vision increible', 'Tiene los ojos mas complejos del reino animal, con 12-16 tipos de fotorreceptores.');
 
 -- Especie 11
 (11, 1, 'fa-brain',         'Mayor cerebro', 'Tienen el mayor cerebro en proporción al cuerpo de todos los peces.'),
@@ -1793,10 +1796,10 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (1, 4, 'Contaminación por plásticos',             'medium'),
 
 -- Especie 2
-(2, 1, 'Blanqueamiento de coral por calentamiento','high'),
-(2, 2, 'Pesca excesiva para acuarios',            'medium'),
-(2, 3, 'Contaminación costera',                   'medium'),
-(2, 4, 'Turismo sin regulación en arrecifes',     'low'),
+(2, 1, 'Degradacion de arrecifes rocosos y coralinos', 'high'),
+(2, 2, 'Contaminacion costera', 'medium'),
+(2, 3, 'Captura para acuarios marinos', 'medium'),
+(2, 4, 'Cambio climatico y acidificacion oceanica', 'medium');
 
 -- Especie 3
 (3, 1, 'Pesca comercial excesiva',                'high'),
@@ -1811,10 +1814,10 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (4, 4, 'Cambio climático oceánico',               'medium'),
 
 -- Especie 5
-(5, 1, 'Pesca para comercio de acuarios',         'high'),
-(5, 2, 'Blanqueamiento de coral',                 'high'),
-(5, 3, 'Contaminación marina',                    'medium'),
-(5, 4, 'Turismo irresponsable',                   'low'),
+(5, 1, 'Sobreexplotacion por pesca deportiva y artesanal', 'high'),
+(5, 2, 'Pesca con redes de enmalle', 'medium'),
+(5, 3, 'Contaminacion costera', 'medium'),
+(5, 4, 'Cambio climatico', 'low');
 
 -- Especie 6
 (6, 1, 'Medicina tradicional y coleccionismo',    'high'),
@@ -1828,11 +1831,11 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (7, 3, 'Derrames de petróleo',                    'medium'),
 (7, 4, 'Turismo de avistamiento irresponsable',   'low'),
 
--- Especie 8
-(8, 1, 'Recolección de conchas (privación de hogar)','high'),
-(8, 2, 'Contaminación de playas',                 'medium'),
-(8, 3, 'Captura para comercio de mascotas',       'medium'),
-(8, 4, 'Pérdida de hábitat costero',              'low'),
+-- 8 · Jaiba Roja del Pacífico
+(8, 1, 'Sobrepesca artesanal sin regulacion', 'high'),
+(8, 2, 'Degradacion de arrecifes rocosos', 'high'),
+(8, 3, 'Contaminacion costera', 'medium'),
+(8, 4, 'Sedimentacion de fondos arenosos', 'medium'),
 
 -- Especie 9
 (9, 1, 'Coleccionismo y souvenirs marinos',       'high'),
@@ -1840,11 +1843,11 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (9, 3, 'Enfermedades como el síndrome de marchitamiento','medium'),
 (9, 4, 'Alteración de hábitat bentónico',         'low'),
 
--- Especie 10
-(10, 1, 'Sobrepesca y pesca ilegal',              'high'),
-(10, 2, 'Destrucción de arrecifes de coral',      'high'),
-(10, 3, 'Contaminación costera',                  'medium'),
-(10, 4, 'Cambio climático y blanqueamiento',      'medium'),
+-- 10 · Camarón Mantis del Pacífico
+(10, 1, 'Pesca de arrastre de fondo', 'high'),
+(10, 2, 'Contaminacion de sedimentos', 'high'),
+(10, 3, 'Destruccion de madrigueras por arrastre', 'medium'),
+(10, 4, 'Captura incidental en pesca artesanal', 'medium');
 
 -- Especie 11
 (11, 1, 'Pesca dirigida por branquias (medicina)','high'),
@@ -2357,3 +2360,7 @@ SELECT COUNT(*) FROM especies;      -- debe dar 12
 SELECT COUNT(*) FROM curiosidades;  -- debe dar 48
 SELECT COUNT(*) FROM amenazas;      -- debe dar 48
 SELECT MAX(id) FROM especies;
+
+-- NO ejecutes este:
+-- UPDATE especies SET habitat = CONCAT(habitat, ' de Los Cobanos'), zona_geografica = 'Los Cobanos, El Salvador' WHERE id BETWEEN 1 AND 12 AND zona_geografica != 'Los Cobanos, El Salvador';
+
