@@ -102,7 +102,7 @@ VALUES
  '22 - 28 C', 'Marina (~34 ppt)', 'Zona fotica', 1, 30, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/pufferfish.glb',
- 1.0, -0.1, 0.0, 2.5, 0.6);
+ 1.0, -0.1, 0.0, 2.5, 0.6),
 
 
 -- 3 · Pulpo
@@ -139,7 +139,7 @@ VALUES
  '20 - 30 C', 'Marina (~35 ppt)', 'Epipelagica', 1, 50, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/jack.glb',
- 1.5, -0.15, 0.0, 3.0, 0.7);
+ 1.5, -0.15, 0.0, 3.0, 0.7),
 
 
 -- 6 · Caballito de mar
@@ -202,7 +202,7 @@ VALUES
  '20 - 29 C', 'Marina (~34 ppt)', 'Zona bentonica', 1, 40, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/mantis_shrimp.glb',
- 1.5, -0.1, 0.0, 2.8, 0.6);
+ 1.5, -0.1, 0.0, 2.8, 0.6),
 
 -- 11 · Mantarraya  ← scale, pos_y, rot_y, cam_distance, cam_height corregidos desde JS
 (11, 'Mantarraya', 'Mobula birostris', 'peces',
@@ -226,7 +226,7 @@ VALUES
  '22 – 30 °C', 'Marina (~35 ppt)', 'Bentónica fótica', 0, 50, 'Indo-Pacífico',
  160, 55,
  '../public/media/3D_Models/cone.glb',
- 4.0, -0.1, 1.57, 4.5, 0.8);
+ 4.0, -0.1, 1.57, 4.5, 0.8),
 
 -- 13 · Pez Ángel Real
 (13, 'Pez Angel Real', 'Holacanthus passer', 'peces',
@@ -346,7 +346,7 @@ VALUES
  '22 - 29 C', 'Marina (~34 ppt)', 'Zona fotica', 3, 50, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/clown_fish_low_poly_animated.glb',
- 13.0, -0.1, 1.57, 2.2, 0.5);
+ 13.0, -0.1, 1.57, 2.2, 0.5),
 
 -- 23 · Tiburón Ballena
 (23, 'Tiburon Ballena', 'Rhincodon typus', 'peces',
@@ -382,7 +382,7 @@ VALUES
  '22 - 30 C', 'Marina (~34 ppt)', 'Zona epipelagica', 0, 200, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/hammerhead_shark.glb',
- 0.6, -0.2, 1.57, 3.0, 0.7);
+ 0.6, -0.2, 1.57, 3.0, 0.7),
 
 -- 26 · Tortuga Carey
 (26, 'Tortuga Carey', 'Eretmochelys imbricata', 'tortugas',
@@ -550,7 +550,7 @@ VALUES
  '18 - 28 C', 'Marina (~35 ppt)', 'Zona bentonica', 10, 100, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/langosta.glb',
- 4.0, -0.15, 0.0, 3.0, 0.6);
+ 4.0, -0.15, 0.0, 3.0, 0.6),
  
  
 -- 40 · Bailarina de Mar
@@ -671,7 +671,7 @@ VALUES
  '20 - 30 C', 'Marina (~35 ppt)', 'Zona fotica', 1, 50, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/squid.glb',
- 1.5, -0.1, 0.0, 2.5, 0.6);
+ 1.5, -0.1, 0.0, 2.5, 0.6),
 
 -- 50 · Pez Lora Gigante
 (50, 'Pez Lora Gigante', 'Scarus perrico', 'peces',
@@ -851,7 +851,7 @@ VALUES
  '22 - 30 C', 'Marina (~35 ppt)', 'Epipelagica', 1, 200, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/sailfish.glb',
- 1.8, -0.15, 0.0, 4.0, 0.8);
+ 1.8, -0.15, 0.0, 4.0, 0.8),
 
 -- 65 · Cangrejo de Piedra del Pacífico
 (65, 'Cangrejo de Piedra del Pacifico', 'Menippe frontalis', 'crustaceos',
@@ -1031,7 +1031,7 @@ VALUES
  '22 - 34 C', 'Terrestre (humedo)', 'Supramareal', 0, 5, 'Los Cobanos, El Salvador',
  92, 47,
  '../public/media/3D_Models/crab.glb',
- 2.5, -0.15, 0.0, 3.0, 0.6);
+ 2.5, -0.15, 0.0, 3.0, 0.6),
 
 -- 80 · Nudibranquio de Rayas Negras
 (80, 'Nudibranquio de Rayas Negras', 'Elysia crispata', 'moluscos',
@@ -1229,7 +1229,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (2, 1, 'fa-nose', 'Narigon', 'Su hocico prominente y puntiagudo le da su nombre comun.'),
 (2, 2, 'fa-spider', 'Espinas fijas', 'A diferencia de otros peces globo, sus espinas siempre estan erectas.'),
 (2, 3, 'fa-spot', 'Puntos brillantes', 'Su cuerpo marron con puntos blancos brillantes lo hace inconfundible.'),
-(2, 4, 'fa-skull', 'Tetrodotoxina', 'Posee tetrodotoxina en sus organos, una neurotoxina letal para depredadores.');
+(2, 4, 'fa-skull', 'Tetrodotoxina', 'Posee tetrodotoxina en sus organos, una neurotoxina letal para depredadores.'),
 -- Especie 3
 (3, 1, 'fa-brain',          'Inteligencia',  'Tienen 9 cerebros: uno central y uno en cada tentáculo, que actúan de forma independiente.'),
 (3, 2, 'fa-palette',        'Camuflaje',     'Pueden cambiar color, textura y forma en menos de 200 milisegundos.'),
@@ -1246,7 +1246,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (5, 1, 'fa-bull', 'El Toro del mar', 'Su nombre viene de su fuerza y tenacidad al ser capturado, luchando como un toro.'),
 (5, 2, 'fa-users', 'Cardumenes', 'Forma grandes cardumenes que cazan coordinadamente, rodeando a sus presas.'),
 (5, 3, 'fa-rocket', 'Rapido', 'Es un depredador extremadamente rapido que puede alcanzar altas velocidades.'),
-(5, 4, 'fa-trophy', 'Pesca deportiva', 'Es una de las especies mas codiciadas por la pesca deportiva en El Salvador.');
+(5, 4, 'fa-trophy', 'Pesca deportiva', 'Es una de las especies mas codiciadas por la pesca deportiva en El Salvador.'),
 
 -- Especie 6
 (6, 1, 'fa-baby',           'Machos gestantes','El único animal donde el macho lleva y da a luz a las crías en su bolsa ventral.'),
@@ -1277,7 +1277,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (10, 1, 'fa-fist-raised', 'Golpeador brutal', 'Su golpe es tan rapido que genera cavitacion y luz en el agua.'),
 (10, 2, 'fa-sun', 'Cavitacion', 'El golpe produce burbujas que colapsan generando temperaturas similares al sol.'),
 (10, 3, 'fa-rocket', 'Velocidad', 'Su golpe alcanza 80 km/h, comparable a una bala de calibre 22.'),
-(10, 4, 'fa-eye', 'Vision increible', 'Tiene los ojos mas complejos del reino animal, con 12-16 tipos de fotorreceptores.');
+(10, 4, 'fa-eye', 'Vision increible', 'Tiene los ojos mas complejos del reino animal, con 12-16 tipos de fotorreceptores.'),
 
 -- Especie 11
 (11, 1, 'fa-brain',         'Mayor cerebro', 'Tienen el mayor cerebro en proporción al cuerpo de todos los peces.'),
@@ -1289,7 +1289,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (12, 1, 'fa-syringe',       'Veneno letal',  'Produce conotoxinas que atacan el sistema nervioso; no hay antídoto conocido.'),
 (12, 2, 'fa-crosshairs',    'Arpón harpaxóforo','Su diente es un arpón retráctil que puede disparar en cualquier dirección.'),
 (12, 3, 'fa-pills',         'Medicina',      'Sus conotoxinas son base de Ziconotide, un analgésico más potente que la morfina.'),
-(12, 4, 'fa-moon',          'Caza nocturna', 'Son activos de noche; detectan presas con un sifón que analiza partículas en el agua.');
+(12, 4, 'fa-moon',          'Caza nocturna', 'Son activos de noche; detectan presas con un sifón que analiza partículas en el agua.'),
 
 -- 13 · Pez Ángel Real
 (13, 1, 'fa-magic',          'Cambio de color',          'Los juveniles son negros con rayas blancas y azules; al madurar cambian completamente de patron.'),
@@ -1349,7 +1349,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (22, 1, 'fa-venus-mars',     'Hermafrodita simultaneo',  'Un mismo individuo produce ovulos y esperma al mismo tiempo; pueden autofecundarse en aislamiento.'),
 (22, 2, 'fa-crosshairs',     'Depredador emboscada',     'Permanece inmovil durante horas imitando el fondo rocoso; lanza un ataque relampago en milisegundos.'),
 (22, 3, 'fa-palette',        'Patron unico',             'Su coloracion anaranjada y blanca es un caso de aposematismo: aviso de que es dificil de capturar.'),
-(22, 4, 'fa-seedling',       'Indicadora bentonica',     'Su densidad en el arrecife es proporcional a la cobertura de esponjas e invertebrados sesiles.');
+(22, 4, 'fa-seedling',       'Indicadora bentonica',     'Su densidad en el arrecife es proporcional a la cobertura de esponjas e invertebrados sesiles.'),
 
 -- 23 · Tiburón Ballena
 (23, 1, 'fa-ruler',          'El mas grande',      'Es el pez mas grande del mundo, superando los 12 metros y 20 toneladas.'),
@@ -1367,7 +1367,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (25, 1, 'fa-tachometer-alt', 'El mas rapido',      'Alcanza 110 km/h, siendo el pez mas rapido del oceano, mas veloz que un guepardo.'),
 (25, 2, 'fa-fan',            'La vela',            'Despliega su aleta dorsal para acorralar cardumenes de peces pequeños en grupo.'),
 (25, 3, 'fa-trophy',         'Pesca deportiva',    'El Salvador es uno de los mejores destinos del mundo para pesca deportiva de pez vela.'),
-(25, 4, 'fa-heart',          'Captura y libera',   'La mayoria de pescadores deportivos lo liberan vivo tras la captura para conservar la especie.');
+(25, 4, 'fa-heart',          'Captura y libera',   'La mayoria de pescadores deportivos lo liberan vivo tras la captura para conservar la especie.'),
 
 -- 26 · Tortuga Carey
 (26, 1, 'fa-utensils',       'Comedora de esponjas', 'Es la unica tortuga marina especializada en comer esponjas, que son toxicas para otros animales.'),
@@ -1451,7 +1451,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (39, 1, 'fa-shoe-prints',    'Zapatilla',            'Su forma aplanada como una zapatilla es adaptacion para enterrarse en arena en segundos.'),
 (39, 2, 'fa-moon',           'Cazadora nocturna',    'Permanece enterrada de dia y caza activamente moluscos y erizos de noche.'),
 (39, 3, 'fa-hand-paper',     'Sin pinzas',           'A diferencia de las langostas espinosas carece de pinzas; usa sus antenas en paleta para defenderse.'),
-(39, 4, 'fa-exclamation-triangle','Poco estudiada',  'Es una de las especies menos estudiadas de Los Cobanos; su biologia aun tiene muchos misterios.');
+(39, 4, 'fa-exclamation-triangle','Poco estudiada',  'Es una de las especies menos estudiadas de Los Cobanos; su biologia aun tiene muchos misterios.'),
 
 -- 40 · Bailarina de Mar
 (40, 1, 'fa-leaf', 'Fotosintesis animal', 'Es uno de los pocos animales que puede hacer fotosintesis al retener cloroplastos de algas que come.'),
@@ -1511,7 +1511,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (49, 1, 'fa-rocket', 'Propulsion a chorro', 'Se desplaza expulsando agua a gran velocidad, como un cohete acuatico.'),
 (49, 2, 'fa-tshirt', 'Camuflaje instantaneo', 'Cambia de color en milisegundos usando cromatoforos controlados por su sistema nervioso.'),
 (49, 3, 'fa-users', 'Cardumen', 'Forma densos cardumenes que se mueven coordinadamente para confundir depredadores.'),
-(49, 4, 'fa-baby', 'Ciclo de vida corto', 'Vive solo 1-2 anos y muere despues de reproducirse, dejando miles de descendientes.');
+(49, 4, 'fa-baby', 'Ciclo de vida corto', 'Vive solo 1-2 anos y muere despues de reproducirse, dejando miles de descendientes.'),
 
 -- 50 · Pez Lora Gigante
 (50, 1, 'fa-sand', 'Productor de arena', 'Tritura coral muerto y lo excreta como arena fina, siendo el principal productor de arena del arrecife.'),
@@ -1601,7 +1601,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (64, 1, 'fa-rocket', 'El mas rapido', 'Alcanza 110 km/h, uno de los peces mas veloces del oceano.'),
 (64, 2, 'fa-sail', 'Vela', 'Su enorme aleta dorsal en forma de vela se pliega para nadar rapidamente.'),
 (64, 3, 'fa-spear', 'Pico', 'Usa su pico para aturdir cardumenes de peces.'),
-(64, 4, 'fa-trophy', 'Pesca deportiva', 'Es una de las especies mas codiciadas por la pesca deportiva mundial.');
+(64, 4, 'fa-trophy', 'Pesca deportiva', 'Es una de las especies mas codiciadas por la pesca deportiva mundial.'),
 
 -- 65 · Cangrejo de Piedra del Pacífico
 (65, 1, 'fa-hard-hat', 'Pinzas asimetricas', 'Una pinza es mas grande para triturar y la otra mas pequena para manipular.'),
@@ -1691,7 +1691,7 @@ INSERT INTO curiosidades (especie_id, orden, icono, titulo, texto) VALUES
 (79, 1, 'fa-home', 'Madriguera', 'Excava madrigueras profundas en el manglar para protegerse.'),
 (79, 2, 'fa-palette', 'Azul', 'Los adultos tienen una coloracion azulada muy caracteristica.'),
 (79, 3, 'fa-water', 'Regresa al mar', 'Debe regresar al mar para reproducirse aunque vive en tierra.'),
-(79, 4, 'fa-seedling', 'Reciclador', 'Consume hojas y frutos, reciclando nutrientes en el manglar.');
+(79, 4, 'fa-seedling', 'Reciclador', 'Consume hojas y frutos, reciclando nutrientes en el manglar.'),
 
 -- 80 · Nudibranquio de Rayas Negras
 (80, 1, 'fa-leaf', 'Fotosintesis animal', 'Retiene cloroplastos de algas para hacer fotosintesis como una planta.'),
@@ -1799,7 +1799,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (2, 1, 'Degradacion de arrecifes rocosos y coralinos', 'high'),
 (2, 2, 'Contaminacion costera', 'medium'),
 (2, 3, 'Captura para acuarios marinos', 'medium'),
-(2, 4, 'Cambio climatico y acidificacion oceanica', 'medium');
+(2, 4, 'Cambio climatico y acidificacion oceanica', 'medium'),
 
 -- Especie 3
 (3, 1, 'Pesca comercial excesiva',                'high'),
@@ -1817,7 +1817,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (5, 1, 'Sobreexplotacion por pesca deportiva y artesanal', 'high'),
 (5, 2, 'Pesca con redes de enmalle', 'medium'),
 (5, 3, 'Contaminacion costera', 'medium'),
-(5, 4, 'Cambio climatico', 'low');
+(5, 4, 'Cambio climatico', 'low'),
 
 -- Especie 6
 (6, 1, 'Medicina tradicional y coleccionismo',    'high'),
@@ -1847,7 +1847,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (10, 1, 'Pesca de arrastre de fondo', 'high'),
 (10, 2, 'Contaminacion de sedimentos', 'high'),
 (10, 3, 'Destruccion de madrigueras por arrastre', 'medium'),
-(10, 4, 'Captura incidental en pesca artesanal', 'medium');
+(10, 4, 'Captura incidental en pesca artesanal', 'medium'),
 
 -- Especie 11
 (11, 1, 'Pesca dirigida por branquias (medicina)','high'),
@@ -1859,7 +1859,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (12, 1, 'Recolección de conchas por coleccionismo','high'),
 (12, 2, 'Degradación de arrecifes de coral',      'medium'),
 (12, 3, 'Contaminación de sedimentos',            'medium'),
-(12, 4, 'Turismo sin regulación',                 'low');
+(12, 4, 'Turismo sin regulación',                 'low'),
 
 -- 13 · Pez Ángel Real
 (13, 1, 'Pesca ornamental para acuarios',            'high'),
@@ -1919,7 +1919,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (22, 1, 'Pesca artesanal de arrastre en fondo',      'high'),
 (22, 2, 'Perdida de esponjas por contaminacion',     'medium'),
 (22, 3, 'Recoleccion como pesca de subsistencia',    'medium'),
-(22, 4, 'Degradacion de arrecife rocoso profundo',   'low');
+(22, 4, 'Degradacion de arrecife rocoso profundo',   'low'),
 
 -- 23 · Tiburón Ballena
 (23, 1, 'Pesca dirigida y captura incidental',      'high'),
@@ -1937,7 +1937,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (25, 1, 'Pesca deportiva sin cuotas de captura',    'high'),
 (25, 2, 'Pesca comercial incidental',               'medium'),
 (25, 3, 'Degradacion de presas por sobrepesca',     'medium'),
-(25, 4, 'Cambio climatico y migracion de presas',   'low');
+(25, 4, 'Cambio climatico y migracion de presas',   'low'),
 
 -- 26 · Tortuga Carey
 (26, 1, 'Trafico de caparazon para joyeria y artesanias', 'high'),
@@ -2021,7 +2021,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (39, 1, 'Pesca artesanal sin regulacion de tallas',        'high'),
 (39, 2, 'Degradacion de fondos arenosos por arrastre',     'high'),
 (39, 3, 'Contaminacion de sedimentos marinos',             'medium'),
-(39, 4, 'Falta de datos para su gestion pesquera',         'medium');
+(39, 4, 'Falta de datos para su gestion pesquera',         'medium'),
 
 -- 40 · Bailarina de Mar
 (40, 1, 'Cambio climatico que altera algas de las que depende', 'high'),
@@ -2081,7 +2081,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (49, 1, 'Sobrepesca para carnada de pesca deportiva', 'high'),
 (49, 2, 'Contaminacion luminica que altera comportamiento', 'medium'),
 (49, 3, 'Cambio climatico que afecta temperatura del agua', 'medium'),
-(49, 4, 'Contaminacion por plasticos', 'low');
+(49, 4, 'Contaminacion por plasticos', 'low'),
 
 -- 50 · Pez Lora Gigante
 (50, 1, 'Sobrepesca para consumo local', 'high'),
@@ -2171,7 +2171,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (64, 1, 'Sobreexplotacion por pesca deportiva', 'high'),
 (64, 2, 'Pesca comercial con palangres', 'high'),
 (64, 3, 'Contaminacion por plasticos', 'medium'),
-(64, 4, 'Cambio climatico', 'medium');
+(64, 4, 'Cambio climatico', 'medium'),
 
 -- 65 · Cangrejo de Piedra del Pacífico
 (65, 1, 'Sobreexplotacion por consumo', 'high'),
@@ -2261,7 +2261,7 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (79, 1, 'Destruccion de manglares', 'high'),
 (79, 2, 'Urbanizacion costera', 'high'),
 (79, 3, 'Contaminacion de zonas humedas', 'medium'),
-(79, 4, 'Cambio climatico y nivel del mar', 'medium');
+(79, 4, 'Cambio climatico y nivel del mar', 'medium'),
 
 -- 80 · Nudibranquio de Rayas Negras
 (80, 1, 'Cambio climatico que altera algas', 'high'),
@@ -2356,9 +2356,9 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 -- =============================================================
 --  VERIFICACIÓN
 -- =============================================================
-SELECT COUNT(*) FROM especies;      -- debe dar 12
-SELECT COUNT(*) FROM curiosidades;  -- debe dar 48
-SELECT COUNT(*) FROM amenazas;      -- debe dar 48
+SELECT COUNT(*) FROM especies;      -- debe dar 94
+SELECT COUNT(*) FROM curiosidades;  -- debe dar 376
+SELECT COUNT(*) FROM amenazas;      -- debe dar 376
 SELECT MAX(id) FROM especies;
 
 -- NO ejecutes este:

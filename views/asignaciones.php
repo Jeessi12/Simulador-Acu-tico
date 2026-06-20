@@ -1,7 +1,9 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 include __DIR__ . '/../app/models/Conexion.php';
+include __DIR__ . '/../app/models/ObservacionesSchema.php';
 $conn = (new Conexion())->getConnection();
+ensureObservacionesSimulacionTable($conn);
 
 if (!isset($_SESSION['id']) || $_SESSION['rol'] != 1) {
     header("Location: login.php?error=locked");
@@ -17,10 +19,36 @@ $error         = '';
 if (isset($_GET['completar']) && is_numeric($_GET['completar'])) {
     $id_asig = intval($_GET['completar']);
     $chk = mysqli_query($conn,
-        "SELECT id FROM asignaciones WHERE id = $id_asig AND id_estudiante = $id_estudiante"
+        "SELECT id, id_docente, id_estudiante, id_simulacion, id_espacio
+         FROM asignaciones
+         WHERE id = $id_asig AND id_estudiante = $id_estudiante"
     );
     if (mysqli_num_rows($chk) > 0) {
-        mysqli_query($conn, "UPDATE asignaciones SET estado = 'completada' WHERE id = $id_asig");
+        $asignacion_actual = mysqli_fetch_assoc($chk);
+        $redir_base = 'asignaciones.php';
+        if (!empty($asignacion_actual['id_espacio'])) {
+            $redir_base .= '?id_espacio=' . intval($asignacion_actual['id_espacio']) . '&msg=';
+        } else {
+            $redir_base .= '?msg=';
+        }
+        $obs_chk = mysqli_query($conn,
+            "SELECT id
+             FROM observaciones_simulacion
+             WHERE id_asignacion = $id_asig
+               AND id_estudiante = $id_estudiante
+             LIMIT 1"
+        );
+        if ($obs_chk && mysqli_num_rows($obs_chk) > 0) {
+            mysqli_query($conn,
+                "UPDATE asignaciones
+                 SET estado = 'completada'
+                 WHERE id = $id_asig AND id_estudiante = $id_estudiante"
+            );
+            header("Location: " . $redir_base . urlencode('Simulacion completada correctamente.'));
+            exit();
+        }
+        header("Location: " . $redir_base . urlencode('Debes dejar al menos una observacion antes de completar la simulacion.'));
+        exit();
     }
     header("Location: asignaciones.php");
     exit();
@@ -132,9 +160,27 @@ while ($esp = mysqli_fetch_assoc($espacios_q)) $mis_espacios[] = $esp;
 
 // ── Simulaciones asignadas ───────────────────────────────────────────────────
 $sims_q = mysqli_query($conn,
-    "SELECT a.id, a.estado, a.fecha_asignacion, a.id_espacio,
+    "SELECT a.id,
+            a.estado,
+            a.fecha_asignacion,
+            a.id_espacio,
             s.nombre AS sim_nombre, s.descripcion, s.ruta,
-            e.nombre AS espacio_nombre
+            e.nombre AS espacio_nombre,
+            (SELECT COUNT(*) FROM observaciones_simulacion os
+             WHERE os.id_estudiante = $id_estudiante
+               AND os.id_asignacion = a.id) AS observaciones_count,
+            (SELECT os.observacion
+             FROM observaciones_simulacion os
+             WHERE os.id_estudiante = $id_estudiante
+               AND os.id_asignacion = a.id
+             ORDER BY os.fecha DESC, os.id DESC
+             LIMIT 1) AS ultima_observacion,
+            (SELECT DATE_FORMAT(os.fecha, '%d/%m/%Y %H:%i')
+             FROM observaciones_simulacion os
+             WHERE os.id_estudiante = $id_estudiante
+               AND os.id_asignacion = a.id
+             ORDER BY os.fecha DESC, os.id DESC
+             LIMIT 1) AS ultima_observacion_fecha
      FROM asignaciones a
      JOIN simulaciones s ON a.id_simulacion = s.id
      LEFT JOIN espacios e ON a.id_espacio = e.id
@@ -142,14 +188,40 @@ $sims_q = mysqli_query($conn,
      ORDER BY a.fecha_asignacion DESC"
 );
 $simulaciones = [];
+$simulaciones_por_espacio = [];
 $completadas  = 0;
 while ($f = mysqli_fetch_assoc($sims_q)) {
     $simulaciones[] = $f;
+    if (!empty($f['id_espacio'])) {
+        $simulaciones_por_espacio[intval($f['id_espacio'])][] = $f;
+    }
     if ($f['estado'] === 'completada') $completadas++;
 }
 $total      = count($simulaciones);
 $porcentaje = $total > 0 ? round(($completadas / $total) * 100) : 0;
 $pendientes_count = $total - $completadas;
+
+$id_espacio_detalle = isset($_GET['id_espacio']) && is_numeric($_GET['id_espacio'])
+    ? intval($_GET['id_espacio'])
+    : 0;
+$espacio_detalle = null;
+$simulaciones_detalle = [];
+if ($id_espacio_detalle > 0) {
+    $espacio_detalle_q = mysqli_query($conn,
+        "SELECT e.id, e.nombre, e.portada, e.fecha_creacion, u.username AS docente_nombre
+         FROM espacio_estudiantes ee
+         JOIN espacios e ON ee.id_espacio = e.id
+         JOIN usuarios u ON e.id_docente = u.id
+         WHERE ee.id_estudiante = $id_estudiante
+           AND ee.estado = 'aceptado'
+           AND e.id = $id_espacio_detalle
+         LIMIT 1"
+    );
+    if ($espacio_detalle_q && mysqli_num_rows($espacio_detalle_q) > 0) {
+        $espacio_detalle = mysqli_fetch_assoc($espacio_detalle_q);
+        $simulaciones_detalle = $simulaciones_por_espacio[$id_espacio_detalle] ?? [];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -180,6 +252,125 @@ $pendientes_count = $total - $completadas;
             <i class="fas fa-exclamation-circle"></i> <?php echo $error; ?>
         </div>
     <?php endif; ?>
+
+    <?php if ($espacio_detalle): ?>
+    <?php
+        $detalle_total = count($simulaciones_detalle);
+        $detalle_completadas = 0;
+        foreach ($simulaciones_detalle as $sim_detalle_count) {
+            if ($sim_detalle_count['estado'] === 'completada') $detalle_completadas++;
+        }
+        $detalle_pendientes = $detalle_total - $detalle_completadas;
+        $codigo_aula = strtoupper(substr(md5($espacio_detalle['id']), 0, 6));
+    ?>
+    <section class="student-space-hero"
+             <?php if (!empty($espacio_detalle['portada'])): ?>
+             style="background-image:url('<?php echo htmlspecialchars($espacio_detalle['portada']); ?>')"
+             <?php endif; ?>>
+        <a href="asignaciones.php" class="student-space-back">
+            <i class="fas fa-chevron-left"></i>
+            Volver a mis espacios
+        </a>
+        <div class="student-space-title">
+            <div class="student-space-initial"><?php echo strtoupper(substr($espacio_detalle['nombre'], 0, 1)); ?></div>
+            <div>
+                <h1><?php echo htmlspecialchars($espacio_detalle['nombre']); ?></h1>
+                <p>
+                    <span>Docente: <?php echo htmlspecialchars($espacio_detalle['docente_nombre']); ?></span>
+                    <span>Codigo del aula: <strong><?php echo $codigo_aula; ?></strong></span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="student-space-summary">
+        <div class="student-summary-card">
+            <span>Total</span>
+            <strong><?php echo $detalle_total; ?></strong>
+        </div>
+        <div class="student-summary-card ok">
+            <span>Completadas</span>
+            <strong><?php echo $detalle_completadas; ?></strong>
+        </div>
+        <div class="student-summary-card warn">
+            <span>Pendientes</span>
+            <strong><?php echo $detalle_pendientes; ?></strong>
+        </div>
+    </section>
+
+    <section class="section-card student-space-tasks">
+        <div class="panel-header">
+            <h2><i class="fas fa-list-check"></i> Simulaciones de esta clase</h2>
+            <p>Entra a tus actividades desde aqui y revisa tu comentario guardado.</p>
+        </div>
+        <?php if (!empty($simulaciones_detalle)): ?>
+        <div class="simulaciones-grid student-space-grid">
+            <?php foreach ($simulaciones_detalle as $sim): ?>
+            <?php
+                $simRuta = $sim['ruta'] ?? 'simulador.php';
+                $separator = strpos($simRuta, '?') !== false ? '&' : '?';
+                $simRutaAsignada = $simRuta . $separator . 'asignacion=' . intval($sim['id']) . '&start=1';
+            ?>
+            <article class="simulacion-card">
+                <div class="card-main">
+                    <div class="card-icon"><i class="fas fa-water"></i></div>
+                    <div class="card-title">
+                        <h3><?php echo htmlspecialchars($sim['sim_nombre']); ?></h3>
+                        <span class="estado-badge estado-badge--<?php echo $sim['estado']; ?>">
+                            <?php
+                            echo match($sim['estado']) {
+                                'completada'  => 'Completada',
+                                'en_progreso' => 'En progreso',
+                                default       => 'Pendiente'
+                            };
+                            ?>
+                        </span>
+                    </div>
+                </div>
+                <p class="descripcion"><?php echo htmlspecialchars($sim['descripcion'] ?? 'Sin descripcion'); ?></p>
+                <div class="fecha-entrega">
+                    <i class="fas fa-calendar-alt"></i>
+                    <?php echo date('d/m/Y', strtotime($sim['fecha_asignacion'])); ?>
+                </div>
+                <div class="sim-espacio-tag observaciones-tag">
+                    <i class="fas fa-comment-dots"></i>
+                    <?php echo intval($sim['observaciones_count'] ?? 0); ?> observacion<?php echo intval($sim['observaciones_count'] ?? 0) === 1 ? '' : 'es'; ?>
+                </div>
+                <?php if (!empty($sim['ultima_observacion'])): ?>
+                <div class="student-comment-preview">
+                    <div class="student-comment-avatar" aria-hidden="true">
+                        <?php echo strtoupper(substr($username, 0, 1)); ?>
+                    </div>
+                    <div class="student-comment-body">
+                        <div class="student-comment-meta">
+                            <strong><?php echo htmlspecialchars($username); ?></strong>
+                            <span><?php echo htmlspecialchars($sim['ultima_observacion_fecha'] ?? ''); ?></span>
+                        </div>
+                        <p><?php echo htmlspecialchars($sim['ultima_observacion']); ?></p>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <div class="card-actions">
+                    <a href="<?php echo htmlspecialchars($simRutaAsignada); ?>" class="btn-simular">
+                        Entrar <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <?php if ($sim['estado'] !== 'completada'): ?>
+                    <a href="?completar=<?php echo $sim['id']; ?>" class="btn-completar">
+                        <i class="fas fa-check"></i> Completar
+                    </a>
+                    <?php endif; ?>
+                </div>
+            </article>
+            <?php endforeach; ?>
+        </div>
+        <?php else: ?>
+        <div class="no-tareas">
+            <i class="fas fa-water"></i>
+            <p>Esta clase aun no tiene simulaciones asignadas.</p>
+        </div>
+        <?php endif; ?>
+    </section>
+    <?php else: ?>
 
     <!-- HERO -->
     <section class="dashboard-hero">
@@ -292,6 +483,10 @@ $pendientes_count = $total - $completadas;
                 <div class="espacios-grid">
                     <?php foreach ($mis_espacios as $esp): ?>
                     <div class="espacio-card"
+                         role="link"
+                         tabindex="0"
+                         onclick="window.location.href='asignaciones.php?id_espacio=<?php echo intval($esp['id']); ?>'"
+                         onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); window.location.href='asignaciones.php?id_espacio=<?php echo intval($esp['id']); ?>'; }"
                          <?php if (!empty($esp['portada'])): ?>
                          style="background-image:url('<?php echo htmlspecialchars($esp['portada']); ?>')"
                          <?php endif; ?>>
@@ -414,6 +609,11 @@ $pendientes_count = $total - $completadas;
         <?php if (!empty($simulaciones)): ?>
         <div class="simulaciones-grid">
             <?php foreach ($simulaciones as $sim): ?>
+            <?php
+                $simRuta = $sim['ruta'] ?? 'simulador.php';
+                $separator = strpos($simRuta, '?') !== false ? '&' : '?';
+                $simRutaAsignada = $simRuta . $separator . 'asignacion=' . intval($sim['id']) . '&start=1';
+            ?>
             <article class="simulacion-card">
                 <div class="card-main">
                     <div class="card-icon">
@@ -445,8 +645,26 @@ $pendientes_count = $total - $completadas;
                     <i class="fas fa-calendar-alt"></i>
                     <?php echo date('d/m/Y', strtotime($sim['fecha_asignacion'])); ?>
                 </div>
+                <div class="sim-espacio-tag observaciones-tag">
+                    <i class="fas fa-comment-dots"></i>
+                    <?php echo intval($sim['observaciones_count'] ?? 0); ?> observacion<?php echo intval($sim['observaciones_count'] ?? 0) === 1 ? '' : 'es'; ?>
+                </div>
+                <?php if (!empty($sim['ultima_observacion'])): ?>
+                <div class="student-comment-preview">
+                    <div class="student-comment-avatar" aria-hidden="true">
+                        <?php echo strtoupper(substr($username, 0, 1)); ?>
+                    </div>
+                    <div class="student-comment-body">
+                        <div class="student-comment-meta">
+                            <strong><?php echo htmlspecialchars($username); ?></strong>
+                            <span><?php echo htmlspecialchars($sim['ultima_observacion_fecha'] ?? ''); ?></span>
+                        </div>
+                        <p><?php echo htmlspecialchars($sim['ultima_observacion']); ?></p>
+                    </div>
+                </div>
+                <?php endif; ?>
                 <div class="card-actions">
-                    <a href="<?php echo htmlspecialchars($sim['ruta']); ?>" class="btn-simular">
+                    <a href="<?php echo htmlspecialchars($simRutaAsignada); ?>" class="btn-simular">
                         Entrar <i class="fas fa-arrow-right"></i>
                     </a>
                     <?php if ($sim['estado'] !== 'completada'): ?>
@@ -466,6 +684,7 @@ $pendientes_count = $total - $completadas;
         <?php endif; ?>
     </section>
 
+<?php endif; ?>
 </main>
 
 <?php include("fragments/footer.php"); ?>

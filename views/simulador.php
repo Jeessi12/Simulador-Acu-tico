@@ -7,6 +7,44 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.php?error=locked");
     exit;
 }
+
+$assignmentId = 0;
+$initialObservations = [];
+if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SESSION['id'])) {
+    include __DIR__ . '/../app/models/Conexion.php';
+    include __DIR__ . '/../app/models/ObservacionesSchema.php';
+    $conn = (new Conexion())->getConnection();
+    ensureObservacionesSimulacionTable($conn);
+    $requestedAssignment = intval($_GET['asignacion']);
+    $studentId = intval($_SESSION['id']);
+    $stmtAssignment = mysqli_prepare($conn, "SELECT id FROM asignaciones WHERE id = ? AND id_estudiante = ? LIMIT 1");
+    mysqli_stmt_bind_param($stmtAssignment, "ii", $requestedAssignment, $studentId);
+    mysqli_stmt_execute($stmtAssignment);
+    $assignmentResult = mysqli_stmt_get_result($stmtAssignment);
+    if ($assignmentResult && mysqli_num_rows($assignmentResult) > 0) {
+        $assignmentId = $requestedAssignment;
+        $stmtObservations = mysqli_prepare($conn,
+            "SELECT observacion, DATE_FORMAT(fecha, '%d/%m/%Y %H:%i') AS fecha
+             FROM observaciones_simulacion
+             WHERE id_asignacion = ? AND id_estudiante = ?
+             ORDER BY fecha DESC"
+        );
+        mysqli_stmt_bind_param($stmtObservations, "ii", $assignmentId, $studentId);
+        mysqli_stmt_execute($stmtObservations);
+        $observationsResult = mysqli_stmt_get_result($stmtObservations);
+        if ($observationsResult) {
+            while ($obs = mysqli_fetch_assoc($observationsResult)) {
+                $initialObservations[] = [
+                    'usuario' => $_SESSION['usuario'] ?? 'Estudiante',
+                    'fecha' => $obs['fecha'],
+                    'observacion' => $obs['observacion']
+                ];
+            }
+        }
+        mysqli_stmt_close($stmtObservations);
+    }
+    mysqli_stmt_close($stmtAssignment);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,9 +56,16 @@ if (!isset($_SESSION['usuario'])) {
 
     <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
 
+    <?php
+        $simCssVersion = filemtime(__DIR__ . '/../public/css/simulador.css');
+        $simJsVersion = filemtime(__DIR__ . '/../public/js/simulador.js');
+        $bubbleJsVersion = filemtime(__DIR__ . '/../public/js/burbujas.js');
+        $sessionJsVersion = filemtime(__DIR__ . '/../public/js/session.js');
+    ?>
+
     <!-- Estilos propios -->
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
-    <link rel="stylesheet" href="../public/css/simulador.css">
+    <link rel="stylesheet" href="../public/css/simulador.css?v=<?php echo $simCssVersion; ?>">
 
     <!-- Tipografía -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +95,9 @@ if (!isset($_SESSION['usuario'])) {
     ?>
     <script>
         window.APP_BASE = '<?php echo $appBase; ?>';
+        window.ASSIGNMENT_ID = <?php echo intval($assignmentId); ?>;
+        window.CURRENT_USER_NAME = <?php echo json_encode($_SESSION['usuario'] ?? 'Estudiante', JSON_UNESCAPED_UNICODE); ?>;
+        window.INITIAL_OBSERVATIONS = <?php echo json_encode($initialObservations, JSON_UNESCAPED_UNICODE); ?>;
     </script>
 </head>
 
@@ -70,7 +118,7 @@ if (!isset($_SESSION['usuario'])) {
 
         <!-- Header -->
         <div class="sim-header">
-            <h2>Ecosistema acuático</h2>
+            <h2 id="simTitle">Ecosistema acuático</h2>
 
             <div class="status" aria-live="polite">
                 <span>
@@ -86,6 +134,10 @@ if (!isset($_SESSION['usuario'])) {
             <button id="expandBtn" class="expand" title="Pantalla completa" aria-label="Expandir a pantalla completa">
                 <i class="fa-solid fa-expand" aria-hidden="true"></i>
             </button>
+            <button id="returnToSelector" class="return-selector" type="button" title="Volver al selector" aria-label="Volver al selector de simuladores">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                <span>Volver</span>
+            </button>
         </div>
 
         <!--
@@ -95,6 +147,12 @@ if (!isset($_SESSION['usuario'])) {
             control total del elemento y lo redimensione con canvasResizePolicy: 2.
         -->
         <div class="sim-area">
+            <div class="sim-preview-panel" aria-live="polite">
+                <span class="preview-kicker">Vista actual</span>
+                <strong id="currentSimName">Ecosistema Basico</strong>
+                <span id="currentSpeciesName">Pez Lora Gigante</span>
+                <p id="currentSimDescription">Arrecife de Los Cobanos en equilibrio, con ciclo de vida y aparicion de tortugas.</p>
+            </div>
             <div id="godot-canvas" role="img" aria-label="Simulación 3D del ecosistema acuático"></div>
         </div>
 
@@ -117,11 +175,23 @@ if (!isset($_SESSION['usuario'])) {
                 <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
             </button>
         </div>
+        <div class="observation-thread" id="observationThread" aria-live="polite"></div>
 
     </section>
 
     <!-- ===== PANEL LATERAL (derecha) ===== -->
     <aside class="panel" aria-label="Panel de control">
+
+        <!-- Selector de especies -->
+        <div class="card species-switcher">
+            <h3><i class="fa-solid fa-fish" style="margin-right:6px;opacity:.6;"></i>Especie de prueba</h3>
+
+            <div class="species-options" aria-label="Especies disponibles">
+                <button class="species-chip active" type="button" data-species="pez_lora_gigante">Pez Lora</button>
+                <button class="species-chip" type="button" data-species="pez_angel_real">Pez Angel</button>
+                <button class="species-chip" type="button" data-species="tortuga_carey">Tortuga Carey</button>
+            </div>
+        </div>
 
         <!-- Temporizador -->
         <div class="card timer-card">
@@ -182,6 +252,26 @@ if (!isset($_SESSION['usuario'])) {
         </div>
 
         <!-- Acciones rápidas -->
+        <div class="card" id="pollutionControl" hidden>
+            <h3><i class="fa-solid fa-flask" style="margin-right:6px;opacity:.6;"></i>Contaminacion</h3>
+            <div class="control-group">
+                <label for="pollutionSlider">
+                    Nivel de contaminacion
+                    <span class="val-display"><span id="pollutionVal">0</span>%</span>
+                </label>
+                <input type="range" id="pollutionSlider"
+                    min="0" max="100" step="1" value="0"
+                    aria-label="Nivel de contaminacion"
+                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="range-hint">Simula hipoxia, escorrentia y agua turbia</div>
+            </div>
+        </div>
+
+        <div class="card" id="populationControls" hidden>
+            <h3><i class="fa-solid fa-users-line" style="margin-right:6px;opacity:.6;"></i>Poblaciones</h3>
+            <div id="populationControlList"></div>
+        </div>
+
         <div class="card options">
             <h3><i class="fa-solid fa-bolt" style="margin-right:6px;opacity:.6;"></i>Acciones</h3>
 
@@ -236,6 +326,15 @@ if (!isset($_SESSION['usuario'])) {
             </div>
 
             <div class="stat-row">
+                <span class="stat-label">Edad</span>
+                <span class="stat-value" id="age-val">-</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="stat-label">Desarrollo</span>
+                <span class="stat-value" id="growth-val">-</span>
+            </div>
+            <div class="stat-row">
                 <span class="stat-label">🐠 Población</span>
                 <span class="stat-value" id="population-val">—</span>
             </div>
@@ -258,9 +357,9 @@ if (!isset($_SESSION['usuario'])) {
     3. burbujas.js (defer) → independiente, no interfiere con Godot
     4. session.js (defer) → gestión de sesión, independiente
 -->
-<script src="../public/js/simulador.js" defer></script>
-<script src="../public/js/burbujas.js"  defer></script>
-<script src="../public/js/session.js"   defer></script>
+<script src="../public/js/simulador.js?v=<?php echo $simJsVersion; ?>" defer></script>
+<script src="../public/js/burbujas.js?v=<?php echo $bubbleJsVersion; ?>"  defer></script>
+<script src="../public/js/session.js?v=<?php echo $sessionJsVersion; ?>"   defer></script>
 
 </body>
 </html>

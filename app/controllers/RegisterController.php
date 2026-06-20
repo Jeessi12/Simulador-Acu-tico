@@ -12,8 +12,8 @@ use PHPMailer\PHPMailer\Exception;
 // ========== CONFIGURACIÓN SMTP ==========
 // ⚠️ CAMBIA ESTOS VALORES POR LOS REALES
 define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_USER', 'secreto aqui');          // ← CORREO DE BLUE ECOSIM
-define('SMTP_PASS', 'secreto aqui');              // ← CONTRASEÑA DE APLICACIÓN (16 caracteres sin espacios)
+define('SMTP_USER', 'correo@gmail.com');
+define('SMTP_PASS', 'el secreto va aquí');            // ← CONTRASEÑA DE APLICACIÓN (16 caracteres sin espacios)
 define('SMTP_PORT', 587);
 define('FROM_EMAIL', SMTP_USER);
 define('FROM_NAME', 'Blue EcoSim');

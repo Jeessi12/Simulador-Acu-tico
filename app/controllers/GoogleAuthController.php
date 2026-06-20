@@ -4,8 +4,8 @@ require_once __DIR__ . '/../models/Conexion.php';
 $conexion = new Conexion();
 $conn = $conexion->getConnection();
 
-$clientID = 'secreto aqui';
-$clientSecret = 'secreto aqui';
+$clientID = 'el secreto va aquí';
+$clientSecret = 'el secreto va aquí';
 $redirectUri  = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 
 // Si no hay código, volver al login

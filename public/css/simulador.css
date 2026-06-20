@@ -100,23 +100,28 @@ body::before {
 
 .container {
     display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 22px;
-    padding: 0 24px 28px;
-    max-width: 1680px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 18px;
+    padding: 0 16px 28px;
+    max-width: 1880px;
     margin: 0 auto;
     min-height: calc(100vh - 88px - 48px);
     position: relative;
     z-index: 1;
+    align-items: start;
+    overflow: visible;
 }
 
 /* ══════════════════════════════════════════
    SIMULADOR — zona izquierda
 ══════════════════════════════════════════ */
 .simulator {
-    position: relative;
+    position: sticky;
+    top: 94px;
     display: flex;
     flex-direction: column;
+    height: calc(100vh + 120px);
+    min-height: 860px;
     background: var(--sim-bg);
     border-radius: var(--radius-xl);
     border: 1px solid rgba(77,163,255,0.12);
@@ -126,7 +131,6 @@ body::before {
 }
 
 .simulator:hover {
-    transform: translateY(-4px);
     box-shadow: 0 30px 60px -12px rgba(0,0,0,0.28);
 }
 
@@ -231,13 +235,193 @@ body::before {
 }
 .expand:hover { background: rgba(255,255,255,0.6); transform: scale(1.05); }
 
+.return-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(5,15,58,0.15);
+    background: rgba(255,255,255,0.72);
+    color: var(--navy);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 700;
+    transition: all var(--transition);
+}
+
+.return-selector:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(30,60,114,0.14);
+}
+
+.return-selector[hidden] {
+    display: none;
+}
+
+/* --- Selector inicial --- */
+.sim-selector-view {
+    flex: 1;
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 28px;
+    min-height: 420px;
+    padding: 34px;
+    background:
+        linear-gradient(135deg, rgba(3,31,46,0.92), rgba(21,101,163,0.78)),
+        url("../media/edited/Simulador.jpg") center/cover;
+    color: #fff;
+    overflow: hidden;
+}
+
+.sim-selector-view::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.22));
+    pointer-events: none;
+}
+
+.selector-intro,
+.selector-grid,
+.selector-actions {
+    position: relative;
+    z-index: 1;
+}
+
+.selector-intro {
+    max-width: 760px;
+}
+
+.selector-kicker,
+.modal-kicker {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #94e7ff;
+}
+
+.selector-intro h1 {
+    font-size: clamp(30px, 4vw, 54px);
+    line-height: 1.05;
+    margin-bottom: 12px;
+}
+
+.selector-intro p {
+    max-width: 640px;
+    color: rgba(255,255,255,0.82);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.selector-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.selector-card {
+    min-height: 220px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: var(--radius-lg);
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.selector-card:hover,
+.selector-card.active {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(148,231,255,0.75);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px rgba(0,0,0,0.24);
+}
+
+.selector-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    border-radius: var(--radius-md);
+    background: rgba(148,231,255,0.18);
+    color: #94e7ff;
+    font-size: 20px;
+}
+
+.selector-card h3 {
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 18px;
+    line-height: 1.2;
+}
+
+.selector-card p {
+    min-height: 66px;
+    color: rgba(255,255,255,0.76);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.select-sim-btn,
+.start-simulation-btn,
+.modal-primary,
+.modal-secondary {
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-weight: 800;
+    transition: all var(--transition);
+}
+
+.select-sim-btn {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.92);
+    color: var(--navy);
+}
+
+.selector-card.active .select-sim-btn {
+    background: #94e7ff;
+}
+
+.start-simulation-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 22px;
+    background: linear-gradient(135deg, #1ee2cb, #4da3ff);
+    color: #06203a;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.22);
+}
+
+.start-simulation-btn:hover,
+.modal-primary:hover,
+.select-sim-btn:hover,
+.modal-secondary:hover {
+    transform: translateY(-2px);
+}
+
 /* --- Zona Godot --- */
 .sim-area {
-    flex: 1;
+    flex: 1 1 auto;
     position: relative;
     overflow: hidden;
     z-index: 3;
-    min-height: 420px;
+    min-height: 500px;
     background: #000;
 }
 
@@ -253,6 +437,163 @@ body::before {
     width: 100% !important;
     height: 100% !important;
     display: block;
+}
+
+.sim-preview-panel {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    z-index: 6;
+    width: min(340px, calc(100% - 36px));
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    background: rgba(6, 30, 58, 0.72);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: #fff;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+}
+
+.preview-kicker {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.68);
+}
+
+.sim-preview-panel strong {
+    display: block;
+    font-size: 18px;
+    line-height: 1.2;
+}
+
+.sim-preview-panel span:not(.preview-kicker) {
+    display: block;
+    margin-top: 3px;
+    color: #94e7ff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.sim-preview-panel p {
+    margin-top: 7px;
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.simulator.theme-arrecife .sim-area { background: #031f2e; }
+.simulator.theme-cadena .sim-area { background: #101c22; }
+.simulator.theme-contaminacion .sim-area { background: #17191c; }
+
+.simulator.theme-arrecife .sim-preview-panel { border-color: rgba(0,207,255,0.35); }
+.simulator.theme-cadena .sim-preview-panel { border-color: rgba(39,174,96,0.35); }
+.simulator.theme-contaminacion .sim-preview-panel { border-color: rgba(230,126,34,0.4); }
+
+.simulator.selection-mode .sim-area,
+.simulator.simulation-hidden .sim-area {
+    display: none;
+}
+
+.simulator.selection-mode .sim-preview-panel,
+.simulator.selection-mode #godot-canvas,
+.simulator.simulation-hidden .sim-preview-panel,
+.simulator.simulation-hidden #godot-canvas {
+    display: none;
+}
+
+.simulator.simulation-mode .sim-selector-view {
+    display: none;
+}
+
+/* --- Modal de informacion --- */
+.simulation-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+    background: rgba(3, 18, 35, 0.62);
+    backdrop-filter: blur(10px);
+}
+
+.simulation-modal[hidden] {
+    display: none;
+}
+
+.modal-card {
+    position: relative;
+    width: min(520px, 100%);
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    background: rgba(255,255,255,0.96);
+    color: var(--text-main);
+    border: 1px solid rgba(255,255,255,0.72);
+    box-shadow: 0 28px 70px rgba(0,0,0,0.34);
+}
+
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(30,60,114,0.08);
+    color: var(--navy);
+    cursor: pointer;
+}
+
+.modal-card h2 {
+    margin: 2px 42px 10px 0;
+    font-size: 28px;
+}
+
+.modal-card p {
+    color: var(--text-mid);
+    line-height: 1.58;
+    font-size: 14px;
+}
+
+.modal-card ul {
+    display: grid;
+    gap: 8px;
+    margin: 18px 0 22px;
+    padding-left: 18px;
+    color: var(--text-mid);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-primary,
+.modal-secondary {
+    min-height: 42px;
+    padding: 0 16px;
+}
+
+.modal-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--sky), var(--ocean));
+    color: #fff;
+}
+
+.modal-secondary {
+    background: rgba(30,60,114,0.08);
+    color: var(--navy);
 }
 
 /* Marcos esquina decorativos */
@@ -283,7 +624,7 @@ body::before {
 .observations {
     display: flex;
     gap: 10px;
-    padding: 16px 20px;
+    padding: 18px 22px 12px;
     position: relative;
     z-index: 3;
     background: rgba(255,255,255,0.5);
@@ -292,7 +633,8 @@ body::before {
 
 .observations input {
     flex: 1;
-    padding: 12px 18px;
+    min-height: 54px;
+    padding: 14px 18px;
     border-radius: var(--radius-lg);
     border: 2px solid transparent;
     background: rgba(255,255,255,0.95);
@@ -309,6 +651,16 @@ body::before {
     transform: translateY(-2px);
 }
 
+.observations input.obs-success {
+    border-color: var(--green-ok);
+    box-shadow: 0 0 0 3px rgba(39,174,96,0.14);
+}
+
+.observations input.obs-error {
+    border-color: var(--red-alert);
+    box-shadow: 0 0 0 3px rgba(231,76,60,0.14);
+}
+
 .observations button {
     background: linear-gradient(135deg, var(--sky), var(--ocean));
     border: none;
@@ -322,6 +674,72 @@ body::before {
     transition: all var(--transition);
 }
 .observations button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(77,163,255,0.4); }
+.observations button:disabled { opacity: 0.55; cursor: wait; transform: none; }
+
+.observation-thread {
+    display: grid;
+    gap: 12px;
+    min-height: 150px;
+    max-height: clamp(180px, 28vh, 300px);
+    overflow-y: auto;
+    padding: 0 22px 22px;
+    background: rgba(255,255,255,0.5);
+    position: relative;
+    z-index: 3;
+}
+
+.observation-comment {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 10px;
+    align-items: start;
+}
+
+.observation-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--sky), var(--ocean));
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 6px 14px rgba(0,119,182,0.18);
+}
+
+.observation-body {
+    background: rgba(255,255,255,0.88);
+    border: 1px solid rgba(77,163,255,0.16);
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+.observation-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 4px;
+    color: var(--text-main);
+    font-size: 13px;
+}
+
+.observation-meta span {
+    color: var(--text-soft);
+    font-size: 12px;
+}
+
+.observation-body p,
+.observation-empty {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.observation-empty {
+    padding: 8px 0;
+}
 
 /* --- Fullscreen --- */
 .close-fullscreen {
@@ -350,7 +768,7 @@ body::before {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    overflow-y: auto;
+    overflow-y: visible;
     padding-right: 2px;
 }
 
@@ -601,13 +1019,20 @@ input[type=range]::-moz-range-thumb {
    RESPONSIVE
 ══════════════════════════════════════════ */
 @media (max-width: 1280px) {
-    .container { grid-template-columns: 1fr 300px; }
+    .container { grid-template-columns: minmax(0, 1fr) 280px; }
+    .simulator { height: calc(100vh + 90px); min-height: 790px; }
+    .sim-area { min-height: 430px; }
     #timer { font-size: 30px; }
 }
 
 @media (max-width: 1024px) {
-    .container { grid-template-columns: 1fr 280px; gap: 16px; padding: 0 16px 20px; }
+    .container { grid-template-columns: minmax(0, 1fr) 260px; gap: 14px; padding: 0 12px 20px; }
+    .simulator { top: 90px; height: calc(100vh + 60px); min-height: 730px; }
+    .sim-area { min-height: 390px; }
     .circle { width: 64px; height: 64px; font-size: 20px; }
+    .selector-grid { grid-template-columns: 1fr; }
+    .selector-card { min-height: auto; }
+    .selector-card p { min-height: auto; }
 }
 
 @media (max-width: 900px) {
@@ -616,7 +1041,14 @@ input[type=range]::-moz-range-thumb {
         height: auto;
         gap: 18px;
     }
-    .simulator, .panel { height: auto; min-height: 500px; }
+    .simulator {
+        position: relative;
+        top: auto;
+        height: auto;
+        min-height: 500px;
+        max-height: none;
+    }
+    .panel { height: auto; min-height: 500px; }
     .controls { gap: 20px; }
     .circle { width: 64px; height: 64px; }
 }
@@ -629,6 +1061,14 @@ input[type=range]::-moz-range-thumb {
     .circle { width: 56px; height: 56px; font-size: 18px; }
     .option { padding: 10px; font-size: 13px; }
     #timer { font-size: 26px; letter-spacing: 2px; }
+    .sim-header { flex-wrap: wrap; gap: 10px; }
+    .status { order: 3; width: 100%; flex: none; }
+    .sim-selector-view { padding: 24px 18px; }
+    .selector-intro h1 { font-size: 30px; }
+    .modal-card { padding: 24px 18px; }
+    .modal-actions { flex-direction: column-reverse; }
+    .modal-primary,
+    .modal-secondary { width: 100%; justify-content: center; }
 }
 
 /* ══════════════════════════════════════════
@@ -670,4 +1110,91 @@ input[type=range]::-moz-range-thumb {
 .stat-value {
     font-weight: 600;
     color: #7dd3fc;
+}
+
+/* ─── SELECTORES DEL SIMULADOR ─── */
+.sim-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.sim-tab,
+.species-chip {
+    border: 1px solid rgba(77,163,255,0.18);
+    background: rgba(255,255,255,0.72);
+    color: var(--text-mid);
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    transition: all var(--transition);
+}
+
+.sim-tab {
+    min-height: 62px;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 11px;
+}
+
+.sim-tab i {
+    font-size: 17px;
+    color: var(--sky);
+}
+
+.sim-tab:hover,
+.species-chip:hover {
+    transform: translateY(-2px);
+    border-color: rgba(77,163,255,0.42);
+    box-shadow: 0 8px 20px rgba(77,163,255,0.12);
+}
+
+.sim-tab.active,
+.species-chip.active {
+    background: linear-gradient(135deg, var(--navy), var(--ocean));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: var(--shadow-blue);
+}
+
+.sim-tab.active i {
+    color: #fff;
+}
+
+.sim-summary {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    background: rgba(77,163,255,0.08);
+    border: 1px solid rgba(77,163,255,0.14);
+}
+
+.sim-summary strong {
+    display: block;
+    color: var(--navy);
+    font-size: 13px;
+}
+
+.sim-summary p {
+    margin-top: 5px;
+    color: var(--text-mid);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.species-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.species-chip {
+    min-height: 38px;
+    padding: 8px 10px;
+    border-radius: var(--radius-md);
+    font-size: 11px;
 }

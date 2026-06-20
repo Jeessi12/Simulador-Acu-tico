@@ -93,6 +93,19 @@ CREATE TABLE asignaciones (
     FOREIGN KEY (id_simulacion) REFERENCES simulaciones(id) ON DELETE CASCADE
 );
 
+-- Observaciones que el estudiante deja durante una simulación asignada
+CREATE TABLE observaciones_simulacion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_asignacion INT NOT NULL,
+    id_estudiante INT NOT NULL,
+    observacion TEXT NOT NULL,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_asignacion) REFERENCES asignaciones(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_estudiante) REFERENCES usuarios(id) ON DELETE CASCADE,
+    INDEX idx_observaciones_asignacion (id_asignacion),
+    INDEX idx_observaciones_estudiante (id_estudiante)
+);
+
 -- ============================================================
 -- 10. Tabla de notificaciones
 -- ============================================================

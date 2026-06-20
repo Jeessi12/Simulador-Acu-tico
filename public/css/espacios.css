@@ -988,6 +988,29 @@ body {
     color: #64748b;
 }
 
+.teacher-observations {
+    display: grid;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.teacher-observations p {
+    margin: 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #f0f9ff;
+    border: 1px solid rgba(45, 156, 219, 0.16);
+    color: #334155;
+    font-size: 0.76rem;
+    line-height: 1.45;
+}
+
+.teacher-observations--empty p {
+    background: #f8fafc;
+    color: #94a3b8;
+    border-style: dashed;
+}
+
 .pill-pending {
     background: #fff3cc;
     color: #7a5000;
@@ -1060,6 +1083,208 @@ body {
     background: #1a8fa0;
     transform: translateY(-1px);
     box-shadow: 0 6px 14px rgba(45, 156, 219, 0.3);
+}
+
+.teacher-sim-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+.teacher-sim-card {
+    min-height: 210px;
+    border: 1px solid rgba(45, 156, 219, 0.16);
+    border-radius: 18px;
+    background: #fff;
+    color: #0f172a;
+    overflow: hidden;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.teacher-sim-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(45, 156, 219, 0.42);
+    box-shadow: 0 16px 32px rgba(45, 156, 219, 0.16);
+}
+
+.teacher-sim-banner {
+    height: 88px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px;
+    color: #fff;
+    background: linear-gradient(135deg, #1a6fa3, #56cfe1);
+}
+
+.sim-theme-2 .teacher-sim-banner {
+    background: linear-gradient(135deg, #155a9f, #4b90d9);
+}
+
+.sim-theme-3 .teacher-sim-banner {
+    background: linear-gradient(135deg, #113b72, #22a9d6);
+}
+
+.teacher-sim-banner i {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.18);
+    font-size: 17px;
+}
+
+.teacher-sim-banner small {
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.2);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.teacher-sim-card strong {
+    display: block;
+    padding: 18px 18px 8px;
+    font-size: 1rem;
+    line-height: 1.25;
+}
+
+.teacher-sim-card p {
+    padding: 0 18px 18px;
+    color: #64748b;
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+.assign-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(8, 22, 44, 0.52);
+    backdrop-filter: blur(6px);
+}
+
+.assign-modal-overlay[hidden] {
+    display: none;
+}
+
+.assign-modal-card {
+    position: relative;
+    width: min(560px, 100%);
+    max-height: min(720px, calc(100vh - 40px));
+    overflow-y: auto;
+    padding: 28px;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 28px 80px rgba(15, 23, 42, 0.24);
+}
+
+.assign-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: #e8f5fd;
+    color: #1a6fa3;
+    font-size: 22px;
+}
+
+.assign-modal-card > span {
+    display: block;
+    margin-bottom: 6px;
+    color: #2d9cdb;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.assign-modal-card h2 {
+    margin: 0 44px 8px 0;
+    color: #0f172a;
+    font-size: 1.55rem;
+}
+
+.assign-modal-card p {
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.assign-task-form {
+    margin-top: 18px;
+}
+
+.assign-mode {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.assign-mode label,
+.assign-student-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid rgba(45, 156, 219, 0.16);
+    border-radius: 14px;
+    background: #f8fafc;
+    cursor: pointer;
+}
+
+.assign-mode input,
+.assign-student-row input {
+    accent-color: #2d9cdb;
+}
+
+.assign-students {
+    display: grid;
+    gap: 8px;
+    max-height: 260px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    padding-right: 4px;
+}
+
+.student-avatar.small {
+    width: 34px;
+    height: 34px;
+}
+
+.assign-student-row span:last-child {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.assign-student-row strong {
+    color: #0f172a;
+    font-size: 0.82rem;
+}
+
+.assign-student-row small {
+    color: #64748b;
+    font-size: 0.72rem;
+}
+
+.btn-assign-modal {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
 }
 
 /* ============================================
@@ -1535,6 +1760,10 @@ button:active {
     }
 
     .classroom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .teacher-sim-grid {
         grid-template-columns: 1fr;
     }
 

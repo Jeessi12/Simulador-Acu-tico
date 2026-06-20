@@ -120,11 +120,14 @@ animate();
 
 window.addEventListener("scroll", function(){
     const navbar = document.querySelector(".navbar");
-    navbar.classList.toggle("scrolled", window.scrollY > 50);
+    if (navbar) navbar.classList.toggle("scrolled", window.scrollY > 50);
 });
 
 const canvasS = document.getElementById('particlesSpecies');
-const ctxS = canvasS.getContext('2d');
+const speciesSection = document.querySelector('.eco-section');
+const ctxS = canvasS ? canvasS.getContext('2d') : null;
+
+if (canvasS && ctxS && speciesSection) {
 
 function resizeCanvasS(){
     canvasS.style.width = '100%';
@@ -136,8 +139,6 @@ resizeCanvasS();
 window.addEventListener('resize', resizeCanvasS);
 
 let mouseS = { x: null, y: null };
-
-const speciesSection = document.querySelector('.eco-section');
 
 speciesSection.addEventListener('mousemove', (e)=>{
     const rect = canvasS.getBoundingClientRect();
@@ -243,3 +244,4 @@ function animateS(){
 }
 
 animateS();
+}

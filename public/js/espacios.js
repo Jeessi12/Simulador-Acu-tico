@@ -213,3 +213,56 @@ document.querySelectorAll('.btn-remove-member').forEach(btn => {
         }).then(r => { if (r.isConfirmed) document.getElementById(`removeMemberForm_${id}`).submit(); });
     });
 });
+
+// Asignar simulaciones como tareas desde tarjetas tipo Classroom.
+const assignModal = document.getElementById('assignSimulationModal');
+const assignClose = document.getElementById('assignModalClose');
+const assignTitle = document.getElementById('assignModalTitle');
+const assignTag = document.getElementById('assignModalTag');
+const assignDescription = document.getElementById('assignModalDescription');
+const assignSimulationId = document.getElementById('assignSimulationId');
+const assignStudentsList = document.getElementById('assignStudentsList');
+const assignTaskForm = document.getElementById('assignTaskForm');
+
+function closeAssignModal() {
+    if (!assignModal) return;
+    assignModal.hidden = true;
+    assignTaskForm?.reset();
+    if (assignStudentsList) assignStudentsList.hidden = true;
+}
+
+document.querySelectorAll('.teacher-sim-card').forEach(card => {
+    card.addEventListener('click', () => {
+        if (!assignModal) return;
+        if (assignSimulationId) assignSimulationId.value = card.dataset.simId || '';
+        if (assignTitle) assignTitle.textContent = card.dataset.simName || 'Asignar simulacion';
+        if (assignTag) assignTag.textContent = card.dataset.simTag || 'Simulacion';
+        if (assignDescription) assignDescription.textContent = card.dataset.simDescription || 'Selecciona a quienes se les asignara esta tarea.';
+        assignModal.hidden = false;
+    });
+});
+
+document.querySelectorAll('input[name="modo_asignacion"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        if (assignStudentsList) assignStudentsList.hidden = radio.value !== 'seleccionados' || !radio.checked;
+    });
+});
+
+assignClose?.addEventListener('click', closeAssignModal);
+assignModal?.addEventListener('click', event => {
+    if (event.target === assignModal) closeAssignModal();
+});
+
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeAssignModal();
+});
+
+assignTaskForm?.addEventListener('submit', event => {
+    const mode = assignTaskForm.querySelector('input[name="modo_asignacion"]:checked')?.value;
+    const selected = assignTaskForm.querySelectorAll('input[name="estudiantes_asignar[]"]:checked');
+    if (mode === 'seleccionados' && selected.length === 0) {
+        event.preventDefault();
+        assignStudentsList?.classList.add('shake');
+        setTimeout(() => assignStudentsList?.classList.remove('shake'), 450);
+    }
+});
