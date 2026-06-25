@@ -90,7 +90,7 @@ VALUES
  '24 – 30 °C', 'Marina (~35 ppt)', 'Zona fótica', 0, 40, 'Trópicos globales',
  110, 55,
  '../public/media/3D_Models/ridley_turtle_lepidochelys_olivacea.glb',
- 1.2, -0.2, -1.57, 3.2, 0.8),
+ 1.2, -0.2, 1.57, 3.2, 0.8),
 
 
 (2, 'Botete bonito' , 'Canthigaster punctatissima', 'peces',
@@ -101,8 +101,9 @@ VALUES
  'Peces grandes, morenas (inmunes a toxina)',
  '22 - 28 C', 'Marina (~34 ppt)', 'Zona fotica', 1, 30, 'Los Cobanos, El Salvador',
  92, 47,
- '../public/media/3D_Models/pufferfish.glb',
- 1.0, -0.1, 0.0, 2.5, 0.6),
+ '../public/media/3D_Models/botete.glb',
+ 1.0, -0.1, 1.57, 2.5, 0.6),
+
 
 
 -- 3 · Pulpo
@@ -176,9 +177,9 @@ VALUES
  'Pulpos, peces grandes, humanos',
  '20 - 30 C', 'Marina (~34 ppt)', 'Zona fotica bentonica', 0, 30, 'Los Cobanos, El Salvador',
  92, 47,
- '../public/media/3D_Models/crab.glb',
- 2.5, -0.15, 0.0, 3.0, 0.6),
-
+ '../public/media/3D_Models/jaibaroja.glb',
+ 2.5, -0.15, -1.57, 3.0, 0.6),
+ 
 
 -- 9 · Estrella de mar
 (9, 'Estrella de mar', 'Asteroidea', 'moluscos',
@@ -393,8 +394,8 @@ VALUES
  'Tiburones, cocodrilos, humanos',
  '24 - 30 C', 'Marina (~35 ppt)', 'Zona fotica', 0, 30, 'Los Cobanos, El Salvador',
  92, 47,
- '../public/media/3D_Models/ridley_turtle_lepidochelys_olivacea.glb',
- 1.2, -0.2, -1.57, 3.2, 0.8),
+ '../public/media/3D_Models/carey.glb',
+ 4, -0.2, -1.57, 3.2, 0.8),
 
 -- 27 · Tortuga Golfina
 (27, 'Tortuga Golfina', 'Lepidochelys olivacea', 'tortugas',
@@ -562,8 +563,25 @@ VALUES
  'Peces pequeños, cangrejos, estrellas de mar',
  '20 - 28 C', 'Marina (~34 ppt)', 'Zona fotica', 0, 10, 'Los Cobanos, El Salvador',
  92, 47,
- '../public/media/3D_Models/sea_slug.glb',
- 1.0, -0.1, 0.0, 2.5, 0.6),
+ '../public/media/3D_Models/bailarina.glb',
+ 3.0, -0.1, -1.57, 2.5, 0.6),
+ 
+  USE simulador;
+UPDATE especies
+SET
+    model_path = '../public/media/3D_Models/bailarina.glb'
+WHERE id = 40;
+
+USE simulador;
+UPDATE especies
+SET
+scale_3d = 3.0
+WHERE id = 40;
+
+USE simulador;
+UPDATE especies
+SET rot_y =  -1.57
+WHERE id = 40;
 
 -- 41 · Nudibranquio
 (41, 'Nudibranquio', 'Dolabrifera dolabrifera', 'moluscos',
