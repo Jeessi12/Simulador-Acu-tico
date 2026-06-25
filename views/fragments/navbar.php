@@ -23,6 +23,31 @@ if (!function_exists('getRoleAvatarSrc')) {
 }
 ?>
 
+<script>
+    (function () {
+        const savedTheme = localStorage.getItem('blueEcoThemeManual');
+        const useDark = savedTheme === 'dark';
+
+        document.documentElement.classList.toggle('dark-mode', useDark);
+        document.documentElement.dataset.theme = useDark ? 'dark' : 'light';
+
+        if (document.body) {
+            document.body.classList.toggle('dark-mode', useDark);
+        }
+
+        if (!/\/(?:index\.php)?(?:[?#].*)?$/.test(window.location.pathname)) {
+            document.documentElement.classList.add('non-index-page');
+        }
+
+        const pageName = (window.location.pathname.split('/').pop() || '').replace('.php', '');
+        if (pageName) {
+            document.documentElement.classList.add('page-' + pageName);
+        }
+    })();
+</script>
+<link rel="stylesheet" href="/Simulador-Acu-tico-main/public/css/dark-mode.css?v=20260624">
+<link rel="stylesheet" href="/Simulador-Acu-tico-main/public/css/section-polish.css?v=20260624-6">
+
 <nav class="navbar">
     <div class="nav-left">
         <img src="../public/media/Web/logo.png" class="logo" alt="BlueEcoSim logo">
@@ -47,16 +72,16 @@ if (!function_exists('getRoleAvatarSrc')) {
     </div>
 
     <div class="nav-right" id="navRight">
+        <button type="button" class="icon-btn theme-toggle" id="darkModeBtn" title="Activar modo oscuro" aria-label="Activar modo oscuro" aria-pressed="false">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <button type="button" class="icon-btn" id="langBtn" title="Cambiar idioma" aria-label="Cambiar idioma" aria-pressed="false">
+            <i class="fa-solid fa-language"></i>
+        </button>
+
         <?php if (isset($_SESSION['usuario'])): ?>
             <div class="user-actions" id="userActions">
-                <button type="button" class="icon-btn" id="darkModeBtn" title="Modo oscuro">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-
-                <button type="button" class="icon-btn" id="langBtn" title="Cambio de idioma">
-                    <i class="fa-solid fa-language"></i>
-                </button>
-
                 <a href="/Simulador-Acu-tico-main/views/perfilUsuario.php" class="user-avatar"
                    title="Perfil de <?php echo htmlspecialchars($_SESSION['usuario']); ?>">
                     <img src="<?php echo htmlspecialchars(getRoleAvatarSrc($_SESSION['rol'] ?? null)); ?>" alt="Avatar de perfil">
@@ -79,3 +104,6 @@ if (!function_exists('getRoleAvatarSrc')) {
         <?php endif; ?>
     </div>
 </nav>
+
+<script src="/Simulador-Acu-tico-main/public/js/theme-toggle.js" defer></script>
+<script src="/Simulador-Acu-tico-main/public/js/translator.js" defer></script>

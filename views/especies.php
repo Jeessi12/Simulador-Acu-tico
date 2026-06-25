@@ -159,6 +159,104 @@ if (!isset($_SESSION['id'])) {
 
 </div><!-- fin .page-wrapper -->
 
+<style id="species-dark-mode-final-fix">
+    body.dark-mode #view-detail .detail-info-sidebar,
+    body.dark-mode #view-detail .detail-top-area > .detail-info-sidebar,
+    body.dark-mode #view-detail #interactivePanelSlot,
+    body.dark-mode #view-detail .interact-content,
+    body.dark-mode #view-detail .interact-pane,
+    body.dark-mode #view-detail .habitat-map-wrap,
+    body.dark-mode #view-detail .detail-title-row,
+    body.dark-mode #view-detail .detail-stats-grid,
+    body.dark-mode #view-detail .detail-actions {
+        background: transparent !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+    }
+
+    body.dark-mode #view-detail .detail-interactive-panel {
+        background: linear-gradient(145deg, rgba(8, 35, 58, 0.96), rgba(4, 21, 34, 0.96)) !important;
+        border: 1px solid rgba(125, 249, 240, 0.28) !important;
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34) !important;
+        backdrop-filter: blur(10px) saturate(1.05) !important;
+    }
+
+    body.dark-mode #view-detail .detail-header-block,
+    body.dark-mode #view-detail .detail-desc-block,
+    body.dark-mode #view-detail .detail-stat-card,
+    body.dark-mode #view-detail .habitat-info-row,
+    body.dark-mode #view-detail .curiosity-card,
+    body.dark-mode #view-detail .threat-item,
+    body.dark-mode #view-detail .sci-data-item,
+    body.dark-mode #view-detail .back-btn,
+    body.dark-mode #view-detail .floating-chip,
+    body.dark-mode #view-detail .interact-tabs,
+    body.dark-mode #view-detail .interact-tab,
+    body.dark-mode #view-detail .btn-action.secondary {
+        background: linear-gradient(145deg, #08233a 0%, #041522 100%) !important;
+        border-color: rgba(125, 249, 240, 0.32) !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34) !important;
+    }
+
+    body.dark-mode #view-detail .interact-tab.active,
+    body.dark-mode #view-detail .interact-tab:hover {
+        background: #0b304f !important;
+        border-bottom-color: #7df9f0 !important;
+    }
+
+    body.dark-mode #view-detail .detail-header-block *,
+    body.dark-mode #view-detail .detail-desc-block *,
+    body.dark-mode #view-detail .detail-stat-card *,
+    body.dark-mode #view-detail .habitat-info-row *,
+    body.dark-mode #view-detail .curiosity-card *,
+    body.dark-mode #view-detail .threat-item *,
+    body.dark-mode #view-detail .sci-data-item *,
+    body.dark-mode #view-detail .back-btn *,
+    body.dark-mode #view-detail .floating-chip *,
+    body.dark-mode #view-detail .interact-tabs *,
+    body.dark-mode #view-detail .btn-action.secondary *,
+    body.dark-mode #view-detail .detail-species-name,
+    body.dark-mode #view-detail .detail-scientific,
+    body.dark-mode #view-detail .detail-desc-block p,
+    body.dark-mode #view-detail .detail-stat-label,
+    body.dark-mode #view-detail .detail-stat-value,
+    body.dark-mode #view-detail .detail-stat-sub,
+    body.dark-mode #view-detail .habitat-info-row span,
+    body.dark-mode #view-detail .habitat-info-row strong,
+    body.dark-mode #view-detail .curiosity-text,
+    body.dark-mode #view-detail .curiosity-text strong,
+    body.dark-mode #view-detail .curiosity-text span,
+    body.dark-mode #view-detail .threat-label,
+    body.dark-mode #view-detail .threat-level,
+    body.dark-mode #view-detail .sci-data-value,
+    body.dark-mode #view-detail .sci-data-label {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        opacity: 1 !important;
+        text-shadow: none !important;
+    }
+
+    body.dark-mode #view-detail .detail-species-name,
+    body.dark-mode #view-detail .sci-data-value {
+        background: none !important;
+        background-clip: border-box !important;
+        -webkit-background-clip: border-box !important;
+    }
+
+    body.dark-mode #view-detail .detail-header-block div[style*="background"],
+    body.dark-mode #view-detail .detail-header-block div[style*="background"] *,
+    body.dark-mode #view-detail .danger-badge,
+    body.dark-mode #view-detail .threat-level {
+        background: rgba(125, 249, 240, 0.14) !important;
+        border-color: rgba(125, 249, 240, 0.24) !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+    }
+</style>
+
 <script src="../public/js/burbujas.js" defer></script>
 <script type="module" src="../public/js/especies.js"></script>
 <script src="../public/js/session.js" defer></script>

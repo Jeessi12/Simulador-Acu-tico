@@ -106,19 +106,22 @@ class Chatbot {
     }
 
     createDOM() {
+        const isEnglish = window.blueEcoTranslator?.getLanguage?.() === 'en';
+        const assistantTitle = isEnglish ? 'EcoSim Assistant' : 'Asistente EcoSim';
+        const inputPlaceholder = isEnglish ? 'Type your question here...' : 'Escribe tu pregunta aqui...';
         const container = document.createElement('div');
         container.className = 'chatbot-container';
         container.innerHTML = `
             <div class="chatbot-window" id="chatbotWindow">
                 <div class="chatbot-header" id="chatbotHeader">
-                    <h3><i class="fas fa-robot"></i> Asistente EcoSim</h3>
+                    <h3><i class="fas fa-robot"></i> ${assistantTitle}</h3>
                     <div class="chatbot-header-actions">
                         <button class="chatbot-close" id="chatbotCloseBtn"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
                 <div class="chatbot-messages" id="chatbotMessages"></div>
                 <div class="chatbot-input">
-                    <input type="text" id="chatbotInput" placeholder="Escribe tu pregunta aquí..." autocomplete="off">
+                    <input type="text" id="chatbotInput" placeholder="${inputPlaceholder}" autocomplete="off">
                     <button id="chatbotSendBtn"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
@@ -274,13 +277,30 @@ class Chatbot {
     }
     hideTyping() { const indicator = document.getElementById('typingIndicator'); if (indicator) indicator.remove(); this.isTyping = false; }
 
-    getResponse(question) {
+    findResponse(question) {
         const lowerQuestion = question.toLowerCase();
         for (const item of this.knowledgeBase) {
             for (const keyword of item.keywords) {
                 if (lowerQuestion.includes(keyword.toLowerCase())) return item.response;
             }
         }
+        return null;
+    }
+
+    async getResponse(question) {
+        const directResponse = this.findResponse(question);
+        if (directResponse) return directResponse;
+
+        if (window.blueEcoTranslator?.getLanguage?.() === 'en') {
+            try {
+                const translatedQuestion = await window.blueEcoTranslator.translate(question, 'en', 'es');
+                const translatedResponse = this.findResponse(translatedQuestion);
+                if (translatedResponse) return translatedResponse;
+            } catch (error) {
+                console.warn('No se pudo traducir la pregunta del chatbot:', error);
+            }
+        }
+
         return "🤔 No estoy seguro de entender tu pregunta.\n\n💡 Prueba preguntarme:\n\n• ¿Cómo me registro?\n• ¿Qué son los espacios?\n• ¿Cómo inicio una simulación?\n• ¿Dónde veo mis tareas?\n• ¿Qué especies hay?\n• ¿Cómo me contacto con soporte?";
     }
 
@@ -289,9 +309,9 @@ class Chatbot {
         this.addUserMessage(question);
         this.input.value = '';
         this.showTyping();
-        setTimeout(() => {
+        setTimeout(async () => {
             this.hideTyping();
-            this.addBotMessage(this.getResponse(question));
+            this.addBotMessage(await this.getResponse(question));
         }, 600 + Math.random() * 400);
     }
 
