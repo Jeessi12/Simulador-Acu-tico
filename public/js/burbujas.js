@@ -123,6 +123,122 @@ window.addEventListener("scroll", function(){
     if (navbar) navbar.classList.toggle("scrolled", window.scrollY > 50);
 });
 
+const heroCanvas = document.getElementById('particlesHero');
+const heroCtx = heroCanvas ? heroCanvas.getContext('2d') : null;
+const heroSection = document.querySelector('.resources-hero');
+
+if (heroCanvas && heroCtx && heroSection) {
+    function resizeHeroCanvas(){
+        heroCanvas.width = heroSection.clientWidth;
+        heroCanvas.height = heroSection.clientHeight;
+    }
+    resizeHeroCanvas();
+    window.addEventListener('resize', resizeHeroCanvas);
+
+    let heroMouse = { x: null, y: null };
+
+    heroSection.addEventListener('mousemove', (e) => {
+        const rect = heroCanvas.getBoundingClientRect();
+        heroMouse.x = e.clientX - rect.left;
+        heroMouse.y = e.clientY - rect.top;
+    });
+
+    heroSection.addEventListener('mouseleave', () => {
+        heroMouse.x = null;
+        heroMouse.y = null;
+    });
+
+    let heroParticles = [];
+
+    function createHeroParticle(){
+        let size = Math.random()*6 + 4;
+        return {
+            x: Math.random()*heroCanvas.width,
+            y: Math.random()*heroCanvas.height,
+            r: size,
+            baseR: size,
+            speed: Math.random()*0.8 + 0.3,
+            dx: (Math.random()-0.5)*0.5,
+            popping: false,
+            popSize: 0
+        };
+    }
+
+    for(let i=0;i<45;i++){
+        heroParticles.push(createHeroParticle());
+    }
+
+    function drawHeroBubble(p){
+        heroCtx.beginPath();
+        heroCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        heroCtx.fillStyle = 'rgba(255,255,255,0.18)';
+        heroCtx.fill();
+
+        heroCtx.strokeStyle = 'rgba(255,255,255,0.55)';
+        heroCtx.stroke();
+
+        heroCtx.beginPath();
+        heroCtx.arc(p.x - p.r/3, p.y - p.r/3, p.r/4, 0, Math.PI*2);
+        heroCtx.fillStyle = 'rgba(255,255,255,0.72)';
+        heroCtx.fill();
+    }
+
+    function drawHeroPop(p){
+        heroCtx.beginPath();
+        heroCtx.arc(p.x, p.y, p.popSize, 0, Math.PI*2);
+        heroCtx.strokeStyle = 'rgba(255,255,255,0.45)';
+        heroCtx.lineWidth = 2;
+        heroCtx.stroke();
+    }
+
+    function animateHero(){
+        heroCtx.clearRect(0,0,heroCanvas.width,heroCanvas.height);
+
+        heroParticles.forEach((p, i) => {
+            if(!p.popping){
+                p.y -= p.speed;
+                p.x += p.dx;
+
+                if(p.y < 0){
+                    heroParticles[i] = createHeroParticle();
+                    heroParticles[i].y = heroCanvas.height;
+                }
+
+                if(heroMouse.x && heroMouse.y){
+                    let dx = p.x - heroMouse.x;
+                    let dy = p.y - heroMouse.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+
+                    if(dist < 120){
+                        p.r = p.baseR + 3;
+                        p.x += dx * 0.02;
+                        p.y += dy * 0.02;
+                    } else {
+                        p.r = p.baseR;
+                    }
+
+                    if(dist < 50){
+                        p.popping = true;
+                    }
+                }
+
+                drawHeroBubble(p);
+            } else {
+                p.popSize += 3;
+                drawHeroPop(p);
+
+                if(p.popSize > p.r * 2){
+                    heroParticles[i] = createHeroParticle();
+                }
+            }
+        });
+
+        requestAnimationFrame(animateHero);
+    }
+
+    animateHero();
+}
+
 const canvasS = document.getElementById('particlesSpecies');
 const speciesSection = document.querySelector('.eco-section');
 const ctxS = canvasS ? canvasS.getContext('2d') : null;

@@ -220,11 +220,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
            let mixer = null;
 const clock = new THREE.Clock();
+let model = null;
 
 const loader = new GLTFLoader();
 loader.load(modelPath,
     (gltf) => {
-        const model = gltf.scene;
+
+        model = gltf.scene;
         model.scale.set(scaleValue, scaleValue, scaleValue);
         model.position.set(0, posYValue, 0);
         model.rotation.y = rotYValue;
@@ -251,12 +253,36 @@ loader.load(modelPath,
 );
 
 function animate() {
+
     requestAnimationFrame(animate);
+
     const delta = clock.getDelta();
-    if (mixer) mixer.update(delta);   // ← actualiza las animaciones
-    controls.update();
-    renderer.render(scene, camera);
+
+    if (mixer) {
+        mixer.update(delta);
+    }
+
+if (model) {
+
+    const t = Date.now() * 0.001;
+
+    // Flota ligeramente
+    model.position.y = posYValue + Math.sin(t * 2) * 0.08;
+
+    // Se balancea de lado a lado
+    model.rotation.z = Math.sin(t * 3) * 0.12;
+
+    // Se inclina un poco hacia adelante y atrás
+    model.rotation.x = Math.sin(t * 2.5) * 0.05;
+
 }
+
+    controls.update();
+
+    renderer.render(scene, camera);
+
+}
+
 animate();
 
             const resizeObserver = new ResizeObserver(() => {
