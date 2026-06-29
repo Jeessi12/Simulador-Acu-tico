@@ -1,0 +1,1285 @@
+html.non-index-page.dark-mode {
+    --polish-bg: #06111f;
+    --polish-bg-2: #0a1e33;
+    --polish-panel: rgba(9, 24, 41, 0.84);
+    --polish-panel-strong: rgba(12, 31, 52, 0.94);
+    --polish-border: rgba(139, 213, 255, 0.2);
+    --polish-border-strong: rgba(139, 213, 255, 0.36);
+    --polish-text: #f0f8ff;
+    --polish-muted: #bfd5e7;
+    --polish-soft: #84d9ff;
+    --polish-cyan: #38c9e8;
+    --polish-blue: #1468b3;
+    --polish-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+    --polish-radius: 24px;
+}
+
+html.non-index-page.dark-mode body {
+    background-color: var(--polish-bg) !important;
+    color: var(--polish-text) !important;
+}
+
+html.non-index-page.dark-mode body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg, rgba(3, 10, 22, 0.42), rgba(3, 10, 22, 0.76)),
+        radial-gradient(circle at 18% 18%, rgba(56, 201, 232, 0.16), transparent 28%),
+        radial-gradient(circle at 82% 8%, rgba(20, 104, 179, 0.2), transparent 30%);
+}
+
+html.non-index-page.dark-mode body.admin-page,
+html.non-index-page.dark-mode body:not(.admin-page) {
+    background-blend-mode: multiply, normal;
+}
+
+html.non-index-page.dark-mode .navbar {
+    background: rgba(6, 17, 31, 0.88) !important;
+    border: 1px solid var(--polish-border) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.38) !important;
+}
+
+html.non-index-page.dark-mode .nav-links a,
+html.non-index-page.dark-mode .btn-secondary,
+html.non-index-page.dark-mode .logout-btn {
+    color: var(--polish-text) !important;
+}
+
+html.non-index-page.dark-mode .icon-btn,
+html.non-index-page.dark-mode .btn-secondary,
+html.non-index-page.dark-mode .logout-btn {
+    background: rgba(132, 217, 255, 0.12) !important;
+    border-color: rgba(132, 217, 255, 0.22) !important;
+}
+
+html.non-index-page.dark-mode .btn-primary,
+html.non-index-page.dark-mode .btn-submit,
+html.non-index-page.dark-mode .btn-create,
+html.non-index-page.dark-mode .btn-assign,
+html.non-index-page.dark-mode .btn-ver-especie,
+html.non-index-page.dark-mode .modal-start,
+html.non-index-page.dark-mode .start-simulation-btn,
+html.non-index-page.dark-mode .modal-primary,
+html.non-index-page.dark-mode .btn-action.primary,
+html.non-index-page.dark-mode .swal2-confirm {
+    background: linear-gradient(135deg, var(--polish-cyan), var(--polish-blue)) !important;
+    color: #fff !important;
+    border: 0 !important;
+    box-shadow: 0 14px 34px rgba(17, 122, 186, 0.34) !important;
+}
+
+html.non-index-page.dark-mode .btn-primary:hover,
+html.non-index-page.dark-mode .btn-submit:hover,
+html.non-index-page.dark-mode .btn-create:hover,
+html.non-index-page.dark-mode .btn-assign:hover,
+html.non-index-page.dark-mode .btn-ver-especie:hover,
+html.non-index-page.dark-mode .modal-start:hover {
+    filter: brightness(1.08);
+    transform: translateY(-2px);
+}
+
+html.non-index-page.dark-mode .selector-hero,
+html.non-index-page.dark-mode .home-header,
+html.non-index-page.dark-mode .section-header,
+html.non-index-page.dark-mode .notes-header,
+html.non-index-page.dark-mode .admin-header,
+html.non-index-page.dark-mode .profile-header {
+    color: var(--polish-text);
+}
+
+html.non-index-page.dark-mode .selector-hero span,
+html.non-index-page.dark-mode .hero-eyebrow,
+html.non-index-page.dark-mode .ftab,
+html.non-index-page.dark-mode .task-tab,
+html.non-index-page.dark-mode .badge,
+html.non-index-page.dark-mode .member-badge,
+html.non-index-page.dark-mode .estado-badge,
+html.non-index-page.dark-mode .role-estudiante,
+html.non-index-page.dark-mode .role-docente,
+html.non-index-page.dark-mode .role-personal,
+html.non-index-page.dark-mode .role-admin,
+html.non-index-page.dark-mode .status-active,
+html.non-index-page.dark-mode .status-inactive,
+html.non-index-page.dark-mode .status-pending,
+html.non-index-page.dark-mode .val-display,
+html.non-index-page.dark-mode .book-habitat-tag {
+    background: rgba(132, 217, 255, 0.13) !important;
+    color: #d9f4ff !important;
+    border: 1px solid rgba(132, 217, 255, 0.22) !important;
+}
+
+html.non-index-page.dark-mode h1,
+html.non-index-page.dark-mode h2,
+html.non-index-page.dark-mode h3,
+html.non-index-page.dark-mode h4,
+html.non-index-page.dark-mode .form-title,
+html.non-index-page.dark-mode .selector-hero h1,
+html.non-index-page.dark-mode .hero-title h1,
+html.non-index-page.dark-mode .section-header h2,
+html.non-index-page.dark-mode .notes-header h2,
+html.non-index-page.dark-mode .card-body h2,
+html.non-index-page.dark-mode .card-header h2,
+html.non-index-page.dark-mode .member-info strong,
+html.non-index-page.dark-mode .student-info strong,
+html.non-index-page.dark-mode .task-info strong,
+html.non-index-page.dark-mode .teacher-sim-card strong,
+html.non-index-page.dark-mode .detail-stat-value {
+    color: var(--polish-text) !important;
+}
+
+html.non-index-page.dark-mode p,
+html.non-index-page.dark-mode label,
+html.non-index-page.dark-mode li,
+html.non-index-page.dark-mode td,
+html.non-index-page.dark-mode th,
+html.non-index-page.dark-mode .selector-hero p,
+html.non-index-page.dark-mode .form-subtitle,
+html.non-index-page.dark-mode .switch-link,
+html.non-index-page.dark-mode .card-body p,
+html.non-index-page.dark-mode .modal-panel p,
+html.non-index-page.dark-mode .member-info span,
+html.non-index-page.dark-mode .student-info span,
+html.non-index-page.dark-mode .task-info span,
+html.non-index-page.dark-mode .teacher-sim-card p,
+html.non-index-page.dark-mode .book-desc,
+html.non-index-page.dark-mode .book-scientific,
+html.non-index-page.dark-mode .detail-stat-sub {
+    color: var(--polish-muted) !important;
+}
+
+html.non-index-page.dark-mode .classroom-card,
+html.non-index-page.dark-mode .modal-panel,
+html.non-index-page.dark-mode .modal-card,
+html.non-index-page.dark-mode .admin-card,
+html.non-index-page.dark-mode .profile-container,
+html.non-index-page.dark-mode .profile-card,
+html.non-index-page.dark-mode .info-card,
+html.non-index-page.dark-mode .assignment-card,
+html.non-index-page.dark-mode .student-comment-body,
+html.non-index-page.dark-mode .notification-card,
+html.non-index-page.dark-mode .book-card,
+html.non-index-page.dark-mode .species-card,
+html.non-index-page.dark-mode .card,
+html.non-index-page.dark-mode .panel,
+html.non-index-page.dark-mode .table-container,
+html.non-index-page.dark-mode .comments-box,
+html.non-index-page.dark-mode .observations-panel,
+html.non-index-page.dark-mode .chatbot-window,
+html.non-index-page.dark-mode .chat-window,
+html.non-index-page.dark-mode .google-btn,
+html.non-index-page.dark-mode .rol-opcion,
+html.non-index-page.dark-mode .create-space-card,
+html.non-index-page.dark-mode .empty-hero,
+html.non-index-page.dark-mode .empty-state,
+html.non-index-page.dark-mode .no-results,
+html.non-index-page.dark-mode .teacher-sim-card,
+html.non-index-page.dark-mode .assign-modal-card,
+html.non-index-page.dark-mode .modal-box,
+html.non-index-page.dark-mode .swal2-popup,
+html.non-index-page.dark-mode .empty-favorites-message,
+html.non-index-page.dark-mode .empty-notes-message,
+html.non-index-page.dark-mode .note-card,
+html.non-index-page.dark-mode .search-pill,
+html.non-index-page.dark-mode .sidebar,
+html.non-index-page.dark-mode .detail-info-sidebar,
+html.non-index-page.dark-mode .detail-3d-panel {
+    background: var(--polish-panel) !important;
+    border: 1px solid var(--polish-border) !important;
+    color: var(--polish-text) !important;
+    box-shadow: var(--polish-shadow) !important;
+    backdrop-filter: blur(18px) saturate(1.08);
+}
+
+html.non-index-page.dark-mode .classroom-card,
+html.non-index-page.dark-mode .book-card,
+html.non-index-page.dark-mode .teacher-sim-card,
+html.non-index-page.dark-mode .admin-card,
+html.non-index-page.dark-mode .profile-card,
+html.non-index-page.dark-mode .note-card,
+html.non-index-page.dark-mode .card,
+html.non-index-page.dark-mode .space-card {
+    transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+html.non-index-page.dark-mode .classroom-card:hover,
+html.non-index-page.dark-mode .book-card:hover,
+html.non-index-page.dark-mode .teacher-sim-card:hover,
+html.non-index-page.dark-mode .admin-card:hover,
+html.non-index-page.dark-mode .profile-card:hover,
+html.non-index-page.dark-mode .note-card:hover,
+html.non-index-page.dark-mode .card:hover,
+html.non-index-page.dark-mode .space-card:hover {
+    border-color: var(--polish-border-strong) !important;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42) !important;
+}
+
+html.non-index-page.dark-mode .classroom-hero,
+html.non-index-page.dark-mode .classroom-header-detail,
+html.non-index-page.dark-mode .sim-selector-view,
+html.non-index-page.dark-mode .space-card,
+html.non-index-page.dark-mode .book-cover,
+html.non-index-page.dark-mode [style*="background-image"] {
+    position: relative;
+    isolation: isolate;
+}
+
+html.non-index-page.dark-mode .classroom-hero::before,
+html.non-index-page.dark-mode .classroom-header-detail::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        linear-gradient(105deg, rgba(1, 9, 21, 0.86), rgba(3, 33, 62, 0.55), rgba(2, 12, 25, 0.22)),
+        linear-gradient(0deg, rgba(1, 9, 21, 0.2), rgba(1, 9, 21, 0.2));
+}
+
+html.non-index-page.dark-mode .classroom-hero > *,
+html.non-index-page.dark-mode .classroom-header-detail > * {
+    position: relative;
+    z-index: 2;
+}
+
+html.non-index-page.dark-mode .classroom-hero,
+html.non-index-page.dark-mode .classroom-header-detail {
+    border: 1px solid var(--polish-border);
+    box-shadow: var(--polish-shadow) !important;
+}
+
+html.non-index-page.dark-mode .hero-content h1,
+html.non-index-page.dark-mode .detail-title-section h1,
+html.non-index-page.dark-mode .selector-intro h1 {
+    text-shadow: 0 10px 26px rgba(0, 0, 0, 0.7) !important;
+}
+
+html.non-index-page.dark-mode input,
+html.non-index-page.dark-mode textarea,
+html.non-index-page.dark-mode select {
+    background: rgba(5, 16, 29, 0.82) !important;
+    border: 1px solid rgba(132, 217, 255, 0.24) !important;
+    border-radius: 14px !important;
+    color: var(--polish-text) !important;
+    box-shadow: none !important;
+}
+
+html.non-index-page.dark-mode .campo input {
+    padding: 12px 14px !important;
+}
+
+html.non-index-page.dark-mode input::placeholder,
+html.non-index-page.dark-mode textarea::placeholder {
+    color: rgba(214, 237, 250, 0.6) !important;
+}
+
+html.non-index-page.dark-mode input:focus,
+html.non-index-page.dark-mode textarea:focus,
+html.non-index-page.dark-mode select:focus {
+    border-color: rgba(132, 217, 255, 0.68) !important;
+    box-shadow: 0 0 0 4px rgba(56, 201, 232, 0.16) !important;
+    outline: none !important;
+}
+
+html.non-index-page.dark-mode .create-form input {
+    border-radius: 999px !important;
+}
+
+html.non-index-page.dark-mode .book-info h3,
+html.non-index-page.dark-mode .empty-notes-message h4,
+html.non-index-page.dark-mode .empty-favorites-message h4,
+html.non-index-page.dark-mode .note-title-display {
+    background: none !important;
+    color: var(--polish-text) !important;
+    -webkit-text-fill-color: currentColor;
+}
+
+html.non-index-page.dark-mode .cover-overlay,
+html.non-index-page.dark-mode .space-card-overlay,
+html.non-index-page.dark-mode .detail-overlay {
+    background:
+        linear-gradient(180deg, rgba(2, 10, 22, 0.12), rgba(2, 10, 22, 0.74)),
+        linear-gradient(90deg, rgba(4, 32, 61, 0.48), rgba(4, 32, 61, 0.06)) !important;
+}
+
+html.non-index-page.dark-mode img:not(.logo):not(.user-avatar img):not(.foot-icons):not(.google-btn img):not(.chatbot-toggle img),
+html.non-index-page.dark-mode video {
+    filter: brightness(0.84) saturate(0.94) contrast(1.04);
+}
+
+html.non-index-page.dark-mode table,
+html.non-index-page.dark-mode thead,
+html.non-index-page.dark-mode tbody,
+html.non-index-page.dark-mode tr {
+    background: transparent !important;
+    color: var(--polish-text) !important;
+}
+
+html.non-index-page.dark-mode th,
+html.non-index-page.dark-mode td,
+html.non-index-page.dark-mode .member-item + .member-item,
+html.non-index-page.dark-mode .student-item + .student-item,
+html.non-index-page.dark-mode .task-item + .task-item,
+html.non-index-page.dark-mode .card-header,
+html.non-index-page.dark-mode .note-header {
+    border-color: rgba(132, 217, 255, 0.14) !important;
+}
+
+html.non-index-page.dark-mode .alert.success,
+html.non-index-page.dark-mode .valid,
+html.non-index-page.dark-mode .pill-done,
+html.non-index-page.dark-mode .badge-aceptado {
+    background: rgba(52, 211, 153, 0.14) !important;
+    color: #bef7dd !important;
+    border-color: rgba(52, 211, 153, 0.34) !important;
+}
+
+html.non-index-page.dark-mode .alert.error,
+html.non-index-page.dark-mode .error,
+html.non-index-page.dark-mode .pill-pending,
+html.non-index-page.dark-mode .badge-pendiente,
+html.non-index-page.dark-mode .badge-rechazado {
+    background: rgba(248, 113, 113, 0.14) !important;
+    color: #ffd1d1 !important;
+    border-color: rgba(248, 113, 113, 0.34) !important;
+}
+
+html.non-index-page.dark-mode .sidebar-item {
+    background: rgba(9, 24, 41, 0.72) !important;
+    color: var(--polish-muted) !important;
+}
+
+html.non-index-page.dark-mode .sidebar-item.active,
+html.non-index-page.dark-mode .ftab.active,
+html.non-index-page.dark-mode .task-tab.active,
+html.non-index-page.dark-mode .sim-tab.active,
+html.non-index-page.dark-mode .species-chip.active {
+    background: linear-gradient(135deg, var(--polish-cyan), var(--polish-blue)) !important;
+    color: #fff !important;
+}
+
+html.non-index-page.dark-mode .simulator {
+    background: rgba(5, 13, 26, 0.94) !important;
+    border-color: var(--polish-border) !important;
+    box-shadow: var(--polish-shadow) !important;
+}
+
+html.non-index-page.dark-mode .sim-header,
+html.non-index-page.dark-mode .observations,
+html.non-index-page.dark-mode .observation-thread {
+    background: rgba(9, 24, 41, 0.84) !important;
+    border-color: rgba(132, 217, 255, 0.16) !important;
+}
+
+html.non-index-page.dark-mode .observation-body,
+html.non-index-page.dark-mode .sim-summary,
+html.non-index-page.dark-mode .assign-mode label,
+html.non-index-page.dark-mode .assign-student-row,
+html.non-index-page.dark-mode .teacher-observations p,
+html.non-index-page.dark-mode .fact-row {
+    background: rgba(132, 217, 255, 0.1) !important;
+    border: 1px solid rgba(132, 217, 255, 0.17) !important;
+    color: var(--polish-muted) !important;
+}
+
+html.non-index-page.dark-mode .form-wrapper,
+html.non-index-page.dark-mode .login-wrapper {
+    border: 1px solid rgba(132, 217, 255, 0.18);
+    border-radius: var(--polish-radius);
+    background: rgba(6, 17, 31, 0.52);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--polish-shadow);
+}
+
+html.non-index-page.dark-mode #bg-video {
+    filter: brightness(0.58) saturate(0.9) contrast(1.08);
+}
+
+html.non-index-page.dark-mode .modal-overlay,
+html.non-index-page.dark-mode .sim-info-modal,
+html.non-index-page.dark-mode .simulation-modal,
+html.non-index-page.dark-mode .assign-modal-overlay {
+    background: rgba(1, 8, 18, 0.76) !important;
+    backdrop-filter: blur(12px);
+}
+
+html.non-index-page.dark-mode .fondos-grid img {
+    filter: brightness(0.9) saturate(0.96);
+}
+
+html.non-index-page.dark-mode footer.site-footer {
+    background: #030912 !important;
+    border-top: 1px solid rgba(132, 217, 255, 0.13);
+}
+
+/* Complements for project sections. These rules only recolor dark mode. */
+html.non-index-page.dark-mode .admin-header,
+html.non-index-page.dark-mode .stat-card,
+html.non-index-page.dark-mode .admin-tab,
+html.non-index-page.dark-mode .form-crear-simulacion,
+html.non-index-page.dark-mode .config-group,
+html.non-index-page.dark-mode .section-card,
+html.non-index-page.dark-mode .inv-card,
+html.non-index-page.dark-mode .simulacion-card,
+html.non-index-page.dark-mode .student-summary-card,
+html.non-index-page.dark-mode .progress-stats,
+html.non-index-page.dark-mode .profile-details,
+html.non-index-page.dark-mode .profile-container,
+html.non-index-page.dark-mode .profile-box,
+html.non-index-page.dark-mode .badges-empty,
+html.non-index-page.dark-mode .detail-stat-card,
+html.non-index-page.dark-mode .detail-info-card,
+html.non-index-page.dark-mode .detail-card,
+html.non-index-page.dark-mode .about-card,
+html.non-index-page.dark-mode .custom-modal-content,
+html.non-index-page.dark-mode .custom-modal,
+html.non-index-page.dark-mode .swal-warning-box {
+    background: rgba(9, 24, 41, 0.86) !important;
+    border-color: var(--polish-border) !important;
+    color: var(--polish-text) !important;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28) !important;
+}
+
+html.non-index-page.dark-mode .admin-card-header,
+html.non-index-page.dark-mode .panel-header,
+html.non-index-page.dark-mode .card-header,
+html.non-index-page.dark-mode .note-header {
+    background: rgba(132, 217, 255, 0.07) !important;
+    border-color: rgba(132, 217, 255, 0.15) !important;
+}
+
+html.non-index-page.dark-mode .admin-table th,
+html.non-index-page.dark-mode .simulaciones-table th,
+html.non-index-page.dark-mode .simulaciones-tabla th {
+    background: rgba(132, 217, 255, 0.12) !important;
+    color: #dff6ff !important;
+}
+
+html.non-index-page.dark-mode .admin-table td,
+html.non-index-page.dark-mode .simulaciones-table td,
+html.non-index-page.dark-mode .simulaciones-tabla td,
+html.non-index-page.dark-mode .user-name,
+html.non-index-page.dark-mode .user-email-small,
+html.non-index-page.dark-mode .panel-header h2,
+html.non-index-page.dark-mode .inv-card-info strong,
+html.non-index-page.dark-mode .card-title h3,
+html.non-index-page.dark-mode .tarea-nombre,
+html.non-index-page.dark-mode .profile-box h2,
+html.non-index-page.dark-mode .profile-list li strong,
+html.non-index-page.dark-mode .detail-item span,
+html.non-index-page.dark-mode .detail-item strong,
+html.non-index-page.dark-mode .progress-number,
+html.non-index-page.dark-mode .stat-val,
+html.non-index-page.dark-mode .stat-number,
+html.non-index-page.dark-mode .sim-espacio-tag,
+html.non-index-page.dark-mode .tarea-espacio,
+html.non-index-page.dark-mode .codigo-char,
+html.non-index-page.dark-mode .config-group label {
+    color: var(--polish-text) !important;
+}
+
+html.non-index-page.dark-mode .admin-header-content h1,
+html.non-index-page.dark-mode .stat-card i,
+html.non-index-page.dark-mode #timer,
+html.non-index-page.dark-mode .book-info h3,
+html.non-index-page.dark-mode .note-title-display,
+html.non-index-page.dark-mode .empty-notes-message h4,
+html.non-index-page.dark-mode .empty-favorites-message h4 {
+    background: none !important;
+    color: var(--polish-text) !important;
+    -webkit-text-fill-color: currentColor !important;
+}
+
+html.non-index-page.dark-mode .admin-header-content p,
+html.non-index-page.dark-mode .stat-label,
+html.non-index-page.dark-mode .panel-header p,
+html.non-index-page.dark-mode .inv-card-info span,
+html.non-index-page.dark-mode .descripcion,
+html.non-index-page.dark-mode .fecha-entrega,
+html.non-index-page.dark-mode .tarea-fecha,
+html.non-index-page.dark-mode .progress-label,
+html.non-index-page.dark-mode .profile-box p,
+html.non-index-page.dark-mode .profile-list li,
+html.non-index-page.dark-mode .badges-empty p,
+html.non-index-page.dark-mode .badges-empty span,
+html.non-index-page.dark-mode .widget-label,
+html.non-index-page.dark-mode .teacher-observations--empty p,
+html.non-index-page.dark-mode .swal-warning-box span {
+    color: var(--polish-muted) !important;
+}
+
+html.non-index-page.dark-mode .admin-table tr:hover td,
+html.non-index-page.dark-mode .simulaciones-table tr:hover td,
+html.non-index-page.dark-mode .simulaciones-tabla tr:hover td,
+html.non-index-page.dark-mode .task-tab:hover:not(.active),
+html.non-index-page.dark-mode .admin-tab:hover:not(.active),
+html.non-index-page.dark-mode .ftab:hover,
+html.non-index-page.dark-mode .option:hover,
+html.non-index-page.dark-mode .role-card:hover {
+    background: rgba(132, 217, 255, 0.13) !important;
+    color: var(--polish-text) !important;
+}
+
+html.non-index-page.dark-mode .dashboard-hero::before,
+html.non-index-page.dark-mode .student-space-hero::before,
+html.non-index-page.dark-mode .classroom-hero::before,
+html.non-index-page.dark-mode .profile-banner::before,
+html.non-index-page.dark-mode .book-cover .cover-overlay,
+html.non-index-page.dark-mode .cover-overlay,
+html.non-index-page.dark-mode .espacio-card-overlay,
+html.non-index-page.dark-mode .space-card-overlay {
+    background:
+        linear-gradient(180deg, rgba(2, 9, 20, 0.12), rgba(2, 9, 20, 0.78)),
+        linear-gradient(95deg, rgba(3, 27, 54, 0.72), rgba(3, 27, 54, 0.12)) !important;
+}
+
+html.non-index-page.dark-mode .dashboard-hero h1,
+html.non-index-page.dark-mode .dashboard-hero p,
+html.non-index-page.dark-mode .student-space-title h1,
+html.non-index-page.dark-mode .student-space-title p,
+html.non-index-page.dark-mode .space-card h2,
+html.non-index-page.dark-mode .space-meta,
+html.non-index-page.dark-mode .espacio-card-info strong,
+html.non-index-page.dark-mode .espacio-card-info span,
+html.non-index-page.dark-mode .classroom-meta,
+html.non-index-page.dark-mode .hero-content h1,
+html.non-index-page.dark-mode .hero-content p {
+    color: #ffffff !important;
+    text-shadow: 0 5px 18px rgba(0, 0, 0, 0.72) !important;
+}
+
+html.non-index-page.dark-mode .hero-widget,
+html.non-index-page.dark-mode .role-card,
+html.non-index-page.dark-mode .task-icon,
+html.non-index-page.dark-mode .card-icon,
+html.non-index-page.dark-mode .modal-close,
+html.non-index-page.dark-mode .assign-modal-close,
+html.non-index-page.dark-mode .note-edit-btn,
+html.non-index-page.dark-mode .note-delete-btn,
+html.non-index-page.dark-mode .btn-modal-cancel,
+html.non-index-page.dark-mode .btn-action.secondary,
+html.non-index-page.dark-mode .modal-secondary {
+    background: rgba(132, 217, 255, 0.12) !important;
+    border-color: rgba(132, 217, 255, 0.22) !important;
+    color: var(--polish-text) !important;
+}
+
+html.non-index-page.dark-mode .hero-widget strong,
+html.non-index-page.dark-mode .student-summary-card strong,
+html.non-index-page.dark-mode .sim-summary strong {
+    color: var(--polish-soft) !important;
+}
+
+html.non-index-page.dark-mode .codigo-char:not(:placeholder-shown),
+html.non-index-page.dark-mode .note-textarea,
+html.non-index-page.dark-mode .desc-textarea-inline,
+html.non-index-page.dark-mode .search-box input,
+html.non-index-page.dark-mode .search-pill input,
+html.non-index-page.dark-mode .select-small {
+    background: rgba(5, 16, 29, 0.84) !important;
+    color: var(--polish-text) !important;
+    border-color: rgba(132, 217, 255, 0.24) !important;
+}
+
+html.non-index-page.dark-mode .chatbot-container {
+    position: fixed !important;
+    bottom: 28px !important;
+    right: 28px !important;
+    z-index: 10000 !important;
+}
+
+html.non-index-page.dark-mode .chatbot-window {
+    position: fixed !important;
+    bottom: 110px !important;
+    right: 28px !important;
+    background: rgba(9, 24, 41, 0.97) !important;
+    border-color: rgba(132, 217, 255, 0.26) !important;
+}
+
+html.non-index-page.dark-mode .chatbot-messages,
+html.non-index-page.dark-mode .chatbot-input {
+    background: rgba(5, 16, 29, 0.92) !important;
+    border-color: rgba(132, 217, 255, 0.16) !important;
+}
+
+html.non-index-page.dark-mode .message-bot,
+html.non-index-page.dark-mode .typing-indicator,
+html.non-index-page.dark-mode .chatbot-tip-tooltip {
+    background: rgba(15, 38, 62, 0.98) !important;
+    color: var(--polish-text) !important;
+    border-color: rgba(132, 217, 255, 0.18) !important;
+}
+
+html.non-index-page.dark-mode .message-user,
+html.non-index-page.dark-mode .suggestion-btn:hover,
+html.non-index-page.dark-mode .chatbot-input button,
+html.non-index-page.dark-mode .chatbot-toggle {
+    background: linear-gradient(135deg, var(--polish-cyan), var(--polish-blue)) !important;
+    color: #fff !important;
+}
+
+html.non-index-page.dark-mode .suggestion-btn {
+    background: rgba(132, 217, 255, 0.12) !important;
+    border-color: rgba(132, 217, 255, 0.24) !important;
+    color: #dff6ff !important;
+}
+
+html.non-index-page.dark-mode .navbar {
+    z-index: 11000 !important;
+    pointer-events: auto !important;
+}
+
+html.non-index-page.dark-mode .navbar *,
+html.non-index-page.dark-mode .chatbot-container *,
+html.non-index-page.dark-mode .chatbot-window * {
+    pointer-events: auto;
+}
+
+/* Page-specific dark polish: appearance only, no layout or behavior changes. */
+html.page-simuladores.dark-mode .classroom-card,
+html.page-simuladores.dark-mode .modal-panel,
+html.page-simuladores.dark-mode .selector-shell,
+html.page-login.dark-mode .form-wrapper,
+html.page-login.dark-mode .login-wrapper,
+html.page-login.dark-mode .form-container,
+html.page-registro.dark-mode .form-wrapper,
+html.page-registro.dark-mode .form-container {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    backdrop-filter: none !important;
+}
+
+html.page-simuladores.dark-mode main,
+html.page-simuladores.dark-mode .selector-shell,
+html.page-simuladores.dark-mode .classroom-grid {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+html.page-simuladores.dark-mode .classroom-card {
+    border-color: rgba(132, 217, 255, 0.28) !important;
+}
+
+html.page-simulador.dark-mode .panel .card {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-color: rgba(132, 217, 255, 0.28) !important;
+}
+
+html.page-simulador.dark-mode .panel .card h3,
+html.page-simulador.dark-mode .control-group label,
+html.page-simulador.dark-mode .option,
+html.page-simulador.dark-mode .option .left,
+html.page-simulador.dark-mode .range-hint,
+html.page-simulador.dark-mode .alerts,
+html.page-simulador.dark-mode .stat-row {
+    color: var(--polish-text) !important;
+}
+
+html.page-simulador.dark-mode .val-display,
+html.page-simulador.dark-mode .stat-value {
+    color: var(--polish-soft) !important;
+}
+
+html.page-especies.dark-mode body {
+    background:
+        linear-gradient(90deg, rgba(1, 8, 18, 0.88) 0%, rgba(3, 29, 56, 0.58) 52%, rgba(2, 10, 22, 0.42) 100%),
+        url("../media/backgrounds/especies.jpeg") center/cover fixed no-repeat !important;
+}
+
+html.page-especies.dark-mode body::after {
+    background:
+        linear-gradient(180deg, rgba(3, 10, 22, 0.1), rgba(3, 10, 22, 0.42)),
+        radial-gradient(circle at 18% 18%, rgba(56, 201, 232, 0.12), transparent 30%) !important;
+}
+
+html.page-especies.dark-mode .search-pill {
+    background: rgba(8, 24, 42, 0.92) !important;
+    border-color: rgba(132, 217, 255, 0.3) !important;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28) !important;
+}
+
+html.page-especies.dark-mode .search-pill input {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+html.page-especies.dark-mode .book-card,
+html.page-especies.dark-mode .note-card,
+html.page-especies.dark-mode .empty-favorites-message,
+html.page-especies.dark-mode .empty-notes-message,
+html.page-especies.dark-mode .no-results,
+html.page-especies.dark-mode .book-info,
+html.page-especies.dark-mode .detail-info-sidebar,
+html.page-especies.dark-mode .detail-sidebar-card,
+html.page-especies.dark-mode .detail-description-card,
+html.page-especies.dark-mode .detail-tabs-card,
+html.page-especies.dark-mode .detail-content-card,
+html.page-especies.dark-mode .detail-tab-content,
+html.page-especies.dark-mode .detail-tab-pane,
+html.page-especies.dark-mode .detail-tabs,
+html.page-especies.dark-mode .detail-tab,
+html.page-especies.dark-mode .detail-stat-card,
+html.page-especies.dark-mode .detail-info-card,
+html.page-especies.dark-mode .detail-card,
+html.page-especies.dark-mode .species-detail-card,
+html.page-especies.dark-mode .species-info-panel,
+html.page-especies.dark-mode .species-data-panel,
+html.page-especies.dark-mode .info-panel,
+html.page-especies.dark-mode .data-panel,
+html.page-especies.dark-mode .habitat-panel,
+html.page-especies.dark-mode .tab-content,
+html.page-especies.dark-mode .tab-pane,
+html.page-especies.dark-mode .tabs,
+html.page-especies.dark-mode .tab,
+html.page-especies.dark-mode .note-title-display,
+html.page-especies.dark-mode .note-textarea {
+    background: rgba(8, 24, 42, 0.88) !important;
+}
+
+html.page-especies.dark-mode .book-info *,
+html.page-especies.dark-mode .detail-info-sidebar *,
+html.page-especies.dark-mode .detail-sidebar-card *,
+html.page-especies.dark-mode .detail-description-card *,
+html.page-especies.dark-mode .detail-tabs-card *,
+html.page-especies.dark-mode .detail-content-card *,
+html.page-especies.dark-mode .detail-tab-content *,
+html.page-especies.dark-mode .detail-tab-pane *,
+html.page-especies.dark-mode .detail-tabs *,
+html.page-especies.dark-mode .detail-stat-card *,
+html.page-especies.dark-mode .detail-info-card *,
+html.page-especies.dark-mode .detail-card *,
+html.page-especies.dark-mode .species-detail-card *,
+html.page-especies.dark-mode .species-info-panel *,
+html.page-especies.dark-mode .species-data-panel *,
+html.page-especies.dark-mode .info-panel *,
+html.page-especies.dark-mode .data-panel *,
+html.page-especies.dark-mode .habitat-panel *,
+html.page-especies.dark-mode .tab-content *,
+html.page-especies.dark-mode .tab-pane *,
+html.page-especies.dark-mode .note-card *,
+html.page-especies.dark-mode .empty-favorites-message *,
+html.page-especies.dark-mode .empty-notes-message *,
+html.page-especies.dark-mode .no-results * {
+    color: var(--polish-text) !important;
+}
+
+html.page-especies.dark-mode .detail-view [class*="card"],
+html.page-especies.dark-mode .detail-view [class*="panel"],
+html.page-especies.dark-mode .detail-view [class*="tab"],
+html.page-especies.dark-mode .detail-view [class*="info"],
+html.page-especies.dark-mode .detail-view [class*="stat"] {
+    background: rgba(8, 24, 42, 0.88) !important;
+    border-color: rgba(132, 217, 255, 0.22) !important;
+}
+
+html.page-especies.dark-mode .back-btn,
+html.page-especies.dark-mode .back-btn:hover,
+html.page-especies.dark-mode .detail-interactive-panel,
+html.page-especies.dark-mode .interact-content,
+html.page-especies.dark-mode .interact-pane,
+html.page-especies.dark-mode .habitat-map-wrap,
+html.page-especies.dark-mode .habitat-info-row,
+html.page-especies.dark-mode .curiosity-card,
+html.page-especies.dark-mode .curiosity-card:hover,
+html.page-especies.dark-mode .threat-item,
+html.page-especies.dark-mode .sci-data-item,
+html.page-especies.dark-mode .sci-data-item:hover,
+html.page-especies.dark-mode .detail-header-block,
+html.page-especies.dark-mode .detail-header-block:hover,
+html.page-especies.dark-mode .detail-desc-block,
+html.page-especies.dark-mode .detail-desc-block:hover,
+html.page-especies.dark-mode .detail-stat-card,
+html.page-especies.dark-mode .detail-stat-card:hover,
+html.page-especies.dark-mode .btn-action.secondary,
+html.page-especies.dark-mode .btn-action.secondary:hover {
+    background: rgba(8, 24, 42, 0.92) !important;
+    border-color: rgba(132, 217, 255, 0.24) !important;
+    color: var(--polish-text) !important;
+}
+
+html.page-especies.dark-mode .interact-tabs {
+    background: rgba(4, 14, 28, 0.72) !important;
+    border-color: rgba(132, 217, 255, 0.2) !important;
+}
+
+html.page-especies.dark-mode .interact-tab {
+    background: transparent !important;
+    color: #cfe5f7 !important;
+}
+
+html.page-especies.dark-mode .interact-tab:hover,
+html.page-especies.dark-mode .interact-tab.active {
+    background: rgba(56, 201, 232, 0.14) !important;
+    border-bottom-color: #56d6f2 !important;
+    color: #ffffff !important;
+}
+
+html.page-especies.dark-mode .detail-header-block div[style*="background"] {
+    background: rgba(56, 201, 232, 0.14) !important;
+    color: #f3fbff !important;
+}
+
+html.page-especies.dark-mode .threat-item.high {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-color: rgba(248, 113, 113, 0.32) !important;
+}
+
+html.page-especies.dark-mode .threat-item.medium {
+    background: rgba(251, 146, 60, 0.12) !important;
+    border-color: rgba(251, 191, 36, 0.32) !important;
+}
+
+html.page-especies.dark-mode .threat-item.low {
+    background: rgba(34, 197, 94, 0.12) !important;
+    border-color: rgba(74, 222, 128, 0.32) !important;
+}
+
+html.page-especies.dark-mode .detail-species-name,
+html.page-especies.dark-mode .detail-scientific,
+html.page-especies.dark-mode .detail-desc-block p,
+html.page-especies.dark-mode .habitat-info-row span,
+html.page-especies.dark-mode .habitat-info-row strong,
+html.page-especies.dark-mode .curiosity-text,
+html.page-especies.dark-mode .threat-label,
+html.page-especies.dark-mode .threat-level,
+html.page-especies.dark-mode .sci-data-value,
+html.page-especies.dark-mode .sci-data-label,
+html.page-especies.dark-mode .detail-stat-label,
+html.page-especies.dark-mode .detail-stat-value,
+html.page-especies.dark-mode .detail-stat-sub,
+html.page-especies.dark-mode .btn-action.secondary {
+    color: #0a2f4f !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+html.page-especies.dark-mode .detail-view [class*="card"] *,
+html.page-especies.dark-mode .detail-view [class*="panel"] *,
+html.page-especies.dark-mode .detail-view [class*="tab"] *,
+html.page-especies.dark-mode .detail-view [class*="info"] *,
+html.page-especies.dark-mode .detail-view [class*="stat"] * {
+    color: #0a2f4f !important;
+}
+
+html.page-especies.dark-mode .detail-info-sidebar .detail-stat-label i {
+    color: #1565a3 !important;
+}
+
+html.page-especies.dark-mode .detail-info-sidebar .detail-header-block,
+html.page-especies.dark-mode .detail-info-sidebar .detail-desc-block,
+html.page-especies.dark-mode .detail-info-sidebar .detail-stat-card {
+    background: rgba(238, 248, 255, 0.94) !important;
+    border-color: rgba(45, 156, 219, 0.24) !important;
+}
+
+html.page-especies.dark-mode .detail-info-sidebar {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+html.page-especies.dark-mode .detail-info-sidebar .detail-stat-label,
+html.page-especies.dark-mode .detail-info-sidebar .detail-stat-value,
+html.page-especies.dark-mode .detail-info-sidebar .detail-stat-sub,
+html.page-especies.dark-mode .detail-info-sidebar .detail-title-row,
+html.page-especies.dark-mode .detail-info-sidebar .detail-actions {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+html.page-asignaciones.dark-mode .simulacion-card,
+html.page-asignaciones.dark-mode .student-comment-body,
+html.page-asignaciones.dark-mode .student-summary-card,
+html.page-asignaciones.dark-mode .progress-stats,
+html.page-asignaciones.dark-mode .progress-stat,
+html.page-asignaciones.dark-mode .tarea-item,
+html.page-asignaciones.dark-mode .teacher-observations p,
+html.page-asignaciones.dark-mode .sim-espacio-tag,
+html.page-asignaciones.dark-mode .observaciones-tag {
+    color: var(--polish-text) !important;
+}
+
+html.page-asignaciones.dark-mode .simulacion-card *:not(.btn-simular):not(.btn-simular *),
+html.page-asignaciones.dark-mode .student-comment-body *,
+html.page-asignaciones.dark-mode .student-summary-card *,
+html.page-asignaciones.dark-mode .progress-stats *,
+html.page-asignaciones.dark-mode .tarea-item * {
+    color: inherit;
+}
+
+html.page-asignaciones.dark-mode .card-title h3,
+html.page-asignaciones.dark-mode .descripcion,
+html.page-asignaciones.dark-mode .fecha-entrega,
+html.page-asignaciones.dark-mode .student-comment-meta,
+html.page-asignaciones.dark-mode .student-comment-meta strong,
+html.page-asignaciones.dark-mode .student-comment-meta span,
+html.page-asignaciones.dark-mode .student-comment-body p,
+html.page-asignaciones.dark-mode .sim-espacio-tag,
+html.page-asignaciones.dark-mode .observaciones-tag,
+html.page-asignaciones.dark-mode .tarea-nombre,
+html.page-asignaciones.dark-mode .tarea-fecha,
+html.page-asignaciones.dark-mode .stat-label,
+html.page-asignaciones.dark-mode .widget-label {
+    color: var(--polish-text) !important;
+    opacity: 1 !important;
+}
+
+html.page-asignaciones.dark-mode .descripcion,
+html.page-asignaciones.dark-mode .fecha-entrega,
+html.page-asignaciones.dark-mode .student-comment-body p,
+html.page-asignaciones.dark-mode .student-comment-meta span,
+html.page-asignaciones.dark-mode .tarea-fecha,
+html.page-asignaciones.dark-mode .panel-header p {
+    color: #d8eaff !important;
+}
+
+html.page-asignaciones.dark-mode .btn-simular {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    background: linear-gradient(135deg, #38c9e8, #1678bd) !important;
+}
+
+html.page-asignaciones.dark-mode .espacio-card-info strong,
+html.page-asignaciones.dark-mode .espacio-card-info span,
+html.page-asignaciones.dark-mode .espacio-sim-link span,
+html.page-asignaciones.dark-mode .espacio-sim-link small,
+html.page-asignaciones.dark-mode .espacio-sim-more,
+html.page-asignaciones.dark-mode .observaciones-tag,
+html.page-asignaciones.dark-mode .sim-espacio-tag,
+html.page-asignaciones.dark-mode .badge-count {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7) !important;
+}
+
+html.page-especies.dark-mode .detail-view .detail-info-sidebar {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+html.page-especies.dark-mode .detail-view .detail-info-sidebar .detail-stat-label,
+html.page-especies.dark-mode .detail-view .detail-info-sidebar .detail-stat-value,
+html.page-especies.dark-mode .detail-view .detail-info-sidebar .detail-stat-sub {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Especies: modo oscuro enfocado. El modo claro queda intacto. */
+html.page-especies.dark-mode {
+    --species-dark-block: rgba(8, 24, 42, 0.94);
+    --species-dark-block-strong: rgba(5, 17, 31, 0.96);
+    --species-dark-border: rgba(132, 217, 255, 0.26);
+    --species-dark-text: #ffffff;
+}
+
+html.page-especies.dark-mode .book-card,
+html.page-especies.dark-mode .note-card,
+html.page-especies.dark-mode .empty-favorites-message,
+html.page-especies.dark-mode .empty-notes-message,
+html.page-especies.dark-mode .no-results,
+html.page-especies.dark-mode .search-pill,
+html.page-especies.dark-mode .ftab,
+html.page-especies.dark-mode .back-btn,
+html.page-especies.dark-mode .floating-chip,
+html.page-especies.dark-mode .detail-header-block,
+html.page-especies.dark-mode .detail-desc-block,
+html.page-especies.dark-mode .detail-stat-card,
+html.page-especies.dark-mode .habitat-info-row,
+html.page-especies.dark-mode .curiosity-card,
+html.page-especies.dark-mode .threat-item,
+html.page-especies.dark-mode .sci-data-item,
+html.page-especies.dark-mode .interact-tab,
+html.page-especies.dark-mode .btn-action.secondary,
+html.page-especies.dark-mode .note-title-display,
+html.page-especies.dark-mode .note-textarea {
+    background: linear-gradient(145deg, var(--species-dark-block), var(--species-dark-block-strong)) !important;
+    border-color: var(--species-dark-border) !important;
+    color: var(--species-dark-text) !important;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.page-especies.dark-mode .book-info,
+html.page-especies.dark-mode .detail-info-sidebar,
+html.page-especies.dark-mode .detail-interactive-panel,
+html.page-especies.dark-mode .interact-content,
+html.page-especies.dark-mode .interact-pane,
+html.page-especies.dark-mode .habitat-map-wrap,
+html.page-especies.dark-mode .habitat-info-list,
+html.page-especies.dark-mode .curiosities-grid,
+html.page-especies.dark-mode .threats-list,
+html.page-especies.dark-mode .sci-data-grid,
+html.page-especies.dark-mode .detail-stats-grid,
+html.page-especies.dark-mode .detail-title-row,
+html.page-especies.dark-mode .detail-actions,
+html.page-especies.dark-mode .note-header,
+html.page-especies.dark-mode .note-content,
+html.page-especies.dark-mode .message-text {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+html.page-especies.dark-mode .interact-tabs {
+    background: rgba(5, 17, 31, 0.72) !important;
+    border-color: var(--species-dark-border) !important;
+}
+
+html.page-especies.dark-mode .interact-tab.active,
+html.page-especies.dark-mode .interact-tab:hover {
+    background: rgba(132, 217, 255, 0.16) !important;
+    border-bottom-color: #7df9f0 !important;
+}
+
+html.page-especies.dark-mode .book-card *,
+html.page-especies.dark-mode .note-card *,
+html.page-especies.dark-mode .empty-favorites-message *,
+html.page-especies.dark-mode .empty-notes-message *,
+html.page-especies.dark-mode .no-results *,
+html.page-especies.dark-mode .search-pill *,
+html.page-especies.dark-mode .ftab *,
+html.page-especies.dark-mode .back-btn *,
+html.page-especies.dark-mode .floating-chip *,
+html.page-especies.dark-mode .detail-header-block *,
+html.page-especies.dark-mode .detail-desc-block *,
+html.page-especies.dark-mode .detail-stat-card *,
+html.page-especies.dark-mode .habitat-info-row *,
+html.page-especies.dark-mode .curiosity-card *,
+html.page-especies.dark-mode .threat-item *,
+html.page-especies.dark-mode .sci-data-item *,
+html.page-especies.dark-mode .interact-tab *,
+html.page-especies.dark-mode .btn-action.secondary *,
+html.page-especies.dark-mode .detail-species-name,
+html.page-especies.dark-mode .detail-scientific,
+html.page-especies.dark-mode .detail-desc-block p,
+html.page-especies.dark-mode .detail-stat-label,
+html.page-especies.dark-mode .detail-stat-value,
+html.page-especies.dark-mode .detail-stat-sub,
+html.page-especies.dark-mode .habitat-info-row span,
+html.page-especies.dark-mode .habitat-info-row strong,
+html.page-especies.dark-mode .curiosity-text,
+html.page-especies.dark-mode .curiosity-text strong,
+html.page-especies.dark-mode .curiosity-text span,
+html.page-especies.dark-mode .threat-label,
+html.page-especies.dark-mode .threat-level,
+html.page-especies.dark-mode .sci-data-value,
+html.page-especies.dark-mode .sci-data-label,
+html.page-especies.dark-mode .book-info h3,
+html.page-especies.dark-mode .book-scientific,
+html.page-especies.dark-mode .book-desc {
+    color: var(--species-dark-text) !important;
+    -webkit-text-fill-color: currentColor !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+html.page-especies.dark-mode .book-info h3,
+html.page-especies.dark-mode .book-card:hover .book-info h3,
+html.page-especies.dark-mode .detail-species-name,
+html.page-especies.dark-mode .sci-data-value,
+html.page-especies.dark-mode .empty-favorites-message h4,
+html.page-especies.dark-mode .empty-notes-message h4 {
+    background: none !important;
+    color: var(--species-dark-text) !important;
+    -webkit-text-fill-color: currentColor !important;
+}
+
+html.page-especies.dark-mode .search-pill input,
+html.page-especies.dark-mode .note-textarea,
+html.page-especies.dark-mode .note-title-input {
+    background: rgba(2, 9, 15, 0.28) !important;
+    border-color: rgba(132, 217, 255, 0.26) !important;
+    color: var(--species-dark-text) !important;
+}
+
+html.page-especies.dark-mode .search-pill input::placeholder,
+html.page-especies.dark-mode .note-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+html.page-especies.dark-mode .badge-danger-mini,
+html.page-especies.dark-mode .danger-badge,
+html.page-especies.dark-mode .detail-header-block div[style*="background"],
+html.page-especies.dark-mode .detail-header-block div[style*="background"] *,
+html.page-especies.dark-mode .book-habitat-tag,
+html.page-especies.dark-mode .category-chip,
+html.page-especies.dark-mode .note-species-tag {
+    background: rgba(132, 217, 255, 0.14) !important;
+    border-color: rgba(132, 217, 255, 0.24) !important;
+    color: var(--species-dark-text) !important;
+    -webkit-text-fill-color: currentColor !important;
+}
+
+html.page-especies.dark-mode .detail-stat-label i,
+html.page-especies.dark-mode .habitat-info-row i,
+html.page-especies.dark-mode .back-btn i,
+html.page-especies.dark-mode .search-pill i,
+html.page-especies.dark-mode .floating-chip i,
+html.page-especies.dark-mode .interact-tab i {
+    color: var(--species-dark-text) !important;
+}
+
+/* Refuerzo final para especies: cubre html.dark-mode y body.dark-mode. */
+html.page-especies.dark-mode,
+html.page-especies body.dark-mode {
+    --species-final-bg: #061828;
+    --species-final-bg-2: #09233a;
+    --species-final-border: rgba(132, 217, 255, 0.32);
+    --species-final-text: #ffffff;
+}
+
+html.page-especies.dark-mode .detail-header-block,
+html.page-especies.dark-mode .detail-desc-block,
+html.page-especies.dark-mode .detail-stat-card,
+html.page-especies.dark-mode .habitat-info-row,
+html.page-especies.dark-mode .curiosity-card,
+html.page-especies.dark-mode .threat-item,
+html.page-especies.dark-mode .sci-data-item,
+html.page-especies.dark-mode .book-card,
+html.page-especies.dark-mode .note-card,
+html.page-especies.dark-mode .empty-favorites-message,
+html.page-especies.dark-mode .empty-notes-message,
+html.page-especies.dark-mode .no-results,
+html.page-especies.dark-mode .back-btn,
+html.page-especies.dark-mode .search-pill,
+html.page-especies.dark-mode .ftab,
+html.page-especies.dark-mode .floating-chip,
+html.page-especies body.dark-mode .detail-header-block,
+html.page-especies body.dark-mode .detail-desc-block,
+html.page-especies body.dark-mode .detail-stat-card,
+html.page-especies body.dark-mode .habitat-info-row,
+html.page-especies body.dark-mode .curiosity-card,
+html.page-especies body.dark-mode .threat-item,
+html.page-especies body.dark-mode .sci-data-item,
+html.page-especies body.dark-mode .book-card,
+html.page-especies body.dark-mode .note-card,
+html.page-especies body.dark-mode .empty-favorites-message,
+html.page-especies body.dark-mode .empty-notes-message,
+html.page-especies body.dark-mode .no-results,
+html.page-especies body.dark-mode .back-btn,
+html.page-especies body.dark-mode .search-pill,
+html.page-especies body.dark-mode .ftab,
+html.page-especies body.dark-mode .floating-chip {
+    background: linear-gradient(145deg, var(--species-final-bg-2), var(--species-final-bg)) !important;
+    border-color: var(--species-final-border) !important;
+    color: var(--species-final-text) !important;
+    -webkit-text-fill-color: currentColor !important;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.34) !important;
+}
+
+html.page-especies.dark-mode .detail-info-sidebar,
+html.page-especies.dark-mode .detail-interactive-panel,
+html.page-especies.dark-mode .interact-content,
+html.page-especies.dark-mode .interact-pane,
+html.page-especies.dark-mode .habitat-map-wrap,
+html.page-especies.dark-mode .book-info,
+html.page-especies.dark-mode .detail-title-row,
+html.page-especies.dark-mode .detail-stats-grid,
+html.page-especies.dark-mode .detail-actions,
+html.page-especies body.dark-mode .detail-info-sidebar,
+html.page-especies body.dark-mode .detail-interactive-panel,
+html.page-especies body.dark-mode .interact-content,
+html.page-especies body.dark-mode .interact-pane,
+html.page-especies body.dark-mode .habitat-map-wrap,
+html.page-especies body.dark-mode .book-info,
+html.page-especies body.dark-mode .detail-title-row,
+html.page-especies body.dark-mode .detail-stats-grid,
+html.page-especies body.dark-mode .detail-actions {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+html.page-especies.dark-mode .detail-header-block *,
+html.page-especies.dark-mode .detail-desc-block *,
+html.page-especies.dark-mode .detail-stat-card *,
+html.page-especies.dark-mode .habitat-info-row *,
+html.page-especies.dark-mode .curiosity-card *,
+html.page-especies.dark-mode .threat-item *,
+html.page-especies.dark-mode .sci-data-item *,
+html.page-especies.dark-mode .book-card *,
+html.page-especies.dark-mode .note-card *,
+html.page-especies.dark-mode .empty-favorites-message *,
+html.page-especies.dark-mode .empty-notes-message *,
+html.page-especies.dark-mode .no-results *,
+html.page-especies.dark-mode .back-btn *,
+html.page-especies.dark-mode .search-pill *,
+html.page-especies.dark-mode .ftab *,
+html.page-especies.dark-mode .floating-chip *,
+html.page-especies.dark-mode .interact-tabs *,
+html.page-especies body.dark-mode .detail-header-block *,
+html.page-especies body.dark-mode .detail-desc-block *,
+html.page-especies body.dark-mode .detail-stat-card *,
+html.page-especies body.dark-mode .habitat-info-row *,
+html.page-especies body.dark-mode .curiosity-card *,
+html.page-especies body.dark-mode .threat-item *,
+html.page-especies body.dark-mode .sci-data-item *,
+html.page-especies body.dark-mode .book-card *,
+html.page-especies body.dark-mode .note-card *,
+html.page-especies body.dark-mode .empty-favorites-message *,
+html.page-especies body.dark-mode .empty-notes-message *,
+html.page-especies body.dark-mode .no-results *,
+html.page-especies body.dark-mode .back-btn *,
+html.page-especies body.dark-mode .search-pill *,
+html.page-especies body.dark-mode .ftab *,
+html.page-especies body.dark-mode .floating-chip *,
+html.page-especies body.dark-mode .interact-tabs * {
+    color: var(--species-final-text) !important;
+    -webkit-text-fill-color: currentColor !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+html.page-especies.dark-mode .detail-species-name,
+html.page-especies.dark-mode .book-info h3,
+html.page-especies.dark-mode .sci-data-value,
+html.page-especies body.dark-mode .detail-species-name,
+html.page-especies body.dark-mode .book-info h3,
+html.page-especies body.dark-mode .sci-data-value {
+    background: none !important;
+    color: var(--species-final-text) !important;
+    -webkit-text-fill-color: currentColor !important;
+}
+
+/* Ajustes puntuales solicitados: chatbot y asignaciones. */
+html.dark-mode .chatbot-tip-tooltip,
+body.dark-mode .chatbot-tip-tooltip,
+html.dark-mode .chatbot-tip-tooltip *,
+body.dark-mode .chatbot-tip-tooltip * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark-mode .chatbot-tip-tooltip .tip-title,
+html.dark-mode .chatbot-tip-tooltip .tip-title *,
+body.dark-mode .chatbot-tip-tooltip .tip-title,
+body.dark-mode .chatbot-tip-tooltip .tip-title * {
+    color: #7df9f0 !important;
+    -webkit-text-fill-color: #7df9f0 !important;
+}
+
+html.page-asignaciones.dark-mode .asignaciones-container,
+html.page-asignaciones.dark-mode .asignaciones-container *:not(.btn-simular):not(.btn-simular *):not(.btn-completar):not(.btn-completar *):not(.btn-inv):not(.btn-inv *):not(.sim-espacio-tag):not(.sim-espacio-tag *):not(.observaciones-tag):not(.observaciones-tag *) {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+html.page-asignaciones.dark-mode .sim-espacio-tag,
+html.page-asignaciones.dark-mode .sim-espacio-tag *,
+html.page-asignaciones.dark-mode .observaciones-tag,
+html.page-asignaciones.dark-mode .observaciones-tag * {
+    color: #062a44 !important;
+    -webkit-text-fill-color: #062a44 !important;
+}
