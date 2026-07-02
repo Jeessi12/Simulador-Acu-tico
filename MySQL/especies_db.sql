@@ -566,23 +566,6 @@ VALUES
  '../public/media/3D_Models/bailarina.glb',
  3.0, -0.1, -1.57, 2.5, 0.6),
  
-  USE simulador;
-UPDATE especies
-SET
-    model_path = '../public/media/3D_Models/bailarina.glb'
-WHERE id = 40;
-
-USE simulador;
-UPDATE especies
-SET
-scale_3d = 3.0
-WHERE id = 40;
-
-USE simulador;
-UPDATE especies
-SET rot_y =  -1.57
-WHERE id = 40;
-
 -- 41 · Nudibranquio
 (41, 'Nudibranquio', 'Dolabrifera dolabrifera', 'moluscos',
  'Arrecifes rocosos y grietas de Los Cobanos, 0-20 m',
@@ -2370,6 +2353,23 @@ INSERT INTO amenazas (especie_id, orden, label, nivel) VALUES
 (94, 2, 'Contaminacion por plasticos', 'medium'),
 (94, 3, 'Cambio climatico', 'medium'),
 (94, 4, 'Pesca incidental', 'low');
+
+  USE simulador;
+UPDATE especies
+SET
+    model_path = '../public/media/3D_Models/bailarina.glb'
+WHERE id = 40;
+
+USE simulador;
+UPDATE especies
+SET
+scale_3d = 3.0
+WHERE id = 40;
+
+USE simulador;
+UPDATE especies
+SET rot_y =  -1.57
+WHERE id = 40;
 
 -- =============================================================
 --  VERIFICACIÓN
