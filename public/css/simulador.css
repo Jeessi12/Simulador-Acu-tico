@@ -943,6 +943,141 @@ input[type=range]::-moz-range-thumb {
     margin-top: 5px;
 }
 
+.population-stepper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(77,163,255,0.12);
+}
+
+.population-stepper:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.population-stepper:first-child {
+    padding-top: 0;
+}
+
+.population-stepper strong {
+    display: block;
+    color: var(--text-main);
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+.population-limit {
+    display: block;
+    margin-top: 3px;
+    color: var(--text-soft);
+    font-size: 11px;
+}
+
+.population-actions {
+    display: grid;
+    grid-template-columns: 34px minmax(48px, auto) 34px;
+    align-items: center;
+    gap: 7px;
+}
+
+.population-btn {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(77,163,255,0.22);
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.78);
+    color: var(--ocean);
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.population-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--sky), var(--ocean));
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-blue);
+}
+
+.population-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.population-count {
+    min-width: 48px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ocean);
+    background: rgba(77,163,255,0.1);
+    padding: 7px 9px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(77,163,255,0.2);
+}
+
+.food-chain-insight {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    background: rgba(30,60,114,0.06);
+    border: 1px solid rgba(77,163,255,0.16);
+}
+
+.trophic-meter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-main);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.trophic-meter span {
+    color: var(--text-mid);
+}
+
+.trophic-meter strong {
+    color: var(--ocean);
+    font-family: 'Courier New', monospace;
+}
+
+.trophic-bar {
+    height: 7px;
+    margin: 9px 0;
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+    background: rgba(30,60,114,0.12);
+}
+
+.trophic-bar span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--green-ok);
+    transition: width var(--transition), background var(--transition);
+}
+
+.trophic-bar span[data-state="warn"] {
+    background: var(--amber-warn);
+}
+
+.trophic-bar span[data-state="bad"] {
+    background: var(--red-alert);
+}
+
+.food-chain-insight p {
+    color: var(--text-mid);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
 /* ─── ACCIONES RÁPIDAS ─── */
 .options { padding: 16px 20px; }
 

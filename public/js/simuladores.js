@@ -6,7 +6,7 @@ const SIMULATOR_DATA = {
         description: 'Observa especies marinas en un ecosistema saludable y estable, con parámetros ambientales en rango óptimo.',
         facts: [
             'Especies principales: Pez Lora Gigante, Pez Ángel Real y Tortuga Carey.',
-            'Controles disponibles: temperatura, salinidad y oxígeno disuelto.',
+            'Controles disponibles: temperatura, salinidad, oxígeno disuelto y salud del ecosistema.',
             'Objetivo: reconocer cómo se comporta un arrecife en equilibrio.'
         ]
     },
@@ -17,7 +17,7 @@ const SIMULATOR_DATA = {
         description: 'Modifica poblaciones de distintas especies para observar cambios y desequilibrios dentro del ecosistema.',
         facts: [
             'Especies principales: Mero Guasa, Pargo Amarillo, Cangrejo Moro y Bailarina de Mar.',
-            'Controles disponibles: cantidad de individuos por población.',
+            'Controles disponibles: botones para agregar o eliminar individuos por especie.',
             'Objetivo: analizar cómo una población afecta a las demás.'
         ]
     },
@@ -28,7 +28,7 @@ const SIMULATOR_DATA = {
         description: 'Aumenta el nivel de contaminación para comprobar su efecto sobre oxígeno, salud, estrés y bienestar biológico.',
         facts: [
             'Especies principales: Pez Globo, Tortuga Golfina y Jaiba Azul del Pacífico.',
-            'Controles disponibles: contaminación, temperatura, salinidad y oxígeno.',
+            'Controles disponibles: nivel de contaminación.',
             'Objetivo: comparar un ambiente sano con uno bajo presión ambiental.'
         ]
     }

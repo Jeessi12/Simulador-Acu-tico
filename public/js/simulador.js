@@ -10,7 +10,7 @@ const SIMULATIONS = {
         details: [
             'Simulacion recomendada para observar parametros estables.',
             'Incluye Pez Lora Gigante, Pez Angel Real y Tortuga Carey.',
-            'Puedes ajustar temperatura, salinidad y oxigeno.'
+            'Puedes ajustar temperatura, salinidad, oxigeno y salud del ecosistema.'
         ],
         species: ['pez_lora_gigante', 'pez_angel_real', 'tortuga_carey'],
         values: {
@@ -89,10 +89,13 @@ window.godot_salinity = SIMULATIONS[window.godot_simulation].values.godot_salini
 window.godot_oxygen = SIMULATIONS[window.godot_simulation].values.godot_oxygen;
 window.godot_ecosystem_health = SIMULATIONS[window.godot_simulation].values.godot_ecosystem_health;
 window.godot_pollution = SIMULATIONS[window.godot_simulation].values.godot_pollution;
+window.godot_population_polling_enabled = false;
 
 let selectedSimulation = window.godot_simulation;
 let selectedSpecies = window.godot_focus_species;
 let lastGodotStats = null;
+let livePopulations = {};
+let populationLimits = {};
 let godotStarted = false;
 let simulationVisible = false;
 
@@ -123,10 +126,12 @@ document.addEventListener('DOMContentLoaded', function () {
     setupParticleCanvas();
     setupSliders();
     setupSimulationTabs();
+    setupGodotPopulationSync();
     setupObservations();
 
     applySimulation(selectedSimulation);
     setSimulationVisible(true);
+    startGodot();
 
     const params = new URLSearchParams(window.location.search);
     if (params.get('start') === '1' && typeof window.beginSelectedSimulation === 'function') {
@@ -316,7 +321,6 @@ function setSimulationVisible(visible) {
         simulator.classList.toggle('simulation-hidden', !visible);
     }
     if (returnBtn) returnBtn.hidden = false;
-    setGlobal('godot_is_running', visible);
 }
 
 function setupFullscreen() {
@@ -343,6 +347,7 @@ function setupSliders() {
     bindSlider('tempSlider', 'tempVal', 'godot_temperature');
     bindSlider('salSlider', 'salVal', 'godot_salinity');
     bindSlider('oxSlider', 'oxVal', 'godot_oxygen');
+    bindSlider('healthSlider', 'healthVal', 'godot_ecosystem_health');
     bindSlider('pollutionSlider', 'pollutionVal', 'godot_pollution');
 }
 
@@ -377,6 +382,8 @@ function applySimulation(simulationKey) {
     setGlobal('godot_focus_species', selectedSpecies);
 
     Object.entries(config.values).forEach(([key, value]) => setGlobal(key, value));
+    livePopulations = { ...(config.populations || {}) };
+    populationLimits = {};
     if (config.populations) {
         Object.entries(config.populations).forEach(([speciesKey, value]) => {
             setGlobal(`godot_population_${speciesKey}`, value);
@@ -394,6 +401,7 @@ function applySimulation(simulationKey) {
     updateCurrentSpecies();
     updateLocalAlerts();
     updateStatsPanel(lastGodotStats);
+    updateFoodChainInsight();
 }
 
 function updateSimulationText(config) {
@@ -470,35 +478,66 @@ function renderPopulationControls(config) {
 
     panel.hidden = false;
     list.innerHTML = Object.entries(config.populations).map(([speciesKey, value]) => {
+        const currentValue = getPopulationCount(speciesKey, value);
+        const limit = getPopulationLimit(speciesKey);
+        const maxText = limit && Number.isFinite(Number(limit.max)) ? ` / ${limit.max}` : '';
+        const speciesName = SPECIES[speciesKey] || speciesKey;
         return `
-            <div class="control-group">
-                <label for="pop_${speciesKey}">
-                    ${SPECIES[speciesKey] || speciesKey}
-                    <span class="val-display"><span id="popVal_${speciesKey}">${value}</span></span>
-                </label>
-                <input type="range" id="pop_${speciesKey}" min="0" max="12" step="1" value="${value}"
-                    aria-label="Poblacion de ${SPECIES[speciesKey] || speciesKey}">
+            <div class="population-stepper" data-species="${speciesKey}">
+                <div>
+                    <strong>${speciesName}</strong>
+                    <span class="population-limit">Poblacion viva</span>
+                </div>
+                <div class="population-actions">
+                    <button type="button" class="population-btn" data-delta="-1" aria-label="Eliminar 1 ${speciesName}">
+                        <i class="fa-solid fa-minus" aria-hidden="true"></i>
+                    </button>
+                    <span class="population-count" aria-live="polite">
+                        <span id="popVal_${speciesKey}">${currentValue}</span><span id="popLimit_${speciesKey}">${maxText}</span>
+                    </span>
+                    <button type="button" class="population-btn" data-delta="1" aria-label="Agregar 1 ${speciesName}">
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
         `;
-    }).join('');
+    }).join('') + `
+        <div class="food-chain-insight" id="foodChainInsight" aria-live="polite">
+            <div class="trophic-meter">
+                <span>Balance trofico</span>
+                <strong id="trophicBalanceValue">--</strong>
+            </div>
+            <div class="trophic-bar" aria-hidden="true"><span id="trophicBalanceBar"></span></div>
+            <p id="trophicDiagnosis">Ajusta las poblaciones para observar la respuesta de la red alimenticia.</p>
+        </div>
+    `;
 
-    Object.entries(config.populations).forEach(([speciesKey]) => {
-        const slider = document.getElementById(`pop_${speciesKey}`);
-        const valueEl = document.getElementById(`popVal_${speciesKey}`);
-        if (!slider) return;
-        slider.addEventListener('input', function () {
-            const value = Number(this.value);
-            if (valueEl) valueEl.textContent = value;
-            setGlobal(`godot_population_${speciesKey}`, value);
+    list.querySelectorAll('.population-btn').forEach((button) => {
+        button.addEventListener('click', () => {
+            const row = button.closest('.population-stepper');
+            if (!row) return;
+            const speciesKey = row.dataset.species;
+            const delta = Number(button.dataset.delta || 0);
+            const limit = getPopulationLimit(speciesKey);
+            const max = limit && Number.isFinite(Number(limit.max)) ? Number(limit.max) : 20;
+            const nextValue = Math.max(0, Math.min(max, getPopulationCount(speciesKey, 0) + delta));
+            livePopulations[speciesKey] = nextValue;
+            setGlobal(`godot_population_${speciesKey}`, nextValue);
+            updatePopulationCounters();
+            updateStatsPanel(lastGodotStats);
+            updateFoodChainInsight();
         });
     });
+
+    updatePopulationCounters();
+    updateFoodChainInsight();
 }
 
 function updateControlsVisibility(config) {
     const environmental = document.querySelector('.environmental-controls');
     const pollutionControl = document.getElementById('pollutionControl');
 
-    if (environmental) environmental.hidden = config === SIMULATIONS.sim_02_cadena_alimenticia;
+    if (environmental) environmental.hidden = config !== SIMULATIONS.sim_01_ecosistema_basico;
     if (pollutionControl) pollutionControl.hidden = config !== SIMULATIONS.sim_03_contaminacion_marina;
 }
 
@@ -506,6 +545,7 @@ function updateSliderValues(values) {
     setSliderValue('tempSlider', 'tempVal', values.godot_temperature);
     setSliderValue('salSlider', 'salVal', values.godot_salinity);
     setSliderValue('oxSlider', 'oxVal', values.godot_oxygen);
+    setSliderValue('healthSlider', 'healthVal', values.godot_ecosystem_health);
     setSliderValue('pollutionSlider', 'pollutionVal', values.godot_pollution);
 }
 
@@ -530,13 +570,16 @@ function updateLocalAlerts() {
     const temp = Number(window.godot_temperature);
     const sal = Number(window.godot_salinity);
     const ox = Number(window.godot_oxygen);
+    const health = Number(window.godot_ecosystem_health);
     const pollution = Number(window.godot_pollution);
     const alerts = [];
 
-    if (selectedSimulation !== 'sim_02_cadena_alimenticia') {
+    if (selectedSimulation === 'sim_01_ecosistema_basico') {
         if (temp < 22 || temp > 30) alerts.push('Temperatura fuera de rango optimo');
         if (sal < 30 || sal > 38) alerts.push('Salinidad fuera de rango optimo');
         if (ox < 5) alerts.push('Oxigeno insuficiente');
+        if (health > 90) alerts.push('Salud alta: mantenla 20 segundos para atraer Tortugas Carey');
+        if (health < 60) alerts.push('Salud del ecosistema baja');
     }
     if (selectedSimulation === 'sim_03_contaminacion_marina' && pollution > 40) {
         alerts.push('Contaminacion elevada');
@@ -612,9 +655,54 @@ window.onGodotCatalog = function (catalog) {
 
 window.onGodotStats = function (stats) {
     lastGodotStats = stats;
+    if (stats && stats.populations) livePopulations = { ...stats.populations };
+    if (stats && stats.population_limits) populationLimits = { ...stats.population_limits };
+    updatePopulationCounters();
     updateStatsPanel(stats);
     updateAlertsFromGodot(stats.alerts || []);
+    updateFoodChainInsight(stats);
 };
+
+function setupGodotPopulationSync() {
+    window.addEventListener('godotPopulationSync', (event) => {
+        livePopulations = { ...(event.detail || {}) };
+        updatePopulationCounters();
+        updateStatsPanel(lastGodotStats);
+    });
+}
+
+function getPopulationCount(speciesKey, defaultValue = 0) {
+    const value = livePopulations && Object.prototype.hasOwnProperty.call(livePopulations, speciesKey)
+        ? livePopulations[speciesKey]
+        : defaultValue;
+    const number = Number(value);
+    return Number.isFinite(number) ? Math.max(0, number) : 0;
+}
+
+function getPopulationLimit(speciesKey) {
+    return populationLimits && populationLimits[speciesKey] ? populationLimits[speciesKey] : null;
+}
+
+function updatePopulationCounters() {
+    const config = SIMULATIONS[selectedSimulation];
+    if (!config || !config.populations) return;
+
+    Object.entries(config.populations).forEach(([speciesKey, defaultValue]) => {
+        const valueEl = document.getElementById(`popVal_${speciesKey}`);
+        const limitEl = document.getElementById(`popLimit_${speciesKey}`);
+        const addButton = document.querySelector(`.population-stepper[data-species="${speciesKey}"] .population-btn[data-delta="1"]`);
+        const removeButton = document.querySelector(`.population-stepper[data-species="${speciesKey}"] .population-btn[data-delta="-1"]`);
+        const value = getPopulationCount(speciesKey, defaultValue);
+        const limit = getPopulationLimit(speciesKey);
+        const max = limit && Number.isFinite(Number(limit.max)) ? Number(limit.max) : null;
+
+        if (valueEl) valueEl.textContent = getPopulationCount(speciesKey, defaultValue);
+        if (limitEl) limitEl.textContent = max === null ? '' : ` / ${max}`;
+        if (addButton) addButton.disabled = max !== null && value >= max;
+        if (removeButton) removeButton.disabled = value <= 0;
+    });
+    updateFoodChainInsight(lastGodotStats);
+}
 
 function updateStatsPanel(stats) {
     const healthEl = document.getElementById('health-val');
@@ -626,7 +714,9 @@ function updateStatsPanel(stats) {
     const populationEl = document.getElementById('population-val');
 
     const selectedStats = stats && stats.species ? stats.species[selectedSpecies] : null;
-    const selectedPopulation = stats && stats.populations ? stats.populations[selectedSpecies] : 0;
+    const selectedPopulation = stats && stats.populations
+        ? stats.populations[selectedSpecies]
+        : getPopulationCount(selectedSpecies, 0);
 
     const etapas = {
         EGG: 'Huevo',
@@ -643,6 +733,65 @@ function updateStatsPanel(stats) {
     if (ageEl) ageEl.textContent = selectedStats ? `${formatNumber(selectedStats.age)} s` : '-';
     if (growthEl) growthEl.textContent = selectedStats ? `${formatNumber(selectedStats.life_progress)}%` : '-';
     if (populationEl) populationEl.textContent = selectedPopulation || 0;
+}
+
+function updateFoodChainInsight(stats = lastGodotStats) {
+    const panel = document.getElementById('foodChainInsight');
+    if (!panel || selectedSimulation !== 'sim_02_cadena_alimenticia') return;
+
+    const populations = stats && stats.populations ? stats.populations : livePopulations;
+    const mero = Number(populations.mero_guasa ?? 0);
+    const pargo = Number(populations.pargo_amarillo ?? 0);
+    const cangrejo = Number(populations.cangrejo_moro_roca ?? 0);
+    const bailarina = Number(populations.bailarina_mar ?? 0);
+    const base = cangrejo + bailarina;
+    const total = mero + pargo + base;
+    const preyPressure = base > 0 ? pargo / base : pargo;
+    const apexControl = pargo > 0 ? mero / pargo : mero;
+    let score = 100;
+    const messages = [];
+
+    if (mero <= 0) {
+        score -= 42;
+        messages.push('Sin Mero Guasa, la cadena pierde su regulador superior.');
+    } else if (apexControl < 0.25) {
+        score -= 16;
+        messages.push('Hay poco depredador tope para controlar al Pargo Amarillo.');
+    } else {
+        messages.push('El Mero Guasa mantiene presion de control sobre los consumidores.');
+    }
+
+    if (pargo <= 0) {
+        score -= 18;
+        messages.push('Falta depredador intermedio: la transferencia energetica queda incompleta.');
+    } else if (preyPressure > 0.65) {
+        score -= 24;
+        messages.push('El Pargo Amarillo presiona demasiado a la base de la cadena.');
+    }
+
+    if (base < 6) {
+        score -= 26;
+        messages.push('La base alimenticia es baja: cangrejos y bailarinas no sostienen la red.');
+    } else if (base > 18) {
+        score -= 12;
+        messages.push('La base crece mucho; puede aparecer competencia por espacio.');
+    }
+
+    if (total >= 26) {
+        score -= 18;
+        messages.push('La densidad total es alta y aumenta el estres por sobrepoblacion.');
+    }
+
+    score = Math.max(0, Math.min(100, Math.round(score)));
+    const value = document.getElementById('trophicBalanceValue');
+    const bar = document.getElementById('trophicBalanceBar');
+    const diagnosis = document.getElementById('trophicDiagnosis');
+    if (value) value.textContent = `${score}%`;
+    if (bar) {
+        bar.style.width = `${score}%`;
+        bar.dataset.state = score >= 75 ? 'good' : score >= 45 ? 'warn' : 'bad';
+    }
+    if (diagnosis) diagnosis.textContent = messages.slice(0, 2).join(' ');
 }
 
 function updateAlertsFromGodot(alerts) {

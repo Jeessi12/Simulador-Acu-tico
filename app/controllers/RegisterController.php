@@ -13,7 +13,7 @@ use PHPMailer\PHPMailer\Exception;
 // ⚠️ CAMBIA ESTOS VALORES POR LOS REALES
 define('SMTP_HOST', 'smtp.gmail.com');
 define('SMTP_USER', 'correo@gmail.com');
-define('SMTP_PASS', 'el secreto va aqui');            // ← CONTRASEÑA DE APLICACIÓN (16 caracteres sin espacios)
+define('SMTP_PASS', 'aqui va el secreto');           // ← CONTRASEÑA DE APLICACIÓN (16 caracteres sin espacios)
 define('SMTP_PORT', 587);
 define('FROM_EMAIL', SMTP_USER);
 define('FROM_NAME', 'Blue EcoSim');

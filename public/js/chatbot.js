@@ -1,7 +1,6 @@
 /**
  * CHATBOT ASISTENTE - Blue EcoSim
- * Clases únicas con prefijo cb-
- * 40 consejos, 60 preguntas, expresiones fijas para buscando/confusion
+ * Estructura mejorada: Sugerencias arriba, sin consejos en el chat
  */
 
 class Chatbot {
@@ -14,7 +13,11 @@ class Chatbot {
         this.toggleIcon = null;
         this.tipTimeout = null;
         this.expressionTimeout = null;
+        this.typingTimeout = null;
         this.consejos = this.loadConsejos() || [];
+        this.isDragging = false;
+        this.messageId = 0;
+        this.suggestionIndex = 0;
 
         this.knowledgeBase = this.buildKnowledgeBase();
         this.tips = this.buildTips();
@@ -23,175 +26,683 @@ class Chatbot {
         this.startRandomTips();
     }
 
-    // ========== PERSISTENCIA DE CONSEJOS ==========
+    // ========== PERSISTENCIA ==========
     loadConsejos() {
         try {
             const data = localStorage.getItem('chatbot_consejos');
             return data ? JSON.parse(data) : null;
         } catch { return null; }
     }
+    
     saveConsejos() {
         try {
             localStorage.setItem('chatbot_consejos', JSON.stringify(this.consejos));
         } catch {}
     }
 
-    // ========== BASE DE CONOCIMIENTO (60 PREGUNTAS) ==========
+    // ========== BASE DE CONOCIMIENTO ==========
     buildKnowledgeBase() {
         return [
-            // ===== REGISTRO Y LOGIN (7) =====
-            { keywords: ['registrar', 'registrarme', 'crear cuenta', 'registro', 'como me registro', 'registrate'], 
-              response: "📝 Para registrarte en Blue EcoSim:\n\n1. Haz clic en 'Registrate' en la barra superior\n2. Completa: email, nombre de usuario, contraseña\n3. Selecciona tu rol (Estudiante/Docente/Personal)\n4. Recibirás un correo de verificación\n5. Haz clic en el enlace del correo para activar tu cuenta\n\n⚠️ Revisa tu bandeja de spam si no ves el correo." },
-            
-            { keywords: ['iniciar sesión', 'login', 'entrar', 'acceder', 'ingresar', 'loguear', 'iniciar sesion'], 
-              response: "🔐 Para iniciar sesión:\n\n1. Haz clic en 'Iniciar Sesión' en el navbar\n2. Ingresa tu email y contraseña\n3. También puedes acceder con Google\n\nSi tu cuenta no está verificada, revisa tu correo para activarla." },
-            
-            { keywords: ['contraseña', 'olvide contraseña', 'recuperar contraseña', 'resetear password', 'olvidé mi contraseña'], 
-              response: "🔑 ¿Olvidaste tu contraseña?\n\nPor ahora, contacta a tu profesor o administrador. Pronto añadiremos recuperación automática por correo electrónico." },
-            
-            { keywords: ['verificar', 'verificación', 'activar cuenta', 'correo verificación', 'token', 'verificar cuenta'], 
-              response: "✉️ ¿No recibiste el correo de verificación?\n\n• Revisa tu bandeja de spam/correo no deseado\n• Solicita un nuevo enlace desde registro\n• Contacta a soporte si persiste el problema" },
-            
-            { keywords: ['google', 'iniciar con google', 'google login', 'oauth', 'entrar con google'], 
-              response: "🌐 Puedes iniciar sesión con Google:\n\n• Haz clic en 'Iniciar sesión con Google'\n• Selecciona tu cuenta\n• Si es tu primera vez, elige tu rol\n• ¡Listo! Tu cuenta se vinculará automáticamente" },
-            
-            { keywords: ['cerrar sesión', 'logout', 'salir', 'desconectar', 'cerrar sesion'], 
-              response: "🚪 Para cerrar sesión:\n\n1. Haz clic en tu avatar en el navbar\n2. Selecciona 'Cerrar Sesión'\n3. Serás redirigido a la página principal" },
-            
-            { keywords: ['perfil', 'mi perfil', 'editar perfil', 'ver perfil', 'avatar', 'cambiar foto'], 
-              response: "👤 Tu perfil muestra:\n\n• Nombre de usuario y email\n• Rol actual (Estudiante/Docente/Personal)\n• Fecha de último acceso\n• Próximamente: insignias y estadísticas de tus simulaciones" },
+            // ===== REGISTRO Y LOGIN =====
+            { 
+                keywords: ['registrar', 'registrarme', 'crear cuenta', 'registro', 'como me registro', 'registrate'], 
+                response: `📝 **Cómo registrarte en Blue EcoSim**
 
-            // ===== ROLES (4) =====
-            { keywords: ['rol', 'roles', 'diferencia roles', 'estudiante', 'docente', 'personal', 'tipos de usuario', 'que rol soy'], 
-              response: "👥 Blue EcoSim tiene 3 roles principales:\n\n🎓 **Estudiante**: Accede a simulaciones asignadas por docentes, completa tareas, ve tu progreso.\n\n👨‍🏫 **Docente**: Crea espacios virtuales, invita estudiantes, asigna simulaciones, revisa tareas.\n\n🐠 **Personal**: Uso individual sin asignaciones, explora libremente todas las simulaciones." },
-            
-            { keywords: ['cambiar rol', 'modificar rol', 'otro rol', 'cambio de rol'], 
-              response: "🔄 Para cambiar tu rol, contacta a un administrador del sistema. Ellos pueden modificar tu tipo de cuenta según tus necesidades." },
-            
-            { keywords: ['que puedo hacer como estudiante', 'permisos estudiante', 'estudiante'], 
-              response: "🎓 Como **estudiante** puedes:\n• Ver y completar simulaciones asignadas\n• Unirte a espacios con código\n• Guardar especies favoritas y notas\n• Ver tu progreso general\n• Dejar observaciones en las simulaciones" },
-            
-            { keywords: ['que puedo hacer como docente', 'permisos docente', 'docente'], 
-              response: "👨‍🏫 Como **docente** puedes:\n• Crear espacios virtuales (aulas)\n• Invitar estudiantes por email o código\n• Asignar simulaciones a estudiantes o espacios\n• Ver el progreso de tus estudiantes\n• Revisar las observaciones que dejan" },
+━━━━━━━━━━━━━━━━━━━━━━━━
 
-            // ===== SIMULADOR (10) =====
-            { keywords: ['simulación', 'simular', 'empezar simulación', 'iniciar simulación', 'ejecutar simulador', 'entrar a simulación'], 
-              response: "🎮 Para iniciar una simulación:\n\n• Ve a la pestaña 'SIMULACION' en el menú\n• O desde 'ASIGNACIONES' si tu profesor te asignó una tarea\n• Usa los controles: Play ▶️, Pause ⏸️, Reset 🔄\n• Escribe observaciones mientras experimentas" },
-            
-            { keywords: ['ecosistema', 'tipos simulaciones', 'que simulaciones hay', 'modalidades', 'tipos de simulacion'], 
-              response: "🌊 Tipos de simulaciones disponibles:\n\n• **Ecosistema básico**: Arrecife de coral con especies comunes (Pez Lora, Pez Ángel, Tortuga Carey)\n• **Cadena alimenticia**: Relación depredador-presa en el océano\n• **Contaminación marina**: Efectos de residuos en el ecosistema\n\n¡Próximamente más escenarios!" },
-            
-            { keywords: ['controles simulador', 'como usar simulador', 'botones simulador', 'controles', 'que hacen los botones'], 
-              response: "🎮 Controles del simulador:\n\n• ▶️ **Play**: Inicia o reanuda la simulación\n• ⏸️ **Pause**: Pausa el tiempo de simulación\n• 🔄 **Reset**: Reinicia el ecosistema a valores iniciales\n• 📝 **Observaciones**: Guarda notas sobre lo que observas\n• 🖥️ **Expandir**: Pantalla completa" },
-            
-            { keywords: ['temperatura', 'salinidad', 'oxígeno', 'parámetros', 'ajustar', 'cambiar temperatura'], 
-              response: "🌡️ Puedes ajustar estos parámetros ambientales:\n\n• **Temperatura** (15-35°C): afecta el metabolismo de las especies\n• **Salinidad** (30-40 PSU): influye en la osmorregulación\n• **Oxígeno disuelto** (4-10 mg/L): esencial para la respiración\n• **Contaminación** (0-100%): afecta la salud del ecosistema" },
-            
-            { keywords: ['observaciones', 'guardar observación', 'escribir observación', 'comentario', 'observacion'], 
-              response: "📝 Para guardar observaciones:\n\n1. Escribe tu comentario en el campo de texto\n2. Presiona Enter o el botón de enviar\n3. La observación se guarda automáticamente\n4. Tu docente podrá verla en la asignación\n\n💡 Las observaciones son importantes para tu evaluación." },
-            
-            { keywords: ['salud', 'estrés', 'bienestar', 'estado biológico', 'estadísticas', 'estado de la especie'], 
-              response: "📊 El panel de 'Estado biológico' muestra:\n\n• **Salud**: condición general de la especie (0-100%)\n• **Estrés**: nivel de presión ambiental (0-100%)\n• **Bienestar**: calidad de vida (0-100%)\n• **Etapa**: Huevo, Juvenil, Adulto o Anciano\n• **Edad**: tiempo de vida en segundos\n• **Población**: número de individuos de la especie" },
-            
-            { keywords: ['especie de prueba', 'cambiar especie', 'select species', 'focus species', 'cambiar animal'], 
-              response: "🐟 Puedes cambiar la especie de enfoque:\n\n• En el panel lateral, selecciona una especie\n• La simulación centrará la cámara en ella\n• Verás sus estadísticas en tiempo real\n• Las especies disponibles varían según la simulación" },
-            
-            { keywords: ['fullscreen', 'pantalla completa', 'expandir', 'expand', 'ver en grande'], 
-              response: "🖥️ Para ver la simulación en pantalla completa:\n\n• Haz clic en el botón de expandir (⛶) en el simulador\n• Presiona Escape para salir\n• En móvil, gira el dispositivo para mejor experiencia" },
-            
-            { keywords: ['reset', 'reiniciar', 'reinicar simulacion', 'volver a empezar'], 
-              response: "🔄 Para reiniciar la simulación:\n\n• Haz clic en el botón 🔄 Reset\n• El ecosistema volverá a su estado inicial\n• Los parámetros se restaurarán a los valores por defecto\n• ¡Puedes empezar de nuevo tu experimento!" },
-            
-            { keywords: ['pausar', 'pausa', 'detener simulacion'], 
-              response: "⏸️ Puedes pausar la simulación en cualquier momento:\n\n• Haz clic en el botón ⏸️ Pause\n• El tiempo y los procesos biológicos se detienen\n• Vuelve a presionar ▶️ Play para reanudar" },
+**Pasos a seguir:**
 
-            // ===== ESPACIOS (6) =====
-            { keywords: ['espacio', 'espacios', 'aula virtual', 'unirse a espacio', 'clase virtual', 'aula'], 
-              response: "🏫 Los **Espacios** son aulas virtuales:\n\n🔹 **Como estudiante**:\n• Usa el código de 6 caracteres que te dio tu profesor\n• O acepta la invitación en notificaciones\n\n🔹 **Como docente**:\n• Crea espacios desde 'ESPACIOS'\n• Invita estudiantes por email\n• Comparte el código único del aula" },
-            
-            { keywords: ['código espacio', 'código aula', 'unirse código', 'código de acceso', 'codigo'], 
-              response: "🔑 ¿Cómo unirse con código?\n\n1. Ve a la sección 'Unirse a un espacio'\n2. Ingresa el código de 6 caracteres (mayúsculas/números)\n3. Los campos avanzan automáticamente\n4. Haz clic en 'Unirse al espacio'\n\n💡 El código lo genera automáticamente el sistema basado en el ID del espacio." },
-            
-            { keywords: ['crear espacio', 'nuevo espacio', 'crear aula', 'nueva clase'], 
-              response: "🏗️ Para crear un espacio (solo docentes):\n\n1. Ve a la pestaña 'ESPACIOS'\n2. Escribe el nombre del espacio\n3. Selecciona una imagen de fondo\n4. Haz clic en 'Crear espacio'\n5. Comparte el código o invita estudiantes directamente" },
-            
-            { keywords: ['invitar estudiantes', 'invitar', 'invitación', 'invitaciones', 'agregar estudiantes'], 
-              response: "📨 Para invitar estudiantes (solo docentes):\n\n1. Entra al espacio deseado\n2. En la sección 'Invitar estudiantes'\n3. Selecciona los estudiantes de la lista\n4. Haz clic en 'Invitar seleccionados'\n5. Recibirán una notificación en su cuenta" },
-            
-            { keywords: ['eliminar espacio', 'borrar espacio', 'cerrar aula', 'eliminar aula'], 
-              response: "🗑️ Para eliminar un espacio (solo docentes):\n\n1. Ve a la lista de espacios\n2. Haz clic en el ícono de eliminar (🗑️)\n3. Confirma la acción\n⚠️ Se eliminarán todas las asignaciones de los estudiantes en ese espacio" },
-            
-            { keywords: ['miembros espacio', 'estudiantes espacio', 'quienes estan en el espacio', 'miembros'], 
-              response: "👥 En la sección 'Miembros' del espacio puedes ver:\n\n• **Activos**: estudiantes que aceptaron la invitación\n• **Pendientes**: estudiantes que aún no responden\n• **Rechazados**: estudiantes que rechazaron la invitación\n• Puedes eliminar miembros si es necesario" },
+1️⃣ Haz clic en 'Registrate' en la barra superior
+2️⃣ Completa: email, nombre de usuario, contraseña
+3️⃣ Selecciona tu rol (Estudiante/Docente/Personal)
+4️⃣ Recibirás un correo de verificación
+5️⃣ Haz clic en el enlace del correo para activar tu cuenta
 
-            // ===== ASIGNACIONES (5) =====
-            { keywords: ['asignaciones', 'tareas', 'mis tareas', 'simulaciones asignadas', 'deberes', 'tarea'], 
-              response: "📋 En 'ASIGNACIONES' encuentras:\n\n• **Simulaciones pendientes**: Las que debes realizar\n• **En progreso**: Las que empezaste pero no terminaste\n• **Completadas**: Las que ya finalizaste\n• **Progreso general**: Porcentaje de avance total\n\n✅ Marca 'Completar' cuando termines una simulación" },
-            
-            { keywords: ['progreso', 'avance', 'porcentaje', 'completadas', 'estadísticas', 'cuantas tareas'], 
-              response: "📊 Tu progreso se muestra en:\n\n• Tarjeta de progreso (anillo circular)\n• Número de simulaciones totales\n• Simulaciones completadas vs pendientes\n• Porcentaje de avance general\n\n💡 ¡Completa todas tus asignaciones para obtener insignias!" },
-            
-            { keywords: ['completar tarea', 'marcar completada', 'finalizar simulación', 'entregar', 'terminar'], 
-              response: "✅ Para marcar una simulación como completada:\n\n1. Entra a la simulación desde 'ASIGNACIONES'\n2. Debes haber dejado al menos una observación\n3. Haz clic en el botón 'Completar'\n4. La tarea pasará a 'Completada'\n\n📝 ¡No olvides escribir tus observaciones!" },
-            
-            { keywords: ['observaciones tarea', 'ver observaciones', 'comentarios docente', 'que ve el profesor'], 
-              response: "👀 Las observaciones son visibles para:\n\n• **Docentes**: pueden ver todas las observaciones de sus estudiantes\n• **Estudiantes**: ven sus propias observaciones guardadas\n• Las observaciones ayudan a evaluar tu comprensión\n• Se guardan con fecha y hora" },
-            
-            { keywords: ['notificaciones', 'campana', 'invitaciones', 'alertas', 'notificacion'], 
-              response: "🔔 En el ícono de campana (🔔) del navbar:\n\n• Recibirás invitaciones a espacios\n• Nuevas simulaciones asignadas\n• Estados de tus tareas\n• Puedes filtrar por: Recibidos, Destacados, No leídos\n• Marcar como leídas o archivarlas" },
+━━━━━━━━━━━━━━━━━━━━━━━━
 
-            // ===== ESPECIES (7) =====
-            { keywords: ['especies', 'animales marinos', 'catálogo especies', 'ver especies', 'fauna', 'que especies hay'], 
-              response: "🐠 En la sección 'ESPECIES' puedes:\n\n• Ver modelos 3D interactivos de animales marinos\n• Rotar y hacer zoom en cada especie\n• Guardar tus favoritas (❤️)\n• Crear notas de estudio\n• Filtrar por categoría: Peces, Tortugas, Crustáceos, Moluscos\n• Ver datos científicos: dieta, longevidad, peligro de extinción" },
-            
-            { keywords: ['modelo 3d', 'ver en 3d', 'girar modelo', '3d', 'visualizar', 'ver animal en 3d'], 
-              response: "🖱️ Controles del visor 3D:\n\n• **Click + arrastrar**: Rotar el modelo\n• **Click derecho + arrastrar**: Mover cámara\n• **Scroll**: Acercar/alejar zoom\n• **Auto-rotación**: El modelo gira solo automáticamente\n• Las especies tienen animaciones únicas" },
-            
-            { keywords: ['favoritos', 'guardar favoritos', 'mis favoritos', 'favoritas', 'corazon'], 
-              response: "❤️ Para guardar especies favoritas:\n\n1. Ve al detalle de cualquier especie\n2. Haz clic en el botón ❤️ 'Agregar a favoritos'\n3. Accede a todos tus favoritos desde el menú 'Favoritos'\n4. Puedes quitar favoritos con el mismo botón\n5. Los favoritos se guardan en tu cuenta" },
-            
-            { keywords: ['notas', 'mis notas', 'tomar notas', 'apuntes', 'estudiar', 'nota'], 
-              response: "📝 La sección 'Notas' te permite:\n\n• Crear notas de estudio sobre especies\n• Editar el título y contenido de las notas\n• Eliminar notas que ya no necesites\n• Cada nota se guarda automáticamente en tu cuenta\n• Puedes asociar notas a especies específicas" },
-            
-            { keywords: ['categorías especies', 'filtrar especies', 'peces', 'tortugas', 'crustáceos', 'moluscos', 'filtrar'], 
-              response: "🔍 Puedes filtrar especies por categoría:\n\n• 🐟 **Peces**: la mayoría de las especies marinas\n• 🐢 **Tortugas**: tortugas marinas y terrestres\n• 🦞 **Crustáceos**: cangrejos, langostas, camarones\n• 🐚 **Moluscos**: caracoles, pulpos, calamares\n• Usa los botones de filtro en la parte superior" },
-            
-            { keywords: ['especie en peligro', 'extinción', 'conservación', 'amenazada', 'peligro de extincion'], 
-              response: "⚠️ Información de conservación:\n\n• **En peligro crítico**: riesgo extremo de extinción\n• **En peligro**: alto riesgo de extinción\n• **Vulnerable**: riesgo moderado\n• **Preocupación menor**: población estable\n• Cada especie tiene información detallada sobre sus amenazas" },
-            
-            { keywords: ['habitat especie', 'distribución', 'zona geográfica', 'dónde vive', 'habitat'], 
-              response: "🗺️ Cada especie tiene información de hábitat:\n\n• **Zona geográfica**: región donde habita\n• **Temperatura**: rango óptimo de temperatura\n• **Salinidad**: rango de salinidad tolerado\n• **Profundidad**: rango de profundidad (mínima y máxima)\n• **Zona de luz**: fótica (con luz) o mesopelágica" },
+⚠️ **Importante:** Revisa tu bandeja de spam si no ves el correo.
 
-            // ===== OTROS (10) =====
-            { keywords: ['sobre nosotros', 'nosotros', 'quienes somos', 'que es blue ecosim', 'acerca de', 'blue ecosim'], 
-              response: "🌊 **Blue EcoSim** es un simulador interactivo de ecosistemas marinos creado con fines educativos.\n\n🎯 **Objetivo**: Experimentar con diferentes parámetros del entorno para observar cómo cambian las especies y el equilibrio del ecosistema.\n\n💡 **Ideal para**: Estudiantes, docentes y amantes de la biología marina.\n\n📖 **Más información**: Ve a la sección 'Sobre Nosotros' en el footer." },
+¿Necesitas más ayuda con el registro?`
+            },
             
-            { keywords: ['ayuda', 'soporte', 'problema técnico', 'error', 'bug', 'falla', 'no funciona'], 
-              response: "🆘 ¿Tienes problemas técnicos?\n\n1. Intenta recargar la página (F5)\n2. Limpia la caché de tu navegador\n3. Contacta a tu profesor si es una asignación\n4. Escribe a: soporte@blueecosim.com\n5. Describe el problema con capturas de pantalla" },
+            { 
+                keywords: ['iniciar sesión', 'login', 'entrar', 'acceder', 'ingresar', 'loguear', 'iniciar sesion'], 
+                response: `🔐 **Iniciar sesión en Blue EcoSim**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Acceso rápido:**
+
+1️⃣ Haz clic en 'Iniciar Sesión' en el navbar
+2️⃣ Ingresa tu email y contraseña
+3️⃣ También puedes acceder con Google
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **Consejo:** Si tu cuenta no está verificada, revisa tu correo para activarla.
+
+¿Problemas para entrar? Pregúntame sobre recuperación de contraseña.`
+            },
             
-            { keywords: ['hola', 'buenas', 'saludos', 'buenos días', 'hey', 'que tal', 'hola como estas'], 
-              response: "👋 ¡Hola! Soy el asistente de Blue EcoSim. Pregúntame sobre registro, simulaciones, especies o cualquier duda de la plataforma. ¿En qué puedo ayudarte hoy? 🐙" },
+            { 
+                keywords: ['contraseña', 'olvide contraseña', 'recuperar contraseña', 'resetear password', 'olvidé mi contraseña'], 
+                response: `🔑 **¿Olvidaste tu contraseña?**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Solución por ahora:**
+
+📞 Contacta a tu profesor o administrador del sistema.
+
+📧 Ellos podrán ayudarte a restablecer tu acceso.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+✨ **Próximamente:** Añadiremos recuperación automática por correo electrónico.
+
+¿Tienes otra duda? ¡Pregúntame!`
+            },
             
-            { keywords: ['gracias', 'thanks', 'buen trabajo', 'excelente', 'genial', 'muchas gracias'], 
-              response: "🌟 ¡De nada! Me alegra poder ayudarte. Sigue explorando el maravilloso mundo marino. ¿Necesitas algo más? 🐠" },
+            { 
+                keywords: ['verificar', 'verificación', 'activar cuenta', 'correo verificación', 'token', 'verificar cuenta'], 
+                response: `✉️ **¿No recibiste el correo de verificación?**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Pasos a seguir:**
+
+📬 Revisa tu bandeja de spam/correo no deseado
+
+🔄 Solicita un nuevo enlace desde la página de registro
+
+📧 Contacta a soporte si persiste el problema
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Soporte:** soporte@blueecosim.com
+
+¿Necesitas más ayuda con la verificación?`
+            },
             
-            { keywords: ['adiós', 'chao', 'bye', 'hasta luego', 'nos vemos', 'adios'], 
-              response: "👋 ¡Hasta luego! Sigue sumergiéndote en el conocimiento marino. Cuando necesites ayuda, aquí estoy. ¡Que tengas un gran día! 🌊" },
+            { 
+                keywords: ['google', 'iniciar con google', 'google login', 'oauth', 'entrar con google'], 
+                response: `🌐 **Iniciar sesión con Google**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Es muy fácil:**
+
+1️⃣ Haz clic en 'Iniciar sesión con Google'
+2️⃣ Selecciona tu cuenta de Google
+3️⃣ Si es tu primera vez, elige tu rol
+4️⃣ ¡Listo! Tu cuenta se vinculará automáticamente
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+✨ **Ventaja:** No necesitas recordar otra contraseña.
+
+¿Te funciona el inicio con Google?`
+            },
             
-            { keywords: ['footer', 'pie de página', 'redes sociales', 'instagram', 'facebook', 'x', 'twitter', 'redes'], 
-              response: "📱 En el footer (pie de página) encuentras:\n\n• **Redes sociales**: Instagram, X (Twitter), Facebook\n• **Sobre Nosotros**: información del proyecto\n• El logo de Blue EcoSim\n• Puedes seguirnos para estar al día de novedades" },
+            { 
+                keywords: ['cerrar sesión', 'logout', 'salir', 'desconectar', 'cerrar sesion'], 
+                response: `🚪 **Cerrar sesión en Blue EcoSim**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Simplemente:**
+
+1️⃣ Haz clic en tu avatar en el navbar
+2️⃣ Selecciona 'Cerrar Sesión'
+3️⃣ Serás redirigido a la página principal
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔒 **Consejo de seguridad:** Siempre cierra sesión en dispositivos compartidos.
+
+¿Listo para volver a entrar?`
+            },
             
-            { keywords: ['modo oscuro', 'tema oscuro', 'dark mode', 'cambiar tema', 'oscuro'], 
-              response: "🌙 Puedes activar el modo oscuro:\n\n• Haz clic en el ícono de luna 🌙 en el navbar\n• El tema se guarda en tu navegador\n• Se aplica a todas las páginas del sitio\n• En modo oscuro, los colores se invierten para cuidar tu vista" },
+            { 
+                keywords: ['perfil', 'mi perfil', 'editar perfil', 'ver perfil', 'avatar', 'cambiar foto'], 
+                response: `👤 **Tu perfil en Blue EcoSim**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Información disponible:**
+
+• 👤 Nombre de usuario y email
+• 🎭 Rol actual (Estudiante/Docente/Personal)
+• 📅 Fecha de último acceso
+• 🏆 Próximamente: insignias y estadísticas
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **Próximamente:** Podrás editar tu foto de perfil.
+
+¿Quieres saber más sobre tu perfil?`
+            },
+
+            // ===== ROLES =====
+            { 
+                keywords: ['rol', 'roles', 'diferencia roles', 'estudiante', 'docente', 'personal', 'tipos de usuario', 'que rol soy'], 
+                response: `👥 **Los 3 roles de Blue EcoSim**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎓 **Estudiante**
+• Accede a simulaciones asignadas por docentes
+• Completa tareas y ve su progreso
+• Guarda especies favoritas y notas
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+👨‍🏫 **Docente**
+• Crea espacios virtuales (aulas)
+• Invita estudiantes por email o código
+• Asigna simulaciones y revisa tareas
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🐠 **Personal**
+• Uso individual sin asignaciones
+• Explora libremente todas las simulaciones
+• Ideal para aprendizaje autodidacta
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿Qué rol tienes actualmente?`
+            },
             
-            { keywords: ['idioma', 'traducción', 'english', 'español', 'cambiar idioma', 'traducir'], 
-              response: "🌐 Cambia el idioma de la interfaz:\n\n• Haz clic en el ícono de idioma 🌐 en el navbar\n• Alterna entre Español 🇪🇸 e Inglés 🇬🇧\n• La traducción se aplica a toda la página\n• Los mensajes del chatbot también se traducen automáticamente" },
+            { 
+                keywords: ['cambiar rol', 'modificar rol', 'otro rol', 'cambio de rol'], 
+                response: `🔄 **Cambiar tu rol en la plataforma**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Procedimiento:**
+
+📧 Contacta a un administrador del sistema
+
+✉️ Ellos pueden actualizar tu tipo de cuenta
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📬 **Contacto:** administracion@blueecosim.com
+
+¿Necesitas ayuda con otra cosa?`
+            },
             
-            { keywords: ['que es esto', 'como funciona esto', 'para que sirve', 'objetivo'], 
-              response: "🌊 Blue EcoSim es una plataforma educativa que simula ecosistemas marinos. Su objetivo es que aprendas sobre biología marina, cadenas alimenticias y el impacto humano en los océanos, todo a través de simulaciones interactivas y modelos 3D." },
+            { 
+                keywords: ['que puedo hacer como estudiante', 'permisos estudiante', 'estudiante'], 
+                response: `🎓 **Permisos de Estudiante**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Lo que puedes hacer:**
+
+✅ Ver y completar simulaciones asignadas
+✅ Unirte a espacios con código
+✅ Guardar especies favoritas y notas
+✅ Ver tu progreso general
+✅ Dejar observaciones en las simulaciones
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 **Tu progreso:** Se muestra en un anillo circular en 'ASIGNACIONES'.
+
+¿Listo para empezar tus tareas?`
+            },
             
-            { keywords: ['empezar', 'como comienzo', 'primeros pasos', 'que hago primero'], 
-              response: "🚀 ¡Bienvenido! Tus primeros pasos:\n\n1. Si eres estudiante, busca el código de tu profesor y únete a un espacio\n2. Ve a 'ASIGNACIONES' para ver tus tareas\n3. Explora 'ESPECIES' para conocer la fauna marina\n4. Inicia una simulación y experimenta con los parámetros\n5. ¡No olvides dejar observaciones!" }
+            { 
+                keywords: ['que puedo hacer como docente', 'permisos docente', 'docente'], 
+                response: `👨‍🏫 **Permisos de Docente**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Lo que puedes hacer:**
+
+✅ Crear espacios virtuales (aulas)
+✅ Invitar estudiantes por email o código
+✅ Asignar simulaciones a estudiantes o espacios
+✅ Ver el progreso de tus estudiantes
+✅ Revisar las observaciones que dejan
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 **Gestión:** Desde la sección 'ESPACIOS' puedes administrar todo.
+
+¿Quieres crear un nuevo espacio?`
+            },
+
+            // ===== SIMULADOR =====
+            { 
+                keywords: ['simulación', 'simular', 'empezar simulación', 'iniciar simulación', 'ejecutar simulador', 'entrar a simulación'], 
+                response: `🎮 **Iniciar una simulación**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Acceso rápido:**
+
+📌 Ve a la pestaña 'SIMULACION' en el menú
+📌 O desde 'ASIGNACIONES' si tu profesor te asignó una tarea
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Controles básicos:**
+
+▶️ **Play:** Inicia o reanuda
+⏸️ **Pause:** Pausa el tiempo
+🔄 **Reset:** Reinicia el ecosistema
+📝 **Observaciones:** Guarda notas en tiempo real
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **Consejo:** Escribe observaciones mientras experimentas.
+
+¿Quieres saber más sobre los controles?`
+            },
+            
+            { 
+                keywords: ['ecosistema', 'tipos simulaciones', 'que simulaciones hay', 'modalidades', 'tipos de simulacion'], 
+                response: `🌊 **Tipos de simulaciones disponibles**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🐠 **Ecosistema básico**
+Arrecife de coral con especies comunes (Pez Lora, Pez Ángel, Tortuga Carey)
+
+🦈 **Cadena alimenticia**
+Relación depredador-presa en el océano
+
+🌍 **Contaminación marina**
+Efectos de residuos en el ecosistema
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+✨ **Próximamente:** Más escenarios como manglares y océano profundo.
+
+¿Cuál te gustaría probar?`
+            },
+            
+            { 
+                keywords: ['controles simulador', 'como usar simulador', 'botones simulador', 'controles', 'que hacen los botones'], 
+                response: `🎮 **Guía de controles del simulador**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Botones principales:**
+
+▶️ **Play:** Inicia o reanuda la simulación
+⏸️ **Pause:** Pausa el tiempo de simulación
+🔄 **Reset:** Reinicia el ecosistema a valores iniciales
+📝 **Observaciones:** Guarda notas sobre lo que observas
+🖥️ **Expandir:** Pantalla completa
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+⌨️ **Atajo:** Presiona 'Espacio' para pausar/reanudar.
+
+¿Alguna duda sobre los controles?`
+            },
+            
+            { 
+                keywords: ['temperatura', 'salinidad', 'oxígeno', 'parámetros', 'ajustar', 'cambiar temperatura'], 
+                response: `🌡️ **Parámetros ambientales ajustables**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**🌡️ Temperatura** (15-35°C)
+Afecta el metabolismo de las especies
+
+**🧂 Salinidad** (30-40 PSU)
+Influye en la osmorregulación
+
+**💨 Oxígeno disuelto** (4-10 mg/L)
+Esencial para la respiración
+
+**☣️ Contaminación** (0-100%)
+Afecta la salud del ecosistema
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ **Importante:** Cambios bruscos pueden estresar a las especies.
+
+¿Quieres saber cómo afectan estos parámetros?`
+            },
+            
+            { 
+                keywords: ['observaciones', 'guardar observación', 'escribir observación', 'comentario', 'observacion'], 
+                response: `📝 **Guardar observaciones en el simulador**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Pasos para guardar:**
+
+1️⃣ Escribe tu comentario en el campo de texto
+2️⃣ Presiona Enter o el botón de enviar
+3️⃣ La observación se guarda automáticamente
+4️⃣ Tu docente podrá verla en la asignación
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **Importante:** Las observaciones son clave para tu evaluación. ¡Sé detallado!
+
+¿Tienes una observación para compartir?`
+            },
+            
+            { 
+                keywords: ['salud', 'estrés', 'bienestar', 'estado biológico', 'estadísticas', 'estado de la especie'], 
+                response: `📊 **Panel de 'Estado biológico'**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Métricas en tiempo real:**
+
+❤️ **Salud:** Condición general (0-100%)
+😰 **Estrés:** Nivel de presión ambiental (0-100%)
+😊 **Bienestar:** Calidad de vida (0-100%)
+🥚 **Etapa:** Huevo → Juvenil → Adulto → Anciano
+⏱️ **Edad:** Tiempo de vida en segundos
+👥 **Población:** Número de individuos
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **Monitorea** estos valores para entender el ecosistema.
+
+¿Quieres saber más sobre las estadísticas?`
+            },
+
+            // ===== ESPACIOS =====
+            { 
+                keywords: ['espacio', 'espacios', 'aula virtual', 'unirse a espacio', 'clase virtual', 'aula'], 
+                response: `🏫 **Los Espacios son aulas virtuales**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Como Estudiante:**
+• Usa el código de 6 caracteres que te dio tu profesor
+• O acepta la invitación en notificaciones
+
+**Como Docente:**
+• Crea espacios desde 'ESPACIOS'
+• Invita estudiantes por email
+• Comparte el código único del aula
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔑 **Código:** Compuesto por letras y números (ej: A7B3C2)
+
+¿Tienes un código para unirte?`
+            },
+            
+            { 
+                keywords: ['código espacio', 'código aula', 'unirse código', 'código de acceso', 'codigo'], 
+                response: `🔑 **Unirse a un espacio con código**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Pasos:**
+
+1️⃣ Ve a la sección 'Unirse a un espacio'
+2️⃣ Ingresa el código de 6 caracteres (mayúsculas/números)
+3️⃣ Los campos avanzan automáticamente
+4️⃣ Haz clic en 'Unirse al espacio'
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **El código** lo genera automáticamente el sistema basado en el ID del espacio.
+
+¿Tienes el código de tu profesor?`
+            },
+            
+            { 
+                keywords: ['crear espacio', 'nuevo espacio', 'crear aula', 'nueva clase'], 
+                response: `🏗️ **Crear un espacio (solo docentes)**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Pasos:**
+
+1️⃣ Ve a la pestaña 'ESPACIOS'
+2️⃣ Escribe el nombre del espacio
+3️⃣ Selecciona una imagen de fondo
+4️⃣ Haz clic en 'Crear espacio'
+5️⃣ Comparte el código o invita estudiantes directamente
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+✨ **Consejo:** Elige un nombre descriptivo para tu clase.
+
+¿Necesitas ayuda para crear tu primer espacio?`
+            },
+
+            // ===== ASIGNACIONES =====
+            { 
+                keywords: ['asignaciones', 'tareas', 'mis tareas', 'simulaciones asignadas', 'deberes', 'tarea'], 
+                response: `📋 **Tus asignaciones en Blue EcoSim**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 **Pendientes:** Simulaciones que debes realizar
+⏳ **En progreso:** Empezadas pero no terminadas
+✅ **Completadas:** Ya finalizadas
+📊 **Progreso general:** Porcentaje de avance total
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **Consejo:** Marca 'Completar' cuando termines una simulación.
+
+¿Cuántas tareas tienes pendientes?`
+            },
+            
+            { 
+                keywords: ['progreso', 'avance', 'porcentaje', 'completadas', 'estadísticas', 'cuantas tareas'], 
+                response: `📊 **Seguimiento de tu progreso**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Visualización:**
+
+🎯 Tarjeta de progreso (anillo circular)
+📊 Número de simulaciones totales
+✅ Completadas vs pendientes
+📈 Porcentaje de avance general
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🏆 **Objetivo:** ¡Completa todas tus asignaciones para obtener insignias!
+
+¿Quieres saber cómo mejorar tu progreso?`
+            },
+            
+            { 
+                keywords: ['completar tarea', 'marcar completada', 'finalizar simulación', 'entregar', 'terminar'], 
+                response: `✅ **Completar una simulación**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Pasos:**
+
+1️⃣ Entra a la simulación desde 'ASIGNACIONES'
+2️⃣ Debes haber dejado al menos una observación
+3️⃣ Haz clic en el botón 'Completar'
+4️⃣ La tarea pasará a 'Completada'
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 **Recuerda:** ¡Las observaciones son importantes para tu evaluación!
+
+¿Listo para completar tu primera tarea?`
+            },
+
+            // ===== ESPECIES =====
+            { 
+                keywords: ['especies', 'animales marinos', 'catálogo especies', 'ver especies', 'fauna', 'que especies hay'], 
+                response: `🐠 **Catálogo de especies marinas**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Características:**
+
+📦 Modelos 3D interactivos
+🔄 Rotación y zoom en cada especie
+❤️ Guardar favoritas
+📝 Crear notas de estudio
+🔍 Filtrar por categoría
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Categorías:**
+🐟 Peces | 🐢 Tortugas | 🦞 Crustáceos | 🐚 Moluscos
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 **Datos:** Dieta, longevidad, peligro de extinción.
+
+¿Quieres explorar las especies marinas?`
+            },
+            
+            { 
+                keywords: ['modelo 3d', 'ver en 3d', 'girar modelo', '3d', 'visualizar', 'ver animal en 3d'], 
+                response: `🖱️ **Controles del visor 3D**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Interacción:**
+
+🔄 **Click + arrastrar:** Rotar el modelo
+📦 **Click derecho + arrastrar:** Mover cámara
+🔍 **Scroll:** Acercar/alejar zoom
+🔄 **Auto-rotación:** El modelo gira solo automáticamente
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+✨ **Extra:** Cada especie tiene animaciones únicas.
+
+¿Listo para explorar la fauna marina en 3D?`
+            },
+            
+            { 
+                keywords: ['favoritos', 'guardar favoritos', 'mis favoritos', 'favoritas', 'corazon'], 
+                response: `❤️ **Guardar especies favoritas**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Pasos:**
+
+1️⃣ Ve al detalle de cualquier especie
+2️⃣ Haz clic en el botón ❤️ 'Agregar a favoritos'
+3️⃣ Accede a todos tus favoritos desde el menú 'Favoritos'
+4️⃣ Puedes quitar favoritos con el mismo botón
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💾 **Persistencia:** Los favoritos se guardan en tu cuenta.
+
+¿Qué especie te gustaría agregar a favoritos?`
+            },
+
+            // ===== OTROS =====
+            { 
+                keywords: ['hola', 'buenas', 'saludos', 'buenos días', 'hey', 'que tal', 'hola como estas'], 
+                response: `👋 ¡Hola! Soy tu asistente virtual de Blue EcoSim.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🐙 Estoy aquí para ayudarte con todo lo relacionado a la plataforma.
+
+**Puedes preguntarme sobre:**
+
+• 📝 Registro e inicio de sesión
+• 🎮 Simulaciones interactivas
+• 🐠 Especies marinas
+• 🏫 Espacios y asignaciones
+• ❤️ Favoritos y notas
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿En qué puedo ayudarte hoy? 🌊`
+            },
+            
+            { 
+                keywords: ['gracias', 'thanks', 'buen trabajo', 'excelente', 'genial', 'muchas gracias'], 
+                response: `🌟 ¡De nada! Me alegra poder ayudarte.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🐠 Sigue explorando el maravilloso mundo marino.
+
+💡 Recuerda que cada simulación es una oportunidad de aprendizaje.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿Necesitas ayuda con algo más? ¡Estoy aquí para ti!`
+            },
+            
+            { 
+                keywords: ['adiós', 'chao', 'bye', 'hasta luego', 'nos vemos', 'adios'], 
+                response: `👋 ¡Hasta luego!
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🌊 Sigue sumergiéndote en el conocimiento marino.
+
+💙 Cuando necesites ayuda, aquí estaré para ti.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Recuerda:** Cada pequeña acción cuenta para la conservación de nuestros océanos. ¡Que tengas un excelente día!`
+            },
+            
+            { 
+                keywords: ['ayuda', 'soporte', 'problema técnico', 'error', 'bug', 'falla', 'no funciona'], 
+                response: `🆘 **¿Problemas técnicos?**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Pasos a seguir:**
+
+1️⃣ Recarga la página (F5 o Ctrl+R)
+2️⃣ Limpia la caché de tu navegador
+3️⃣ Contacta a tu profesor si es una asignación
+4️⃣ Escribe a: soporte@blueecosim.com
+5️⃣ Describe el problema con capturas de pantalla
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📱 **Incluye:** Navegador, sistema operativo y paso a paso del error.
+
+¿Puedo ayudarte con algo más?`
+            },
+            
+            { 
+                keywords: ['empezar', 'como comienzo', 'primeros pasos', 'que hago primero'], 
+                response: `🚀 **¡Bienvenido a Blue EcoSim!**
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Si eres Estudiante:**
+
+1️⃣ Busca el código de tu profesor y únete a un espacio
+2️⃣ Ve a 'ASIGNACIONES' para ver tus tareas
+3️⃣ Explora 'ESPECIES' para conocer la fauna marina
+4️⃣ Inicia una simulación y experimenta
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Si eres Docente:**
+
+1️⃣ Crea espacios virtuales
+2️⃣ Invita a tus estudiantes
+3️⃣ Asigna simulaciones
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+🌟 **¡Explora, aprende y diviértete!**
+
+¿Listo para comenzar tu aventura marina?`
+            }
         ];
     }
 
@@ -236,11 +747,12 @@ class Chatbot {
             "📚 Usa la sección 'Notas' para preparar tus exámenes de biología marina.",
             "🤖 Este chatbot fue diseñado para ayudarte con cualquier duda de la plataforma.",
             "💡 ¿El océano produce más del 50% del oxígeno que respiramos?",
-            "🎯 Cada simulación tiene un objetivo de aprendizaje diferente: ¡descúbrelos todos!"
+            "🎯 Cada simulación tiene un objetivo de aprendizaje diferente: ¡descúbrelos todos!",
+            "🔬 Puedes ajustar parámetros ambientales para ver cómo reaccionan las especies."
         ];
     }
 
-    // ========== GESTOR DE EXPRESIONES (MODIFICADO) ==========
+    // ========== GESTOR DE EXPRESIONES ==========
     setExpression(state) {
         const imageMap = {
             contento:  '../public/media/Web/ballena-contento.png',
@@ -249,22 +761,31 @@ class Chatbot {
             buscando:  '../public/media/Web/ballena-buscando.png',
             confusion: '../public/media/Web/ballena-confusion.png'
         };
+        
         if (!this.toggleIcon) return;
+        
         const src = imageMap[state] || imageMap.contento;
         if (this.toggleIcon.src !== src) {
-            this.toggleIcon.src = src;
+            this.toggleIcon.style.transition = 'opacity 0.3s ease';
+            this.toggleIcon.style.opacity = '0';
+            
+            setTimeout(() => {
+                this.toggleIcon.src = src;
+                this.toggleIcon.style.opacity = '1';
+            }, 150);
+            
             this.toggleBtn.classList.add('bounce');
             setTimeout(() => {
                 if (this.toggleBtn) this.toggleBtn.classList.remove('bounce');
             }, 400);
         }
-        // Limpiar timeout previo
+        
         if (this.expressionTimeout) {
             clearTimeout(this.expressionTimeout);
             this.expressionTimeout = null;
         }
-        // Solo programamos timeout para estados que no sean 'buscando' ni 'confusion'
-        if (state !== 'contento' && state !== 'buscando' && state !== 'confusion') {
+        
+        if (state !== 'buscando' && state !== 'confusion' && state !== 'contento') {
             this.expressionTimeout = setTimeout(() => {
                 this.setExpression('contento');
                 this.expressionTimeout = null;
@@ -277,16 +798,6 @@ class Chatbot {
         if (this.consejos.includes(texto)) return;
         this.consejos.push(texto);
         this.saveConsejos();
-
-        const list = document.getElementById('cbTipsList');
-        if (!list) return;
-        const item = document.createElement('div');
-        item.className = 'cb-tip-item';
-        item.innerHTML = `<span class="cb-tip-icon">💡</span> ${texto}`;
-        list.appendChild(item);
-        const count = this.window.querySelector('.cb-tips-count');
-        if (count) count.textContent = this.consejos.length;
-        list.scrollTop = list.scrollHeight;
     }
 
     // ========== INICIALIZACIÓN ==========
@@ -295,30 +806,47 @@ class Chatbot {
         this.loadMessages();
         this.addEventListeners();
         this.makeDraggable();
-
-        if (this.consejos.length > 0) {
-            const list = document.getElementById('cbTipsList');
-            if (list) {
-                this.consejos.forEach(texto => {
-                    const item = document.createElement('div');
-                    item.className = 'cb-tip-item';
-                    item.innerHTML = `<span class="cb-tip-icon">💡</span> ${texto}`;
-                    list.appendChild(item);
-                });
-                const count = this.window.querySelector('.cb-tips-count');
-                if (count) count.textContent = this.consejos.length;
-                list.scrollTop = list.scrollHeight;
-            }
-        }
+        this.setupResizeHandler();
 
         if (this.messages.length === 0) {
-            let welcomeMsg = "🐙 ¡Hola! Soy tu asistente virtual de Blue EcoSim.\n\nPregúntame cualquier cosa sobre:\n• 📝 Registro e inicio de sesión\n• 🎮 Simulaciones interactivas\n• 🐠 Especies marinas 3D\n• 🏫 Espacios y asignaciones\n• ❤️ Favoritos y notas\n\n¿En qué puedo ayudarte hoy? 🌊";
+            let welcomeMsg = `🐙 ¡Hola! Soy tu asistente virtual de Blue EcoSim.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Pregúntame cualquier cosa sobre:**
+
+• 📝 Registro e inicio de sesión
+• 🎮 Simulaciones interactivas
+• 🐠 Especies marinas 3D
+• 🏫 Espacios y asignaciones
+• ❤️ Favoritos y notas
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿En qué puedo ayudarte hoy? 🌊`;
+            
             if (this.currentUser) {
-                welcomeMsg = `🐙 ¡Hola ${this.currentUser}! Bienvenido de vuelta a Blue EcoSim.\n\n¿Necesitas ayuda con algo? Puedo orientarte sobre:\n• 📝 Registro y cuenta\n• 🎮 Simulaciones\n• 🐠 Especies marinas\n• 🏫 Tus espacios\n\n¿Qué te gustaría saber? 🌊`;
+                welcomeMsg = `🐙 ¡Hola ${this.currentUser}! Bienvenido de vuelta a Blue EcoSim.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+**¿Necesitas ayuda con algo?**
+
+Puedo orientarte sobre:
+• 📝 Registro y cuenta
+• 🎮 Simulaciones
+• 🐠 Especies marinas
+• 🏫 Tus espacios
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿Qué te gustaría saber? 🌊`;
             }
+            
             this.addBotMessage(welcomeMsg);
-            this.addSuggestions();
         }
+        
+        this.renderMessages();
     }
 
     // ========== CREACIÓN DEL DOM ==========
@@ -326,6 +854,7 @@ class Chatbot {
         const isEnglish = window.blueEcoTranslator?.getLanguage?.() === 'en';
         const assistantTitle = isEnglish ? 'Blue EcoSim Assistant' : 'Asistente Blue EcoSim';
         const inputPlaceholder = isEnglish ? 'Type your question here...' : 'Escribe tu pregunta aquí...';
+        
         const container = document.createElement('div');
         container.className = 'cb-container';
         container.innerHTML = `
@@ -336,159 +865,346 @@ class Chatbot {
                         ${assistantTitle}
                     </h3>
                     <div class="cb-header-actions">
-                        <button class="cb-close" id="cbCloseBtn"><i class="fas fa-times"></i></button>
+                        <button class="cb-close" id="cbCloseBtn" aria-label="Cerrar chat">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="cb-messages" id="cbMessages"></div>
-                <div class="cb-tips-container">
-                    <div class="cb-tips-header">
-                        <i class="fas fa-lightbulb"></i> Consejos
-                        <span class="cb-tips-count">${this.consejos.length}</span>
-                    </div>
-                    <div class="cb-tips-list" id="cbTipsList"></div>
-                </div>
+                <div class="cb-suggestions-panel" id="cbSuggestionsPanel"></div>
                 <div class="cb-input">
                     <input type="text" id="cbInput" placeholder="${inputPlaceholder}" autocomplete="off">
-                    <button id="cbSendBtn"><i class="fas fa-paper-plane"></i></button>
+                    <button id="cbSendBtn" aria-label="Enviar mensaje">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
-            <button class="cb-toggle" id="cbToggleBtn">
+            <button class="cb-toggle" id="cbToggleBtn" aria-label="Abrir asistente">
                 <img src="../public/media/Web/ballena-contento.png" alt="Asistente ballena">
             </button>
         `;
         document.body.appendChild(container);
+        
         this.window = document.getElementById('cbWindow');
         this.messagesContainer = document.getElementById('cbMessages');
+        this.suggestionsPanel = document.getElementById('cbSuggestionsPanel');
         this.input = document.getElementById('cbInput');
         this.toggleBtn = document.getElementById('cbToggleBtn');
         this.toggleIcon = this.toggleBtn?.querySelector('img');
+        
+        // Mostrar sugerencias al inicio
+        this.showSuggestions();
+    }
+
+    // ========== MOSTRAR SUGERENCIAS ARRIBA ==========
+    toggleSuggestionsPanel() {
+        if (!this.suggestionsPanel) return;
+
+        const isCollapsed = this.suggestionsPanel.classList.toggle('is-collapsed');
+        const toggleBtn = this.suggestionsPanel.querySelector('.cb-suggestions-toggle');
+        const toggleIcon = toggleBtn?.querySelector('i');
+
+        if (toggleBtn) {
+            toggleBtn.setAttribute('aria-label', isCollapsed ? 'Expandir mensajes rápidos' : 'Minimizar mensajes rápidos');
+        }
+
+        if (toggleIcon) {
+            toggleIcon.className = isCollapsed ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+        }
+    }
+
+    showSuggestions() {
+        if (!this.suggestionsPanel) return;
+        
+        const suggestions = [
+            { text: "📝 ¿Cómo me registro?", action: "¿Cómo me registro?" },
+            { text: "🏫 ¿Qué son los espacios?", action: "¿Qué son los espacios?" },
+            { text: "🎮 ¿Cómo inicio una simulación?", action: "¿Cómo inicio una simulación?" },
+            { text: "📋 ¿Dónde veo mis tareas?", action: "¿Dónde veo mis tareas?" },
+            { text: "🐠 ¿Qué especies hay?", action: "¿Qué especies hay?" },
+            { text: "🔑 ¿Cómo me uno a un espacio?", action: "¿Cómo me uno a un espacio?" }
+        ];
+
+        const existingSuggestions = this.suggestionsPanel.querySelector('.cb-suggestions-container');
+        if (existingSuggestions) {
+            existingSuggestions.remove();
+        }
+
+        const container = document.createElement('div');
+        container.className = 'cb-suggestions-container';
+        container.innerHTML = `
+            <div class="cb-suggestions-header">
+                <button class="cb-suggestions-toggle" type="button" aria-label="Minimizar mensajes rápidos">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <span class="cb-suggestions-icon">⚡</span>
+                <span class="cb-suggestions-title">Mensajes rápidos</span>
+                <span class="cb-suggestions-hint">Toca para enviar</span>
+            </div>
+            <div class="cb-suggestions-grid">
+                ${suggestions.map((s, index) => `
+                    <button class="cb-suggestion-btn" data-index="${index}">
+                        ${s.text}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+
+        this.suggestionsPanel.appendChild(container);
+
+        const toggleBtn = container.querySelector('.cb-suggestions-toggle');
+        toggleBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleSuggestionsPanel();
+        });
+
+        container.querySelectorAll('.cb-suggestion-btn').forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const suggestion = suggestions[index];
+                this.input.value = suggestion.action;
+                this.processMessage(suggestion.action);
+            });
+        });
     }
 
     // ========== ARRASTRABLE ==========
     makeDraggable() {
         const header = document.getElementById('cbHeader');
-        let isDragging = false, offsetX, offsetY;
+        if (!header) return;
+        
+        let offsetX = 0, offsetY = 0;
+        let isDragging = false;
+        
         header.addEventListener('mousedown', (e) => {
-            if (e.target.closest('.cb-header-actions')) return;
+            if (e.target.closest('.cb-header-actions') || e.target.closest('.cb-close')) return;
+            
             isDragging = true;
-            offsetX = e.clientX - this.window.getBoundingClientRect().left;
-            offsetY = e.clientY - this.window.getBoundingClientRect().top;
+            const rect = this.window.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            
+            this.window.style.cursor = 'grabbing';
             this.window.style.transition = 'none';
+            this.window.style.pointerEvents = 'all';
+            
+            e.preventDefault();
         });
+        
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
+            
             let left = e.clientX - offsetX;
             let top = e.clientY - offsetY;
-            left = Math.max(10, Math.min(left, window.innerWidth - this.window.offsetWidth - 10));
-            top = Math.max(10, Math.min(top, window.innerHeight - this.window.offsetHeight - 10));
+            
+            const winWidth = this.window.offsetWidth;
+            const winHeight = this.window.offsetHeight;
+            left = Math.max(0, Math.min(left, window.innerWidth - winWidth));
+            top = Math.max(0, Math.min(top, window.innerHeight - winHeight));
+            
             this.window.style.position = 'fixed';
             this.window.style.left = `${left}px`;
             this.window.style.right = 'auto';
             this.window.style.top = `${top}px`;
+            this.window.style.bottom = 'auto';
+            
+            e.preventDefault();
         });
+        
         document.addEventListener('mouseup', () => {
-            isDragging = false;
-            this.window.style.transition = '';
+            if (isDragging) {
+                isDragging = false;
+                this.window.style.cursor = '';
+                this.window.style.transition = '';
+                this.window.style.pointerEvents = '';
+            }
         });
     }
 
-    // ========== CONSEJOS ALEATORIOS (MODIFICADO) ==========
+    // ========== MANEJADOR DE RESIZE ==========
+    setupResizeHandler() {
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (this.window && this.window.style.left !== '' && this.window.style.left !== 'auto') {
+                    const left = parseInt(this.window.style.left);
+                    const top = parseInt(this.window.style.top);
+                    const winWidth = this.window.offsetWidth;
+                    const winHeight = this.window.offsetHeight;
+                    
+                    if (left + winWidth > window.innerWidth) {
+                        this.window.style.left = `${Math.max(0, window.innerWidth - winWidth)}px`;
+                    }
+                    if (top + winHeight > window.innerHeight) {
+                        this.window.style.top = `${Math.max(0, window.innerHeight - winHeight)}px`;
+                    }
+                }
+            }, 200);
+        });
+    }
+
+    // ========== CONSEJOS ALEATORIOS (SOLO TOOLTIP) ==========
     startRandomTips() {
-        setTimeout(() => this.showRandomTip(), 15000);
-        setInterval(() => this.showRandomTip(), 50000 + Math.random() * 20000);
+        setTimeout(() => this.showRandomTip(), 10000);
+        setInterval(() => this.showRandomTip(), 45000 + Math.random() * 15000);
     }
 
     showRandomTip() {
         if (this.isOpen) return;
+        
         const randomTip = this.tips[Math.floor(Math.random() * this.tips.length)];
         const toggleBtn = this.toggleBtn;
         if (!toggleBtn) return;
 
-        // Cambiar a BUSCANDO (sin timeout automático)
         this.setExpression('buscando');
         this.addConsejo(randomTip);
 
         const existingTip = document.querySelector('.cb-tip-tooltip');
-        if (existingTip) existingTip.remove();
+        if (existingTip) {
+            existingTip.style.transition = 'all 0.3s ease';
+            existingTip.style.opacity = '0';
+            existingTip.style.transform = 'scale(0.9)';
+            setTimeout(() => existingTip.remove(), 300);
+        }
 
-        const tooltip = document.createElement('div');
-        tooltip.className = 'cb-tip-tooltip';
-        tooltip.innerHTML = `
-            <div class="cb-tip-title"><i class="fas fa-lightbulb"></i> ¿Sabías que...?<button class="cb-tip-close"><i class="fas fa-times"></i></button></div>
-            <div class="cb-tip-text">${randomTip}</div>
-        `;
-        toggleBtn.parentElement.appendChild(tooltip);
+        setTimeout(() => {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'cb-tip-tooltip';
+            tooltip.style.opacity = '0';
+            tooltip.style.transform = 'scale(0.9) translateY(10px)';
+            tooltip.innerHTML = `
+                <div class="cb-tip-title">
+                    <i class="fas fa-lightbulb"></i> ¿Sabías que...?
+                    <button class="cb-tip-close" aria-label="Cerrar consejo">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="cb-tip-text">${randomTip}</div>
+            `;
+            
+            toggleBtn.parentElement.appendChild(tooltip);
+            
+            requestAnimationFrame(() => {
+                tooltip.style.transition = 'all 0.4s cubic-bezier(0.34, 1.3, 0.64, 1)';
+                tooltip.style.opacity = '1';
+                tooltip.style.transform = 'scale(1) translateY(0)';
+            });
 
-        if (this.tipTimeout) clearTimeout(this.tipTimeout);
-        this.tipTimeout = setTimeout(() => {
-            if (tooltip.parentElement) tooltip.remove();
-            // Volver a CONTENTO al cerrar el consejo
-            this.setExpression('contento');
-        }, 10000);
+            if (this.tipTimeout) clearTimeout(this.tipTimeout);
+            this.tipTimeout = setTimeout(() => {
+                if (tooltip.parentElement) {
+                    tooltip.style.transition = 'all 0.3s ease';
+                    tooltip.style.opacity = '0';
+                    tooltip.style.transform = 'scale(0.9) translateY(10px)';
+                    setTimeout(() => {
+                        if (tooltip.parentElement) tooltip.remove();
+                        this.setExpression('contento');
+                    }, 300);
+                }
+            }, 10000);
 
-        tooltip.querySelector('.cb-tip-close').addEventListener('click', () => {
-            clearTimeout(this.tipTimeout);
-            tooltip.remove();
-            this.setExpression('contento');
-        });
-    }
-
-    // ========== SUGERENCIAS ==========
-    addSuggestions() {
-        const suggestions = ["¿Cómo me registro?", "¿Qué son los espacios?", "¿Cómo inicio una simulación?", "¿Dónde veo mis tareas?", "¿Qué especies hay?"];
-        const suggestionsDiv = document.createElement('div');
-        suggestionsDiv.className = 'cb-suggestions';
-        suggestions.forEach(text => {
-            const btn = document.createElement('button');
-            btn.className = 'cb-suggestion-btn';
-            btn.textContent = text;
-            btn.addEventListener('click', () => { this.input.value = text; this.processMessage(text); });
-            suggestionsDiv.appendChild(btn);
-        });
-        this.messagesContainer.appendChild(suggestionsDiv);
-        this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            tooltip.querySelector('.cb-tip-close').addEventListener('click', () => {
+                clearTimeout(this.tipTimeout);
+                tooltip.style.transition = 'all 0.3s ease';
+                tooltip.style.opacity = '0';
+                tooltip.style.transform = 'scale(0.9) translateY(10px)';
+                setTimeout(() => {
+                    if (tooltip.parentElement) tooltip.remove();
+                    this.setExpression('contento');
+                }, 300);
+            });
+        }, 300);
     }
 
     // ========== MENSAJES ==========
     loadMessages() {
         const saved = localStorage.getItem('chatbot_messages');
-        if (saved) { this.messages = JSON.parse(saved); this.renderMessages(); }
+        if (saved) {
+            try {
+                this.messages = JSON.parse(saved);
+            } catch {
+                this.messages = [];
+            }
+        }
     }
+    
     saveMessages() {
-        if (this.messages.length > 50) this.messages = this.messages.slice(-50);
-        localStorage.setItem('chatbot_messages', JSON.stringify(this.messages));
+        if (this.messages.length > 100) {
+            this.messages = this.messages.slice(-80);
+        }
+        try {
+            localStorage.setItem('chatbot_messages', JSON.stringify(this.messages));
+        } catch {}
     }
+    
     renderMessages() {
         if (!this.messagesContainer) return;
+        
+        const wasAtBottom = this.messagesContainer.scrollHeight - this.messagesContainer.scrollTop <= this.messagesContainer.clientHeight + 20;
+        
         this.messagesContainer.innerHTML = '';
-        this.messages.forEach(msg => {
+        
+        if (this.messages.length <= 1 && !this.suggestionsPanel?.querySelector('.cb-suggestions-container')) {
+            this.showSuggestions();
+        }
+        
+        // Renderizar mensajes
+        this.messages.forEach((msg, index) => {
             const messageDiv = document.createElement('div');
             messageDiv.className = `cb-msg cb-msg-${msg.sender}`;
+            messageDiv.style.opacity = '0';
+            messageDiv.style.transform = 'translateY(15px)';
 
+            const bubbleContainer = document.createElement('div');
+            bubbleContainer.className = 'cb-bubble-container';
+            
             const bubble = document.createElement('div');
             bubble.className = 'cb-bubble';
             bubble.innerHTML = msg.text.replace(/\n/g, '<br>');
 
+            if (msg.timestamp) {
+                const time = new Date(msg.timestamp);
+                const timeStr = time.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+                const timeElement = document.createElement('div');
+                timeElement.className = 'cb-timestamp';
+                timeElement.textContent = timeStr;
+                bubble.appendChild(timeElement);
+            }
+
             const tail = document.createElement('div');
             tail.className = 'cb-tail';
-            const b1 = document.createElement('span');
-            b1.className = 'cb-tail-bubble';
-            const b2 = document.createElement('span');
-            b2.className = 'cb-tail-bubble';
-            tail.appendChild(b1);
-            tail.appendChild(b2);
+            for (let i = 0; i < 2; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'cb-tail-bubble';
+                tail.appendChild(dot);
+            }
 
-            messageDiv.appendChild(bubble);
+            bubbleContainer.appendChild(bubble);
+            messageDiv.appendChild(bubbleContainer);
             messageDiv.appendChild(tail);
             this.messagesContainer.appendChild(messageDiv);
+            
+            const delay = index < 3 ? index * 100 : 0;
+            setTimeout(() => {
+                messageDiv.style.transition = 'all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1)';
+                messageDiv.style.opacity = '1';
+                messageDiv.style.transform = 'translateY(0)';
+            }, delay);
         });
-        this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        
+        if (wasAtBottom) {
+            setTimeout(() => {
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }, 100);
+        }
     }
+    
     addUserMessage(text) {
         this.messages.push({ sender: 'user', text, timestamp: Date.now() });
         this.renderMessages();
         this.saveMessages();
     }
+    
     addBotMessage(text) {
         this.messages.push({ sender: 'bot', text, timestamp: Date.now() });
         this.renderMessages();
@@ -499,104 +1215,210 @@ class Chatbot {
     showTyping() {
         this.isTyping = true;
         this.setExpression('hablando');
+        
         const typingDiv = document.createElement('div');
         typingDiv.className = 'cb-typing';
         typingDiv.id = 'cbTypingIndicator';
-        typingDiv.innerHTML = '<span></span><span></span><span></span>';
+        typingDiv.style.opacity = '0';
+        typingDiv.innerHTML = `
+            <span></span>
+            <span></span>
+            <span></span>
+            <span class="cb-typing-text">Escribiendo...</span>
+        `;
         this.messagesContainer.appendChild(typingDiv);
+        
+        requestAnimationFrame(() => {
+            typingDiv.style.transition = 'all 0.3s ease';
+            typingDiv.style.opacity = '1';
+        });
+        
         this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
     }
+    
     hideTyping() {
         const indicator = document.getElementById('cbTypingIndicator');
-        if (indicator) indicator.remove();
+        if (indicator) {
+            indicator.style.transition = 'all 0.3s ease';
+            indicator.style.opacity = '0';
+            indicator.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                if (indicator.parentElement) indicator.remove();
+            }, 300);
+        }
         this.isTyping = false;
     }
 
     // ========== BÚSQUEDA DE RESPUESTAS ==========
     findResponse(question) {
         const lowerQuestion = question.toLowerCase();
+        let bestMatch = null;
+        let bestScore = 0;
+        
         for (const item of this.knowledgeBase) {
             for (const keyword of item.keywords) {
-                if (lowerQuestion.includes(keyword.toLowerCase())) return item.response;
+                const keywordLower = keyword.toLowerCase();
+                if (lowerQuestion.includes(keywordLower)) {
+                    const score = keywordLower.length / lowerQuestion.length;
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMatch = item.response;
+                    }
+                }
             }
         }
-        return null;
+        return bestMatch;
     }
+    
     async getResponse(question) {
         const directResponse = this.findResponse(question);
         if (directResponse) return directResponse;
+        
         if (window.blueEcoTranslator?.getLanguage?.() === 'en') {
             try {
                 const translatedQuestion = await window.blueEcoTranslator.translate(question, 'en', 'es');
                 const translatedResponse = this.findResponse(translatedQuestion);
-                if (translatedResponse) return translatedResponse;
+                if (translatedResponse) {
+                    return await window.blueEcoTranslator.translate(translatedResponse, 'es', 'en');
+                }
             } catch (error) {
-                console.warn('No se pudo traducir la pregunta del chatbot:', error);
+                console.warn('Error en traducción del chatbot:', error);
             }
         }
-        return "🤔 No estoy seguro de entender tu pregunta.\n\n💡 Prueba preguntarme:\n\n• ¿Cómo me registro?\n• ¿Qué son los espacios?\n• ¿Cómo inicio una simulación?\n• ¿Dónde veo mis tareas?\n• ¿Qué especies hay?\n• ¿Cómo me contacto con soporte?";
+        
+        return `🤔 No estoy seguro de entender tu pregunta.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 **Prueba preguntarme:**
+
+• 📝 ¿Cómo me registro?
+• 🏫 ¿Qué son los espacios?
+• 🎮 ¿Cómo inicio una simulación?
+• 📋 ¿Dónde veo mis tareas?
+• 🐠 ¿Qué especies hay?
+• 🔑 ¿Cómo me uno a un espacio?
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+O escríbeme con más detalle para poder ayudarte mejor. 🌊`;
     }
 
     // ========== PROCESAR MENSAJE ==========
     async processMessage(question) {
         if (!question.trim()) return;
+        
+        this.input.disabled = true;
+        this.input.style.opacity = '0.6';
+        
         this.addUserMessage(question);
         this.input.value = '';
         this.setExpression('buscando');
         this.showTyping();
-        setTimeout(async () => {
-            this.hideTyping();
-            const response = await this.getResponse(question);
-            
-            if (response.includes('No estoy seguro de entender')) {
-                this.setExpression('confusion');
-            } else {
-                this.setExpression('hablando');
-            }
-            
-            this.addBotMessage(response);
-        }, 600 + Math.random() * 400);
+        
+        const delay = 800 + Math.random() * 700;
+        await new Promise(resolve => setTimeout(resolve, delay));
+        
+        this.hideTyping();
+        const response = await this.getResponse(question);
+        
+        if (response.includes('No estoy seguro') || response.includes('🤔')) {
+            this.setExpression('confusion');
+        } else {
+            this.setExpression('hablando');
+        }
+        
+        this.addBotMessage(response);
+        
+        this.input.disabled = false;
+        this.input.style.opacity = '1';
+        this.input.focus();
     }
 
     // ========== ABRIR/CERRAR CHAT ==========
     toggleChat() {
         this.isOpen = !this.isOpen;
+        
         if (this.isOpen) {
             this.window.classList.add('open');
-            this.input.focus();
+            
             const tip = document.querySelector('.cb-tip-tooltip');
             if (tip) {
-                tip.remove();
-                clearTimeout(this.tipTimeout);
-                this.setExpression('contento');
+                tip.style.transition = 'all 0.3s ease';
+                tip.style.opacity = '0';
+                tip.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    if (tip.parentElement) tip.remove();
+                    clearTimeout(this.tipTimeout);
+                    this.setExpression('contento');
+                }, 300);
             }
+            
+            setTimeout(() => {
+                if (this.input) {
+                    this.input.focus();
+                }
+            }, 400);
+            
         } else {
             this.window.classList.remove('open');
-            if (this.window.style.left) {
+            
+            if (this.window.style.left !== '' && this.window.style.left !== 'auto') {
                 setTimeout(() => {
                     this.window.style.left = '';
                     this.window.style.right = '';
                     this.window.style.top = '';
                     this.window.style.bottom = '';
-                }, 300);
+                    this.window.style.position = 'fixed';
+                }, 400);
             }
+            
             this.setExpression('contento');
         }
     }
 
     // ========== EVENTOS ==========
     addEventListeners() {
-        document.getElementById('cbToggleBtn')?.addEventListener('click', () => this.toggleChat());
-        document.getElementById('cbCloseBtn')?.addEventListener('click', () => this.toggleChat());
-        document.getElementById('cbSendBtn')?.addEventListener('click', () => this.processMessage(this.input.value));
-        this.input?.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.processMessage(this.input.value); });
+        document.getElementById('cbToggleBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleChat();
+        });
+        
+        document.getElementById('cbCloseBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleChat();
+        });
+        
+        document.getElementById('cbSendBtn')?.addEventListener('click', () => {
+            this.processMessage(this.input.value);
+        });
+        
+        this.input?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                this.processMessage(this.input.value);
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen) {
+                this.toggleChat();
+            }
+        });
     }
 }
 
 // ========== INICIALIZACIÓN GLOBAL ==========
 document.addEventListener('DOMContentLoaded', () => {
     if (!window.chatbotInitialized) {
-        window.chatbot = new Chatbot(window.currentUserName || null);
+        let userName = null;
+        const userElement = document.querySelector('[data-username]') || document.querySelector('.user-name');
+        if (userElement) {
+            userName = userElement.getAttribute('data-username') || userElement.textContent.trim();
+        }
+        
+        window.chatbot = new Chatbot(userName);
         window.chatbotInitialized = true;
+        console.log('🐋 Chatbot Blue EcoSim inicializado correctamente');
     }
 });

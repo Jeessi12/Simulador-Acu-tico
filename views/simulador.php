@@ -249,6 +249,18 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
                     aria-valuemin="4" aria-valuemax="10" aria-valuenow="6">
                 <div class="range-hint">Óptimo: 5 – 8 mg/L</div>
             </div>
+
+            <div class="control-group">
+                <label for="healthSlider">
+                    Salud del ecosistema
+                    <span class="val-display"><span id="healthVal">95</span>%</span>
+                </label>
+                <input type="range" id="healthSlider"
+                    min="0" max="100" step="1" value="95"
+                    aria-label="Salud del ecosistema"
+                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="95">
+                <div class="range-hint">Sobre 90% por 20 segundos atrae Tortugas Carey</div>
+            </div>
         </div>
 
         <!-- Acciones rápidas -->

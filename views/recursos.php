@@ -16,16 +16,26 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="../public/css/recursos.css">
 </head>
 <body class="recursos-page">
+    <div class="resources-scroll-progress" aria-hidden="true"></div>
     <div id="navbar-container">
         <?php include(__DIR__ . "/fragments/navbar.php"); ?>
     </div>
 
     <canvas id="particles"></canvas>
+    <nav class="resources-rail" aria-label="Secciones de recursos">
+        <a href="#timeline" data-section="timeline"><i class="fa-solid fa-route"></i><span>Historia</span></a>
+        <a href="#species" data-section="species"><i class="fa-solid fa-fish"></i><span>Biodiversidad</span></a>
+        <a href="#map" data-section="map"><i class="fa-solid fa-map-location-dot"></i><span>Mapa</span></a>
+        <a href="#docs" data-section="docs"><i class="fa-solid fa-file-lines"></i><span>Biblioteca</span></a>
+    </nav>
 
     <main class="resources-shell">
         
-        <!-- ═══════════ HERO ═══════════ -->
+        <!-- â•â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â•â• -->
         <section class="resources-hero">
+            <video class="resources-hero-video" autoplay muted loop playsinline poster="../public/media/backgrounds/recursos-hero.png">
+                <source src="../public/media/backgrounds/recursos-hero.mp4" type="video/mp4">
+            </video>
             <canvas id="particlesHero"></canvas>
             <div class="hero-overlay">
                 <span class="hero-badge">
@@ -36,14 +46,19 @@ if (session_status() === PHP_SESSION_NONE) {
                     Explora la historia, biodiversidad y conservación de uno de los 
                     arrecifes más importantes del Pacífico centroamericano
                 </p>
+                <div class="hero-metrics" aria-label="Resumen de recursos">
+                    <span><strong>183+</strong> registros</span>
+                    <span><strong>5</strong> hitos</span>
+                    <span><strong>4</strong> capas</span>
+                </div>
             </div>
             <div class="hero-scroll-indicator">
                 <span></span>
             </div>
         </section>
 
-        <!-- ═══════════ LÍNEA DEL TIEMPO ═══════════ -->
-        <section class="content-section" id="timeline">
+        <!-- â•â•â•â•â•â•â•â•â•â•â• LÍNEA DEL TIEMPO â•â•â•â•â•â•â•â•â•â•â• -->
+        <section class="content-section timeline-scroll-section" id="timeline">
             <div class="section-header-center">
                 <h2>Línea del Tiempo</h2>
                 <div class="section-line"></div>
@@ -51,6 +66,31 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
             <div class="timeline-fluid">
+                <svg class="timeline-reef-route" viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="timelineRouteGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#8cf4ff"/>
+                            <stop offset="42%" stop-color="#ffffff"/>
+                            <stop offset="72%" stop-color="#78ffd4"/>
+                            <stop offset="100%" stop-color="#6ba8ff"/>
+                        </linearGradient>
+                        <filter id="timelineGlow" x="-20%" y="-80%" width="140%" height="260%">
+                            <feGaussianBlur stdDeviation="6" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <path class="timeline-route-shadow" d="M70 230 C170 75 285 96 366 195 C446 292 555 292 635 188 C723 74 820 74 930 192"/>
+                    <path class="timeline-route-base" d="M70 230 C170 75 285 96 366 195 C446 292 555 292 635 188 C723 74 820 74 930 192"/>
+                    <path class="timeline-route-progress" d="M70 230 C170 75 285 96 366 195 C446 292 555 292 635 188 C723 74 820 74 930 192"/>
+                    <g class="timeline-route-bubbles">
+                        <circle cx="160" cy="126" r="7"/><circle cx="322" cy="172" r="5"/><circle cx="512" cy="270" r="8"/>
+                        <circle cx="704" cy="130" r="6"/><circle cx="850" cy="112" r="9"/>
+                    </g>
+                </svg>
+                <div class="timeline-route-marker" aria-hidden="true"><i class="fa-solid fa-location-arrow"></i></div>
                 <div class="timeline-node active" data-year="2008" data-title="Reconocimiento ambiental" data-description="Los Cóbanos empieza a consolidarse como un punto clave para la educación marina, el turismo local y la protección del arrecife rocoso coralino.">
                     <div class="timeline-node-content">
                         <div class="timeline-node-icon"><i class="fa-solid fa-seedling"></i></div>
@@ -100,62 +140,78 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </section>
 
-        <!-- ═══════════ GRÁFICAS DE ESPECIES ═══════════ -->
-        <section class="content-section" id="species">
+        <!-- â•â•â•â•â•â•â•â•â•â•â• GRÁFICAS DE ESPECIES â•â•â•â•â•â•â•â•â•â•â• -->
+        <section class="content-section species-showcase biodiversity-trip-showcase" id="species" data-biodiversity-carousel>
             <div class="section-header-left">
                 <h2>Biodiversidad marina</h2>
-                <p>Datos actualizados sobre las especies registradas en el ecosistema de Los Cóbanos</p>
+                <p>Una vista general de los grupos, habitats y funciones ecologicas que sostienen la vida en Los Cobanos</p>
             </div>
 
-            <div class="species-charts">
-                <article class="species-chart-card">
-                    <div class="chart-icon-circle fish">
-                        <i class="fa-solid fa-fish"></i>
-                    </div>
-                    <div class="chart-total">112</div>
-                    <div class="chart-label">Especies de peces</div>
-                    <div class="chart-bars">
-                        <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                        <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                    </div>
-                </article>
-                <article class="species-chart-card">
-                    <div class="chart-icon-circle invertebrates">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div class="chart-total">31</div>
-                    <div class="chart-label">Invertebrados marinos</div>
-                    <div class="chart-bars">
-                        <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                        <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                    </div>
-                </article>
-                <article class="species-chart-card">
-                    <div class="chart-icon-circle turtles">
-                        <i class="fa-solid fa-turtle"></i>
-                    </div>
-                    <div class="chart-total">4</div>
-                    <div class="chart-label">Tortugas marinas</div>
-                    <div class="chart-bars">
-                        <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                        <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                    </div>
-                </article>
-                <article class="species-chart-card">
-                    <div class="chart-icon-circle crustaceans">
-                        <i class="fa-solid fa-shrimp"></i>
-                    </div>
-                    <div class="chart-total">28</div>
-                    <div class="chart-label">Crustáceos costeros</div>
-                    <div class="chart-bars">
-                        <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                        <div class="chart-bar"></div><div class="chart-bar"></div><div class="chart-bar"></div>
-                    </div>
-                </article>
+            <div class="biodiversity-trip-panel">
+                <div class="biodiversity-action-bar" aria-label="Atajos de biodiversidad">
+                    <a href="#bio-grupos">Grupos clave</a>
+                    <a href="#bio-habitats">Habitats</a>
+                    <a href="#bio-conservacion">Conservacion</a>
+                </div>
+
+                <ul class="biodiversity-carousel" id="biodiversityCarousel" aria-roledescription="carousel" aria-label="Resumen informativo de biodiversidad marina">
+                    <li class="bio-day-card fish is-active">
+                        <a id="bio-grupos"></a>
+                        <img src="../public/media/Species/Pez-Angel-Real.png" alt="Pez Angel Real" loading="lazy">
+                        <div class="meta"><span class="bio-stat">112 especies</span><h3 class="location">Peces de arrecife</h3><p class="desc">Comunidades de peces de roca, arrecife y mar abierto conectan la cadena alimentaria e indican la salud del ecosistema.</p></div>
+                    </li>
+                    <li class="bio-day-card benthic">
+                        <img src="../public/media/Species/estrella-de-mar.png" alt="Estrella de Mar" loading="lazy">
+                        <div class="meta"><span class="bio-stat">31 registros</span><h3 class="location">Invertebrados</h3><p class="desc">Estrellas, moluscos, nudibranquios y organismos de fondo reciclan nutrientes y forman parte esencial del arrecife rocoso.</p></div>
+                    </li>
+                    <li class="bio-day-card turtle">
+                        <img src="../public/media/Species/Tortuga-Carey.png" alt="Tortuga Carey" loading="lazy">
+                        <div class="meta"><span class="bio-stat">4 especies</span><h3 class="location">Tortugas marinas</h3><p class="desc">Carey, golfina, prieta y baula usan el corredor marino como zona de paso, alimentacion y proteccion.</p></div>
+                    </li>
+                    <li class="bio-day-card crustacean">
+                        <img src="../public/media/Species/Langosta-Espinosa-del-Pacifico.png" alt="Langosta Espinosa del Pacifico" loading="lazy">
+                        <div class="meta"><span class="bio-stat">28 especies</span><h3 class="location">Crustaceos</h3><p class="desc">Cangrejos, camarones y langostas conectan playas, pozas intermareales y fondos rocosos durante el ciclo costero.</p></div>
+                    </li>
+                    <li class="bio-day-card pelagic">
+                        <img src="../public/media/Species/Delfin-nariz-de-botella.png" alt="Delfin Nariz de Botella" loading="lazy">
+                        <div class="meta"><span class="bio-stat">Visitantes</span><h3 class="location">Mar abierto</h3><p class="desc">Delfines, rayas, tiburones y peces pelagicos aparecen en temporadas clave y amplian la diversidad observable.</p></div>
+                    </li>
+                    <li class="bio-day-card habitat week-start">
+                        <a id="bio-habitats"></a>
+                        <img src="../public/media/Species/caballito-de-mar.png" alt="Caballito de Mar" loading="lazy">
+                        <div class="meta"><span class="bio-stat">5 ambientes</span><h3 class="location">Habitats clave</h3><p class="desc">Arrecife rocoso, playa, pozas, fondos arenosos y zona pelagica forman una red natural muy dinamica.</p></div>
+                    </li>
+                    <li class="bio-day-card reef">
+                        <img src="../public/media/Species/Pulpo-de-Roca-del-Pacifico.png" alt="Pulpo de Roca del Pacifico" loading="lazy">
+                        <div class="meta"><span class="bio-stat">Refugio</span><h3 class="location">Arrecife rocoso</h3><p class="desc">Grietas, cuevas y superficies duras ofrecen proteccion, alimento y zonas de reproduccion para muchas especies.</p></div>
+                    </li>
+                    <li class="bio-day-card shore">
+                        <img src="../public/media/Species/Cangrejo-Fantasma.png" alt="Cangrejo Fantasma" loading="lazy">
+                        <div class="meta"><span class="bio-stat">Intermareal</span><h3 class="location">Playas y pozas</h3><p class="desc">La franja costera concentra especies adaptadas a cambios de marea, temperatura, salinidad y oleaje.</p></div>
+                    </li>
+                    <li class="bio-day-card protected">
+                        <a id="bio-conservacion"></a>
+                        <img src="../public/media/Species/Tortuga-Golfina.png" alt="Tortuga Golfina" loading="lazy">
+                        <div class="meta"><span class="bio-stat">Proteccion</span><h3 class="location">Conservacion</h3><p class="desc">El monitoreo, la educacion ambiental y el turismo responsable reducen presiones sobre especies sensibles.</p></div>
+                    </li>
+                    <li class="bio-day-card research">
+                        <img src="../public/media/Species/Tiburon-Ballena.png" alt="Tiburon Ballena" loading="lazy">
+                        <div class="meta"><span class="bio-stat">Aprendizaje</span><h3 class="location">Investigacion</h3><p class="desc">Los registros de biodiversidad ayudan a comparar cambios, reconocer especies prioritarias y orientar decisiones locales.</p></div>
+                    </li>
+                </ul>
+
+                <button class="bio-carousel-btn bio-carousel-prev" type="button" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="bio-carousel-btn bio-carousel-next" type="button" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+
+                <div class="bio-carousel-status" aria-live="polite">
+                    <span id="bioCarouselCounter">01</span>
+                    <strong id="bioCarouselTitle">Peces de arrecife</strong>
+                </div>
+                <div class="bio-plane" aria-hidden="true"><i class="fa-solid fa-location-arrow"></i></div>
             </div>
         </section>
 
-        <!-- ═══════════ MAPA INTERACTIVO ═══════════ -->
+        <!-- â•â•â•â•â•â•â•â•â•â•â• MAPA INTERACTIVO â•â•â•â•â•â•â•â•â•â•â• -->
         <section class="content-section" id="map">
             <div class="section-header-center">
                 <h2>Mapa interactivo</h2>
@@ -255,10 +311,15 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="map-compass" aria-hidden="true">N ↑</div>
                     <div class="map-scale" aria-hidden="true">━━ 5 km</div>
                 </div>
+
+                <div class="map-layer-summary" aria-live="polite">
+                    <span id="mapActiveCount">5 capas activas</span>
+                    <strong id="mapActiveList">Ubicación, Arrecifes, Ecosistemas, Tortugas y Protegidas</strong>
+                </div>
             </div>
         </section>
 
-        <!-- ═══════════ BIBLIOTECA ═══════════ -->
+        <!-- â•â•â•â•â•â•â•â•â•â•â• BIBLIOTECA â•â•â•â•â•â•â•â•â•â•â• -->
         <section class="content-section" id="docs">
             <div class="section-header-left">
                 <h2>Biblioteca de documentos</h2>
@@ -324,7 +385,10 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <div id="footer-container"><?php include(__DIR__ . "/fragments/footer.php"); ?></div>
     <script src="../public/js/burbujas.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
     <script src="../public/js/recursos.js" defer></script>
     <script src="../public/js/session.js" defer></script>
 </body>
 </html>
+
