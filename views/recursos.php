@@ -2,239 +2,248 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+$pageTitle = "Recursos - Los Cóbanos";
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recursos | BlueEcoSim</title>
+    <title><?php echo htmlspecialchars($pageTitle); ?></title>
     <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
     <link rel="stylesheet" href="../public/css/recursos.css">
 </head>
 <body class="recursos-page">
-    <div class="resources-scroll-progress" aria-hidden="true"></div>
-    <div id="navbar-container">
-        <?php include(__DIR__ . "/fragments/navbar.php"); ?>
-    </div>
 
-    <canvas id="particles"></canvas>
-    <nav class="resources-rail" aria-label="Secciones de recursos">
-        <a href="#timeline" data-section="timeline"><i class="fa-solid fa-route"></i><span>Historia</span></a>
-        <a href="#species" data-section="species"><i class="fa-solid fa-fish"></i><span>Biodiversidad</span></a>
-        <a href="#map" data-section="map"><i class="fa-solid fa-map-location-dot"></i><span>Mapa</span></a>
-        <a href="#docs" data-section="docs"><i class="fa-solid fa-file-lines"></i><span>Biblioteca</span></a>
-    </nav>
+<canvas id="particles" aria-hidden="true"></canvas>
 
-    <main class="resources-shell">
-        
-        <!-- â•â•â•â•â•â•â•â•â•â•â• HERO â•â•â•â•â•â•â•â•â•â•â• -->
-        <section class="resources-hero">
-            <video class="resources-hero-video" autoplay muted loop playsinline poster="../public/media/backgrounds/recursos-hero.png">
-                <source src="../public/media/backgrounds/recursos-hero.mp4" type="video/mp4">
-            </video>
-            <canvas id="particlesHero"></canvas>
-            <div class="hero-overlay">
-                <span class="hero-badge">
-                    <i class="fa-solid fa-water"></i> Centro de investigación marina
-                </span>
-                <h1>Los Cóbanos</h1>
-                <p class="hero-subtitle">
-                    Explora la historia, biodiversidad y conservación de uno de los 
-                    arrecifes más importantes del Pacífico centroamericano
-                </p>
-                <div class="hero-metrics" aria-label="Resumen de recursos">
-                    <span><strong>183+</strong> registros</span>
-                    <span><strong>5</strong> hitos</span>
-                    <span><strong>4</strong> capas</span>
-                </div>
+<div id="navbar-container">
+    <?php include(__DIR__ . '/fragments/navbar.php'); ?>
+</div>
+
+<main id="main-content">
+
+    <!-- SECCIÓN HERO -->
+    <section class="resources-hero">
+        <div class="resources-hero-image" aria-hidden="true"></div>
+        <canvas id="particlesHero"></canvas>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-badge">
+                <i class="fa-solid fa-water"></i> Centro de investigación marina
+            </span>
+            <h1>Los Cóbanos</h1>
+            <p class="hero-subtitle">Explora la historia, biodiversidad y conservación de uno de los arrecifes más importantes del Pacífico centroamericano.</p>
+            <div class="hero-metrics" aria-label="Resumen de recursos">
+                <span><strong>183+</strong> registros</span>
+                <span><strong>5</strong> hitos</span>
+                <span><strong>4</strong> capas</span>
             </div>
-            <div class="hero-scroll-indicator">
-                <span></span>
-            </div>
-        </section>
+        </div>
+        <div class="hero-scroll-indicator"><span></span></div>
+    </section>
 
-        <!-- â•â•â•â•â•â•â•â•â•â•â• LÍNEA DEL TIEMPO â•â•â•â•â•â•â•â•â•â•â• -->
-        <section class="content-section timeline-scroll-section" id="timeline">
-            <div class="section-header-center">
-                <h2>Línea del Tiempo</h2>
-                <div class="section-line"></div>
-                <p>Descubre los acontecimientos más importantes en la historia de conservación de Los Cóbanos</p>
-            </div>
+    <!-- SECCIÓN LÍNEA DE TIEMPO -->
+    <section class="content-section" id="timeline-section">
+        <div class="section-header-center">
+            <h2>Línea del Tiempo</h2>
+            <div class="section-line"></div>
+            <p>Descubre los acontecimientos más importantes en la historia de conservación de Los Cóbanos.</p>
+        </div>
 
-            <div class="timeline-fluid">
-                <svg class="timeline-reef-route" viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true">
-                    <defs>
-                        <linearGradient id="timelineRouteGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#8cf4ff"/>
-                            <stop offset="42%" stop-color="#ffffff"/>
-                            <stop offset="72%" stop-color="#78ffd4"/>
-                            <stop offset="100%" stop-color="#6ba8ff"/>
-                        </linearGradient>
-                        <filter id="timelineGlow" x="-20%" y="-80%" width="140%" height="260%">
-                            <feGaussianBlur stdDeviation="6" result="blur"/>
-                            <feMerge>
-                                <feMergeNode in="blur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <path class="timeline-route-shadow" d="M70 230 C170 75 285 96 366 195 C446 292 555 292 635 188 C723 74 820 74 930 192"/>
-                    <path class="timeline-route-base" d="M70 230 C170 75 285 96 366 195 C446 292 555 292 635 188 C723 74 820 74 930 192"/>
-                    <path class="timeline-route-progress" d="M70 230 C170 75 285 96 366 195 C446 292 555 292 635 188 C723 74 820 74 930 192"/>
-                    <g class="timeline-route-bubbles">
-                        <circle cx="160" cy="126" r="7"/><circle cx="322" cy="172" r="5"/><circle cx="512" cy="270" r="8"/>
-                        <circle cx="704" cy="130" r="6"/><circle cx="850" cy="112" r="9"/>
-                    </g>
-                </svg>
-                <div class="timeline-route-marker" aria-hidden="true"><i class="fa-solid fa-location-arrow"></i></div>
-                <div class="timeline-node active" data-year="2008" data-title="Reconocimiento ambiental" data-description="Los Cóbanos empieza a consolidarse como un punto clave para la educación marina, el turismo local y la protección del arrecife rocoso coralino.">
-                    <div class="timeline-node-content">
-                        <div class="timeline-node-icon"><i class="fa-solid fa-seedling"></i></div>
-                        <div class="timeline-dot"></div>
-                        <span class="timeline-year">2008</span>
-                        <span class="timeline-label">Protección del arrecife</span>
+        <div class="timeline-container" id="timelineContainer">
+            <!-- Trazo SVG Curvo -->
+            <svg class="timeline-svg" viewBox="0 0 1200 350" preserveAspectRatio="none">
+                <path id="timelinePathBg" d="M 0,175 C 300,50 600,300 900,100 S 1200,175 1200,175" fill="none" stroke="rgba(255, 255, 255, 0.15)" stroke-width="8"/>
+                <path id="timelinePathActive" d="M 0,175 C 300,50 600,300 900,100 S 1200,175 1200,175" fill="none" stroke="url(#gradientPath)" stroke-width="8" stroke-dasharray="1600" stroke-dashoffset="1600"/>
+                <defs>
+                    <linearGradient id="gradientPath" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#FFD700" />
+                        <stop offset="100%" stop-color="#35c5a6" />
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <div class="timeline-items-wrapper">
+                <!-- Ítem 1 -->
+                <div class="timeline-item" data-year="2008">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="card-icon"><i class="fa-solid fa-mountain"></i></div>
+                        <span class="card-year">2008</span>
+                        <h4>Creación del Área Natural</h4>
+                        <p>Declaración oficial de Los Cóbanos como área protegida de El Salvador.</p>
                     </div>
                 </div>
-                <div class="timeline-node" data-year="2009" data-title="Área Natural Protegida" data-description="Se fortalece la gestión del área marina costera y se promueve la conservación de playas, arrecifes y especies asociadas.">
-                    <div class="timeline-node-content">
-                        <div class="timeline-node-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-                        <div class="timeline-dot"></div>
-                        <span class="timeline-year">2009</span>
-                        <span class="timeline-label">Gestión territorial</span>
+                <!-- Ítem 2 -->
+                <div class="timeline-item" data-year="2009">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="card-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+                        <span class="card-year">2009</span>
+                        <h4>Gestión territorial</h4>
+                        <p>Se fortalece la gestión del área marina costera y se promueve la conservación de playas, arrecifes y especies asociadas.</p>
                     </div>
                 </div>
-                <div class="timeline-node" data-year="2013" data-title="Monitoreo de biodiversidad" data-description="Investigadores y comunidades impulsan registros de peces, invertebrados, tortugas y ecosistemas marinos.">
-                    <div class="timeline-node-content">
-                        <div class="timeline-node-icon"><i class="fa-solid fa-fish-fins"></i></div>
-                        <div class="timeline-dot"></div>
-                        <span class="timeline-year">2013</span>
-                        <span class="timeline-label">Inventarios biológicos</span>
+                <!-- Ítem 3 -->
+                <div class="timeline-item" data-year="2013">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="card-icon"><i class="fa-solid fa-fish"></i></div>
+                        <span class="card-year">2013</span>
+                        <h4>Monitoreo de Arrecifes</h4>
+                        <p>Inicio de los programas de monitoreo comunitario de corales y peces.</p>
                     </div>
                 </div>
-                <div class="timeline-node" data-year="2018" data-title="Turismo responsable" data-description="Se amplían las acciones de sensibilización para visitantes, pescadores y guías, destacando prácticas de bajo impacto.">
-                    <div class="timeline-node-content">
-                        <div class="timeline-node-icon"><i class="fa-solid fa-umbrella-beach"></i></div>
-                        <div class="timeline-dot"></div>
-                        <span class="timeline-year">2018</span>
-                        <span class="timeline-label">Educación costera</span>
+                <!-- Ítem 4 -->
+                <div class="timeline-item" data-year="2018">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="card-icon"><i class="fa-solid fa-turtle"></i></div>
+                        <span class="card-year">2018</span>
+                        <h4>Protección de Tortugas</h4>
+                        <p>Implementación de viveros y patrullajes para proteger las tortugas marinas.</p>
                     </div>
                 </div>
-                <div class="timeline-node" data-year="Actualidad" data-title="Conservación participativa" data-description="Los Cóbanos se mantiene como laboratorio natural para aprender sobre arrecifes, tortugas marinas y áreas protegidas.">
-                    <div class="timeline-node-content">
-                        <div class="timeline-node-icon"><i class="fa-solid fa-hands-holding-circle"></i></div>
-                        <div class="timeline-dot"></div>
-                        <span class="timeline-year">Actualidad</span>
-                        <span class="timeline-label">Investigación</span>
+                <!-- Ítem 4 (Actualidad) -->
+                <div class="timeline-item active" data-year="2026">
+                    <div class="timeline-dot pulse"></div>
+                    <div class="timeline-card highlight">
+                        <div class="card-icon"><i class="fa-solid fa-leaf"></i></div>
+                        <span class="card-year">Actualidad</span>
+                        <h4>Conservación participativa</h4>
+                        <p>Los Cóbanos se mantiene como laboratorio natural para aprender sobre arrecifes y ecosistemas.</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="timeline-detail-float" id="timelineDetail">
-                <span class="detail-year-badge">2008</span>
-                <h3>Reconocimiento ambiental</h3>
-                <p>Los Cóbanos empieza a consolidarse como un punto clave para la educación marina, el turismo local y la protección del arrecife rocoso coralino.</p>
-            </div>
-        </section>
+    <!-- SECCIÓN CARRUSEL DE BIODIVERSIDAD -->
+    <section class="content-section" id="biodiversity-section">
+        <div class="section-header-center">
+            <h2>Biodiversidad marina</h2>
+            <div class="section-line"></div>
+            <p>Una vista general de los grupos, hábitats y funciones ecológicas que sostienen la vida en Los Cóbanos.</p>
+        </div>
 
-        <!-- â•â•â•â•â•â•â•â•â•â•â• GRÁFICAS DE ESPECIES â•â•â•â•â•â•â•â•â•â•â• -->
-        <section class="content-section species-showcase biodiversity-trip-showcase" id="species" data-biodiversity-carousel>
-            <div class="section-header-left">
-                <h2>Biodiversidad marina</h2>
-                <p>Una vista general de los grupos, habitats y funciones ecologicas que sostienen la vida en Los Cobanos</p>
-            </div>
+        <div class="biodiversity-carousel-wrapper">
+            <button class="bio-nav prev" id="bioPrev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+            
+            <div class="biodiversity-track" id="bioTrack">
+                <!-- Tarjeta 1 -->
+                <article class="bio-card">
+                    <div class="bio-image">
+                        <img src="../public/media/Species/Pez-Angel-Real.png" alt="Pez Ángel Real" loading="lazy">
+                    </div>
+                    <div class="bio-content">
+                        <span class="bio-tag">Especies clave</span>
+                        <h3>Peces de Arrecife</h3>
+                        <p>Especies como el pez ángel y el cirujano forman parte fundamental del ecosistema.</p>
+                        <div class="bio-footer">
+                            <span class="bio-count"><i class="fa-regular fa-circle-check"></i> 24 especies</span>
+                        </div>
+                    </div>
+                </article>
 
-            <div class="biodiversity-trip-panel">
-                <div class="biodiversity-action-bar" aria-label="Atajos de biodiversidad">
-                    <a href="#bio-grupos">Grupos clave</a>
-                    <a href="#bio-habitats">Habitats</a>
-                    <a href="#bio-conservacion">Conservacion</a>
-                </div>
-
-                <ul class="biodiversity-carousel" id="biodiversityCarousel" aria-roledescription="carousel" aria-label="Resumen informativo de biodiversidad marina">
-                    <li class="bio-day-card fish is-active">
-                        <a id="bio-grupos"></a>
-                        <img src="../public/media/Species/Pez-Angel-Real.png" alt="Pez Angel Real" loading="lazy">
-                        <div class="meta"><span class="bio-stat">112 especies</span><h3 class="location">Peces de arrecife</h3><p class="desc">Comunidades de peces de roca, arrecife y mar abierto conectan la cadena alimentaria e indican la salud del ecosistema.</p></div>
-                    </li>
-                    <li class="bio-day-card benthic">
+                <!-- Tarjeta 2 (Centro) -->
+                <article class="bio-card active">
+                    <div class="bio-image">
                         <img src="../public/media/Species/estrella-de-mar.png" alt="Estrella de Mar" loading="lazy">
-                        <div class="meta"><span class="bio-stat">31 registros</span><h3 class="location">Invertebrados</h3><p class="desc">Estrellas, moluscos, nudibranquios y organismos de fondo reciclan nutrientes y forman parte esencial del arrecife rocoso.</p></div>
-                    </li>
-                    <li class="bio-day-card turtle">
+                    </div>
+                    <div class="bio-content">
+                        <span class="bio-tag">31 Registros</span>
+                        <h3>Invertebrados</h3>
+                        <p>Estrellas, moluscos, nudibranquios y organismos de fondo reciclan nutrientes.</p>
+                        <div class="bio-footer">
+                             <span class="bio-count"><i class="fa-regular fa-circle-check"></i> 31 especies</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Tarjeta 3 -->
+                <article class="bio-card">
+                    <div class="bio-image">
                         <img src="../public/media/Species/Tortuga-Carey.png" alt="Tortuga Carey" loading="lazy">
-                        <div class="meta"><span class="bio-stat">4 especies</span><h3 class="location">Tortugas marinas</h3><p class="desc">Carey, golfina, prieta y baula usan el corredor marino como zona de paso, alimentacion y proteccion.</p></div>
-                    </li>
-                    <li class="bio-day-card crustacean">
-                        <img src="../public/media/Species/Langosta-Espinosa-del-Pacifico.png" alt="Langosta Espinosa del Pacifico" loading="lazy">
-                        <div class="meta"><span class="bio-stat">28 especies</span><h3 class="location">Crustaceos</h3><p class="desc">Cangrejos, camarones y langostas conectan playas, pozas intermareales y fondos rocosos durante el ciclo costero.</p></div>
-                    </li>
-                    <li class="bio-day-card pelagic">
-                        <img src="../public/media/Species/Delfin-nariz-de-botella.png" alt="Delfin Nariz de Botella" loading="lazy">
-                        <div class="meta"><span class="bio-stat">Visitantes</span><h3 class="location">Mar abierto</h3><p class="desc">Delfines, rayas, tiburones y peces pelagicos aparecen en temporadas clave y amplian la diversidad observable.</p></div>
-                    </li>
-                    <li class="bio-day-card habitat week-start">
-                        <a id="bio-habitats"></a>
+                    </div>
+                    <div class="bio-content">
+                        <span class="bio-tag">Protección</span>
+                        <h3>Tortugas Marinas</h3>
+                        <p>Especies como la tortuga carey y verde encuentran refugio en sus aguas tranquilas.</p>
+                        <div class="bio-footer">
+                            <span class="bio-count"><i class="fa-regular fa-circle-check"></i> 4 especies</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Tarjeta 4 -->
+                <article class="bio-card">
+                    <div class="bio-image">
                         <img src="../public/media/Species/caballito-de-mar.png" alt="Caballito de Mar" loading="lazy">
-                        <div class="meta"><span class="bio-stat">5 ambientes</span><h3 class="location">Habitats clave</h3><p class="desc">Arrecife rocoso, playa, pozas, fondos arenosos y zona pelagica forman una red natural muy dinamica.</p></div>
-                    </li>
-                    <li class="bio-day-card reef">
-                        <img src="../public/media/Species/Pulpo-de-Roca-del-Pacifico.png" alt="Pulpo de Roca del Pacifico" loading="lazy">
-                        <div class="meta"><span class="bio-stat">Refugio</span><h3 class="location">Arrecife rocoso</h3><p class="desc">Grietas, cuevas y superficies duras ofrecen proteccion, alimento y zonas de reproduccion para muchas especies.</p></div>
-                    </li>
-                    <li class="bio-day-card shore">
-                        <img src="../public/media/Species/Cangrejo-Fantasma.png" alt="Cangrejo Fantasma" loading="lazy">
-                        <div class="meta"><span class="bio-stat">Intermareal</span><h3 class="location">Playas y pozas</h3><p class="desc">La franja costera concentra especies adaptadas a cambios de marea, temperatura, salinidad y oleaje.</p></div>
-                    </li>
-                    <li class="bio-day-card protected">
-                        <a id="bio-conservacion"></a>
-                        <img src="../public/media/Species/Tortuga-Golfina.png" alt="Tortuga Golfina" loading="lazy">
-                        <div class="meta"><span class="bio-stat">Proteccion</span><h3 class="location">Conservacion</h3><p class="desc">El monitoreo, la educacion ambiental y el turismo responsable reducen presiones sobre especies sensibles.</p></div>
-                    </li>
-                    <li class="bio-day-card research">
-                        <img src="../public/media/Species/Tiburon-Ballena.png" alt="Tiburon Ballena" loading="lazy">
-                        <div class="meta"><span class="bio-stat">Aprendizaje</span><h3 class="location">Investigacion</h3><p class="desc">Los registros de biodiversidad ayudan a comparar cambios, reconocer especies prioritarias y orientar decisiones locales.</p></div>
-                    </li>
-                </ul>
-
-                <button class="bio-carousel-btn bio-carousel-prev" type="button" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
-                <button class="bio-carousel-btn bio-carousel-next" type="button" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
-
-                <div class="bio-carousel-status" aria-live="polite">
-                    <span id="bioCarouselCounter">01</span>
-                    <strong id="bioCarouselTitle">Peces de arrecife</strong>
-                </div>
-                <div class="bio-plane" aria-hidden="true"><i class="fa-solid fa-location-arrow"></i></div>
+                    </div>
+                    <div class="bio-content">
+                        <span class="bio-tag">Hábitats</span>
+                        <h3>Pastos Marinos</h3>
+                        <p>Zonas de alimentación vitales para el crecimiento de juveniles y mantenimiento del ecosistema.</p>
+                        <div class="bio-footer">
+                            <span class="bio-count"><i class="fa-regular fa-circle-check"></i> 3 biomas</span>
+                        </div>
+                    </div>
+                </article>
             </div>
-        </section>
 
-        <!-- â•â•â•â•â•â•â•â•â•â•â• MAPA INTERACTIVO â•â•â•â•â•â•â•â•â•â•â• -->
+            <button class="bio-nav next" id="bioNext" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <!-- Indicadores Inferiores -->
+        <div class="bio-indicators" id="bioIndicators">
+            <span class="bio-dot" data-index="0"></span>
+            <span class="bio-dot active" data-index="1"></span>
+            <span class="bio-dot" data-index="2"></span>
+            <span class="bio-dot" data-index="3"></span>
+        </div>
+        <div class="bio-current-label">02 Invertebrados</div>
+    </section>
+
+    <!-- SECCIÓN MAPA INTERACTIVO -->
         <section class="content-section" id="map">
-            <div class="section-header-center">
-                <h2>Mapa interactivo</h2>
-                <div class="section-line"></div>
-                <p>Activa las capas para explorar la geografía marina de Los Cóbanos</p>
+            <div class="section-header-center map-hero-heading">
+                <div class="map-hero-eyebrow"><i class="fa-regular fa-compass"></i> Explora Los Cóbanos <span aria-hidden="true">•••</span></div>
+                <h2>Mapa <span>Interactivo</span> Marino</h2>
+                <div class="map-hero-divider" aria-hidden="true"><span></span><i class="fa-solid fa-location-dot"></i><span></span></div>
             </div>
 
-            <div class="map-panel-wrapper">
-                <div class="map-sidebar-vertical" id="mapPills" role="group" aria-label="Capas del mapa">
+            <div class="map-layout">
+         <aside class="map-info-card" aria-label="Información sobre Los Cóbanos">
+    <span class="map-info-kicker"><i class="fa-solid fa-leaf"></i> Área marina protegida</span>
+    <h3>Los Cóbanos,<br><em>un refugio vivo.</em></h3>
+    <p>Un paisaje marino costero de Sonsonate donde arrecifes rocosos, tortugas y comunidades conviven para proteger la biodiversidad del Pacífico salvadoreño.</p>
+    <div class="map-info-stats">
+        <span>Área<br><b>~4 km²</b></span>
+        <span>Especies<br><b>183+</b></span>
+        <span>Desde<br><b>2008</b></span>
+    </div>
+</aside>
+                <div class="map-panel-wrapper">
+                <div class="map-sidebar-vertical" id="mapPills" role="group" aria-label="Capas del mapa" data-active-count="〰 5 CAPAS ACTIVAS 〰">
                     <button class="map-pill active" type="button" data-layer="location">
-                        <i class="fa-solid fa-location-dot"></i> Ubicación
+                        <i class="fa-solid fa-location-dot"></i><span><b>Ubicación</b><small>13.5333° N, 89.8000° O · Los Cóbanos</small></span><em class="fa-solid fa-check"></em>
                     </button>
                     <button class="map-pill active" type="button" data-layer="reef">
-                        <i class="fa-solid fa-water"></i> Arrecifes
+                        <i class="fa-solid fa-water"></i><span><b>Arrecifes</b><small>Zonas rocosas y coralinas de alta biodiversidad.</small></span><em class="fa-solid fa-check"></em>
                     </button>
                     <button class="map-pill active" type="button" data-layer="ecosystem">
-                        <i class="fa-solid fa-leaf"></i> Ecosistemas
+                        <i class="fa-solid fa-leaf"></i><span><b>Ecosistemas</b><small>Arrecifes, fondo arenoso y praderas marinas.</small></span><em class="fa-solid fa-check"></em>
                     </button>
                     <button class="map-pill active" type="button" data-layer="turtles">
-                        <i class="fa-solid fa-fish-fins"></i> Tortugas
+                        <i class="fa-solid fa-fish-fins"></i><span><b>Tortugas</b><small>Rutas y zonas de anidación protegidas.</small></span><em class="fa-solid fa-check"></em>
                     </button>
                     <button class="map-pill active" type="button" data-layer="protected">
-                        <i class="fa-solid fa-shield-halved"></i> Protegidas
+                        <i class="fa-solid fa-shield-halved"></i><span><b>Protegidas</b><small>Límites de conservación y uso sostenible.</small></span><em class="fa-solid fa-check"></em>
                     </button>
                 </div>
 
@@ -253,11 +262,16 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <stop offset="0%" stop-color="#eedca8"/>
                                 <stop offset="100%" stop-color="#e0cc8a"/>
                             </linearGradient>
+                            <linearGradient id="deepSeaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#80d7f4" stop-opacity="0"/><stop offset="100%" stop-color="#157fbd" stop-opacity="0.46"/></linearGradient>
+                            <filter id="softGlow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
                         </defs>
 
                         <rect width="800" height="360" fill="url(#seaGrad)"/>
                         <rect x="0" y="240" width="800" height="120" fill="#8ecde7" opacity="0.25"/>
                         <rect x="0" y="310" width="800" height="50" fill="#7abfde" opacity="0.25"/>
+                        <path d="M0 205 Q105 150 210 196 T420 191 T620 183 T800 196 V360 H0Z" fill="url(#deepSeaGrad)"/>
+                        <path d="M0 250 Q118 204 220 258 T442 250 T650 244 T800 259" stroke="#d6f7ff" stroke-width="16" opacity="0.16" fill="none"/>
+                        <path d="M0 292 Q120 240 240 300 T485 288 T800 298" stroke="#d6f7ff" stroke-width="20" opacity="0.12" fill="none"/>
 
                         <path d="M0 200 Q200 192 400 200 Q600 208 800 200" stroke="#b2dff0" stroke-width="1" fill="none" opacity="0.6"/>
                         <path d="M0 230 Q200 222 400 232 Q600 240 800 230" stroke="#b2dff0" stroke-width="1" fill="none" opacity="0.45"/>
@@ -272,11 +286,40 @@ if (session_status() === PHP_SESSION_NONE) {
                         <circle cx="660" cy="62" r="4" fill="#8a7040" opacity="0.6"/>
                         <text x="670" y="66" font-size="9" fill="#6a5030" font-family="'Poppins',sans-serif" font-weight="600" opacity="0.75">Sonsonate</text>
 
+                        <!-- Vegetación costera en la franja terrestre -->
+                        <g class="coastal-palms" opacity="0.88">
+                            <g transform="translate(612 68)">
+                                <path d="M0 42 C4 27 7 15 9 0" fill="none" stroke="#3d8265" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M8 5 C-10 -8 -25 -4 -32 4 C-15 5 -4 11 8 12 M8 5 C22 -8 38 -4 44 7 C28 6 17 11 8 13 M8 6 C-2 -17 -13 -21 -22 -18 C-13 -6 -8 2 1 12 M9 6 C17 -14 28 -17 37 -13 C28 -3 21 4 15 13" fill="#2e9d79"/>
+                            </g>
+                            <g transform="translate(724 55) scale(.72)">
+                                <path d="M0 52 C4 33 8 15 10 0" fill="none" stroke="#427e58" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M10 6 C-13 -7 -29 -4 -38 6 C-20 8 -5 13 9 14 M10 6 C28 -9 45 -4 52 8 C34 8 20 13 10 15 M10 6 C-2 -20 -15 -25 -25 -20 C-15 -6 -8 4 3 14 M11 6 C23 -18 37 -20 48 -13 C36 -3 26 5 17 15" fill="#3baf88"/>
+                            </g>
+                            <g transform="translate(115 95) scale(.55)">
+                                <path d="M0 48 C3 30 7 15 9 0" fill="none" stroke="#4a8157" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M8 5 C-13 -7 -29 -3 -37 7 C-20 8 -5 13 9 14 M8 5 C27 -9 43 -3 51 9 C33 8 19 13 9 15 M8 5 C-4 -18 -16 -22 -25 -17 C-15 -5 -7 4 3 14" fill="#31946f"/>
+                            </g>
+                        </g>
+                        <g class="coastal-foliage" opacity="0.68">
+                            <!-- Copas de mangle y arbustos de costa -->
+                            <g fill="#5eae72"><ellipse cx="42" cy="92" rx="31" ry="15"/><ellipse cx="67" cy="87" rx="25" ry="17"/><ellipse cx="93" cy="96" rx="34" ry="14"/><ellipse cx="524" cy="74" rx="29" ry="14"/><ellipse cx="551" cy="66" rx="25" ry="18"/><ellipse cx="577" cy="76" rx="31" ry="14"/><ellipse cx="772" cy="89" rx="36" ry="18"/><ellipse cx="748" cy="77" rx="27" ry="18"/></g>
+                            <g fill="#3f9870" opacity="0.76"><path d="M166 113q12-32 25 0q13-38 26 0q13-26 25 0Z"/><path d="M470 103q11-28 23 0q12-34 25 0q13-25 24 0Z"/><path d="M678 89q13-31 26 0q13-37 27 0q13-27 26 0Z"/></g>
+                            <!-- Hojas de primer plano -->
+                            <g fill="#2e8d73"><path d="M34 140c3-26 18-42 42-47c-9 23-24 38-42 47Z"/><path d="M47 141c14-25 34-32 57-28c-18 18-37 27-57 28Z"/><path d="M760 118c-3-27-19-43-43-48c9 24 24 39 43 48Z"/><path d="M748 119c-14-25-34-33-57-29c18 19 37 28 57 29Z"/></g>
+                            <!-- Destellos de vegetación y flores costeras -->
+                            <g fill="#b8df87"><circle cx="140" cy="104" r="3"/><circle cx="151" cy="98" r="2"/><circle cx="453" cy="85" r="3"/><circle cx="463" cy="91" r="2"/><circle cx="589" cy="96" r="3"/><circle cx="604" cy="88" r="2"/><circle cx="713" cy="103" r="3"/></g>
+                        </g>
+
                         <ellipse cx="298" cy="162" rx="10" ry="4.5" fill="#c0de98" opacity="0.85"/>
+                        <!-- Detalle ambiental permanente -->
+                        <g opacity="0.55" fill="#e8fbff"><ellipse cx="92" cy="212" rx="7" ry="3"/><ellipse cx="128" cy="246" rx="4" ry="2"/><ellipse cx="586" cy="174" rx="9" ry="4"/><ellipse cx="702" cy="238" rx="5" ry="2.5"/><circle cx="84" cy="279" r="3"/><circle cx="520" cy="291" r="3"/></g>
+                        <g fill="#398fcb" opacity="0.7"><path d="M92 242c9-8 18-7 26 0-8 7-17 8-26 0Zm24 0 7-6v12z"/><path d="M125 226c7-6 14-5 20 0-6 6-13 6-20 0Zm18 0 5-4v8z"/><path d="M526 260c9-8 18-7 25 0-7 7-16 7-25 0Zm23 0 7-5v10z"/></g>
+                        <g fill="#4aa88a" opacity="0.55"><path d="M52 360v-56c12 13 10 28 0 40 14-10 23-23 17-40 21 18 14 39-9 56Z"/><path d="M735 360v-48c11 11 9 25 0 34 13-8 21-19 15-34 20 16 13 34-8 48Z"/></g>
 
                         <g class="map-svg-layer" id="svg-lyr-protected">
                             <ellipse cx="298" cy="200" rx="105" ry="68" fill="#56a86a" fill-opacity="0.1" stroke="#56a86a" stroke-width="2" stroke-dasharray="6 4"/>
-                            <text x="298" y="144" text-anchor="middle" font-size="8.5" fill="#2e7a46" font-family="'Poppins',sans-serif" font-weight="600" opacity="0.8">Área protegida</text>
+                            <rect x="254" y="132" width="88" height="20" rx="10" fill="#3a9d63" filter="url(#softGlow)"/><text x="298" y="146" text-anchor="middle" font-size="8.5" fill="#ffffff" font-family="'Poppins',sans-serif" font-weight="700">Área protegida</text>
                         </g>
 
                         <g class="map-svg-layer" id="svg-lyr-reef">
@@ -284,11 +327,13 @@ if (session_status() === PHP_SESSION_NONE) {
                             <rect x="335" y="228" width="55" height="12" rx="6" fill="#e07e6a" fill-opacity="0.55"/>
                             <rect x="188" y="234" width="40" height="10" rx="5" fill="#e07e6a" fill-opacity="0.45"/>
                             <text x="280" y="248" text-anchor="middle" font-size="8.5" fill="#a04030" font-family="'Poppins',sans-serif" font-weight="600" opacity="0.85">Zona arrecifal</text>
+                            <g stroke-linecap="round"><path d="M260 220v-28m0 14-10-9m10 2 10-12m20 33v-34m0 17-12-11m12 5 11-10m26 31v-22m0 10-8-8m8 3 8-9" stroke="#ef806c" stroke-width="4"/><path d="M244 222v-17m0 8-7-6m42 11v-19m0 9 7-7" stroke="#3577bd" stroke-width="4"/></g>
                         </g>
 
                         <g class="map-svg-layer" id="svg-lyr-ecosystem">
                             <ellipse cx="178" cy="272" rx="88" ry="44" fill="#3aac97" fill-opacity="0.1" stroke="#3aac97" stroke-width="1.6" stroke-dasharray="5 3"/>
                             <text x="178" y="328" text-anchor="middle" font-size="8.5" fill="#1e7a66" font-family="'Poppins',sans-serif" font-weight="600" opacity="0.8">Ecosistema marino</text>
+                            <g fill="#35a99c" opacity="0.75"><path d="M128 301v-38c11 10 9 20 0 29 13-9 19-17 14-29 19 15 12 31-7 38Z"/><path d="M174 310v-34c10 9 8 19 0 26 11-8 17-16 13-26 17 14 11 28-6 34Z"/><path d="M208 297v-26c8 8 7 15 0 21 9-7 15-13 11-21 15 12 10 23-5 26Z"/></g>
                         </g>
 
                         <g class="map-svg-layer" id="svg-lyr-turtles">
@@ -305,6 +350,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <circle cx="298" cy="172" r="4" fill="#fff"/>
                             <rect x="218" y="182" width="120" height="24" rx="7" fill="white" fill-opacity="0.93" stroke="#cde8f5" stroke-width="1"/>
                             <text x="278" y="199" text-anchor="middle" font-size="9.5" fill="#1a4a72" font-family="'Poppins',sans-serif" font-weight="700">Los Cóbanos, SV</text>
+                            <path d="M298 206 L395 290" stroke="#2f7fc2" stroke-width="3" stroke-dasharray="8 6" opacity="0.8"/>
                         </g>
                     </svg>
 
@@ -317,78 +363,83 @@ if (session_status() === PHP_SESSION_NONE) {
                     <strong id="mapActiveList">Ubicación, Arrecifes, Ecosistemas, Tortugas y Protegidas</strong>
                 </div>
             </div>
-        </section>
-
-        <!-- â•â•â•â•â•â•â•â•â•â•â• BIBLIOTECA â•â•â•â•â•â•â•â•â•â•â• -->
-        <section class="content-section" id="docs">
-            <div class="section-header-left">
-                <h2>Biblioteca de documentos</h2>
-                <p>Descarga recursos científicos, guías y materiales educativos en PDF</p>
-            </div>
-
-            <div class="docs-grid-fluid">
-                <article class="doc-card-fluid">
-                    <div class="doc-cover-bar blue"></div>
-                    <div class="doc-body-fluid">
-                        <span class="doc-type pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
-                        <h3>Plan de Manejo del Área Natural Protegida Los Cóbanos</h3>
-                        <p>Lineamientos de conservación, zonificación y uso responsable del área marina costera.</p>
-                        <div class="doc-actions-fluid">
-                            <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" target="_blank" rel="noopener" class="doc-btn-action view" aria-label="Ver PDF"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" download class="doc-btn-action download" aria-label="Descargar PDF"><i class="fa-solid fa-download"></i></a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="doc-card-fluid">
-                    <div class="doc-cover-bar teal"></div>
-                    <div class="doc-body-fluid">
-                        <span class="doc-type pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
-                        <h3>Biodiversidad Marina de Los Cóbanos</h3>
-                        <p>Resumen de especies registradas, hábitats principales y prioridades de monitoreo.</p>
-                        <div class="doc-actions-fluid">
-                            <a href="../public/pdfs/biodiversidad-cobanos.pdf" target="_blank" rel="noopener" class="doc-btn-action view" aria-label="Ver PDF"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="../public/pdfs/biodiversidad-cobanos.pdf" download class="doc-btn-action download" aria-label="Descargar PDF"><i class="fa-solid fa-download"></i></a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="doc-card-fluid">
-                    <div class="doc-cover-bar green"></div>
-                    <div class="doc-body-fluid">
-                        <span class="doc-type pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
-                        <h3>Monitoreo de Tortugas Marinas en Los Cóbanos</h3>
-                        <p>Ficha educativa sobre rutas, anidación, amenazas y acciones comunitarias.</p>
-                        <div class="doc-actions-fluid">
-                            <a href="../public/pdfs/monitoreo-tortugas.pdf" target="_blank" rel="noopener" class="doc-btn-action view" aria-label="Ver PDF"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="../public/pdfs/monitoreo-tortugas.pdf" download class="doc-btn-action download" aria-label="Descargar PDF"><i class="fa-solid fa-download"></i></a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="doc-card-fluid">
-                    <div class="doc-cover-bar coral"></div>
-                    <div class="doc-body-fluid">
-                        <span class="doc-type pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
-                        <h3>Guía de Buenas Prácticas para el Turismo Marino</h3>
-                        <p>Recomendaciones para visitas, buceo, navegación y observación de vida marina.</p>
-                        <div class="doc-actions-fluid">
-                            <a href="../public/pdfs/guia-turismo-marino.pdf" target="_blank" rel="noopener" class="doc-btn-action view" aria-label="Ver PDF"><i class="fa-solid fa-eye"></i> Ver</a>
-                            <a href="../public/pdfs/guia-turismo-marino.pdf" download class="doc-btn-action download" aria-label="Descargar PDF"><i class="fa-solid fa-download"></i></a>
-                        </div>
-                    </div>
-                </article>
             </div>
         </section>
 
-    </main>
+    <!-- SECCIÓN BIBLIOTECA DE DOCUMENTOS -->
+    <section class="content-section" id="docs">
+        <div class="section-header-left">
+            <h2>Biblioteca de documentos</h2>
+            <p>Descarga recursos científicos, guías y materiales educativos en PDF</p>
+        </div>
 
-    <div id="footer-container"><?php include(__DIR__ . "/fragments/footer.php"); ?></div>
-    <script src="../public/js/burbujas.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-    <script src="../public/js/recursos.js" defer></script>
-    <script src="../public/js/session.js" defer></script>
+        <div class="docs-grid-fluid">
+            <article class="doc-card-fluid">
+                <div class="doc-cover-bar blue"></div>
+                <div class="doc-body-fluid">
+                    <span class="doc-type pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                    <h3>Plan de Manejo del Área Natural Protegida Los Cóbanos</h3>
+                    <p>Lineamientos de conservación, zonificación y uso responsable del área marina costera.</p>
+                    <div class="doc-actions-fluid">
+                        <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" target="_blank" rel="noopener" class="doc-btn-action view" aria-label="Ver PDF"><i class="fa-solid fa-eye"></i> Ver</a>
+                        <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" download class="doc-btn-action download" aria-label="Descargar PDF"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="doc-card-fluid">
+                <div class="doc-cover-bar teal"></div>
+                <div class="doc-body-fluid">
+                    <span class="doc-type pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                    <h3>Biodiversidad Marina de Los Cóbanos</h3>
+                    <p>Resumen de especies registradas, hábitats principales y prioridades de monitoreo.</p>
+                    <div class="doc-actions-fluid">
+                        <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" target="_blank" rel="noopener" class="doc-btn-action view" aria-label="Ver PDF"><i class="fa-solid fa-eye"></i> Ver</a>
+                        <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" download class="doc-btn-action download" aria-label="Descargar PDF"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="doc-card-fluid">
+                <div class="doc-cover-bar green"></div>
+                <div class="doc-body-fluid">
+                    <span class="doc-type pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                    <h3>Monitoreo de Tortugas Marinas en Los Cóbanos</h3>
+                    <p>Ficha educativa sobre rutas, anidación, amenazas y acciones comunitarias.</p>
+                    <div class="doc-actions-fluid">
+                        <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" target="_blank" rel="noopener" class="doc-btn-action view" aria-label="Ver PDF"><i class="fa-solid fa-eye"></i> Ver</a>
+                        <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" download class="doc-btn-action download" aria-label="Descargar PDF"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="doc-card-fluid">
+                <div class="doc-cover-bar coral"></div>
+                <div class="doc-body-fluid">
+                    <span class="doc-type pdf"><i class="fa-solid fa-file-pdf"></i> PDF</span>
+                    <h3>Guía de Buenas Prácticas para el Turismo Marino</h3>
+                    <p>Recomendaciones para visitas, buceo, navegación y observación de vida marina.</p>
+                    <div class="doc-actions-fluid">
+                        <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" target="_blank" rel="noopener" class="doc-btn-action view" aria-label="Ver PDF"><i class="fa-solid fa-eye"></i> Ver</a>
+                        <a href="../public/pdfs/LISTA DE ESPECIES AMENAZADAS Y EN PELIGRO DE EXTINCIÓN. 18-10-2023. (1) (1) (1) (1).pdf" download class="doc-btn-action download" aria-label="Descargar PDF"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+</main>
+
+<div id="footer-container">
+    <?php include(__DIR__ . "/fragments/footer.php"); ?>
+</div>
+
+<!-- SCRIPTS DE TU PROYECTO ORIGINAL -->
+<script src="../public/js/burbujas.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="../public/js/recursos.js" defer></script>
+<script src="../public/js/session.js" defer></script>
+
 </body>
 </html>
-

@@ -128,6 +128,15 @@ const heroCtx = heroCanvas ? heroCanvas.getContext('2d') : null;
 const heroSection = document.querySelector('.resources-hero');
 
 if (heroCanvas && heroCtx && heroSection) {
+    const updateGlobalParticlesVisibility = () => {
+        const heroBottom = heroSection.getBoundingClientRect().bottom;
+        document.body.classList.toggle('past-resources-hero', heroBottom <= 0);
+    };
+
+    updateGlobalParticlesVisibility();
+    window.addEventListener('scroll', updateGlobalParticlesVisibility, { passive: true });
+    window.addEventListener('resize', updateGlobalParticlesVisibility);
+
     function resizeHeroCanvas(){
         heroCanvas.width = heroSection.clientWidth;
         heroCanvas.height = heroSection.clientHeight;
