@@ -3,7 +3,7 @@ const ctx = canvas ? canvas.getContext('2d') : null;
 const popSound = document.getElementById('popSound');
 
 if (!canvas || !ctx) {
-    console.warn('⚠️ burbujas.js: canvas #particles no encontrado o contexto no disponible.');
+    // Algunas vistas usan únicamente su canvas local; en ellas no hay fondo global que inicializar.
 } else {
     function resizeCanvas(){
         canvas.width = window.innerWidth;
@@ -128,6 +128,15 @@ const heroCtx = heroCanvas ? heroCanvas.getContext('2d') : null;
 const heroSection = document.querySelector('.resources-hero');
 
 if (heroCanvas && heroCtx && heroSection) {
+    const updateGlobalParticlesVisibility = () => {
+        const heroBottom = heroSection.getBoundingClientRect().bottom;
+        document.body.classList.toggle('past-resources-hero', heroBottom <= 0);
+    };
+
+    updateGlobalParticlesVisibility();
+    window.addEventListener('scroll', updateGlobalParticlesVisibility, { passive: true });
+    window.addEventListener('resize', updateGlobalParticlesVisibility);
+
     function resizeHeroCanvas(){
         heroCanvas.width = heroSection.clientWidth;
         heroCanvas.height = heroSection.clientHeight;

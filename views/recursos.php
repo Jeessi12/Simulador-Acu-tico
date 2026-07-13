@@ -6,6 +6,11 @@ require_once __DIR__ . '/../app/support/AchievementPageTracker.php';
 AchievementPageTracker::track('resources');
 
 $pageTitle = "Recursos - Los Cóbanos";
+$resourcesCssVersion = filemtime(__DIR__ . '/../public/css/recursos.css');
+$resourcesJsVersion = filemtime(__DIR__ . '/../public/js/recursos.js');
+$bubblesJsVersion = filemtime(__DIR__ . '/../public/js/burbujas.js');
+$timelineCssVersion = filemtime(__DIR__ . '/../public/build/recursos-timeline/recursos-timeline.css');
+$timelineJsVersion = filemtime(__DIR__ . '/../public/build/recursos-timeline/recursos-timeline.js');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -17,7 +22,7 @@ $pageTitle = "Recursos - Los Cóbanos";
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
-    <link rel="stylesheet" href="../public/css/recursos.css">
+    <link rel="stylesheet" href="../public/css/recursos.css?v=<?php echo $resourcesCssVersion; ?>">
 </head>
 <body class="recursos-page">
 
@@ -75,28 +80,39 @@ $pageTitle = "Recursos - Los Cóbanos";
 
     <!-- SECCIÓN MAPA INTERACTIVO -->
         <section class="content-section" id="map">
-            <div class="section-header-center">
-                <h2>Mapa interactivo</h2>
-                <div class="section-line"></div>
-                <p>Activa las capas para explorar la geografía marina de Los Cóbanos</p>
+            <div class="section-header-center map-hero-heading">
+                <div class="map-hero-eyebrow"><i class="fa-regular fa-compass"></i> Explora Los Cóbanos <span aria-hidden="true">•••</span></div>
+                <h2>Mapa <span>Interactivo</span> Marino</h2>
+                <div class="map-hero-divider" aria-hidden="true"><span></span><i class="fa-solid fa-location-dot"></i><span></span></div>
             </div>
 
-            <div class="map-panel-wrapper">
-                <div class="map-sidebar-vertical" id="mapPills" role="group" aria-label="Capas del mapa">
+            <div class="map-layout">
+         <aside class="map-info-card" aria-label="Información sobre Los Cóbanos">
+    <span class="map-info-kicker"><i class="fa-solid fa-leaf"></i> Área marina protegida</span>
+    <h3>Los Cóbanos,<br><em>un refugio vivo.</em></h3>
+    <p>Un paisaje marino costero de Sonsonate donde arrecifes rocosos, tortugas y comunidades conviven para proteger la biodiversidad del Pacífico salvadoreño.</p>
+    <div class="map-info-stats">
+        <span>Área<br><b>~4 km²</b></span>
+        <span>Especies<br><b>183+</b></span>
+        <span>Desde<br><b>2008</b></span>
+    </div>
+</aside>
+                <div class="map-panel-wrapper">
+                <div class="map-sidebar-vertical" id="mapPills" role="group" aria-label="Capas del mapa" data-active-count="〰 5 CAPAS ACTIVAS 〰">
                     <button class="map-pill active" type="button" data-layer="location">
-                        <i class="fa-solid fa-location-dot"></i> Ubicación
+                        <i class="fa-solid fa-location-dot"></i><span><b>Ubicación</b><small>13.5333° N, 89.8000° O · Los Cóbanos</small></span><em class="fa-solid fa-check"></em>
                     </button>
                     <button class="map-pill active" type="button" data-layer="reef">
-                        <i class="fa-solid fa-water"></i> Arrecifes
+                        <i class="fa-solid fa-water"></i><span><b>Arrecifes</b><small>Zonas rocosas y coralinas de alta biodiversidad.</small></span><em class="fa-solid fa-check"></em>
                     </button>
                     <button class="map-pill active" type="button" data-layer="ecosystem">
-                        <i class="fa-solid fa-leaf"></i> Ecosistemas
+                        <i class="fa-solid fa-leaf"></i><span><b>Ecosistemas</b><small>Arrecifes, fondo arenoso y praderas marinas.</small></span><em class="fa-solid fa-check"></em>
                     </button>
                     <button class="map-pill active" type="button" data-layer="turtles">
-                        <i class="fa-solid fa-fish-fins"></i> Tortugas
+                        <i class="fa-solid fa-fish-fins"></i><span><b>Tortugas</b><small>Rutas y zonas de anidación protegidas.</small></span><em class="fa-solid fa-check"></em>
                     </button>
                     <button class="map-pill active" type="button" data-layer="protected">
-                        <i class="fa-solid fa-shield-halved"></i> Protegidas
+                        <i class="fa-solid fa-shield-halved"></i><span><b>Protegidas</b><small>Límites de conservación y uso sostenible.</small></span><em class="fa-solid fa-check"></em>
                     </button>
                 </div>
 
@@ -115,11 +131,16 @@ $pageTitle = "Recursos - Los Cóbanos";
                                 <stop offset="0%" stop-color="#eedca8"/>
                                 <stop offset="100%" stop-color="#e0cc8a"/>
                             </linearGradient>
+                            <linearGradient id="deepSeaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#80d7f4" stop-opacity="0"/><stop offset="100%" stop-color="#157fbd" stop-opacity="0.46"/></linearGradient>
+                            <filter id="softGlow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
                         </defs>
 
                         <rect width="800" height="360" fill="url(#seaGrad)"/>
                         <rect x="0" y="240" width="800" height="120" fill="#8ecde7" opacity="0.25"/>
                         <rect x="0" y="310" width="800" height="50" fill="#7abfde" opacity="0.25"/>
+                        <path d="M0 205 Q105 150 210 196 T420 191 T620 183 T800 196 V360 H0Z" fill="url(#deepSeaGrad)"/>
+                        <path d="M0 250 Q118 204 220 258 T442 250 T650 244 T800 259" stroke="#d6f7ff" stroke-width="16" opacity="0.16" fill="none"/>
+                        <path d="M0 292 Q120 240 240 300 T485 288 T800 298" stroke="#d6f7ff" stroke-width="20" opacity="0.12" fill="none"/>
 
                         <path d="M0 200 Q200 192 400 200 Q600 208 800 200" stroke="#b2dff0" stroke-width="1" fill="none" opacity="0.6"/>
                         <path d="M0 230 Q200 222 400 232 Q600 240 800 230" stroke="#b2dff0" stroke-width="1" fill="none" opacity="0.45"/>
@@ -134,11 +155,40 @@ $pageTitle = "Recursos - Los Cóbanos";
                         <circle cx="660" cy="62" r="4" fill="#8a7040" opacity="0.6"/>
                         <text x="670" y="66" font-size="9" fill="#6a5030" font-family="'Poppins',sans-serif" font-weight="600" opacity="0.75">Sonsonate</text>
 
+                        <!-- Vegetación costera en la franja terrestre -->
+                        <g class="coastal-palms" opacity="0.88">
+                            <g transform="translate(612 68)">
+                                <path d="M0 42 C4 27 7 15 9 0" fill="none" stroke="#3d8265" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M8 5 C-10 -8 -25 -4 -32 4 C-15 5 -4 11 8 12 M8 5 C22 -8 38 -4 44 7 C28 6 17 11 8 13 M8 6 C-2 -17 -13 -21 -22 -18 C-13 -6 -8 2 1 12 M9 6 C17 -14 28 -17 37 -13 C28 -3 21 4 15 13" fill="#2e9d79"/>
+                            </g>
+                            <g transform="translate(724 55) scale(.72)">
+                                <path d="M0 52 C4 33 8 15 10 0" fill="none" stroke="#427e58" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M10 6 C-13 -7 -29 -4 -38 6 C-20 8 -5 13 9 14 M10 6 C28 -9 45 -4 52 8 C34 8 20 13 10 15 M10 6 C-2 -20 -15 -25 -25 -20 C-15 -6 -8 4 3 14 M11 6 C23 -18 37 -20 48 -13 C36 -3 26 5 17 15" fill="#3baf88"/>
+                            </g>
+                            <g transform="translate(115 95) scale(.55)">
+                                <path d="M0 48 C3 30 7 15 9 0" fill="none" stroke="#4a8157" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M8 5 C-13 -7 -29 -3 -37 7 C-20 8 -5 13 9 14 M8 5 C27 -9 43 -3 51 9 C33 8 19 13 9 15 M8 5 C-4 -18 -16 -22 -25 -17 C-15 -5 -7 4 3 14" fill="#31946f"/>
+                            </g>
+                        </g>
+                        <g class="coastal-foliage" opacity="0.68">
+                            <!-- Copas de mangle y arbustos de costa -->
+                            <g fill="#5eae72"><ellipse cx="42" cy="92" rx="31" ry="15"/><ellipse cx="67" cy="87" rx="25" ry="17"/><ellipse cx="93" cy="96" rx="34" ry="14"/><ellipse cx="524" cy="74" rx="29" ry="14"/><ellipse cx="551" cy="66" rx="25" ry="18"/><ellipse cx="577" cy="76" rx="31" ry="14"/><ellipse cx="772" cy="89" rx="36" ry="18"/><ellipse cx="748" cy="77" rx="27" ry="18"/></g>
+                            <g fill="#3f9870" opacity="0.76"><path d="M166 113q12-32 25 0q13-38 26 0q13-26 25 0Z"/><path d="M470 103q11-28 23 0q12-34 25 0q13-25 24 0Z"/><path d="M678 89q13-31 26 0q13-37 27 0q13-27 26 0Z"/></g>
+                            <!-- Hojas de primer plano -->
+                            <g fill="#2e8d73"><path d="M34 140c3-26 18-42 42-47c-9 23-24 38-42 47Z"/><path d="M47 141c14-25 34-32 57-28c-18 18-37 27-57 28Z"/><path d="M760 118c-3-27-19-43-43-48c9 24 24 39 43 48Z"/><path d="M748 119c-14-25-34-33-57-29c18 19 37 28 57 29Z"/></g>
+                            <!-- Destellos de vegetación y flores costeras -->
+                            <g fill="#b8df87"><circle cx="140" cy="104" r="3"/><circle cx="151" cy="98" r="2"/><circle cx="453" cy="85" r="3"/><circle cx="463" cy="91" r="2"/><circle cx="589" cy="96" r="3"/><circle cx="604" cy="88" r="2"/><circle cx="713" cy="103" r="3"/></g>
+                        </g>
+
                         <ellipse cx="298" cy="162" rx="10" ry="4.5" fill="#c0de98" opacity="0.85"/>
+                        <!-- Detalle ambiental permanente -->
+                        <g opacity="0.55" fill="#e8fbff"><ellipse cx="92" cy="212" rx="7" ry="3"/><ellipse cx="128" cy="246" rx="4" ry="2"/><ellipse cx="586" cy="174" rx="9" ry="4"/><ellipse cx="702" cy="238" rx="5" ry="2.5"/><circle cx="84" cy="279" r="3"/><circle cx="520" cy="291" r="3"/></g>
+                        <g fill="#398fcb" opacity="0.7"><path d="M92 242c9-8 18-7 26 0-8 7-17 8-26 0Zm24 0 7-6v12z"/><path d="M125 226c7-6 14-5 20 0-6 6-13 6-20 0Zm18 0 5-4v8z"/><path d="M526 260c9-8 18-7 25 0-7 7-16 7-25 0Zm23 0 7-5v10z"/></g>
+                        <g fill="#4aa88a" opacity="0.55"><path d="M52 360v-56c12 13 10 28 0 40 14-10 23-23 17-40 21 18 14 39-9 56Z"/><path d="M735 360v-48c11 11 9 25 0 34 13-8 21-19 15-34 20 16 13 34-8 48Z"/></g>
 
                         <g class="map-svg-layer" id="svg-lyr-protected">
                             <ellipse cx="298" cy="200" rx="105" ry="68" fill="#56a86a" fill-opacity="0.1" stroke="#56a86a" stroke-width="2" stroke-dasharray="6 4"/>
-                            <text x="298" y="144" text-anchor="middle" font-size="8.5" fill="#2e7a46" font-family="'Poppins',sans-serif" font-weight="600" opacity="0.8">Área protegida</text>
+                            <rect x="254" y="132" width="88" height="20" rx="10" fill="#3a9d63" filter="url(#softGlow)"/><text x="298" y="146" text-anchor="middle" font-size="8.5" fill="#ffffff" font-family="'Poppins',sans-serif" font-weight="700">Área protegida</text>
                         </g>
 
                         <g class="map-svg-layer" id="svg-lyr-reef">
@@ -146,11 +196,13 @@ $pageTitle = "Recursos - Los Cóbanos";
                             <rect x="335" y="228" width="55" height="12" rx="6" fill="#e07e6a" fill-opacity="0.55"/>
                             <rect x="188" y="234" width="40" height="10" rx="5" fill="#e07e6a" fill-opacity="0.45"/>
                             <text x="280" y="248" text-anchor="middle" font-size="8.5" fill="#a04030" font-family="'Poppins',sans-serif" font-weight="600" opacity="0.85">Zona arrecifal</text>
+                            <g stroke-linecap="round"><path d="M260 220v-28m0 14-10-9m10 2 10-12m20 33v-34m0 17-12-11m12 5 11-10m26 31v-22m0 10-8-8m8 3 8-9" stroke="#ef806c" stroke-width="4"/><path d="M244 222v-17m0 8-7-6m42 11v-19m0 9 7-7" stroke="#3577bd" stroke-width="4"/></g>
                         </g>
 
                         <g class="map-svg-layer" id="svg-lyr-ecosystem">
                             <ellipse cx="178" cy="272" rx="88" ry="44" fill="#3aac97" fill-opacity="0.1" stroke="#3aac97" stroke-width="1.6" stroke-dasharray="5 3"/>
                             <text x="178" y="328" text-anchor="middle" font-size="8.5" fill="#1e7a66" font-family="'Poppins',sans-serif" font-weight="600" opacity="0.8">Ecosistema marino</text>
+                            <g fill="#35a99c" opacity="0.75"><path d="M128 301v-38c11 10 9 20 0 29 13-9 19-17 14-29 19 15 12 31-7 38Z"/><path d="M174 310v-34c10 9 8 19 0 26 11-8 17-16 13-26 17 14 11 28-6 34Z"/><path d="M208 297v-26c8 8 7 15 0 21 9-7 15-13 11-21 15 12 10 23-5 26Z"/></g>
                         </g>
 
                         <g class="map-svg-layer" id="svg-lyr-turtles">
@@ -167,6 +219,7 @@ $pageTitle = "Recursos - Los Cóbanos";
                             <circle cx="298" cy="172" r="4" fill="#fff"/>
                             <rect x="218" y="182" width="120" height="24" rx="7" fill="white" fill-opacity="0.93" stroke="#cde8f5" stroke-width="1"/>
                             <text x="278" y="199" text-anchor="middle" font-size="9.5" fill="#1a4a72" font-family="'Poppins',sans-serif" font-weight="700">Los Cóbanos, SV</text>
+                            <path d="M298 206 L395 290" stroke="#2f7fc2" stroke-width="3" stroke-dasharray="8 6" opacity="0.8"/>
                         </g>
                     </svg>
 
@@ -250,13 +303,13 @@ $pageTitle = "Recursos - Los Cóbanos";
 </div>
 
 <!-- SCRIPTS DE TU PROYECTO ORIGINAL -->
-<script src="../public/js/burbujas.js" defer></script>
+<script src="../public/js/burbujas.js?v=<?php echo $bubblesJsVersion; ?>" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-<script src="../public/js/recursos.js" defer></script>
+<script src="../public/js/recursos.js?v=<?php echo $resourcesJsVersion; ?>" defer></script>
 <script src="../public/js/session.js" defer></script>
-<link rel="stylesheet" href="../public/build/recursos-timeline/recursos-timeline.css">
-<script type="module" src="../public/build/recursos-timeline/recursos-timeline.js"></script>
+<link rel="stylesheet" href="../public/build/recursos-timeline/recursos-timeline.css?v=<?php echo $timelineCssVersion; ?>">
+<script type="module" src="../public/build/recursos-timeline/recursos-timeline.js?v=<?php echo $timelineJsVersion; ?>"></script>
 <?php if (!empty($_SESSION['id'])) include __DIR__ . '/fragments/achievement-notifications.php'; ?>
 
 </body>

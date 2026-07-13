@@ -51,15 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const mapPills = [...document.querySelectorAll('.map-pill')];
+    const mapPillsPanel = document.getElementById('mapPills');
     const mapActiveCount = document.getElementById('mapActiveCount');
     const mapActiveList = document.getElementById('mapActiveList');
 
     const updateMapSummary = () => {
         const activePills = mapPills.filter((pill) => pill.classList.contains('active'));
-        const activeNames = activePills.map((pill) => pill.textContent.replace(/\s+/g, ' ').trim());
+        const activeNames = activePills.map((pill) => {
+            const title = pill.querySelector('b');
+            return (title?.textContent || pill.textContent).replace(/\s+/g, ' ').trim();
+        });
+        const countLabel = `${activePills.length} ${activePills.length === 1 ? 'capa activa' : 'capas activas'}`;
 
         if (mapActiveCount) {
-            mapActiveCount.textContent = `${activePills.length} ${activePills.length === 1 ? 'capa activa' : 'capas activas'}`;
+            mapActiveCount.textContent = countLabel.toLowerCase();
+        }
+        if (mapPillsPanel) {
+            mapPillsPanel.dataset.activeCount = `〰 ${countLabel.toUpperCase()} 〰`;
         }
         if (mapActiveList) {
             mapActiveList.textContent = activeNames.length

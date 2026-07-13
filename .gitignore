@@ -1,4 +1,13 @@
 /vendor/
+/node_modules/
+
+.env
+.env.*
+!.env.example
+
+.vite/
+coverage/
+npm-debug.log*
 client_secret*.json
 *.log
 .DS_Store
