@@ -460,12 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateMapSummary = () => {
         const activePills = mapPills.filter((pill) => pill.classList.contains('active'));
-        const activeNames = activePills.map((pill) => pill.querySelector('b')?.textContent.trim() || pill.dataset.layer);
-        const countLabel = `${activePills.length} ${activePills.length === 1 ? 'CAPA ACTIVA' : 'CAPAS ACTIVAS'}`;
-
-        if (mapPillsPanel) {
-            mapPillsPanel.dataset.activeCount = `〰 ${countLabel} 〰`;
-        }
+        const activeNames = activePills.map((pill) => pill.textContent.replace(/\s+/g, ' ').trim());
 
         if (mapActiveCount) {
             mapActiveCount.textContent = countLabel.toLowerCase();

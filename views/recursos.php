@@ -19,8 +19,6 @@ $pageTitle = "Recursos - Los Cóbanos";
 </head>
 <body class="recursos-page">
 
-<canvas id="particles" aria-hidden="true"></canvas>
-
 <div id="navbar-container">
     <?php include(__DIR__ . '/fragments/navbar.php'); ?>
 </div>
@@ -138,7 +136,7 @@ $pageTitle = "Recursos - Los Cóbanos";
                 <!-- Tarjeta 1 -->
                 <article class="bio-card">
                     <div class="bio-image">
-                        <img src="../public/media/Species/Pez-Angel-Real.png" alt="Pez Ángel Real" loading="lazy">
+                        <img src="../public/media/backgrounds/peces de arrecife.png" alt="Pez Ángel Real" loading="lazy">
                     </div>
                     <div class="bio-content">
                         <span class="bio-tag">Especies clave</span>
@@ -362,7 +360,6 @@ $pageTitle = "Recursos - Los Cóbanos";
                     <span id="mapActiveCount">5 capas activas</span>
                     <strong id="mapActiveList">Ubicación, Arrecifes, Ecosistemas, Tortugas y Protegidas</strong>
                 </div>
-            </div>
             </div>
         </section>
 
