@@ -918,18 +918,6 @@ body.admin-page {
 }
 
 /* Footer */
-.site-footer {
-    position: relative;
-    z-index: 2;
-    background: #0a1425;
-    margin-top: auto;
-    width: 100%;
-    padding: 20px 0;
-    text-align: center;
-    color: #8aaec8;
-    font-size: 0.8rem;
-}
-
 /* ============================================
    RESPONSIVE COMPLETO
    ============================================ */

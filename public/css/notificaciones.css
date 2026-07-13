@@ -238,13 +238,6 @@ html, body {
 .page-btn:hover { background: #5baae3; color: white; }
 .page-info { font-size: 16px; color: #3d8fd1; font-weight: 600; }
 
-/* Footer siempre sobre burbujas */
-.site-footer {
-    position: relative;
-    z-index: 2;
-    background: #0a1425;
-}
-
 /* ── AGREGAR AL FINAL DE notificaciones.css ── */
 
 /* Fila de invitación */

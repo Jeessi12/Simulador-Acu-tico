@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#recursos-focus-rail {
+  width: min(1180px, 100%);
+  margin-inline: auto;
+}
+
+#recursos-focus-rail .focus-rail button,
+#recursos-focus-rail .focus-rail h3,
+#recursos-focus-rail .focus-rail p,
+#recursos-focus-rail .focus-rail a,
+#recursos-focus-rail .focus-rail span {
+  font-family: "Poppins", sans-serif;
+}
+
+@media (max-width: 640px) {
+  #recursos-focus-rail .focus-rail {
+    height: 650px;
+    border-radius: 22px;
+  }
+}
+
+.orbital-timeline-root {
+  --background: 210 66% 23%;
+  --foreground: 0 0% 100%;
+  --primary: 167 57% 49%;
+  --primary-foreground: 210 66% 23%;
+  --secondary: 207 61% 47%;
+  --secondary-foreground: 0 0% 100%;
+  --accent: 190 61% 63%;
+  --accent-foreground: 0 0% 100%;
+  --border: 0 0% 100%;
+  isolation: isolate;
+}
+
+.orbital-timeline-root button,
+.orbital-timeline-root h3,
+.orbital-timeline-root p {
+  font-family: "Poppins", sans-serif;
+}
+
+@media (max-width: 520px) {
+  .orbital-detail-card {
+    width: min(16rem, calc(100vw - 3rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbital-timeline-root *,
+  .orbital-timeline-root *::before,
+  .orbital-timeline-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

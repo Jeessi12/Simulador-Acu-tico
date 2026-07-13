@@ -2,11 +2,9 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/../app/support/AuthRedirect.php';
 
-if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php?error=locked");
-    exit;
-}
+AuthRedirect::requireAuthentication();
 
 $assignmentId = 0;
 $initialObservations = [];
@@ -208,6 +206,13 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
                     <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
                 </button>
             </div>
+            <button id="completeSimulation" class="complete-simulation" type="button">
+                <i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
+                Finalizar experiencia
+            </button>
+            <p id="completionStatus" class="completion-status" aria-live="polite">
+                Explora al menos 1 minuto para registrar la experiencia.
+            </p>
         </div>
 
         <!-- Parámetros ambientales -->
@@ -372,6 +377,7 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
 <script src="../public/js/simulador.js?v=<?php echo $simJsVersion; ?>" defer></script>
 <script src="../public/js/burbujas.js?v=<?php echo $bubbleJsVersion; ?>"  defer></script>
 <script src="../public/js/session.js?v=<?php echo $sessionJsVersion; ?>"   defer></script>
+<?php include __DIR__ . '/fragments/achievement-notifications.php'; ?>
 
 </body>
 </html>

@@ -1,11 +1,14 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
+require_once __DIR__ . '/../app/support/AuthRedirect.php';
 include __DIR__ . '/../app/models/Conexion.php';
 include __DIR__ . '/../app/models/ObservacionesSchema.php';
 $conn = (new Conexion())->getConnection();
 ensureObservacionesSimulacionTable($conn);
 
-if (!isset($_SESSION['id']) || $_SESSION['rol'] != 1) {
+AuthRedirect::requireAuthentication();
+
+if ($_SESSION['rol'] != 1) {
     header("Location: login.php?error=locked");
     exit;
 }

@@ -264,23 +264,6 @@ body {
 }
 
 @media (max-width: 768px) {
-    .navbar {
-        padding: 12px 20px;
-    }
-    .nav-left {
-        gap: 20px;
-    }
-    .nav-links a {
-        font-size: 11px;
-        margin: 0 6px;
-    }
-    .nav-right {
-        gap: 8px;
-    }
-    .btn {
-        padding: 8px 12px;
-        font-size: 11px;
-    }
     .container {
         padding: 100px 25px 60px;
         justify-content: center;
@@ -311,12 +294,6 @@ body {
 }
 
 @media (max-width: 480px) {
-    .logo {
-        height: 32px;
-    }
-    .nav-links {
-        display: none;
-    }
     .form-title {
         font-size: 28px;
     }

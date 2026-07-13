@@ -25,7 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
         roleCards.forEach(function (card) {
             card.addEventListener('click', function () {
                 const rol = this.dataset.role;
-                window.location.href = 'google-login.php?rol=' + rol;
+                const googleLoginUrl = new URL('google-login.php', window.location.href);
+                googleLoginUrl.searchParams.set('rol', rol);
+                if (window.location.hash) {
+                    googleLoginUrl.searchParams.set('redirect_fragment', window.location.hash);
+                }
+                window.location.href = googleLoginUrl.toString();
             });
         });
     }

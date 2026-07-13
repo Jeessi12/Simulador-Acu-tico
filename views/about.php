@@ -2,6 +2,8 @@
     if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/../app/support/AchievementPageTracker.php';
+AchievementPageTracker::track('about');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -42,6 +44,7 @@
     <script src="../JS/session.js" defer></script>
 <canvas id="particles"></canvas>
 <script src="/Simulador-Acu-tico-main/public/js/burbujas.js" defer></script>
+<?php if (!empty($_SESSION['id'])) include __DIR__ . '/fragments/achievement-notifications.php'; ?>
 </body>
 
 </html>

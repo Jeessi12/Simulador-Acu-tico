@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once __DIR__ . '/../models/Conexion.php';
+require_once __DIR__ . '/../support/AuthRedirect.php';
+require_once __DIR__ . '/../support/AchievementPageTracker.php';
 $conexion = new Conexion();
 $conn = $conexion->getConnection();
 
@@ -77,8 +79,8 @@ if ($user = $result->fetch_assoc()) {
     $_SESSION['usuario'] = $user['username'];
     $_SESSION['rol']     = $user['rol_id'];
     $_SESSION['id']      = $user['id'];
-    header("Location: index.php");
-    exit;
+    AchievementPageTracker::recordLogin($conn, (int) $user['id']);
+    AuthRedirect::redirectAfterAuthentication();
 }
 
 // 2. Buscar por email para vincular cuenta existente
@@ -95,8 +97,8 @@ if ($userByEmail = $resultEmail->fetch_assoc()) {
     $_SESSION['usuario'] = $userByEmail['username'];
     $_SESSION['rol']     = $userByEmail['rol_id'];
     $_SESSION['id']      = $userByEmail['id'];
-    header("Location: index.php");
-    exit;
+    AchievementPageTracker::recordLogin($conn, (int) $userByEmail['id']);
+    AuthRedirect::redirectAfterAuthentication();
 }
 
 // 3. No existe — guardar datos de Google en sesión y redirigir al registro

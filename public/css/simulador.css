@@ -64,35 +64,6 @@ body::before {
 /* ══════════════════════════════════════════
    NAVBAR SHIELD
 ══════════════════════════════════════════ */
-.navbar {
-    position: fixed !important;
-    top: 16px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 90% !important;
-    max-width: 1200px !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 12px 30px !important;
-    background: rgba(255,255,255,1) !important;
-    backdrop-filter: blur(10px) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 8px 30px rgba(6,64,119,0.18) !important;
-    z-index: 1000 !important;
-    font-family: var(--font-ui) !important;
-    font-size: 14px !important;
-    min-height: unset !important;
-    height: auto !important;
-    color: #30343a !important;
-}
-.navbar.scrolled {
-    background: rgba(255,255,255,0.85) !important;
-    backdrop-filter: blur(18px) !important;
-}
-.nav-links a { color: #30343a !important; }
-.nav-links a:hover { color: #256fdd !important; }
-
 /* ══════════════════════════════════════════
    LAYOUT PRINCIPAL
 ══════════════════════════════════════════ */
@@ -1275,6 +1246,38 @@ input[type=range]::-moz-range-thumb {
     gap: 7px;
     font-size: 11px;
 }
+
+.complete-simulation {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 42px;
+    margin-top: 12px;
+    padding: 9px 14px;
+    color: #fff;
+    background: linear-gradient(120deg, #087f9d, #18b7a5);
+    border: 0;
+    border-radius: 13px;
+    box-shadow: 0 8px 18px rgba(9, 132, 152, .2);
+    font: 700 12px/1.2 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+
+.complete-simulation:hover:not(:disabled),
+.complete-simulation:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 11px 23px rgba(9, 132, 152, .28);
+    outline: none;
+}
+
+.complete-simulation:disabled { opacity: .58; cursor: wait; }
+.complete-simulation.is-complete { background: linear-gradient(120deg, #16946c, #35c499); }
+.completion-status { margin: 8px 0 0; color: var(--text-mid); font-size: 10px; line-height: 1.4; text-align: center; }
+.completion-status.is-error { color: #bd4251; }
+.completion-status.is-success { color: #087e65; font-weight: 700; }
 
 .sim-tab i {
     font-size: 17px;

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/../app/support/AuthRedirect.php';
 
 // Constantes de roles
 if (!defined('ROL_ESTUDIANTE')) define('ROL_ESTUDIANTE', 1);
@@ -11,8 +12,10 @@ require_once __DIR__ . '/../app/models/Conexion.php';
 $conexion = new Conexion();
 $conn = $conexion->getConnection();
 
+AuthRedirect::requireAuthentication();
+
 // Verificar acceso solo para administradores
-if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != ROL_ADMIN) {
+if ($_SESSION['rol'] != ROL_ADMIN) {
     header("Location: login.php?error=locked");
     exit();
 }

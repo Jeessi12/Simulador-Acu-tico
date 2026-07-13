@@ -2,10 +2,10 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset($_SESSION['id'])) {
-    header("Location: login.php?error=locked");
-    exit;
-}
+require_once __DIR__ . '/../app/support/AuthRedirect.php';
+AuthRedirect::requireAuthentication();
+require_once __DIR__ . '/../app/support/AchievementPageTracker.php';
+AchievementPageTracker::track('species');
 
 ?>
 <!DOCTYPE html>
@@ -260,6 +260,7 @@ if (!isset($_SESSION['id'])) {
 <script src="../public/js/burbujas.js" defer></script>
 <script type="module" src="../public/js/especies.js"></script>
 <script src="../public/js/session.js" defer></script>
+<?php include __DIR__ . '/fragments/achievement-notifications.php'; ?>
 
 </body>
 </html>

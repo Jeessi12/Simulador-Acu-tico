@@ -203,3 +203,11 @@ CREATE TABLE sesiones_activas (
 INSERT INTO usuarios (email, username, password, rol_id, estado, fecha_registro) VALUES
 ('blueecosim67@gmail.com', 'Blue_EcoSim2026', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 4, 'activo', NOW())
 ON DUPLICATE KEY UPDATE id = id;
+
+-- ============================================================
+-- 18. Logros e insignias
+-- ============================================================
+-- Las tablas, índices, categorías, logros y reglas se instalan de forma
+-- idempotente desde MySQL/achievements_migration.sql. La aplicación también
+-- verifica esta migración al iniciar el servicio para mantener instalaciones
+-- existentes compatibles sin alterar datos de usuarios.

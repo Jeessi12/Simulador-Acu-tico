@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once __DIR__ . '/../app/support/AuthRedirect.php';
+
+AuthRedirect::rememberFragment($_GET['redirect_fragment'] ?? null);
 
 // Guardar rol elegido (si viene por GET)
 if (isset($_GET['rol'])) {

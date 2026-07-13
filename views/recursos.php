@@ -2,6 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/../app/support/AchievementPageTracker.php';
+AchievementPageTracker::track('resources');
 
 $pageTitle = "Recursos - Los Cóbanos";
 ?>
@@ -45,7 +47,7 @@ $pageTitle = "Recursos - Los Cóbanos";
         <div class="hero-scroll-indicator"><span></span></div>
     </section>
 
-    <!-- SECCIÓN LÍNEA DE TIEMPO -->
+    <!-- SECCIÓN LÍNEA DE TIEMPO ORBITAL -->
     <section class="content-section" id="timeline-section">
         <div class="section-header-center">
             <h2>Línea del Tiempo</h2>
@@ -53,71 +55,8 @@ $pageTitle = "Recursos - Los Cóbanos";
             <p>Descubre los acontecimientos más importantes en la historia de conservación de Los Cóbanos.</p>
         </div>
 
-        <div class="timeline-container" id="timelineContainer">
-            <!-- Trazo SVG Curvo -->
-            <svg class="timeline-svg" viewBox="0 0 1200 350" preserveAspectRatio="none">
-                <path id="timelinePathBg" d="M 0,175 C 300,50 600,300 900,100 S 1200,175 1200,175" fill="none" stroke="rgba(255, 255, 255, 0.15)" stroke-width="8"/>
-                <path id="timelinePathActive" d="M 0,175 C 300,50 600,300 900,100 S 1200,175 1200,175" fill="none" stroke="url(#gradientPath)" stroke-width="8" stroke-dasharray="1600" stroke-dashoffset="1600"/>
-                <defs>
-                    <linearGradient id="gradientPath" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#FFD700" />
-                        <stop offset="100%" stop-color="#35c5a6" />
-                    </linearGradient>
-                </defs>
-            </svg>
-
-            <div class="timeline-items-wrapper">
-                <!-- Ítem 1 -->
-                <div class="timeline-item" data-year="2008">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="card-icon"><i class="fa-solid fa-mountain"></i></div>
-                        <span class="card-year">2008</span>
-                        <h4>Creación del Área Natural</h4>
-                        <p>Declaración oficial de Los Cóbanos como área protegida de El Salvador.</p>
-                    </div>
-                </div>
-                <!-- Ítem 2 -->
-                <div class="timeline-item" data-year="2009">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="card-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-                        <span class="card-year">2009</span>
-                        <h4>Gestión territorial</h4>
-                        <p>Se fortalece la gestión del área marina costera y se promueve la conservación de playas, arrecifes y especies asociadas.</p>
-                    </div>
-                </div>
-                <!-- Ítem 3 -->
-                <div class="timeline-item" data-year="2013">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="card-icon"><i class="fa-solid fa-fish"></i></div>
-                        <span class="card-year">2013</span>
-                        <h4>Monitoreo de Arrecifes</h4>
-                        <p>Inicio de los programas de monitoreo comunitario de corales y peces.</p>
-                    </div>
-                </div>
-                <!-- Ítem 4 -->
-                <div class="timeline-item" data-year="2018">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="card-icon"><i class="fa-solid fa-turtle"></i></div>
-                        <span class="card-year">2018</span>
-                        <h4>Protección de Tortugas</h4>
-                        <p>Implementación de viveros y patrullajes para proteger las tortugas marinas.</p>
-                    </div>
-                </div>
-                <!-- Ítem 4 (Actualidad) -->
-                <div class="timeline-item active" data-year="2026">
-                    <div class="timeline-dot pulse"></div>
-                    <div class="timeline-card highlight">
-                        <div class="card-icon"><i class="fa-solid fa-leaf"></i></div>
-                        <span class="card-year">Actualidad</span>
-                        <h4>Conservación participativa</h4>
-                        <p>Los Cóbanos se mantiene como laboratorio natural para aprender sobre arrecifes y ecosistemas.</p>
-                    </div>
-                </div>
-            </div>
+        <div id="recursos-orbital-timeline" aria-label="Línea del tiempo interactiva de Los Cóbanos">
+            <noscript>Activa JavaScript para explorar la línea del tiempo interactiva.</noscript>
         </div>
     </section>
 
@@ -129,82 +68,9 @@ $pageTitle = "Recursos - Los Cóbanos";
             <p>Una vista general de los grupos, hábitats y funciones ecológicas que sostienen la vida en Los Cóbanos.</p>
         </div>
 
-        <div class="biodiversity-carousel-wrapper">
-            <button class="bio-nav prev" id="bioPrev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
-            
-            <div class="biodiversity-track" id="bioTrack">
-                <!-- Tarjeta 1 -->
-                <article class="bio-card">
-                    <div class="bio-image">
-                        <img src="../public/media/backgrounds/peces de arrecife.png" alt="Pez Ángel Real" loading="lazy">
-                    </div>
-                    <div class="bio-content">
-                        <span class="bio-tag">Especies clave</span>
-                        <h3>Peces de Arrecife</h3>
-                        <p>Especies como el pez ángel y el cirujano forman parte fundamental del ecosistema.</p>
-                        <div class="bio-footer">
-                            <span class="bio-count"><i class="fa-regular fa-circle-check"></i> 24 especies</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Tarjeta 2 (Centro) -->
-                <article class="bio-card active">
-                    <div class="bio-image">
-                        <img src="../public/media/Species/estrella-de-mar.png" alt="Estrella de Mar" loading="lazy">
-                    </div>
-                    <div class="bio-content">
-                        <span class="bio-tag">31 Registros</span>
-                        <h3>Invertebrados</h3>
-                        <p>Estrellas, moluscos, nudibranquios y organismos de fondo reciclan nutrientes.</p>
-                        <div class="bio-footer">
-                             <span class="bio-count"><i class="fa-regular fa-circle-check"></i> 31 especies</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Tarjeta 3 -->
-                <article class="bio-card">
-                    <div class="bio-image">
-                        <img src="../public/media/Species/Tortuga-Carey.png" alt="Tortuga Carey" loading="lazy">
-                    </div>
-                    <div class="bio-content">
-                        <span class="bio-tag">Protección</span>
-                        <h3>Tortugas Marinas</h3>
-                        <p>Especies como la tortuga carey y verde encuentran refugio en sus aguas tranquilas.</p>
-                        <div class="bio-footer">
-                            <span class="bio-count"><i class="fa-regular fa-circle-check"></i> 4 especies</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Tarjeta 4 -->
-                <article class="bio-card">
-                    <div class="bio-image">
-                        <img src="../public/media/Species/caballito-de-mar.png" alt="Caballito de Mar" loading="lazy">
-                    </div>
-                    <div class="bio-content">
-                        <span class="bio-tag">Hábitats</span>
-                        <h3>Pastos Marinos</h3>
-                        <p>Zonas de alimentación vitales para el crecimiento de juveniles y mantenimiento del ecosistema.</p>
-                        <div class="bio-footer">
-                            <span class="bio-count"><i class="fa-regular fa-circle-check"></i> 3 biomas</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-
-            <button class="bio-nav next" id="bioNext" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+        <div id="recursos-focus-rail">
+            <noscript>Activa JavaScript para explorar el carrusel de biodiversidad.</noscript>
         </div>
-
-        <!-- Indicadores Inferiores -->
-        <div class="bio-indicators" id="bioIndicators">
-            <span class="bio-dot" data-index="0"></span>
-            <span class="bio-dot active" data-index="1"></span>
-            <span class="bio-dot" data-index="2"></span>
-            <span class="bio-dot" data-index="3"></span>
-        </div>
-        <div class="bio-current-label">02 Invertebrados</div>
     </section>
 
     <!-- SECCIÓN MAPA INTERACTIVO -->
@@ -389,6 +255,9 @@ $pageTitle = "Recursos - Los Cóbanos";
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 <script src="../public/js/recursos.js" defer></script>
 <script src="../public/js/session.js" defer></script>
+<link rel="stylesheet" href="../public/build/recursos-timeline/recursos-timeline.css">
+<script type="module" src="../public/build/recursos-timeline/recursos-timeline.js"></script>
+<?php if (!empty($_SESSION['id'])) include __DIR__ . '/fragments/achievement-notifications.php'; ?>
 
 </body>
 </html>

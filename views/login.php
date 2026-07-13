@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ . '/../app/support/AuthRedirect.php';
 
 $mensajes = [
     'pendiente_verificacion' => 'Registro exitoso. Revisa tu correo para verificar la cuenta.',
@@ -28,8 +29,7 @@ if (isset($_GET['error'])) {
 }
 
 if (isset($_SESSION['usuario'])) {
-    header("Location: index.php");
-    exit;
+    AuthRedirect::redirectAfterAuthentication();
 }
 ?>
 <!DOCTYPE html>
@@ -68,6 +68,8 @@ if (isset($_SESSION['usuario'])) {
             <form class="login-form"
                   action="/Simulador-Acu-tico-main/app/controllers/AuthController.php"
                   method="post">
+
+                <input type="hidden" name="redirect_fragment" id="redirect-fragment" value="">
 
                 <div class="campo">
                     <label for="login-email">Email</label>
@@ -112,6 +114,23 @@ if (isset($_SESSION['usuario'])) {
 
 <canvas id="particles"></canvas>
 <script src="/Simulador-Acu-tico-main/public/js/burbujas.js" defer></script>
+<script>
+    (function () {
+        var fragment = window.location.hash || '';
+        var fragmentInput = document.getElementById('redirect-fragment');
+        var googleLogin = document.querySelector('.google-btn');
+
+        if (fragmentInput) {
+            fragmentInput.value = fragment;
+        }
+
+        if (googleLogin && fragment) {
+            var googleUrl = new URL(googleLogin.href, window.location.origin);
+            googleUrl.searchParams.set('redirect_fragment', fragment);
+            googleLogin.href = googleUrl.toString();
+        }
+    }());
+</script>
 
 </body>
 </html>

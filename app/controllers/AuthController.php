@@ -2,6 +2,8 @@
 session_start();
 
 require_once __DIR__ . "/../models/Conexion.php";
+require_once __DIR__ . '/../support/AuthRedirect.php';
+require_once __DIR__ . '/../support/AchievementPageTracker.php';
 
 $conexion = new Conexion();
 $conn = $conexion->getConnection();
@@ -34,8 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['rol']     = $user['rol_id'];
             $_SESSION['id']      = $user['id'];
 
-            header("Location: /Simulador-Acu-tico-main/views/index.php");
-            exit();
+            AchievementPageTracker::recordLogin($conn, (int) $user['id']);
+
+            AuthRedirect::redirectAfterAuthentication($_POST['redirect_fragment'] ?? null);
 
         } else {
             header("Location: /Simulador-Acu-tico-main/views/login.php?error=credentials");

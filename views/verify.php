@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../app/models/Conexion.php';
+require_once __DIR__ . '/../app/support/AuthRedirect.php';
+require_once __DIR__ . '/../app/support/AchievementPageTracker.php';
 $conexion = new Conexion();
 $conn = $conexion->getConnection();
 
@@ -47,9 +49,13 @@ if ($row = $result->fetch_assoc()) {
             $_SESSION['rol']     = $userData['rol_id'];
             $_SESSION['id']      = $id_usuario;
 
+            AchievementPageTracker::recordLogin($conn, (int) $id_usuario);
+
             // Redirigir al index con sesión iniciada
-            header("Location: index.php?verificacion=ok");
-            exit;
+            AuthRedirect::redirectAfterAuthentication(
+                null,
+                '/Simulador-Acu-tico-main/views/index.php?verificacion=ok'
+            );
         } else {
             // Por si acaso no encuentra al usuario (no debería ocurrir)
             header("Location: login.php?mensaje=verificacion_exitosa");
@@ -64,11 +70,21 @@ if ($row = $result->fetch_assoc()) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Verificación · Blue EcoSim</title>
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
     <link rel="stylesheet" href="../public/css/verify.css">
 </head>
 <body>
+    <div id="navbar-container">
+        <?php include(__DIR__ . "/fragments/navbar.php"); ?>
+    </div>
+    <main class="verify-main">
     <div class="mensaje">
         <?php if ($error === 'expirado'): ?>
             <h2>⏰ Enlace expirado</h2>
@@ -79,6 +95,11 @@ if ($row = $result->fetch_assoc()) {
             <p>El enlace no es válido o la cuenta ya ha sido activada.</p>
             <a href="login.php" class="btn">Ir al login</a>
         <?php endif; ?>
+    </div>
+    </main>
+
+    <div id="footer-container">
+        <?php include(__DIR__ . "/fragments/footer.php"); ?>
     </div>
 </body>
 </html>

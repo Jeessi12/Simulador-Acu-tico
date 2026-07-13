@@ -368,12 +368,6 @@ body {
 }
 
 @media (max-width: 480px) {
-    .logo {
-        height: 32px;
-    }
-    .nav-links {
-        display: none;
-    }
     .form-title {
         font-size: 28px;
     }

@@ -25,12 +25,12 @@ const SIMULATIONS = {
         tabClass: 'cadena',
         title: 'La Cadena Alimenticia',
         heading: 'Cadena alimenticia marina',
-        summary: 'Altera poblaciones para observar un desequilibrio en cascada.',
-        description: 'Reduce el Mero Guasa a cero para simular sobrepesca y ver el colapso trofico.',
+        summary: 'Modifica poblaciones y condiciones ambientales para observar cambios en toda la red alimenticia.',
+        description: 'Ajusta especies, temperatura, salinidad, oxigeno, salud ambiental y contaminacion para analizar sus efectos en el arrecife.',
         details: [
-            'Simulacion enfocada en relaciones entre poblaciones.',
-            'Permite cambiar cantidades de depredadores, presas y organismos base.',
-            'Ideal para analizar efectos en cadena dentro del ecosistema.'
+            'Puedes cambiar las poblaciones de depredadores, presas y organismos base.',
+            'Las condiciones ambientales afectan la productividad del arrecife y su capacidad de carga.',
+            'Observa como cambian la reproduccion, supervivencia y el equilibrio trofico.'
         ],
         species: ['mero_guasa', 'pargo_amarillo', 'cangrejo_moro_roca', 'bailarina_mar'],
         populations: {
@@ -98,6 +98,7 @@ let livePopulations = {};
 let populationLimits = {};
 let godotStarted = false;
 let simulationVisible = false;
+let achievementSessionToken = null;
 
 function getInitialSimulation() {
     const params = new URLSearchParams(window.location.search);
@@ -118,6 +119,30 @@ function formatNumber(value, decimals = 1) {
     const num = Number(value);
     if (!Number.isFinite(num)) return '0.0';
     return num.toFixed(decimals);
+}
+
+async function achievementApi(action, data = {}, keepalive = false) {
+    const response = await fetch('api_achievements.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        keepalive,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action,
+            csrf_token: window.BLUEECO_ACHIEVEMENT_CSRF,
+            ...data
+        })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) {
+        throw new Error(result.message || 'No se pudo actualizar el progreso de logros.');
+    }
+    return result.data || {};
+}
+
+function announceAchievementUnlocks(unlocked) {
+    if (!Array.isArray(unlocked) || unlocked.length === 0) return;
+    window.dispatchEvent(new CustomEvent('blueeco:achievements-unlocked', { detail: unlocked }));
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -250,9 +275,22 @@ function setupObservations() {
 
 function setupTimer() {
     const timerDisplay = document.getElementById('timer');
+    const startBtn = document.getElementById('start');
+    const pauseBtn = document.getElementById('pause');
+    const resetBtn = document.getElementById('reset');
+    const completeBtn = document.getElementById('completeSimulation');
+    const completionStatus = document.getElementById('completionStatus');
     let seconds = 0;
     let interval = null;
+    let achievementHeartbeat = null;
     let timerRunning = false;
+
+    function setCompletionStatus(message, state = '') {
+        if (!completionStatus) return;
+        completionStatus.textContent = message;
+        completionStatus.classList.toggle('is-error', state === 'error');
+        completionStatus.classList.toggle('is-success', state === 'success');
+    }
 
     function updateTimer() {
         if (!timerRunning) return;
@@ -263,50 +301,118 @@ function setupTimer() {
         if (timerDisplay) timerDisplay.textContent = `${hrs}:${mins}:${secs}`;
     }
 
-    const startBtn = document.getElementById('start');
-    const pauseBtn = document.getElementById('pause');
-    const resetBtn = document.getElementById('reset');
-
-    if (startBtn) {
-        startBtn.onclick = () => {
-            beginTimer();
-        };
-    }
-    if (pauseBtn) {
-        pauseBtn.onclick = () => {
-            timerRunning = false;
-            clearInterval(interval);
-            interval = null;
-            setGlobal('godot_is_running', false);
-        };
-    }
-    if (resetBtn) {
-        resetBtn.onclick = () => {
-            timerRunning = false;
-            clearInterval(interval);
-            interval = null;
-            seconds = 0;
-            if (timerDisplay) timerDisplay.textContent = '00:00:00';
-            setGlobal('godot_reset_simulation', Date.now());
-            applySimulation(selectedSimulation);
-            setSimulationVisible(true);
-        };
+    function stopLocalTimer() {
+        timerRunning = false;
+        clearInterval(interval);
+        clearInterval(achievementHeartbeat);
+        interval = null;
+        achievementHeartbeat = null;
+        setGlobal('godot_is_running', false);
     }
 
-    const returnBtn = document.getElementById('returnToSelector');
-    if (returnBtn) {
-        returnBtn.onclick = () => {
-            window.location.href = 'simuladores.php';
-        };
+    async function heartbeatAchievement() {
+        if (!achievementSessionToken || !timerRunning) return;
+        try {
+            const data = await achievementApi('heartbeat_simulation', {
+                session_token: achievementSessionToken
+            });
+            announceAchievementUnlocks(data.unlocked);
+        } catch (error) {
+            console.warn(error.message);
+        }
     }
 
-    function beginTimer() {
+    async function pauseAchievement(keepalive = false) {
+        if (!achievementSessionToken) return;
+        try {
+            await achievementApi('pause_simulation', {
+                session_token: achievementSessionToken
+            }, keepalive);
+        } catch (error) {
+            if (!keepalive) console.warn(error.message);
+        }
+    }
+
+    async function beginTimer() {
+        if (timerRunning) return;
         setSimulationVisible(true);
         startGodot();
+        setCompletionStatus('Registrando tiempo activo de exploración…');
+
+        try {
+            if (!achievementSessionToken) {
+                const params = new URLSearchParams(window.location.search);
+                const data = await achievementApi('start_simulation', {
+                    simulation_id: Number(params.get('id')) || 1,
+                    assignment_id: Number(window.ASSIGNMENT_ID) || null
+                });
+                achievementSessionToken = data.session_token;
+            } else {
+                await achievementApi('resume_simulation', {
+                    session_token: achievementSessionToken
+                });
+            }
+        } catch (error) {
+            setCompletionStatus(error.message, 'error');
+        }
+
         setGlobal('godot_is_running', true);
         timerRunning = true;
         if (!interval) interval = setInterval(updateTimer, 1000);
+        if (!achievementHeartbeat) achievementHeartbeat = setInterval(heartbeatAchievement, 60000);
     }
+
+    startBtn?.addEventListener('click', beginTimer);
+    pauseBtn?.addEventListener('click', () => {
+        stopLocalTimer();
+        pauseAchievement();
+        setCompletionStatus('Simulación en pausa. Tu tiempo activo quedó guardado.');
+    });
+
+    resetBtn?.addEventListener('click', () => {
+        stopLocalTimer();
+        pauseAchievement();
+        seconds = 0;
+        if (timerDisplay) timerDisplay.textContent = '00:00:00';
+        setGlobal('godot_reset_simulation', Date.now());
+        applySimulation(selectedSimulation);
+        setSimulationVisible(true);
+        setCompletionStatus('Temporizador reiniciado. Puedes continuar la misma experiencia.');
+    });
+
+    completeBtn?.addEventListener('click', async () => {
+        if (!achievementSessionToken) {
+            setCompletionStatus('Inicia el temporizador antes de finalizar la experiencia.', 'error');
+            return;
+        }
+
+        completeBtn.disabled = true;
+        try {
+            const data = await achievementApi('complete_simulation', {
+                session_token: achievementSessionToken
+            });
+            stopLocalTimer();
+            achievementSessionToken = null;
+            completeBtn.classList.add('is-complete');
+            setCompletionStatus('¡Experiencia completada y progreso guardado!', 'success');
+            announceAchievementUnlocks(data.unlocked);
+        } catch (error) {
+            setCompletionStatus(error.message, 'error');
+        } finally {
+            completeBtn.disabled = false;
+        }
+    });
+
+    const returnBtn = document.getElementById('returnToSelector');
+    returnBtn?.addEventListener('click', () => {
+        stopLocalTimer();
+        pauseAchievement(true);
+        window.location.href = 'simuladores.php';
+    });
+
+    window.addEventListener('pagehide', () => {
+        if (achievementSessionToken && timerRunning) pauseAchievement(true);
+    });
 
     window.beginSelectedSimulation = beginTimer;
 }
@@ -504,11 +610,20 @@ function renderPopulationControls(config) {
     }).join('') + `
         <div class="food-chain-insight" id="foodChainInsight" aria-live="polite">
             <div class="trophic-meter">
-                <span>Balance trofico</span>
+                <span>Balance trófico</span>
                 <strong id="trophicBalanceValue">--</strong>
             </div>
             <div class="trophic-bar" aria-hidden="true"><span id="trophicBalanceBar"></span></div>
-            <p id="trophicDiagnosis">Ajusta las poblaciones para observar la respuesta de la red alimenticia.</p>
+            <p id="trophicDiagnosis">Ajusta las poblaciones y el ambiente para observar la respuesta de la red alimenticia.</p>
+            <dl id="foodChainEcology" class="food-chain-ecology" hidden>
+                <div><dt>Salud ambiental</dt><dd data-ecology-value="environmental_health">--</dd></div>
+                <div><dt>Productividad del arrecife</dt><dd data-ecology-value="reef_productivity">--</dd></div>
+                <div><dt>Capacidad de carga</dt><dd data-ecology-value="carrying_capacity">--</dd></div>
+                <div><dt>Biodiversidad</dt><dd data-ecology-value="biodiversity">--</dd></div>
+                <div><dt>Estado del arrecife</dt><dd data-ecology-value="reef_state">--</dd></div>
+                <div><dt>Capturas</dt><dd data-ecology-value="captures">--</dd></div>
+                <div><dt>Mortalidad</dt><dd data-ecology-value="mortality">--</dd></div>
+            </dl>
         </div>
     `;
 
@@ -536,9 +651,14 @@ function renderPopulationControls(config) {
 function updateControlsVisibility(config) {
     const environmental = document.querySelector('.environmental-controls');
     const pollutionControl = document.getElementById('pollutionControl');
+    const isFoodChain = config === SIMULATIONS.sim_02_cadena_alimenticia;
 
-    if (environmental) environmental.hidden = config !== SIMULATIONS.sim_01_ecosistema_basico;
-    if (pollutionControl) pollutionControl.hidden = config !== SIMULATIONS.sim_03_contaminacion_marina;
+    if (environmental) {
+        environmental.hidden = config !== SIMULATIONS.sim_01_ecosistema_basico && !isFoodChain;
+    }
+    if (pollutionControl) {
+        pollutionControl.hidden = config !== SIMULATIONS.sim_03_contaminacion_marina && !isFoodChain;
+    }
 }
 
 function updateSliderValues(values) {
@@ -704,6 +824,29 @@ function updatePopulationCounters() {
     updateFoodChainInsight(lastGodotStats);
 }
 
+function getFirstStatValue(stats, keys) {
+    if (!stats || typeof stats !== 'object') return undefined;
+    for (const key of keys) {
+        if (Object.prototype.hasOwnProperty.call(stats, key) && stats[key] !== null && stats[key] !== undefined) {
+            return stats[key];
+        }
+    }
+    return undefined;
+}
+
+function setOptionalStatValue(ids, value, formatter = (currentValue) => currentValue) {
+    const text = value === null || value === undefined || value === '' ? '-' : formatter(value);
+    ids.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = text;
+    });
+}
+
+function formatPercentStat(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? `${formatNumber(number)}%` : String(value);
+}
+
 function updateStatsPanel(stats) {
     const healthEl = document.getElementById('health-val');
     const stressEl = document.getElementById('stress-val');
@@ -733,11 +876,118 @@ function updateStatsPanel(stats) {
     if (ageEl) ageEl.textContent = selectedStats ? `${formatNumber(selectedStats.age)} s` : '-';
     if (growthEl) growthEl.textContent = selectedStats ? `${formatNumber(selectedStats.life_progress)}%` : '-';
     if (populationEl) populationEl.textContent = selectedPopulation || 0;
+
+    // Algunos rediseños incluyen estas filas; se actualizan solo si existen en el DOM.
+    setOptionalStatValue(
+        ['hunger-val', 'hungerVal', 'hunger-value'],
+        getFirstStatValue(selectedStats, ['hunger', 'hungry', 'hambre']),
+        formatPercentStat
+    );
+    setOptionalStatValue(
+        ['energy-val', 'energyVal', 'energy-value'],
+        getFirstStatValue(selectedStats, ['energy', 'energia']),
+        formatPercentStat
+    );
+    setOptionalStatValue(
+        ['fatigue-val', 'fatigueVal', 'fatigue-value'],
+        getFirstStatValue(selectedStats, ['fatigue', 'tiredness', 'fatiga']),
+        formatPercentStat
+    );
+    setOptionalStatValue(
+        ['immunity-val', 'immunityVal', 'immunity-value'],
+        getFirstStatValue(selectedStats, ['immunity', 'immune_system', 'inmunidad']),
+        formatPercentStat
+    );
+    setOptionalStatValue(
+        ['biological-state-val', 'biologicalStateVal', 'biological-state-value', 'bio-state-val'],
+        getFirstStatValue(selectedStats, ['biological_state', 'bio_state', 'estado_biologico', 'state']),
+        (value) => String(value)
+    );
+}
+
+function isEcologyPayload(ecology) {
+    return !!ecology && typeof ecology === 'object' && !Array.isArray(ecology);
+}
+
+function normalizePercentage(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return null;
+    const percentage = number >= 0 && number <= 1 ? number * 100 : number;
+    return Math.max(0, Math.min(100, percentage));
+}
+
+function formatEcologyValue(key, value, ecology) {
+    if (key === 'captures') {
+        const successful = Number(ecology.captures_successful);
+        const failed = Number(ecology.captures_failed);
+        if (!Number.isFinite(successful) && !Number.isFinite(failed)) return '--';
+        const successfulText = Number.isFinite(successful) ? successful : 0;
+        const failedText = Number.isFinite(failed) ? failed : 0;
+        return `${successfulText} exitosas / ${failedText} fallidas`;
+    }
+    if (key === 'carrying_capacity' || key === 'mortality') {
+        const number = Number(value);
+        return Number.isFinite(number) ? formatNumber(number, 0) : String(value ?? '--');
+    }
+    if (key === 'reef_state') return value === null || value === undefined ? '--' : String(value);
+
+    const percentage = normalizePercentage(value);
+    return percentage === null ? String(value ?? '--') : `${formatNumber(percentage)}%`;
+}
+
+function updateEcologyDetails(ecology) {
+    const details = document.getElementById('foodChainEcology');
+    if (!details) return;
+
+    details.hidden = !isEcologyPayload(ecology);
+    if (!isEcologyPayload(ecology)) return;
+
+    details.querySelectorAll('[data-ecology-value]').forEach((element) => {
+        const key = element.dataset.ecologyValue;
+        const value = key === 'captures' ? null : ecology[key];
+        element.textContent = formatEcologyValue(key, value, ecology);
+    });
 }
 
 function updateFoodChainInsight(stats = lastGodotStats) {
     const panel = document.getElementById('foodChainInsight');
     if (!panel || selectedSimulation !== 'sim_02_cadena_alimenticia') return;
+
+    const value = document.getElementById('trophicBalanceValue');
+    const bar = document.getElementById('trophicBalanceBar');
+    const diagnosis = document.getElementById('trophicDiagnosis');
+    const ecology = stats && stats.ecology;
+
+    // Godot es la fuente de verdad cuando exporta métricas ecológicas.
+    if (isEcologyPayload(ecology)) {
+        const score = normalizePercentage(ecology.trophic_balance);
+        const environmentalHealth = formatEcologyValue('environmental_health', ecology.environmental_health, ecology);
+        const productivity = formatEcologyValue('reef_productivity', ecology.reef_productivity, ecology);
+        const carryingCapacity = formatEcologyValue('carrying_capacity', ecology.carrying_capacity, ecology);
+        const reefState = formatEcologyValue('reef_state', ecology.reef_state, ecology);
+        const captures = formatEcologyValue('captures', null, ecology);
+        const mortality = formatEcologyValue('mortality', ecology.mortality, ecology);
+        const messages = [];
+
+        if (ecology.reef_state !== null && ecology.reef_state !== undefined && ecology.reef_state !== '') {
+            messages.push(`Estado del arrecife: ${reefState}.`);
+        }
+        messages.push(`Salud ambiental: ${environmentalHealth}; productividad: ${productivity}; capacidad de carga: ${carryingCapacity}.`);
+        if (Number.isFinite(Number(ecology.captures_successful)) || Number.isFinite(Number(ecology.captures_failed)) || Number.isFinite(Number(ecology.mortality))) {
+            messages.push(`Capturas: ${captures}; mortalidad: ${mortality}.`);
+        }
+
+        if (value) value.textContent = score === null ? '--' : `${formatNumber(score, 0)}%`;
+        if (bar) {
+            bar.style.width = score === null ? '0%' : `${score}%`;
+            bar.dataset.state = score === null ? 'warn' : score >= 75 ? 'good' : score >= 45 ? 'warn' : 'bad';
+        }
+        if (diagnosis) diagnosis.textContent = messages.join(' ');
+        updateEcologyDetails(ecology);
+        return;
+    }
+
+    updateEcologyDetails(null);
 
     const populations = stats && stats.populations ? stats.populations : livePopulations;
     const mero = Number(populations.mero_guasa ?? 0);
@@ -783,9 +1033,6 @@ function updateFoodChainInsight(stats = lastGodotStats) {
     }
 
     score = Math.max(0, Math.min(100, Math.round(score)));
-    const value = document.getElementById('trophicBalanceValue');
-    const bar = document.getElementById('trophicBalanceBar');
-    const diagnosis = document.getElementById('trophicDiagnosis');
     if (value) value.textContent = `${score}%`;
     if (bar) {
         bar.style.width = `${score}%`;

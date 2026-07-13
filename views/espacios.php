@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/../app/support/AuthRedirect.php';
 
 if (!defined('ROL_ESTUDIANTE')) {
     define('ROL_ESTUDIANTE', 1);
@@ -17,7 +18,9 @@ include __DIR__ . '/../app/models/ObservacionesSchema.php';
 $conn = (new Conexion())->getConnection();
 ensureObservacionesSimulacionTable($conn);
 
-if (!isset($_SESSION['usuario']) || $_SESSION['rol'] != ROL_DOCENTE) {
+AuthRedirect::requireAuthentication();
+
+if ($_SESSION['rol'] != ROL_DOCENTE) {
     header("Location: login.php?error=locked");
     exit();
 }

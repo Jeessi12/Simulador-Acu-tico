@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once __DIR__ . '/../support/AuthRedirect.php';
+
+AuthRedirect::rememberFragment($_GET['redirect_fragment'] ?? null);
 
 $clientID = 'aqui va el secreto';
 $clientSecret = 'aqui va el secreto';
