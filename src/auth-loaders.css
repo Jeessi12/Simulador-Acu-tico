@@ -1,0 +1,26 @@
+@tailwind components;
+@tailwind utilities;
+
+.auth-submit__loader {
+  display: none;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.btn-submit[data-loading="true"] {
+  cursor: wait;
+  transform: none;
+}
+
+.btn-submit[data-loading="true"] .auth-submit__label {
+  display: none;
+}
+
+.btn-submit[data-loading="true"] .auth-submit__loader {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+  justify-content: center;
+}

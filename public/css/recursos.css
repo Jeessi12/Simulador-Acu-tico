@@ -851,6 +851,7 @@ body.recursos-page::after {
 
 #timeline-section {
     scroll-margin-top: 108px;
+    width: min(100%, 1600px);
 }
 
 /* Biodiversidad/Carrusel */
@@ -1401,6 +1402,7 @@ body.dark-mode .bio-day-card img {
 
 #biodiversity-section {
     scroll-margin-top: 108px;
+    width: min(100%, 1600px);
 }
 
 /* Mapa interactivo */

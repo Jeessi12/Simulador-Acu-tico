@@ -41,6 +41,7 @@ if (isset($_SESSION['usuario'])) {
     <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
     <link rel="stylesheet" href="../public/css/login.css">
+    <link rel="stylesheet" href="../public/build/auth-loaders/auth-loaders.css">
     <link rel="icon" href="../public/media/Web/logo.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -85,7 +86,13 @@ if (isset($_SESSION['usuario'])) {
                     <div class="linea"></div>
                 </div>
 
-                <button type="submit" class="btn-submit">Iniciar sesión</button>
+                <button type="submit" class="btn-submit">
+                    <span class="auth-submit__label">Iniciar sesión</span>
+                    <span class="auth-submit__loader"
+                          data-wave-loader="Ingresando..."
+                          role="status"
+                          aria-live="polite"></span>
+                </button>
 
                 <p class="switch-link">
                     ¿No tienes una cuenta?
@@ -114,6 +121,7 @@ if (isset($_SESSION['usuario'])) {
 
 <canvas id="particles"></canvas>
 <script src="/Simulador-Acu-tico-main/public/js/burbujas.js" defer></script>
+<script type="module" src="/Simulador-Acu-tico-main/public/build/auth-loaders/auth-loaders.js"></script>
 <script>
     (function () {
         var fragment = window.location.hash || '';

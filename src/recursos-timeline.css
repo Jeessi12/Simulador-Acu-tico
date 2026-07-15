@@ -3,7 +3,12 @@
 @tailwind utilities;
 
 #recursos-focus-rail {
-  width: min(1180px, 100%);
+  width: min(1400px, 100%);
+  margin-inline: auto;
+}
+
+#recursos-orbital-timeline {
+  width: min(1480px, 100%);
   margin-inline: auto;
 }
 
@@ -17,21 +22,21 @@
 
 @media (max-width: 640px) {
   #recursos-focus-rail .focus-rail {
-    height: 650px;
+    height: 700px;
     border-radius: 22px;
   }
 }
 
 .orbital-timeline-root {
-  --background: 210 66% 23%;
-  --foreground: 0 0% 100%;
+  --background: 195 70% 97%;
+  --foreground: 207 66% 23%;
   --primary: 167 57% 49%;
   --primary-foreground: 210 66% 23%;
   --secondary: 207 61% 47%;
-  --secondary-foreground: 0 0% 100%;
+  --secondary-foreground: 207 66% 23%;
   --accent: 190 61% 63%;
-  --accent-foreground: 0 0% 100%;
-  --border: 0 0% 100%;
+  --accent-foreground: 207 66% 23%;
+  --border: 190 48% 82%;
   isolation: isolate;
 }
 

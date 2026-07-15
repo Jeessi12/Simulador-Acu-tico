@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('cancelModal');
     const startBtn = document.getElementById('startSelectedSimulation');
     const searchInput = document.getElementById('simulatorSearch');
-    const library = document.getElementById('simulatorLibrary');
 
     document.querySelectorAll('.classroom-card').forEach((card) => {
         card.addEventListener('click', () => openSimulationModal(card.dataset.simulation));
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('[data-quick-start]').forEach((button) => {
         button.addEventListener('click', () => {
-            library?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.getElementById('simulatorLibrary')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
 

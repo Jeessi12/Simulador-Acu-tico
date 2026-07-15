@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{ts,tsx}"],
+  content: [
+    "./src/**/*.{ts,tsx}",
+    "!./src/simuladores-showcase.tsx",
+    "!./src/components/ui/simulation-showcase.tsx",
+  ],
   corePlugins: {
     preflight: false,
   },

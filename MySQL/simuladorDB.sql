@@ -41,7 +41,7 @@ INSERT INTO roles (rol) VALUES
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) UNIQUE,
-    username VARCHAR(100) UNIQUE,
+    username VARCHAR(100),
     password VARCHAR(255),
     google_id VARCHAR(180) UNIQUE NULL,
     rol_id INT DEFAULT 1,

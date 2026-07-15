@@ -13,7 +13,7 @@ use PHPMailer\PHPMailer\Exception;
 // ⚠️ CAMBIA ESTOS VALORES POR LOS REALES
 define('SMTP_HOST', 'smtp.gmail.com');
 define('SMTP_USER', 'correo@gmail.com');
-define('SMTP_PASS', 'aqui va el secreto');           // ← CONTRASEÑA DE APLICACIÓN (16 caracteres sin espacios)
+define('SMTP_PASS', 'aqui va el secreto');
 define('SMTP_PORT', 587);
 define('FROM_EMAIL', SMTP_USER);
 define('FROM_NAME', 'Blue EcoSim');
@@ -46,10 +46,17 @@ if ($result->num_rows > 0) {
     $estado = 'pendiente';
     $stmt = $conn->prepare("INSERT INTO usuarios (email, username, password, rol_id, estado) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssis", $email, $nombre, $passwordHash, $rol, $estado);
-    if (!$stmt->execute()) {
-        header("Location: /Simulador-Acu-tico-main/views/registro.php?error=desconocido");
+
+    try {
+        $stmt->execute();
+    } catch (mysqli_sql_exception $e) {
+        // El correo sigue siendo unico. Un nombre de usuario si puede repetirse.
+        $error = $e->getCode() === 1062 ? 'email_duplicado' : 'error_registro';
+        error_log('Error al registrar usuario: ' . $e->getMessage());
+        header("Location: /Simulador-Acu-tico-main/views/registro.php?error=$error");
         exit();
     }
+
     $id_usuario = $stmt->insert_id;
 
     // 3. Generar token de verificación (válido 24 horas)

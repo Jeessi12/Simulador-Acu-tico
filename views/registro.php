@@ -5,9 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $errores = [
     'email_duplicado'    => 'Este correo electrónico ya está registrado.',
-    'username_duplicado' => 'Este nombre de usuario ya está en uso.',
-    'ambos'              => 'El correo y el nombre de usuario ya están registrados.',
     'envio_correo'       => 'No se pudo enviar el correo de verificación. Inténtalo de nuevo.',
+    'error_registro'     => 'No se pudo completar el registro. Inténtalo nuevamente.',
     'desconocido'        => 'Error desconocido al registrar. Intenta más tarde.'
 ];
 $error_msg = '';
@@ -31,6 +30,7 @@ if (isset($_SESSION['usuario'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
     <link rel="stylesheet" href="../public/css/registro.css">
+    <link rel="stylesheet" href="../public/build/auth-loaders/auth-loaders.css">
 </head>
 <body>
 
@@ -111,7 +111,13 @@ if (isset($_SESSION['usuario'])) {
 
                 <input type="hidden" name="rol" id="roleInput" value="">
 
-                <button type="submit" class="btn-submit">Registrar</button>
+                <button type="submit" class="btn-submit">
+                    <span class="auth-submit__label">Registrar</span>
+                    <span class="auth-submit__loader"
+                          data-wave-loader="Creando cuenta..."
+                          role="status"
+                          aria-live="polite"></span>
+                </button>
 
                 <p class="switch-link">
                     ¿Ya tienes una cuenta?
@@ -131,6 +137,7 @@ if (isset($_SESSION['usuario'])) {
 
 <script src="/Simulador-Acu-tico-main/public/js/burbujas.js" defer></script>
 <script src="/Simulador-Acu-tico-main/public/js/registro.js" defer></script>
+<script type="module" src="/Simulador-Acu-tico-main/public/build/auth-loaders/auth-loaders.js"></script>
 
 </body>
 </html>

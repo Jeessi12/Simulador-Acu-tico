@@ -797,7 +797,7 @@ function estadoBadge(string $estado): string {
         <?php else: ?>
 
         <!-- ====== LISTA PRINCIPAL DE ESPACIOS ====== -->
-        <div class="classroom-hero">
+        <div class="classroom-hero" id="crear-clase">
             <div class="hero-content">
                 <h1>Mis espacios</h1>
                 <p>Organiza tus clases, invita estudiantes y asigna simulaciones ecolÃ³gicas</p>

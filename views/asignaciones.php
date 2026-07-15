@@ -452,7 +452,7 @@ if ($id_espacio_detalle > 0) {
             <?php endif; ?>
 
             <!-- Unirse por código -->
-            <section class="section-card codigo-panel">
+            <section class="section-card codigo-panel" id="unirse-clase">
                 <div class="panel-header">
                     <h2><i class="fas fa-key"></i> Unirse a un espacio</h2>
                     <p>Ingresa el código de 6 caracteres que te dio tu docente.</p>

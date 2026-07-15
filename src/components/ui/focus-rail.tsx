@@ -81,7 +81,7 @@ export function FocusRail({
   return (
     <div
       className={cn(
-        "focus-rail group relative flex h-[620px] w-full flex-col overflow-hidden rounded-[30px] border border-[#65c7dc]/30 bg-[#143a63] text-white shadow-2xl outline-none select-none",
+        "focus-rail group relative flex h-[700px] w-full flex-col overflow-hidden border border-transparent bg-transparent text-white shadow-none outline-none select-none sm:h-[760px]",
         className,
       )}
       onMouseEnter={() => setIsHovering(true)}
@@ -96,25 +96,9 @@ export function FocusRail({
       aria-label="Biodiversidad marina"
       tabIndex={0}
     >
-      <div className="pointer-events-none absolute inset-0 z-0">
-        <AnimatePresence mode="popLayout">
-          <motion.div
-            key={`background-${activeItem.id}`}
-            className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.42 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <img src={activeItem.imageSrc} alt="" className="h-full w-full scale-110 object-cover blur-3xl saturate-200" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#143a63] via-[#143a63]/65 to-[#2f7fc2]/15" />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      <div className="relative z-10 flex flex-1 flex-col justify-center px-4 md:px-8">
+      <div className="relative z-10 flex flex-1 flex-col justify-center px-4 md:px-10">
         <motion.div
-          className="relative mx-auto flex h-[370px] w-full max-w-6xl cursor-grab items-center justify-center [perspective:1200px] active:cursor-grabbing"
+          className="relative mx-auto flex h-[440px] w-full max-w-7xl cursor-grab items-center justify-center [perspective:1400px] active:cursor-grabbing"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.2}
@@ -133,31 +117,31 @@ export function FocusRail({
                 key={`${absoluteIndex}-${item.id}`}
                 aria-label={isCenter ? `${item.title}, elemento activo` : `Mostrar ${item.title}`}
                 className={cn(
-                  "absolute aspect-[3/4] w-[220px] overflow-hidden rounded-2xl border border-[#65c7dc]/35 bg-[#143a63] shadow-2xl md:w-[290px]",
-                  isCenter ? "z-20 shadow-[#35c5a6]/20" : "z-10",
+                  "absolute aspect-[3/4] w-[240px] overflow-hidden rounded-[24px] border border-white bg-white shadow-[0_22px_50px_rgba(37,108,142,.22)] md:w-[330px]",
+                  isCenter ? "z-20 ring-4 ring-white/80 shadow-[0_28px_70px_rgba(37,108,142,.3)]" : "z-10",
                 )}
                 initial={false}
                 animate={{
-                  x: offset * 310,
-                  z: -distance * 180,
-                  scale: isCenter ? 1 : 0.85,
-                  rotateY: offset * -20,
-                  opacity: isCenter ? 1 : Math.max(0.1, 1 - distance * 0.45),
-                  filter: `blur(${isCenter ? 0 : distance * 5}px) brightness(${isCenter ? 1 : 0.55})`,
+                  x: offset * 360,
+                  z: -distance * 190,
+                  scale: isCenter ? 1 : 0.86,
+                  rotateY: offset * -18,
+                  opacity: isCenter ? 1 : Math.max(0.22, 1 - distance * 0.36),
+                  filter: `blur(${isCenter ? 0 : distance * 3}px) brightness(${isCenter ? 1 : 0.86})`,
                 }}
                 transition={{ default: BASE_SPRING, scale: TAP_SPRING }}
                 style={{ transformStyle: "preserve-3d" }}
                 onClick={() => offset !== 0 && setActive((previous) => previous + offset)}
               >
                 <img src={item.imageSrc} alt={item.title} draggable={false} className="pointer-events-none h-full w-full object-cover" />
-                <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#65c7dc]/20 to-transparent" />
-                <span className="pointer-events-none absolute inset-0 bg-[#143a63]/10 mix-blend-multiply" />
+                <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/20 to-transparent" />
+                <span className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-[#b7e4ed]/50" />
               </motion.button>
             );
           })}
         </motion.div>
 
-        <div className="mx-auto mt-7 flex w-full max-w-4xl flex-col items-center justify-between gap-5 md:flex-row">
+        <div className="mx-auto mt-8 flex w-full max-w-5xl flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex h-32 flex-1 flex-col items-center justify-center text-center md:items-start md:text-left">
             <AnimatePresence mode="wait">
               <motion.div
@@ -168,20 +152,20 @@ export function FocusRail({
                 transition={{ duration: 0.3 }}
                 className="space-y-2"
               >
-                {activeItem.meta && <span className="text-xs font-semibold uppercase tracking-[.14em] text-[#35c5a6]">{activeItem.meta}</span>}
-                <h3 className="text-3xl font-bold tracking-tight text-white md:text-4xl">{activeItem.title}</h3>
-                {activeItem.description && <p className="max-w-md text-sm leading-6 text-[#d8f5fa]">{activeItem.description}</p>}
+                {activeItem.meta && <span className="text-xs font-semibold uppercase tracking-[.14em] text-[#7ff0d8] [text-shadow:0_2px_8px_rgba(0,35,70,.55)]">{activeItem.meta}</span>}
+                <h3 className="text-3xl font-bold tracking-tight text-white [text-shadow:0_3px_14px_rgba(0,35,70,.45)] md:text-5xl">{activeItem.title}</h3>
+                {activeItem.description && <p className="max-w-xl text-sm leading-6 text-white/85 [text-shadow:0_2px_8px_rgba(0,35,70,.5)] md:text-base md:leading-7">{activeItem.description}</p>}
               </motion.div>
             </AnimatePresence>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 rounded-full bg-[#143a63]/85 p-1 ring-1 ring-[#65c7dc]/30 backdrop-blur-md">
-              <button type="button" onClick={handlePrev} className="rounded-full p-3 text-[#65c7dc] transition hover:bg-[#2f7fc2]/50 hover:text-white active:scale-95" aria-label="Biodiversidad anterior">
+            <div className="flex items-center gap-1 rounded-full bg-white/90 p-1.5 shadow-[0_10px_28px_rgba(37,108,142,.12)] ring-1 ring-[#b7e4ed] backdrop-blur-md">
+              <button type="button" onClick={handlePrev} className="rounded-full p-3 text-[#2f7fc2] transition hover:bg-[#dff4fa] hover:text-[#143a63] active:scale-95" aria-label="Biodiversidad anterior">
                 <ChevronLeft className="h-5 w-5" />
               </button>
-              <span className="min-w-[52px] text-center font-mono text-xs text-[#65c7dc]">{String(activeIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
-              <button type="button" onClick={handleNext} className="rounded-full p-3 text-[#65c7dc] transition hover:bg-[#2f7fc2]/50 hover:text-white active:scale-95" aria-label="Biodiversidad siguiente">
+              <span className="min-w-[58px] text-center font-mono text-xs font-semibold text-[#2f7fc2]">{String(activeIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
+              <button type="button" onClick={handleNext} className="rounded-full p-3 text-[#2f7fc2] transition hover:bg-[#dff4fa] hover:text-[#143a63] active:scale-95" aria-label="Biodiversidad siguiente">
                 <ChevronRight className="h-5 w-5" />
               </button>
             </div>

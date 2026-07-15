@@ -12,3 +12,6 @@ client_secret*.json
 *.log
 .DS_Store
 Thumbs.db
+
+# Local database backups may contain private application data.
+/MySQL/backups/

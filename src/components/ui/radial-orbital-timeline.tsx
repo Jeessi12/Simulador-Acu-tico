@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ElementType, type MouseEvent } from "react";
-import { ArrowRight, Link, Zap } from "lucide-react";
+import { ArrowRight, Link, MousePointer2, Waves, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +26,7 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const [rotationAngle, setRotationAngle] = useState(0);
   const [autoRotate, setAutoRotate] = useState(true);
-  const [radius, setRadius] = useState(220);
+  const [radius, setRadius] = useState(315);
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +34,7 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
     const root = containerRef.current;
     if (!root) return;
 
-    const updateRadius = () => setRadius(Math.min(220, Math.max(92, root.clientWidth * 0.27)));
+    const updateRadius = () => setRadius(Math.min(315, Math.max(104, root.clientWidth * 0.25)));
     updateRadius();
     const observer = new ResizeObserver(updateRadius);
     observer.observe(root);
@@ -75,34 +75,58 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
   };
 
   const getStatus = (status: TimelineItem["status"]) => {
-    if (status === "completed") return { label: "CONSOLIDADO", classes: "border-[#35c5a6]/70 bg-[#35c5a6]/15 text-[#baf3e7]" };
-    if (status === "in-progress") return { label: "EN CURSO", classes: "border-[#f7c65f]/70 bg-[#f7c65f]/15 text-[#ffe8b5]" };
-    return { label: "PRÓXIMO", classes: "border-[#65c7dc]/40 bg-[#2f7fc2]/20 text-[#d8f5fa]" };
+    if (status === "completed") return { label: "CONSOLIDADO", classes: "border-[#35c5a6]/45 bg-[#dff7f1] text-[#116c60]" };
+    if (status === "in-progress") return { label: "EN CURSO", classes: "border-[#e5b43d]/50 bg-[#fff5d8] text-[#8a6210]" };
+    return { label: "PRÓXIMO", classes: "border-[#65c7dc]/45 bg-[#e4f6fa] text-[#276784]" };
   };
 
   return (
     <div
       ref={containerRef}
-      className="orbital-timeline-root relative flex h-[680px] w-full items-center justify-center overflow-hidden rounded-[32px] bg-[#143a63] text-white sm:h-[720px]"
+      className="orbital-timeline-root relative flex h-[720px] w-full items-center justify-center overflow-hidden rounded-[42px] border border-white/40 bg-white/[0.08] text-white shadow-[0_34px_100px_rgba(0,45,80,.2),inset_0_1px_0_rgba(255,255,255,.5)] backdrop-blur-[9px] sm:h-[900px] xl:h-[940px]"
       onClick={handleContainerClick}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(53,197,166,0.24),transparent_28%),radial-gradient(circle_at_15%_15%,rgba(101,199,220,0.20),transparent_30%)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-20 [background-image:radial-gradient(rgba(101,199,220,.9)_1px,transparent_1px)] [background-size:32px_32px]" />
+      <div className="pointer-events-none absolute inset-[1px] rounded-[41px] bg-[radial-gradient(circle_at_50%_48%,rgba(215,251,255,.23),transparent_34%),linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.02))]" />
+      <div className="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent" />
 
-      <div className="absolute left-5 top-5 z-20 flex items-center gap-2 rounded-full border border-[#65c7dc]/30 bg-[#143a63]/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#d8f5fa]/80 backdrop-blur-md sm:left-8 sm:top-8">
-        <span className={`h-2 w-2 rounded-full bg-[#35c5a6] ${autoRotate ? "animate-pulse" : ""}`} />
-        {autoRotate ? "Órbita activa" : "Explorando hito"}
+      <div className="absolute inset-x-5 top-5 z-20 flex items-center justify-between gap-3 sm:inset-x-8 sm:top-8">
+        <div className="flex items-center gap-2.5 rounded-full border border-white/60 bg-white/90 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#285a73] shadow-[0_10px_28px_rgba(0,55,90,.14)] backdrop-blur-md sm:text-xs">
+          <span className={`h-2.5 w-2.5 rounded-full bg-[#35c5a6] shadow-[0_0_0_5px_rgba(53,197,166,.14)] ${autoRotate ? "animate-pulse" : ""}`} />
+          {autoRotate ? "Órbita activa" : "Explorando hito"}
+        </div>
+
+        <div className="hidden items-center gap-5 rounded-full border border-white/35 bg-[#0b5274]/40 px-5 py-2.5 text-[11px] font-semibold tracking-[0.08em] text-white/90 shadow-[0_10px_28px_rgba(0,55,90,.12)] backdrop-blur-md sm:flex">
+          <span className="font-bold text-[#9ff2df]">2008 — Actualidad</span>
+          <span className="h-3 w-px bg-white/30" />
+          <span className="flex items-center gap-1.5"><MousePointer2 size={12} /> Selecciona un hito</span>
+        </div>
       </div>
 
       <div ref={orbitRef} className="absolute inset-0 flex items-center justify-center" style={{ perspective: "1000px" }}>
-        <div className="absolute h-20 w-20 rounded-full bg-gradient-to-br from-[#65c7dc] via-[#35c5a6] to-[#2f7fc2] shadow-[0_0_60px_rgba(53,197,166,.45)] sm:h-24 sm:w-24">
-          <div className="absolute inset-[-18px] rounded-full border border-[#65c7dc]/30 animate-ping" />
-          <div className="absolute inset-3 rounded-full border border-[#d8f5fa]/50 bg-[#d8f5fa]/20 backdrop-blur-md" />
-          <div className="absolute inset-0 flex items-center justify-center text-center text-[9px] font-bold uppercase tracking-[0.16em] text-[#143a63] sm:text-[10px]">Los<br />Cóbanos</div>
-        </div>
+        <div className="pointer-events-none absolute rounded-full border border-dashed border-white/45 shadow-[0_0_40px_rgba(101,199,220,.08)]" style={{ width: radius * 2, height: radius * 2 }} />
+        <div className="pointer-events-none absolute rounded-full border border-[#8ce6dd]/30" style={{ width: radius * 2 + 62, height: radius * 2 + 62 }} />
+        <div className="pointer-events-none absolute rounded-full border border-white/25" style={{ width: radius * 1.24, height: radius * 1.24 }} />
 
-        <div className="absolute rounded-full border border-dashed border-[#65c7dc]/30" style={{ width: radius * 2, height: radius * 2 }} />
-        <div className="absolute rounded-full border border-[#2f7fc2]/30" style={{ width: radius * 2 + 44, height: radius * 2 + 44 }} />
+        {timelineData.map((item, index) => {
+          const angle = ((index / timelineData.length) * 360 + rotationAngle) % 360;
+          const isRelated = expandedItem !== null && getRelatedItems(expandedItem).includes(item.id);
+          return (
+            <div
+              key={`spoke-${item.id}`}
+              className="pointer-events-none absolute left-1/2 top-1/2 h-px origin-left bg-gradient-to-r from-[#72ddcf]/45 via-white/25 to-white/60 transition-all duration-700"
+              style={{ width: radius, transform: `rotate(${angle}deg)`, opacity: isRelated ? 0.9 : 0.42 }}
+            />
+          );
+        })}
+
+        <div className="pointer-events-none absolute h-64 w-64 rounded-full bg-[#55dbc4]/15 blur-3xl sm:h-80 sm:w-80" />
+        <div className="absolute z-10 flex h-28 w-28 items-center justify-center rounded-full border border-white/75 bg-white/85 shadow-[0_22px_65px_rgba(0,75,110,.26),0_0_0_15px_rgba(53,197,166,.14)] backdrop-blur-lg sm:h-36 sm:w-36">
+          <div className="absolute inset-2.5 rounded-full border border-[#65c7dc]/50 bg-gradient-to-br from-[#eafffb]/95 via-white/75 to-[#aee3ef]/80" />
+          <div className="relative flex flex-col items-center text-[#143a63]">
+            <Waves size={26} className="mb-1.5 text-[#178e9b]" strokeWidth={1.8} />
+            <span className="text-center text-[10px] font-extrabold uppercase leading-tight tracking-[0.2em] sm:text-xs">Los<br />Cóbanos</span>
+          </div>
+        </div>
 
         {timelineData.map((item, index) => {
           const angle = ((index / timelineData.length) * 360 + rotationAngle) % 360;
@@ -110,7 +134,7 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
           const x = radius * Math.cos(radian);
           const y = radius * Math.sin(radian);
           const zIndex = expandedItem === item.id ? 200 : Math.round(100 + 40 * Math.sin(radian));
-          const opacity = expandedItem === item.id ? 1 : Math.max(0.55, 0.72 + 0.28 * Math.sin(radian));
+          const opacity = expandedItem === item.id ? 1 : Math.max(0.82, 0.92 + 0.08 * Math.sin(radian));
           const isExpanded = expandedItem === item.id;
           const isRelated = expandedItem !== null && getRelatedItems(expandedItem).includes(item.id);
           const status = getStatus(item.status);
@@ -124,46 +148,47 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
               onClick={(event) => { event.stopPropagation(); toggleItem(item.id); }}
             >
               <div
-                className={`absolute rounded-full transition-all ${isRelated ? "animate-pulse bg-[#35c5a6]/25" : "bg-[#65c7dc]/10"}`}
-                style={{ width: item.energy * 0.35 + 42, height: item.energy * 0.35 + 42, inset: -(item.energy * 0.35 + 2) / 2 }}
+                className={`absolute rounded-full border transition-all ${isRelated ? "animate-pulse border-[#82ead8]/60 bg-[#35c5a6]/25" : "border-white/25 bg-white/10"}`}
+                style={{ width: item.energy * 0.28 + 64, height: item.energy * 0.28 + 64, inset: -(item.energy * 0.28 + 8) / 2 }}
               />
               <button
                 type="button"
                 aria-expanded={isExpanded}
                 aria-label={`${item.date}: ${item.title}`}
-                className={`relative flex h-11 w-11 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7c65f] ${
+                className={`relative flex h-14 w-14 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f7c65f] sm:h-16 sm:w-16 ${
                   isExpanded
-                    ? "scale-150 border-[#f7c65f] bg-[#f7c65f] text-[#143a63] shadow-[0_0_28px_rgba(247,198,95,.45)]"
+                    ? "scale-125 border-white bg-[#f7c65f] text-[#143a63] shadow-[0_0_0_7px_rgba(247,198,95,.18),0_12px_30px_rgba(0,65,95,.25)]"
                     : isRelated
-                      ? "border-[#35c5a6] bg-[#35c5a6] text-[#143a63]"
-                      : "border-[#65c7dc]/60 bg-[#143a63] text-white hover:border-[#f7c65f] hover:bg-[#2f7fc2]"
+                      ? "border-white bg-[#6ee0c9] text-[#143a63] shadow-[0_10px_28px_rgba(0,75,105,.2)]"
+                      : "border-white/90 bg-white/95 text-[#2f7fc2] shadow-[0_14px_34px_rgba(0,65,95,.24)] backdrop-blur-md hover:-translate-y-1.5 hover:scale-110 hover:border-[#8ee8dc] hover:bg-white"
                 }`}
               >
-                <Icon size={18} strokeWidth={2} />
+                <Icon size={24} strokeWidth={2} />
               </button>
 
-              <div className={`absolute left-1/2 top-14 w-28 -translate-x-1/2 text-center transition-all sm:w-40 ${isExpanded ? "scale-110 text-white" : "text-white/70"}`}>
-                <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[#f7c65f]">{item.date}</span>
-                <span className="mt-0.5 block text-[11px] font-semibold sm:text-xs">{item.title}</span>
+              <div className={`absolute left-1/2 top-20 w-40 -translate-x-1/2 rounded-2xl border border-white/60 bg-white/90 px-4 py-3 text-center text-[#143a63] shadow-[0_14px_34px_rgba(0,65,95,.18)] backdrop-blur-md transition-all sm:w-48 ${isExpanded ? "pointer-events-none -translate-y-1 scale-95 opacity-0" : "opacity-100"}`}>
+                <span className="block text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#148b87] sm:text-[11px]">{item.date}</span>
+                <span className="mt-1 block text-[11px] font-bold leading-snug sm:text-sm">{item.title}</span>
               </div>
 
               {isExpanded && (
-                <Card className="orbital-detail-card absolute left-1/2 top-24 w-64 -translate-x-1/2 overflow-visible border-[#65c7dc]/30 bg-[#143a63]/95 text-white shadow-[0_24px_70px_rgba(20,58,99,.55)] backdrop-blur-lg sm:w-72">
-                  <div className="absolute -top-3 left-1/2 h-3 w-px -translate-x-1/2 bg-[#65c7dc]/60" />
-                  <CardHeader className="space-y-3 p-5 pb-3">
+                <Card className="orbital-detail-card absolute left-1/2 top-24 w-72 -translate-x-1/2 overflow-visible rounded-3xl border-white/85 bg-white/95 text-[#143a63] shadow-[0_32px_85px_rgba(0,55,85,.3)] backdrop-blur-xl sm:w-96">
+                  <div className="absolute -top-3 left-1/2 h-3 w-px -translate-x-1/2 bg-white/80" />
+                  <div className="absolute inset-x-5 top-0 h-1 rounded-b-full bg-gradient-to-r from-[#2f7fc2] via-[#35c5a6] to-[#f7c65f]" />
+                  <CardHeader className="space-y-4 p-6 pb-4">
                     <div className="flex items-center justify-between gap-3">
-                      <Badge className={`px-2 py-1 text-[9px] tracking-[0.12em] ${status.classes}`}>{status.label}</Badge>
-                      <span className="text-xs font-semibold text-[#f7c65f]">{item.date}</span>
+                      <Badge className={`px-2.5 py-1.5 text-[10px] tracking-[0.12em] ${status.classes}`}>{status.label}</Badge>
+                      <span className="text-sm font-bold text-[#2f7fc2]">{item.date}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] uppercase tracking-[0.16em] text-white/45">{item.category}</span>
-                      <CardTitle className="mt-1 text-base leading-snug text-white">{item.title}</CardTitle>
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#5e7f92]">{item.category}</span>
+                      <CardTitle className="mt-1.5 text-lg leading-snug text-[#143a63] sm:text-xl">{item.title}</CardTitle>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-5 pt-0 text-xs leading-relaxed text-white/75">
+                  <CardContent className="p-6 pt-0 text-sm leading-relaxed text-[#42677e]">
                     <p>{item.content}</p>
                     <div className="mt-4 border-t border-[#65c7dc]/20 pt-3">
-                      <div className="mb-1.5 flex items-center justify-between text-[10px] uppercase tracking-wider text-white/60">
+                      <div className="mb-1.5 flex items-center justify-between text-[10px] uppercase tracking-wider text-[#5e7f92]">
                         <span className="flex items-center"><Zap size={11} className="mr-1 text-[#f7c65f]" />Impacto</span>
                         <span>{item.energy}%</span>
                       </div>
@@ -172,12 +197,12 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
 
                     {item.relatedIds.length > 0 && (
                       <div className="mt-4 border-t border-[#65c7dc]/20 pt-3">
-                        <div className="mb-2 flex items-center text-[10px] uppercase tracking-wider text-white/50"><Link size={11} className="mr-1.5" />Hitos conectados</div>
+                        <div className="mb-2 flex items-center text-[10px] uppercase tracking-wider text-[#5e7f92]"><Link size={11} className="mr-1.5" />Hitos conectados</div>
                         <div className="flex flex-wrap gap-1.5">
                           {item.relatedIds.map((relatedId) => {
                             const related = timelineData.find((candidate) => candidate.id === relatedId);
                             return (
-                              <Button key={relatedId} variant="outline" size="sm" className="h-7 px-2 text-[10px] text-white/75 hover:text-white" onClick={(event) => { event.stopPropagation(); toggleItem(relatedId); }}>
+                              <Button key={relatedId} variant="outline" size="sm" className="h-7 border-[#b7e4ed] bg-[#f5fbfd] px-2 text-[10px] text-[#276784] hover:bg-[#dff4fa] hover:text-[#143a63]" onClick={(event) => { event.stopPropagation(); toggleItem(relatedId); }}>
                                 {related?.date}<ArrowRight size={10} className="ml-1" />
                               </Button>
                             );
@@ -193,7 +218,7 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
         })}
       </div>
 
-      <p className="absolute bottom-5 left-1/2 w-full -translate-x-1/2 px-6 text-center text-[11px] text-white/45 sm:bottom-7">Selecciona un hito para detener la órbita y explorar sus conexiones.</p>
+      <p className="absolute bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/25 bg-[#0b5274]/40 px-4 py-2 text-center text-[10px] font-semibold text-white/90 shadow-sm backdrop-blur-md sm:hidden">Selecciona un hito para explorar.</p>
     </div>
   );
 }
