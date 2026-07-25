@@ -71,15 +71,6 @@ $userRole = (int) ($_SESSION['rol'] ?? 0);
                 <div class="visual-shade" aria-hidden="true"></div>
                 <div class="vector-wave vector-wave-back" aria-hidden="true"></div>
                 <div class="vector-wave vector-wave-front" aria-hidden="true"></div>
-                <div class="live-pill"><span></span> Ecosistema en línea</div>
-                <div class="water-metric metric-temperature">
-                    <i class="fa-solid fa-temperature-half" aria-hidden="true"></i>
-                    <div><small>Temperatura</small><strong>26.4 °C</strong></div>
-                </div>
-                <div class="water-metric metric-health">
-                    <div class="metric-ring"><span>94</span></div>
-                    <div><small>Salud ambiental</small><strong>Óptima</strong></div>
-                </div>
             </div>
         </section>
         </div>

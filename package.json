@@ -3,10 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run build:recursos && npm run build:simuladores && npm run build:auth",
+    "build": "npm run build:recursos && npm run build:simuladores && npm run build:simulator && npm run build:auth",
     "build:recursos": "vite build",
     "build:simuladores": "vite build --config vite.simuladores.config.ts",
     "build:auth": "vite build --config vite.auth.config.ts",
+    "build:simulator": "vite build --config vite.simulator.config.ts",
     "dev:recursos": "vite"
   },
   "dependencies": {

@@ -412,106 +412,6 @@ a {
     background: linear-gradient(180deg, rgba(9, 58, 93, 0.02), rgba(6, 50, 78, 0.28));
 }
 
-.live-pill,
-.water-metric {
-    position: absolute;
-    z-index: 2;
-    border: 1px solid rgba(255, 255, 255, 0.58);
-    color: #234657;
-    background: rgba(255, 255, 255, 0.72);
-    box-shadow: 0 14px 35px rgba(24, 70, 92, 0.17);
-    backdrop-filter: blur(14px) saturate(1.25);
-}
-
-.live-pill {
-    top: 18px;
-    left: 18px;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 11px;
-    border-radius: 999px;
-    font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-.live-pill span {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #33c793;
-    box-shadow: 0 0 0 4px rgba(51, 199, 147, 0.17);
-    animation: pulse 2s ease-out infinite;
-}
-
-.water-metric {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 11px 13px;
-    border-radius: 16px;
-}
-
-.water-metric > i {
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    border-radius: 11px;
-    color: var(--sim-blue);
-    background: rgba(51, 125, 211, 0.11);
-}
-
-.water-metric div:not(.metric-ring) {
-    display: grid;
-}
-
-.water-metric small {
-    color: #718792;
-    font-size: 8px;
-}
-
-.water-metric strong {
-    font-size: 11px;
-}
-
-.metric-temperature {
-    right: 16px;
-    top: 62px;
-}
-
-.metric-health {
-    left: 17px;
-    bottom: 17px;
-}
-
-.metric-ring {
-    width: 40px;
-    height: 40px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: conic-gradient(#38bfc6 0 94%, rgba(41, 105, 134, 0.12) 94%);
-}
-
-.metric-ring::before {
-    content: "";
-    width: 30px;
-    height: 30px;
-    grid-area: 1 / 1;
-    border-radius: 50%;
-    background: rgba(250, 254, 255, 0.94);
-}
-
-.metric-ring span {
-    z-index: 1;
-    grid-area: 1 / 1;
-    font-size: 10px;
-    font-weight: 800;
-}
-
 .library-section {
     padding: 90px 0 40px;
     scroll-margin-top: 115px;
@@ -1037,10 +937,6 @@ a {
     to { transform: translate3d(25px, -20px, 0) scale(1.08); }
 }
 
-@keyframes pulse {
-    70%, 100% { box-shadow: 0 0 0 10px rgba(51, 199, 147, 0); }
-}
-
 @keyframes ripple {
     to { transform: translate(-50%, -50%) scale(1); opacity: 0; }
 }
@@ -1167,10 +1063,6 @@ a {
     .hero-visual {
         min-height: 300px;
         border-radius: 21px;
-    }
-
-    .metric-temperature {
-        display: none;
     }
 
     .library-section {
@@ -1613,20 +1505,6 @@ html.dark-mode .simulator-hub .fact-row {
     color: #173a70;
 }
 
-.hero-stage .live-pill,
-.hero-stage .water-metric {
-    z-index: 5;
-    border-color: rgba(255,255,255,.48);
-    background: rgba(240,250,255,.78);
-    box-shadow: 0 16px 38px rgba(10,54,119,.2);
-    backdrop-filter: blur(15px) saturate(1.25);
-}
-
-.hero-stage .live-pill {
-    top: 130px;
-    left: 30px;
-}
-
 .library-controls {
     display: grid;
     gap: 10px;
@@ -1644,18 +1522,6 @@ html.dark-mode .simulator-hub .fact-row {
 
 .library-search input {
     font-size: 13px;
-}
-
-.hero-stage .metric-temperature {
-    top: auto;
-    right: auto;
-    left: 32px;
-    bottom: 132px;
-}
-
-.hero-stage .metric-health {
-    left: 205px;
-    bottom: 50px;
 }
 
 .vector-wave {
@@ -1725,9 +1591,6 @@ html.dark-mode .simulator-hub .hero-stage .selector-hero h1 {
         padding: 92px 55px 82px 145px;
     }
 
-    .hero-stage .metric-health {
-        left: 150px;
-    }
 }
 
 @media (max-width: 900px) {
@@ -1774,20 +1637,6 @@ html.dark-mode .simulator-hub .hero-stage .selector-hero h1 {
         max-width: 690px;
     }
 
-    .hero-stage .live-pill {
-        top: 125px;
-    }
-
-    .hero-stage .metric-temperature {
-        top: 180px;
-        bottom: auto;
-    }
-
-    .hero-stage .metric-health {
-        top: 250px;
-        bottom: auto;
-        left: 32px;
-    }
 }
 
 @media (max-width: 680px) {
@@ -1843,20 +1692,6 @@ html.dark-mode .simulator-hub .hero-stage .selector-hero h1 {
 
     .hero-stage .primary-action {
         width: 100%;
-    }
-
-    .hero-stage .live-pill {
-        top: 105px;
-        left: 18px;
-    }
-
-    .hero-stage .metric-temperature {
-        display: none;
-    }
-
-    .hero-stage .metric-health {
-        top: 146px;
-        left: 18px;
     }
 
     .hero-stage .hero-trust {

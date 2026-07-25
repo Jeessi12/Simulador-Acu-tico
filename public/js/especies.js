@@ -68,11 +68,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // ========== UTILS ==========
     function getCoverClass(cat) {
-        const m = { peces:'cover-peces', tortugas:'cover-tortugas', crustaceos:'cover-crustaceos', moluscos:'cover-moluscos' };
+        const m = { peces:'cover-peces', cetaceos:'cover-cetaceos', tortugas:'cover-tortugas', crustaceos:'cover-crustaceos', moluscos:'cover-moluscos' };
         return m[cat] || 'cover-default';
     }
     function getCategoryText(cat) {
-        const m = { peces:'🐟 Peces', tortugas:'🐢 Tortugas', crustaceos:'🦞 Crustáceos', moluscos:'🐚 Moluscos' };
+        const m = { peces:'🐟 Peces', cetaceos:'🐬 Cetáceos', tortugas:'🐢 Tortugas', crustaceos:'🦞 Crustáceos', moluscos:'🐚 Moluscos' };
         return m[cat] || '🌊 Marina';
     }
     function getDangerClass(p) {

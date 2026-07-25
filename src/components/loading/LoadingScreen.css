@@ -1,0 +1,182 @@
+.blueeco-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(18px, 4vw, 36px);
+  background: #fbfdff;
+  color: #1769c7;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: auto;
+  user-select: none;
+  transform: scale(0.99) translateZ(0);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+.blueeco-loading--visible {
+  opacity: 1;
+  transform: scale(1) translateZ(0);
+}
+
+.blueeco-loading__content {
+  display: grid;
+  justify-items: center;
+  width: min(100%, 300px);
+  text-align: center;
+}
+
+.blueeco-loading__visual {
+  position: relative;
+  width: clamp(154px, 22vw, 190px);
+  height: clamp(126px, 19vw, 154px);
+}
+
+/* The orbit rotates while the inner wrapper counter-rotates, keeping the whale upright. */
+.blueeco-loading__orbit {
+  position: absolute;
+  top: 51%;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  animation: blueeco-whale-orbit 8.5s linear infinite;
+  will-change: transform;
+}
+
+.blueeco-loading__carrier {
+  position: absolute;
+  top: -22px;
+  left: 0;
+}
+
+.blueeco-loading__whale-position {
+  position: absolute;
+  width: clamp(112px, 17vw, 138px);
+  aspect-ratio: 180 / 118;
+  transform: translate(-50%, -50%);
+}
+
+.blueeco-loading__whale-upright {
+  width: 100%;
+  height: 100%;
+  animation: blueeco-whale-counter-orbit 8.5s linear infinite;
+  will-change: transform;
+}
+
+.blueeco-loading__whale {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.blueeco-whale__tail {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: blueeco-tail-sway 1.7s ease-in-out infinite;
+}
+
+.blueeco-whale__spout {
+  animation: blueeco-spout-breathe 2.5s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.blueeco-loading h2 {
+  margin: 2px 0 16px;
+  color: #2677d5;
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(0.78rem, 1.6vw, 0.92rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.blueeco-loading h2.blueeco-loading__error {
+  color: #bb3a4a;
+}
+
+.blueeco-loading__progress {
+  width: min(100%, 210px);
+  height: 7px;
+  border-radius: 999px;
+  background: #e5f0f8;
+  overflow: hidden;
+}
+
+.blueeco-loading__progress span {
+  display: block;
+  width: var(--blueeco-progress);
+  height: 100%;
+  border-radius: inherit;
+  background: #1976df;
+  transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: width;
+}
+
+.blueeco-loading__percentage {
+  min-height: 17px;
+  margin: 7px 0 0;
+  color: #2870c5;
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.69rem;
+  font-weight: 500;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes blueeco-whale-orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes blueeco-whale-counter-orbit {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes blueeco-tail-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(4deg); }
+}
+
+@keyframes blueeco-spout-breathe {
+  0%, 100% { opacity: 0.72; transform: translateY(1px) scale(0.96); }
+  50% { opacity: 1; transform: translateY(-1px) scale(1.02); }
+}
+
+@media (max-width: 560px) {
+  .blueeco-loading {
+    padding: 14px;
+  }
+
+  .blueeco-loading__visual {
+    width: 150px;
+    height: 122px;
+  }
+
+  .blueeco-loading__progress {
+    width: min(54vw, 190px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blueeco-loading {
+    transition-duration: 120ms;
+  }
+
+  .blueeco-loading__orbit,
+  .blueeco-loading__whale-upright,
+  .blueeco-whale__tail,
+  .blueeco-whale__spout {
+    animation: none;
+  }
+
+  .blueeco-loading__carrier {
+    top: 0;
+  }
+
+  .blueeco-loading__progress span {
+    transition-duration: 100ms;
+  }
+}

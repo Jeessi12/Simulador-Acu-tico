@@ -57,6 +57,8 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
     <?php
         $simCssVersion = filemtime(__DIR__ . '/../public/css/simulador.css');
         $simJsVersion = filemtime(__DIR__ . '/../public/js/simulador.js');
+        $loadingCssVersion = filemtime(__DIR__ . '/../public/build/simulator-loading/simulator-loading.css');
+        $loadingJsVersion = filemtime(__DIR__ . '/../public/build/simulator-loading/simulator-loading.js');
         $bubbleJsVersion = filemtime(__DIR__ . '/../public/js/burbujas.js');
         $sessionJsVersion = filemtime(__DIR__ . '/../public/js/session.js');
     ?>
@@ -64,6 +66,7 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
     <!-- Estilos propios -->
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
     <link rel="stylesheet" href="../public/css/simulador.css?v=<?php echo $simCssVersion; ?>">
+    <link rel="stylesheet" href="../public/build/simulator-loading/simulator-loading.css?v=<?php echo $loadingCssVersion; ?>">
 
     <!-- Tipografía -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -145,12 +148,73 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
             control total del elemento y lo redimensione con canvasResizePolicy: 2.
         -->
         <div class="sim-area">
-            <div class="sim-preview-panel" aria-live="polite">
-                <span class="preview-kicker">Vista actual</span>
-                <strong id="currentSimName">Ecosistema Basico</strong>
-                <span id="currentSpeciesName">Pez Lora Gigante</span>
-                <p id="currentSimDescription">Arrecife de Los Cobanos en equilibrio, con ciclo de vida y aparicion de tortugas.</p>
-            </div>
+            <section class="bio-status-panel" id="bio-stats" aria-label="Estado biológico de la especie" aria-live="polite" data-state="waiting">
+                <div class="bio-panel-heading">
+                    <button id="bioPanelToggle" class="bio-panel-toggle" type="button" aria-expanded="true" aria-controls="bioPanelContent" title="Contraer estado biológico">
+                        <span class="bio-sensor-icon" aria-hidden="true"><i class="fa-solid fa-heart-pulse"></i></span>
+                        <span class="bio-heading-copy">
+                            <span class="bio-kicker">Estado biológico</span>
+                            <strong id="currentSpeciesName">Pez Lora Gigante</strong>
+                        </span>
+                        <span class="bio-toggle-mark" aria-hidden="true"><i class="fa-solid fa-chevron-up"></i></span>
+                    </button>
+                    <span class="bio-state-badge" id="bio-state-label">
+                        <span class="bio-state-dot" aria-hidden="true"></span>
+                        Analizando
+                    </span>
+                </div>
+
+                <div id="bioPanelContent" class="bio-panel-content">
+                    <div class="bio-chart-grid">
+                        <article class="bio-chart bio-chart-health">
+                            <div class="bio-chart-label">
+                                <span><i class="fa-solid fa-heart" aria-hidden="true"></i> Salud</span>
+                                <strong id="health-val">—</strong>
+                            </div>
+                            <svg viewBox="0 0 120 34" preserveAspectRatio="none" role="img" aria-label="Tendencia reciente de la salud">
+                                <path class="bio-chart-gridline" d="M0 8.5H120 M0 17H120 M0 25.5H120"></path>
+                                <polyline id="health-chart-line" class="bio-chart-line" points=""></polyline>
+                            </svg>
+                        </article>
+
+                        <article class="bio-chart bio-chart-stress">
+                            <div class="bio-chart-label">
+                                <span><i class="fa-solid fa-bolt" aria-hidden="true"></i> Estrés</span>
+                                <strong id="stress-val">—</strong>
+                            </div>
+                            <svg viewBox="0 0 120 34" preserveAspectRatio="none" role="img" aria-label="Tendencia reciente del estrés">
+                                <path class="bio-chart-gridline" d="M0 8.5H120 M0 17H120 M0 25.5H120"></path>
+                                <polyline id="stress-chart-line" class="bio-chart-line" points=""></polyline>
+                            </svg>
+                        </article>
+
+                        <article class="bio-chart bio-chart-wellbeing">
+                            <div class="bio-chart-label">
+                                <span><i class="fa-solid fa-star" aria-hidden="true"></i> Bienestar</span>
+                                <strong id="wellbeing-val">—</strong>
+                            </div>
+                            <svg viewBox="0 0 120 34" preserveAspectRatio="none" role="img" aria-label="Tendencia reciente del bienestar">
+                                <path class="bio-chart-gridline" d="M0 8.5H120 M0 17H120 M0 25.5H120"></path>
+                                <polyline id="wellbeing-chart-line" class="bio-chart-line" points=""></polyline>
+                            </svg>
+                        </article>
+                    </div>
+
+                    <div class="bio-details-grid">
+                        <div><span>Etapa</span><strong id="stage-val">—</strong></div>
+                        <div class="bio-age-detail">
+                            <span>Vida simulada</span>
+                            <strong id="age-val" title="Tiempo desde el nacimiento del individuo observado">—</strong>
+                        </div>
+                        <div><span>Población</span><strong id="population-val">—</strong></div>
+                        <div class="bio-growth-detail">
+                            <span>Desarrollo <strong id="growth-val">—</strong></span>
+                            <span class="bio-growth-track" aria-hidden="true"><span id="growth-bar"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div id="simulator-loading-root"></div>
             <div id="godot-canvas" role="img" aria-label="Simulación 3D del ecosistema acuático"></div>
         </div>
 
@@ -181,29 +245,45 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
     <aside class="panel" aria-label="Panel de control">
 
         <!-- Selector de especies -->
-        <div class="card species-switcher">
-            <h3><i class="fa-solid fa-fish" style="margin-right:6px;opacity:.6;"></i>Especie de prueba</h3>
+        <details class="card species-switcher species-accordion" open>
+            <summary>
+                <span class="species-summary-icon"><i class="fa-solid fa-fish" aria-hidden="true"></i></span>
+                <span class="species-summary-copy">
+                    <small>Especie de prueba</small>
+                    <strong id="speciesAccordionSelection">Pez Lora Gigante</strong>
+                </span>
+                <i class="fa-solid fa-chevron-down species-summary-chevron" aria-hidden="true"></i>
+            </summary>
 
-            <div class="species-options" aria-label="Especies disponibles">
-                <button class="species-chip active" type="button" data-species="pez_lora_gigante">Pez Lora</button>
-                <button class="species-chip" type="button" data-species="pez_angel_real">Pez Angel</button>
-                <button class="species-chip" type="button" data-species="tortuga_carey">Tortuga Carey</button>
+            <div class="species-accordion-content">
+                <p>Selecciona el organismo que deseas observar.</p>
+                <div class="species-options" aria-label="Especies disponibles">
+                    <button class="species-chip active" type="button" data-species="pez_lora_gigante">Pez Lora</button>
+                    <button class="species-chip" type="button" data-species="pez_angel_real">Pez Angel</button>
+                    <button class="species-chip" type="button" data-species="tortuga_carey">Tortuga Carey</button>
+                </div>
             </div>
-        </div>
+        </details>
 
         <!-- Temporizador -->
         <div class="card timer-card">
-            <h3><i class="fa-regular fa-clock" style="margin-right:6px;opacity:.6;"></i>Tiempo de simulación</h3>
+            <div class="timer-heading">
+                <h3><i class="fa-regular fa-clock" aria-hidden="true"></i> Tiempo de simulación</h3>
+                <span class="timer-state" id="timerState"><span aria-hidden="true"></span> En pausa</span>
+            </div>
             <div id="timer" role="timer" aria-live="off" aria-label="Tiempo transcurrido">00:00:00</div>
-            <div class="controls">
-                <button id="start" class="circle green" title="Iniciar" aria-label="Iniciar temporizador">
+            <div class="controls" role="group" aria-label="Controles de simulación">
+                <button id="start" class="circle green" title="Iniciar" aria-label="Iniciar temporizador" aria-pressed="false">
                     <i class="fa-solid fa-play" aria-hidden="true"></i>
+                    <span>Iniciar</span>
                 </button>
-                <button id="pause" class="circle blue" title="Pausar" aria-label="Pausar temporizador">
+                <button id="pause" class="circle blue" title="Pausar" aria-label="Pausar temporizador" aria-pressed="true">
                     <i class="fa-solid fa-pause" aria-hidden="true"></i>
+                    <span>Pausar</span>
                 </button>
                 <button id="reset" class="circle red" title="Reiniciar" aria-label="Reiniciar temporizador">
                     <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+                    <span>Reiniciar</span>
                 </button>
             </div>
             <button id="completeSimulation" class="complete-simulation" type="button">
@@ -268,7 +348,7 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
             </div>
         </div>
 
-        <!-- Acciones rápidas -->
+        <!-- Controles específicos de cada simulación -->
         <div class="card" id="pollutionControl" hidden>
             <h3><i class="fa-solid fa-flask" style="margin-right:6px;opacity:.6;"></i>Contaminacion</h3>
             <div class="control-group">
@@ -289,73 +369,12 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
             <div id="populationControlList"></div>
         </div>
 
-        <div class="card options">
-            <h3><i class="fa-solid fa-bolt" style="margin-right:6px;opacity:.6;"></i>Acciones</h3>
-
-            <div class="option" role="button" tabindex="0" aria-label="Gestionar especies">
-                <div class="left">
-                    <i class="fa-solid fa-fish" aria-hidden="true"></i>
-                    <span>Gestionar especies</span>
-                </div>
-                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-            </div>
-
-            <div class="option" role="button" tabindex="0" aria-label="Ver parámetros avanzados">
-                <div class="left">
-                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
-                    <span>Parámetros avanzados</span>
-                </div>
-                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-            </div>
-        </div>
-
         <!-- Alertas — actualizadas dinámicamente por JS al mover sliders -->
         <div class="card alerts" aria-live="polite" aria-label="Alertas del ecosistema">
             <h3><i class="fa-solid fa-wave-square" style="margin-right:6px;opacity:.6;"></i>Estado del ecosistema</h3>
             <p class="ok">✔ Todos los parámetros en rango óptimo</p>
         </div>
 
-        <!-- Estado biológico — actualizado por Godot vía onGodotStats -->
-        <div class="card" id="bio-stats" aria-label="Estado biológico de la especie">
-            <h3>
-                <i class="fa-solid fa-heart-pulse" style="margin-right:6px;opacity:.6;"></i>
-                Estado biológico
-            </h3>
-
-            <div class="stat-row">
-                <span class="stat-label">❤️ Salud</span>
-                <span class="stat-value" id="health-val">—</span>
-            </div>
-
-            <div class="stat-row">
-                <span class="stat-label">⚡ Estrés</span>
-                <span class="stat-value" id="stress-val">—</span>
-            </div>
-
-            <div class="stat-row">
-                <span class="stat-label">🌟 Bienestar</span>
-                <span class="stat-value" id="wellbeing-val">—</span>
-            </div>
-
-            <div class="stat-row">
-                <span class="stat-label">🔬 Etapa</span>
-                <span class="stat-value" id="stage-val">—</span>
-            </div>
-
-            <div class="stat-row">
-                <span class="stat-label">Edad</span>
-                <span class="stat-value" id="age-val">-</span>
-            </div>
-
-            <div class="stat-row">
-                <span class="stat-label">Desarrollo</span>
-                <span class="stat-value" id="growth-val">-</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">🐠 Población</span>
-                <span class="stat-value" id="population-val">—</span>
-            </div>
-        </div>  
     </aside>
 </main>
 
@@ -374,6 +393,7 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
     3. burbujas.js (defer) → independiente, no interfiere con Godot
     4. session.js (defer) → gestión de sesión, independiente
 -->
+<script type="module" src="../public/build/simulator-loading/simulator-loading.js?v=<?php echo $loadingJsVersion; ?>"></script>
 <script src="../public/js/simulador.js?v=<?php echo $simJsVersion; ?>" defer></script>
 <script src="../public/js/burbujas.js?v=<?php echo $bubbleJsVersion; ?>"  defer></script>
 <script src="../public/js/session.js?v=<?php echo $sessionJsVersion; ?>"   defer></script>

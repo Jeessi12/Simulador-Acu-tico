@@ -93,6 +93,7 @@ AchievementPageTracker::track('species');
                 <div class="filter-tabs-row" id="filterTabs">
                     <button class="ftab active" data-category="todos">🌊 Todos</button>
                     <button class="ftab" data-category="peces">🐟 Peces</button>
+                    <button class="ftab" data-category="cetaceos">🐬 Cetáceos</button>
                     <button class="ftab" data-category="tortugas">🐢 Tortugas</button>
                     <button class="ftab" data-category="crustaceos">🦞 Crustáceos</button>
                     <button class="ftab" data-category="moluscos">🐚 Moluscos</button>

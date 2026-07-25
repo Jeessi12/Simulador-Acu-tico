@@ -1,31 +1,41 @@
 <?php
 
 class Conexion {
-    private $servidor  = "localhost";
-    private $usuario   = "Simulaciones";
+    private $servidor = "localhost";
+    private $usuario = "Simulaciones";
     private $contrasena = "bitesthedust";
     private $base_datos = "simulador";
+    private $base_datos_especies = "simulador_especies";
 
     private $conn;
+    private $speciesConn;
 
     public function getConnection(): mysqli {
-        if ($this->conn === null) {
-            $this->conn = new mysqli(
+        return $this->connect($this->conn, $this->base_datos);
+    }
+
+    public function getSpeciesConnection(): mysqli {
+        return $this->connect($this->speciesConn, $this->base_datos_especies);
+    }
+
+    private function connect(&$connection, string $database): mysqli {
+        if ($connection === null) {
+            $connection = new mysqli(
                 $this->servidor,
                 $this->usuario,
                 $this->contrasena,
-                $this->base_datos
+                $database
             );
 
-            if ($this->conn->connect_error) {
+            if ($connection->connect_error) {
                 die(json_encode([
-                    'error' => 'Error de conexión: ' . $this->conn->connect_error
+                    'error' => 'Error de conexion: ' . $connection->connect_error
                 ]));
             }
 
-            $this->conn->set_charset('utf8mb4');
+            $connection->set_charset('utf8mb4');
         }
 
-        return $this->conn;
+        return $connection;
     }
 }

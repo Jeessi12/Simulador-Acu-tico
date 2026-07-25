@@ -99,6 +99,13 @@ let populationLimits = {};
 let godotStarted = false;
 let simulationVisible = false;
 let achievementSessionToken = null;
+let bioHistorySpecies = null;
+let bioHistoryLastSample = 0;
+const bioHistory = {
+    health: [],
+    stress: [],
+    wellbeing: []
+};
 
 function getInitialSimulation() {
     const params = new URLSearchParams(window.location.search);
@@ -119,6 +126,69 @@ function formatNumber(value, decimals = 1) {
     const num = Number(value);
     if (!Number.isFinite(num)) return '0.0';
     return num.toFixed(decimals);
+}
+
+function formatEcosystemValue(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return String(value);
+    return Number.isInteger(number) ? String(number) : number.toFixed(1);
+}
+
+function notifyAkiraEcosystem(message, title = 'Akira · Estado del ecosistema') {
+    if (!message) return;
+    document.dispatchEvent(new CustomEvent('blueeco:akira-notification', {
+        detail: {
+            message,
+            title,
+            duration: 6000,
+            mandatory: true
+        }
+    }));
+}
+
+function buildEnvironmentalFeedback(globalKey, rawValue) {
+    const value = Number(rawValue);
+    const shown = formatEcosystemValue(value);
+
+    if (globalKey === 'godot_temperature') {
+        if (value < 22) return `Cambiaste la temperatura a ${shown} °C. El agua fría ralentiza el metabolismo de las especies y puede causarles estrés.`;
+        if (value <= 28) return `Cambiaste la temperatura a ${shown} °C. Este rango favorece el metabolismo, la actividad y la estabilidad del ecosistema.`;
+        if (value <= 30) return `Cambiaste la temperatura a ${shown} °C. El calor eleva el metabolismo y reduce el oxígeno disponible, aumentando la presión sobre el ecosistema.`;
+        return `Cambiaste la temperatura a ${shown} °C. El calor extremo reduce el oxígeno disuelto y puede perjudicar seriamente a las especies.`;
+    }
+
+    if (globalKey === 'godot_salinity') {
+        if (value < 32) return `Cambiaste la salinidad a ${shown} PSU. Una salinidad baja dificulta el equilibrio de sales de los organismos y puede causar estrés.`;
+        if (value <= 38) return `Cambiaste la salinidad a ${shown} PSU. Este rango favorece el equilibrio osmótico y el funcionamiento normal de las especies marinas.`;
+        return `Cambiaste la salinidad a ${shown} PSU. Una concentración alta obliga a las especies a gastar más energía para mantener su equilibrio interno.`;
+    }
+
+    if (globalKey === 'godot_oxygen') {
+        if (value < 5) return `Cambiaste el oxígeno disuelto a ${shown} mg/L. Este nivel puede provocar hipoxia, estrés y menor supervivencia.`;
+        if (value <= 8) return `Cambiaste el oxígeno disuelto a ${shown} mg/L. Es un nivel favorable para la respiración, la actividad y el bienestar de las especies.`;
+        return `Cambiaste el oxígeno disuelto a ${shown} mg/L. La alta disponibilidad favorece la respiración y ofrece una buena reserva al ecosistema.`;
+    }
+
+    if (globalKey === 'godot_ecosystem_health') {
+        if (value < 60) return `Cambiaste la salud del ecosistema a ${shown}%. El arrecife queda vulnerable y disminuyen el bienestar y la supervivencia de sus especies.`;
+        if (value < 90) return `Cambiaste la salud del ecosistema a ${shown}%. El sistema se mantiene funcional, pero aún necesita recuperarse para alcanzar su mejor estado.`;
+        return `Cambiaste la salud del ecosistema a ${shown}%. Este nivel beneficia la biodiversidad y, si se mantiene, puede atraer Tortugas Carey.`;
+    }
+
+    if (globalKey === 'godot_pollution') {
+        if (value <= 20) return `Cambiaste la contaminación a ${shown}%. La presión es baja y el ecosistema conserva condiciones favorables.`;
+        if (value <= 40) return `Cambiaste la contaminación a ${shown}%. La calidad del agua comienza a deteriorarse y aumenta el estrés biológico.`;
+        return `Cambiaste la contaminación a ${shown}%. Este nivel favorece la hipoxia, reduce la salud ambiental y perjudica a las especies.`;
+    }
+
+    return '';
+}
+
+function buildPopulationFeedback(speciesName, value, delta) {
+    if (delta > 0) {
+        return `Aumentaste la población de ${speciesName} a ${value}. Esto puede reforzar su función ecológica, pero también aumenta la competencia por alimento y espacio.`;
+    }
+    return `Disminuiste la población de ${speciesName} a ${value}. Esto reduce su función en la red alimenticia y puede alterar el equilibrio trófico.`;
 }
 
 async function achievementApi(action, data = {}, keepalive = false) {
@@ -146,6 +216,7 @@ function announceAchievementUnlocks(unlocked) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    setupBioPanelToggle();
     setupTimer();
     setupFullscreen();
     setupParticleCanvas();
@@ -158,11 +229,33 @@ document.addEventListener('DOMContentLoaded', function () {
     setSimulationVisible(true);
     startGodot();
 
+    window.setTimeout(() => {
+        notifyAkiraEcosystem(
+            'Estoy aquí para ayudarte. Cambia los parámetros del ecosistema y te explicaré brevemente cómo benefician o afectan a las especies.',
+            'Akira · Asistente de simulación'
+        );
+    }, 900);
+
     const params = new URLSearchParams(window.location.search);
     if (params.get('start') === '1' && typeof window.beginSelectedSimulation === 'function') {
         window.beginSelectedSimulation();
     }
 });
+
+function setupBioPanelToggle() {
+    const panel = document.getElementById('bio-stats');
+    const button = document.getElementById('bioPanelToggle');
+    const content = document.getElementById('bioPanelContent');
+    if (!panel || !button || !content) return;
+
+    button.addEventListener('click', () => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        button.title = expanded ? 'Desplegar estado biológico' : 'Contraer estado biológico';
+        panel.classList.toggle('is-collapsed', expanded);
+        content.hidden = expanded;
+    });
+}
 
 function setupObservations() {
     const input = document.getElementById('obsInput');
@@ -285,6 +378,18 @@ function setupTimer() {
     let achievementHeartbeat = null;
     let timerRunning = false;
 
+    function setTimerState(running) {
+        const timerState = document.getElementById('timerState');
+        if (timerState) {
+            timerState.classList.toggle('is-running', running);
+            timerState.innerHTML = `<span aria-hidden="true"></span> ${running ? 'En curso' : 'En pausa'}`;
+        }
+        startBtn?.classList.toggle('is-active', running);
+        pauseBtn?.classList.toggle('is-active', !running);
+        startBtn?.setAttribute('aria-pressed', running ? 'true' : 'false');
+        pauseBtn?.setAttribute('aria-pressed', running ? 'false' : 'true');
+    }
+
     function setCompletionStatus(message, state = '') {
         if (!completionStatus) return;
         completionStatus.textContent = message;
@@ -308,6 +413,7 @@ function setupTimer() {
         interval = null;
         achievementHeartbeat = null;
         setGlobal('godot_is_running', false);
+        setTimerState(false);
     }
 
     async function heartbeatAchievement() {
@@ -358,6 +464,7 @@ function setupTimer() {
 
         setGlobal('godot_is_running', true);
         timerRunning = true;
+        setTimerState(true);
         if (!interval) interval = setInterval(updateTimer, 1000);
         if (!achievementHeartbeat) achievementHeartbeat = setInterval(heartbeatAchievement, 60000);
     }
@@ -377,6 +484,7 @@ function setupTimer() {
         setGlobal('godot_reset_simulation', Date.now());
         applySimulation(selectedSimulation);
         setSimulationVisible(true);
+        setTimerState(false);
         setCompletionStatus('Temporizador reiniciado. Puedes continuar la misma experiencia.');
     });
 
@@ -415,6 +523,7 @@ function setupTimer() {
     });
 
     window.beginSelectedSimulation = beginTimer;
+    setTimerState(false);
 }
 
 function setSimulationVisible(visible) {
@@ -469,6 +578,11 @@ function bindSlider(sliderId, valueId, globalKey) {
         setGlobal(globalKey, value);
         updateLocalAlerts();
     });
+
+    slider.addEventListener('change', function () {
+        const ecosystemFeedback = buildEnvironmentalFeedback(globalKey, this.value);
+        if (ecosystemFeedback) notifyAkiraEcosystem(ecosystemFeedback);
+    });
 }
 
 function setupSimulationTabs() {
@@ -483,6 +597,7 @@ function applySimulation(simulationKey) {
     const config = SIMULATIONS[simulationKey] || SIMULATIONS.sim_01_ecosistema_basico;
     selectedSimulation = simulationKey;
     selectedSpecies = config.species[0];
+    resetBioHistory(selectedSpecies);
 
     setGlobal('godot_simulation', simulationKey);
     setGlobal('godot_focus_species', selectedSpecies);
@@ -512,14 +627,10 @@ function applySimulation(simulationKey) {
 
 function updateSimulationText(config) {
     const titleEl = document.getElementById('simTitle');
-    const currentSimName = document.getElementById('currentSimName');
-    const currentDescription = document.getElementById('currentSimDescription');
     const summaryTitle = document.getElementById('simSummaryTitle');
     const summaryText = document.getElementById('simSummaryText');
 
     if (titleEl) titleEl.textContent = config.heading;
-    if (currentSimName) currentSimName.textContent = config.title;
-    if (currentDescription) currentDescription.textContent = config.description;
     if (summaryTitle) summaryTitle.textContent = config.title;
     if (summaryText) summaryText.textContent = config.summary;
 }
@@ -558,6 +669,7 @@ function renderSpeciesButtons(speciesKeys) {
 
 function applySpecies(speciesKey) {
     selectedSpecies = speciesKey;
+    resetBioHistory(speciesKey);
     setGlobal('godot_focus_species', speciesKey);
     document.querySelectorAll('.species-chip').forEach((button) => {
         button.classList.toggle('active', button.dataset.species === speciesKey);
@@ -568,7 +680,9 @@ function applySpecies(speciesKey) {
 
 function updateCurrentSpecies() {
     const currentSpeciesName = document.getElementById('currentSpeciesName');
+    const accordionSelection = document.getElementById('speciesAccordionSelection');
     if (currentSpeciesName) currentSpeciesName.textContent = SPECIES[selectedSpecies] || selectedSpecies;
+    if (accordionSelection) accordionSelection.textContent = SPECIES[selectedSpecies] || selectedSpecies;
 }
 
 function renderPopulationControls(config) {
@@ -641,6 +755,8 @@ function renderPopulationControls(config) {
             updatePopulationCounters();
             updateStatsPanel(lastGodotStats);
             updateFoodChainInsight();
+            const speciesName = SPECIES[speciesKey] || speciesKey;
+            notifyAkiraEcosystem(buildPopulationFeedback(speciesName, nextValue, delta));
         });
     });
 
@@ -717,6 +833,7 @@ function updateLocalAlerts() {
 
 function startGodot() {
     if (godotStarted) return;
+    window.dispatchEvent(new CustomEvent('blueeco:simulator-loading-start'));
     const godotContainer = document.getElementById('godot-canvas');
     let godotCanvas = document.getElementById('canvas');
 
@@ -741,13 +858,22 @@ function startGodot() {
                 mainPack: base + '.pck',
                 canvasResizePolicy: 2,
                 locale: 'es',
-                args: []
+                args: [],
+                onProgress: (current, total) => {
+                    window.dispatchEvent(new CustomEvent('blueeco:simulator-loading-progress', {
+                        detail: { current, total }
+                    }));
+                }
             });
 
-            engine.startGame().catch((error) => {
-                console.error('Error iniciando Godot 4:', error);
-                tryGodot3(base, godotCanvas);
-            });
+            engine.startGame()
+                .then(() => {
+                    window.dispatchEvent(new CustomEvent('blueeco:simulator-loading-ready'));
+                })
+                .catch((error) => {
+                    console.error('Error iniciando Godot 4:', error);
+                    tryGodot3(base, godotCanvas);
+                });
             godotStarted = true;
         } catch (error) {
             console.warn('Fallo constructor Godot 4, intentando Godot 3:', error);
@@ -763,9 +889,20 @@ function tryGodot3(base, canvas) {
     try {
         const engine = new Engine();
         engine.startGame(base, canvas, base + '.pck')
-            .catch((error) => console.error('Error iniciando Godot 3:', error));
+            .then(() => {
+                window.dispatchEvent(new CustomEvent('blueeco:simulator-loading-ready'));
+            })
+            .catch((error) => {
+                console.error('Error iniciando Godot 3:', error);
+                window.dispatchEvent(new CustomEvent('blueeco:simulator-loading-error', {
+                    detail: { message: 'No se pudo iniciar el motor de simulacion.' }
+                }));
+            });
     } catch (error) {
         console.error('No se pudo iniciar Godot:', error);
+        window.dispatchEvent(new CustomEvent('blueeco:simulator-loading-error', {
+            detail: { message: 'No se pudo iniciar el motor de simulacion.' }
+        }));
     }
 }
 
@@ -847,6 +984,80 @@ function formatPercentStat(value) {
     return Number.isFinite(number) ? `${formatNumber(number)}%` : String(value);
 }
 
+function formatBiologicalPercent(value) {
+    const percentage = normalizePercentage(value);
+    return percentage === null ? '-' : `${formatNumber(percentage)}%`;
+}
+
+function formatSimulatedLifetime(value) {
+    if (value === null || value === undefined || value === '') return '-';
+    const totalSeconds = Math.max(0, Math.floor(Number(value)));
+    if (!Number.isFinite(totalSeconds)) return '-';
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    if (hours > 0) return `${hours}h ${String(minutes).padStart(2, '0')}m`;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function resetBioHistory(speciesKey) {
+    bioHistorySpecies = speciesKey;
+    bioHistoryLastSample = 0;
+    Object.keys(bioHistory).forEach((key) => {
+        bioHistory[key] = [];
+        const line = document.getElementById(`${key}-chart-line`);
+        if (line) line.setAttribute('points', '');
+    });
+}
+
+function updateBioChart(metric, rawValue) {
+    const value = normalizePercentage(rawValue);
+    const line = document.getElementById(`${metric}-chart-line`);
+    if (!line || value === null) return;
+
+    const history = bioHistory[metric];
+    history.push(value);
+    if (history.length > 24) history.shift();
+
+    const points = history.map((point, index) => {
+        const x = history.length === 1 ? 0 : (index / (history.length - 1)) * 120;
+        const y = 32 - (point / 100) * 30;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+    });
+    if (history.length === 1) points.push(`120,${(32 - (value / 100) * 30).toFixed(1)}`);
+    line.setAttribute('points', points.join(' '));
+}
+
+function updateBioState(selectedStats) {
+    const panel = document.getElementById('bio-stats');
+    const label = document.getElementById('bio-state-label');
+    if (!panel || !label) return;
+
+    const health = normalizePercentage(selectedStats && selectedStats.health);
+    const stress = normalizePercentage(selectedStats && selectedStats.stress);
+    const wellbeing = normalizePercentage(selectedStats && selectedStats.wellbeing);
+    let state = 'waiting';
+    let message = 'Analizando';
+
+    if ([health, stress, wellbeing].some((value) => value !== null)) {
+        const score = ((health ?? 50) + (wellbeing ?? 50) + (100 - (stress ?? 50))) / 3;
+        if (score >= 75) {
+            state = 'good';
+            message = 'Estado óptimo';
+        } else if (score >= 48) {
+            state = 'warning';
+            message = 'Bajo observación';
+        } else {
+            state = 'critical';
+            message = 'Atención requerida';
+        }
+    }
+
+    panel.dataset.state = state;
+    label.innerHTML = `<span class="bio-state-dot" aria-hidden="true"></span>${message}`;
+}
+
 function updateStatsPanel(stats) {
     const healthEl = document.getElementById('health-val');
     const stressEl = document.getElementById('stress-val');
@@ -855,6 +1066,7 @@ function updateStatsPanel(stats) {
     const growthEl = document.getElementById('growth-val');
     const wellbeingEl = document.getElementById('wellbeing-val');
     const populationEl = document.getElementById('population-val');
+    const growthBar = document.getElementById('growth-bar');
 
     const selectedStats = stats && stats.species ? stats.species[selectedSpecies] : null;
     const selectedPopulation = stats && stats.populations
@@ -869,13 +1081,28 @@ function updateStatsPanel(stats) {
         NONE: 'Sin individuos'
     };
 
-    if (healthEl) healthEl.textContent = selectedStats ? `${formatNumber(selectedStats.health)}%` : '-';
-    if (stressEl) stressEl.textContent = selectedStats ? `${formatNumber(selectedStats.stress)}%` : '-';
-    if (wellbeingEl) wellbeingEl.textContent = selectedStats ? `${formatNumber(selectedStats.wellbeing)}%` : '-';
+    if (bioHistorySpecies !== selectedSpecies) resetBioHistory(selectedSpecies);
+
+    if (healthEl) healthEl.textContent = selectedStats ? formatBiologicalPercent(selectedStats.health) : '-';
+    if (stressEl) stressEl.textContent = selectedStats ? formatBiologicalPercent(selectedStats.stress) : '-';
+    if (wellbeingEl) wellbeingEl.textContent = selectedStats ? formatBiologicalPercent(selectedStats.wellbeing) : '-';
     if (stageEl) stageEl.textContent = selectedStats ? (etapas[selectedStats.stage] || selectedStats.stage || '-') : '-';
-    if (ageEl) ageEl.textContent = selectedStats ? `${formatNumber(selectedStats.age)} s` : '-';
-    if (growthEl) growthEl.textContent = selectedStats ? `${formatNumber(selectedStats.life_progress)}%` : '-';
+    if (ageEl) ageEl.textContent = selectedStats ? formatSimulatedLifetime(selectedStats.age) : '-';
+    if (growthEl) growthEl.textContent = selectedStats ? formatBiologicalPercent(selectedStats.life_progress) : '-';
     if (populationEl) populationEl.textContent = selectedPopulation || 0;
+    if (growthBar) {
+        const growth = normalizePercentage(selectedStats && selectedStats.life_progress);
+        growthBar.style.width = `${growth ?? 0}%`;
+    }
+
+    const sampleTime = Date.now();
+    if (selectedStats && sampleTime - bioHistoryLastSample >= 700) {
+        updateBioChart('health', selectedStats && selectedStats.health);
+        updateBioChart('stress', selectedStats && selectedStats.stress);
+        updateBioChart('wellbeing', selectedStats && selectedStats.wellbeing);
+        bioHistoryLastSample = sampleTime;
+    }
+    updateBioState(selectedStats);
 
     // Algunos rediseños incluyen estas filas; se actualizan solo si existen en el DOM.
     setOptionalStatValue(
@@ -910,6 +1137,7 @@ function isEcologyPayload(ecology) {
 }
 
 function normalizePercentage(value) {
+    if (value === null || value === undefined || value === '') return null;
     const number = Number(value);
     if (!Number.isFinite(number)) return null;
     const percentage = number >= 0 && number <= 1 ? number * 100 : number;

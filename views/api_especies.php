@@ -17,7 +17,7 @@ class EspeciesAPI {
 
     public function __construct() {
         $database = new Conexion();
-        $this->conn = $database->getConnection();
+        $this->conn = $database->getSpeciesConnection();
     }
 
     public function getAllSpecies() {

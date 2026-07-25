@@ -2,7 +2,7 @@
 
 ## Installation
 
-Existing installations can import `MySQL/achievements_migration.sql`. The PHP service also applies the same idempotent schema automatically on first use and records schema version `2`, so subsequent requests only perform one lightweight version check.
+New installations can import `MySQL/simuladorDB.sql`, the original database for users and general application data. Species data is installed separately from `MySQL/simulador_especiesDB.sql`. The PHP service also applies the same idempotent achievement schema automatically on first use and records schema version `2`, so subsequent requests only perform one lightweight version check.
 
 ## Architecture
 
