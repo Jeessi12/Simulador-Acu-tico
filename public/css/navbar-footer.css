@@ -199,6 +199,21 @@ body {
     }
 }
 
+@media (min-width: 769px) and (max-width: 1180px) {
+    .nav-left {
+        gap: 24px;
+    }
+
+    .nav-links a {
+        margin-inline: 7px;
+        font-size: 12px;
+    }
+
+    .navbar {
+        padding-inline: 22px;
+    }
+}
+
 @media (min-width: 1920px) {
     .navbar {
         max-width: 1500px;

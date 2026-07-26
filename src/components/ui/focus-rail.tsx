@@ -81,7 +81,7 @@ export function FocusRail({
   return (
     <div
       className={cn(
-        "focus-rail group relative flex h-[700px] w-full flex-col overflow-hidden border border-transparent bg-transparent text-white shadow-none outline-none select-none sm:h-[760px]",
+        "focus-rail biodiversity-focus-rail group relative flex h-[520px] w-full flex-col overflow-hidden border border-transparent bg-transparent text-white shadow-none outline-none select-none sm:h-[560px]",
         className,
       )}
       onMouseEnter={() => setIsHovering(true)}
@@ -96,9 +96,9 @@ export function FocusRail({
       aria-label="Biodiversidad marina"
       tabIndex={0}
     >
-      <div className="relative z-10 flex flex-1 flex-col justify-center px-4 md:px-10">
+      <div className="focus-rail-shell relative z-10 flex flex-1 flex-col justify-center px-4 md:px-10">
         <motion.div
-          className="relative mx-auto flex h-[440px] w-full max-w-7xl cursor-grab items-center justify-center [perspective:1400px] active:cursor-grabbing"
+          className="focus-rail-stage relative mx-auto flex h-[300px] w-full max-w-7xl cursor-grab items-center justify-center [perspective:1400px] active:cursor-grabbing"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.2}
@@ -117,12 +117,12 @@ export function FocusRail({
                 key={`${absoluteIndex}-${item.id}`}
                 aria-label={isCenter ? `${item.title}, elemento activo` : `Mostrar ${item.title}`}
                 className={cn(
-                  "absolute aspect-[3/4] w-[240px] overflow-hidden rounded-[24px] border border-white bg-white shadow-[0_22px_50px_rgba(37,108,142,.22)] md:w-[330px]",
-                  isCenter ? "z-20 ring-4 ring-white/80 shadow-[0_28px_70px_rgba(37,108,142,.3)]" : "z-10",
+                  "focus-rail-card absolute aspect-[3/4] w-[185px] overflow-hidden rounded-[22px] border border-white bg-white shadow-[0_22px_50px_rgba(37,108,142,.22)] md:w-[235px]",
+                  isCenter ? "is-center z-20 ring-4 ring-white/80 shadow-[0_28px_70px_rgba(37,108,142,.3)]" : "is-side z-10",
                 )}
                 initial={false}
                 animate={{
-                  x: offset * 360,
+                  x: offset * 260,
                   z: -distance * 190,
                   scale: isCenter ? 1 : 0.86,
                   rotateY: offset * -18,
@@ -139,10 +139,17 @@ export function FocusRail({
               </motion.button>
             );
           })}
+
+          <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={handlePrev} className="focus-rail-side-button focus-rail-side-prev" aria-label="Biodiversidad anterior">
+            <ChevronLeft aria-hidden="true" />
+          </button>
+          <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={handleNext} className="focus-rail-side-button focus-rail-side-next" aria-label="Biodiversidad siguiente">
+            <ChevronRight aria-hidden="true" />
+          </button>
         </motion.div>
 
-        <div className="mx-auto mt-8 flex w-full max-w-5xl flex-col items-center justify-between gap-6 md:flex-row">
-          <div className="flex h-32 flex-1 flex-col items-center justify-center text-center md:items-start md:text-left">
+        <div className="focus-rail-footer mx-auto mt-5 flex w-full max-w-5xl flex-col items-center justify-between gap-4 md:flex-row">
+          <div className="focus-rail-info flex h-24 flex-1 flex-col items-center justify-center text-center md:items-start md:text-left">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeItem.id}
@@ -150,30 +157,30 @@ export function FocusRail({
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
                 transition={{ duration: 0.3 }}
-                className="space-y-2"
+                className="focus-rail-copy space-y-2"
               >
-                {activeItem.meta && <span className="text-xs font-semibold uppercase tracking-[.14em] text-[#7ff0d8] [text-shadow:0_2px_8px_rgba(0,35,70,.55)]">{activeItem.meta}</span>}
-                <h3 className="text-3xl font-bold tracking-tight text-white [text-shadow:0_3px_14px_rgba(0,35,70,.45)] md:text-5xl">{activeItem.title}</h3>
-                {activeItem.description && <p className="max-w-xl text-sm leading-6 text-white/85 [text-shadow:0_2px_8px_rgba(0,35,70,.5)] md:text-base md:leading-7">{activeItem.description}</p>}
+                {activeItem.meta && <span className="focus-rail-meta text-xs font-semibold uppercase tracking-[.14em] text-[#7ff0d8] [text-shadow:0_2px_8px_rgba(0,35,70,.55)]">{activeItem.meta}</span>}
+                <h3 className="focus-rail-title text-2xl font-bold tracking-tight text-white [text-shadow:0_3px_14px_rgba(0,35,70,.45)] md:text-3xl">{activeItem.title}</h3>
+                {activeItem.description && <p className="focus-rail-description max-w-xl text-sm leading-6 text-white/85 [text-shadow:0_2px_8px_rgba(0,35,70,.5)] md:text-base md:leading-7">{activeItem.description}</p>}
+                {activeItem.href && (
+                  <a href={activeItem.href} className="focus-rail-explore inline-flex items-center gap-2 rounded-full bg-[#7fe3ef] px-5 py-3 text-sm font-semibold text-[#143a63] transition-transform hover:scale-105 active:scale-95">
+                    Explorar <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                )}
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 rounded-full bg-white/90 p-1.5 shadow-[0_10px_28px_rgba(37,108,142,.12)] ring-1 ring-[#b7e4ed] backdrop-blur-md">
-              <button type="button" onClick={handlePrev} className="rounded-full p-3 text-[#2f7fc2] transition hover:bg-[#dff4fa] hover:text-[#143a63] active:scale-95" aria-label="Biodiversidad anterior">
+          <div className="focus-rail-bottom-controls flex items-center gap-3">
+            <div className="focus-rail-nav flex items-center gap-1 rounded-full p-1.5 backdrop-blur-md">
+              <button type="button" onClick={handlePrev} className="focus-rail-nav-button rounded-full p-3 transition active:scale-95" aria-label="Biodiversidad anterior">
                 <ChevronLeft className="h-5 w-5" />
               </button>
-              <span className="min-w-[58px] text-center font-mono text-xs font-semibold text-[#2f7fc2]">{String(activeIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
-              <button type="button" onClick={handleNext} className="rounded-full p-3 text-[#2f7fc2] transition hover:bg-[#dff4fa] hover:text-[#143a63] active:scale-95" aria-label="Biodiversidad siguiente">
+              <span className="focus-rail-nav-count min-w-[58px] text-center font-mono text-xs font-semibold">{String(activeIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
+              <button type="button" onClick={handleNext} className="focus-rail-nav-button rounded-full p-3 transition active:scale-95" aria-label="Biodiversidad siguiente">
                 <ChevronRight className="h-5 w-5" />
               </button>
             </div>
-            {activeItem.href && (
-              <a href={activeItem.href} className="flex items-center gap-2 rounded-full bg-[#f7c65f] px-5 py-3 text-sm font-semibold text-[#143a63] transition-transform hover:scale-105 active:scale-95">
-                Explorar <ArrowUpRight className="h-4 w-4" />
-              </a>
-            )}
           </div>
         </div>
       </div>

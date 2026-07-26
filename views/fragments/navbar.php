@@ -57,6 +57,7 @@ if (!function_exists('getRoleAvatarSrc')) {
             <a href="simuladores.php">SIMULACION</a>
             <a href="especies.php">ESPECIES</a>
             <a href="recursos.php">RECURSOS</a>
+            <a href="mapa.php">MAPA</a>
 
             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == ROL_ESTUDIANTE): ?>
                 <a href="asignaciones.php">ASIGNACIONES</a>

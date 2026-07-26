@@ -4,6 +4,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('resources-ready');
 
+    const navbar = document.querySelector('.navbar');
+    const syncResourcesViewport = () => {
+        const navbarBottom = navbar?.getBoundingClientRect().bottom || 92;
+        const clearance = Math.ceil(Math.max(72, navbarBottom + 12));
+        document.documentElement.style.setProperty('--resources-header-clearance', `${clearance}px`);
+    };
+
+    syncResourcesViewport();
+    window.addEventListener('resize', syncResourcesViewport, { passive: true });
+    window.addEventListener('orientationchange', syncResourcesViewport, { passive: true });
+
+    if (navbar && typeof ResizeObserver !== 'undefined') {
+        const navbarObserver = new ResizeObserver(syncResourcesViewport);
+        navbarObserver.observe(navbar);
+    }
+
+    document.fonts?.ready.then(syncResourcesViewport).catch(() => {});
+
     const progressBar = document.getElementById('resourcesScrollProgress') || (() => {
         const bar = document.createElement('div');
         bar.id = 'resourcesScrollProgress';
@@ -24,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePageProgress();
 
     const revealItems = [
-        ...document.querySelectorAll('.content-section, .map-panel-wrapper, .doc-card-fluid')
+        ...document.querySelectorAll('.content-section, .timeline-context, .map-panel-wrapper, .map-story-panel, .doc-card-fluid')
     ];
     revealItems.forEach((item) => item.classList.add('reveal-ready'));
 
@@ -79,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mapPills.forEach((pill) => {
         pill.addEventListener('click', () => {
             const isActive = pill.classList.toggle('active');
+            pill.setAttribute('aria-pressed', String(isActive));
             const layerId = layerMap[pill.dataset.layer];
             const svgGroup = layerId ? document.getElementById(layerId) : null;
             svgGroup?.classList.toggle('layer-off', !isActive);

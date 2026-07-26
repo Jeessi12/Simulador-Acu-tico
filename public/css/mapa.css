@@ -1,0 +1,358 @@
+:root {
+    --mapa-header-space: 112px;
+}
+
+html.page-mapa {
+    min-height: 100%;
+    scroll-snap-type: none;
+    scroll-padding-top: 0;
+    background: #d9f4fb url('../media/backgrounds/mapa.webp') center / cover fixed no-repeat;
+}
+
+body.mapa-page,
+body.dark-mode.mapa-page {
+    min-height: 100vh;
+    min-height: 100svh;
+    color: #123f70;
+    background: url('../media/backgrounds/mapa.webp') center / cover fixed no-repeat;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+body.mapa-page::after,
+body.dark-mode.mapa-page::after {
+    z-index: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.18), transparent 42%);
+}
+
+.mapa-page #navbar-container {
+    position: relative;
+    z-index: 1100;
+}
+
+.mapa-page .mapa-main,
+.mapa-page #footer-container {
+    position: relative;
+    z-index: 1;
+}
+
+.mapa-page .resources-scroll-progress {
+    display: none;
+}
+
+.mapa-page #particles {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    opacity: 0.78;
+    pointer-events: none;
+}
+
+.mapa-page .mapa-main {
+    display: grid;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: var(--mapa-header-space) clamp(16px, 2.7vw, 44px) 24px;
+    place-items: center;
+}
+
+.mapa-page #map.map-explorer-section {
+    display: block !important;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0;
+    overflow: visible;
+    isolation: isolate;
+}
+
+.mapa-page #map.map-explorer-section .map-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.78fr) minmax(330px, 0.72fr) !important;
+    align-items: stretch !important;
+    width: 100%;
+    max-width: 1540px;
+    height: min(650px, calc(100svh - var(--mapa-header-space) - 30px)) !important;
+    min-height: 520px;
+    max-height: 650px !important;
+    margin: 0 auto;
+    gap: clamp(18px, 2vw, 30px);
+    flex: none !important;
+}
+
+.mapa-page #map.map-explorer-section .map-layout > .map-panel-wrapper {
+    grid-column: 1 !important;
+    grid-row: 1;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0;
+    max-height: none;
+    margin: 0 !important;
+}
+
+.mapa-page #map .map-panel-wrapper .illustrated-map {
+    height: 100% !important;
+    min-height: 0;
+}
+
+.mapa-page #map .map-story-panel,
+body.dark-mode.mapa-page #map .map-story-panel {
+    position: relative;
+    grid-column: 2;
+    grid-row: 1;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    height: 100% !important;
+    min-height: 0;
+    max-height: none;
+    padding: clamp(27px, 2.5vw, 42px);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    border-radius: 31px;
+    color: #174d78;
+    background:
+        radial-gradient(circle at 112% -5%, rgba(79, 193, 231, 0.25), transparent 34%),
+        linear-gradient(145deg, rgba(252, 254, 255, 0.96), rgba(218, 244, 252, 0.92));
+    box-shadow:
+        0 28px 64px rgba(14, 91, 148, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(18px) saturate(1.08);
+}
+
+.mapa-page #map .map-story-panel::before {
+    content: '';
+    position: absolute;
+    top: -82px;
+    right: -74px;
+    width: 225px;
+    height: 225px;
+    border: 30px solid rgba(58, 178, 222, 0.08);
+    border-radius: 50%;
+    box-shadow: 0 0 0 35px rgba(58, 178, 222, 0.035);
+    pointer-events: none;
+}
+
+.mapa-page #map .map-story-orbit {
+    display: none;
+}
+
+.mapa-page #map .map-story-kicker {
+    margin-bottom: 20px;
+    color: #188ddd;
+    font-size: 0.69rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.mapa-page #map .map-story-panel h2 {
+    max-width: 12ch;
+    color: #123f76;
+    font-size: clamp(2.05rem, 2.9vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.055em;
+    text-shadow: none;
+}
+
+.mapa-page #map .map-story-panel h2 span {
+    display: block;
+    color: #2ab5c9;
+}
+
+.mapa-page #map .map-story-wave {
+    height: 23px;
+    margin-top: 13px;
+    color: #25bdd2;
+    font-size: 1.55rem;
+}
+
+.mapa-page #map .map-story-lead {
+    margin-top: 16px;
+    color: #315d7e;
+    font-size: clamp(0.76rem, 0.88vw, 0.9rem);
+    line-height: 1.62;
+}
+
+.mapa-page #map .map-story-guide {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid rgba(62, 150, 196, 0.18);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 12px 26px rgba(31, 105, 151, 0.09);
+}
+
+.mapa-page #map .map-story-guide-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    color: #ffffff;
+    background: linear-gradient(145deg, #43cddd, #2297c8);
+    box-shadow: 0 9px 20px rgba(35, 166, 199, 0.24);
+}
+
+.mapa-page #map .map-story-guide strong {
+    margin-bottom: 4px;
+    color: #174f83;
+    font-size: 0.78rem;
+}
+
+.mapa-page #map .map-story-guide p {
+    color: #456c88;
+    font-size: 0.66rem;
+    line-height: 1.48;
+}
+
+.mapa-page #map .map-story-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    flex: 0 0 74px;
+    width: 100%;
+    min-width: 0;
+    min-height: 74px;
+    gap: 0;
+    margin-top: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(69, 153, 196, 0.2);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 10px 24px rgba(27, 100, 146, 0.08);
+}
+
+.mapa-page #map .map-story-facts div,
+body.dark-mode.mapa-page #map .map-story-facts div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 72px;
+    padding: 10px 6px;
+    background: transparent;
+    text-align: center;
+}
+
+.mapa-page #map .map-story-facts div + div {
+    border-left: 1px solid rgba(69, 153, 196, 0.18);
+}
+
+.mapa-page #map .map-story-facts dt {
+    display: block;
+    width: 100%;
+    color: #258dcc;
+    font-size: 0.53rem;
+    line-height: 1.2;
+    letter-spacing: 0.09em;
+    white-space: nowrap;
+}
+
+.mapa-page #map .map-story-facts dd {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    color: #154875;
+    font-size: clamp(0.78rem, 0.95vw, 0.98rem);
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.mapa-page #map .map-story-source {
+    margin-top: 20px;
+    color: #3d6887;
+    font-size: 0.64rem;
+}
+
+.mapa-page #map .map-story-source i {
+    color: #1c91d3;
+}
+
+@media (max-width: 1180px) and (min-width: 901px) {
+    .mapa-page #map.map-explorer-section .map-layout {
+        grid-template-columns: minmax(0, 1.62fr) minmax(300px, 0.7fr) !important;
+        gap: 18px;
+    }
+
+    .mapa-page #map .map-story-panel,
+    body.dark-mode.mapa-page #map .map-story-panel {
+        padding: 24px;
+    }
+
+    .mapa-page #map .map-story-panel h2 {
+        font-size: clamp(1.85rem, 2.8vw, 2.65rem);
+    }
+
+    .mapa-page #map .map-story-guide,
+    .mapa-page #map .map-story-facts,
+    .mapa-page #map .map-story-source {
+        margin-top: 14px;
+    }
+}
+
+@media (max-width: 900px) {
+    :root {
+        --mapa-header-space: 102px;
+    }
+
+    .mapa-page .mapa-main {
+        display: block;
+        padding-inline: 14px;
+    }
+
+    .mapa-page #map.map-explorer-section .map-layout {
+        grid-template-columns: 1fr !important;
+        height: auto !important;
+        min-height: 0;
+        max-height: none !important;
+        gap: 16px;
+    }
+
+    .mapa-page #map.map-explorer-section .map-layout > .map-panel-wrapper {
+        grid-column: 1 !important;
+        grid-row: 1;
+        height: min(535px, calc(100svh - var(--mapa-header-space) - 18px)) !important;
+        min-height: 430px;
+    }
+
+    .mapa-page #map .map-story-panel,
+    body.dark-mode.mapa-page #map .map-story-panel {
+        grid-column: 1;
+        grid-row: 2;
+        height: auto !important;
+        min-height: 430px;
+        padding: 28px;
+    }
+
+    .mapa-page #map .map-story-panel h2 {
+        max-width: 16ch;
+    }
+}
+
+@media (max-width: 620px) {
+    .mapa-page .mapa-main {
+        padding: 94px 8px 16px;
+    }
+
+    .mapa-page #map.map-explorer-section .map-layout > .map-panel-wrapper {
+        height: min(485px, calc(100svh - 112px)) !important;
+        min-height: 390px;
+    }
+
+    .mapa-page #map .map-story-panel,
+    body.dark-mode.mapa-page #map .map-story-panel {
+        min-height: 0;
+        padding: 24px 20px;
+        border-radius: 24px;
+    }
+
+    .mapa-page #map .map-story-panel h2 {
+        font-size: clamp(1.85rem, 9vw, 2.45rem);
+    }
+}

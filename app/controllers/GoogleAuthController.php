@@ -6,8 +6,8 @@ require_once __DIR__ . '/../support/AchievementPageTracker.php';
 $conexion = new Conexion();
 $conn = $conexion->getConnection();
 
-$clientID = 'aqui va el secreto';
-$clientSecret = 'aqui va el secreto';
+$clientID = 'secreto aqui';
+$clientSecret = 'secreto aqui';
 $redirectUri  = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 
 // Si no hay código, volver al login
