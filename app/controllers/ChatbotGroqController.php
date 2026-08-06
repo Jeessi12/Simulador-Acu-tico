@@ -14,8 +14,8 @@ require_once __DIR__ . '/../data/ChatbotKnowledge.php';
 
 class ChatbotGroqController {
     
-    private $apiUrl = 'secreto aqui';
-    private $apiKey = 'secreto aqui';
+    private $apiUrl = 'aqui va el secreto';
+    private $apiKey = 'aqui va el secreto';
     
     public function getResponse($message, $context = '') {
         $message = trim((string) $message);

@@ -313,19 +313,27 @@ body {
 
 .space-meta {
     display: flex;
-    gap: 16px;
-    font-size: 0.82rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 12px;
+    width: 100%;
+    font-size: 0.78rem;
     color: rgba(255, 255, 255, 0.85);
-    margin-top: 6px;
+    margin-top: 8px;
 }
 
-.space-meta span {
-    display: flex;
+.space-meta > span {
+    display: inline-flex;
+    min-width: 0;
     align-items: center;
     gap: 5px;
+    line-height: 1.25;
+    white-space: nowrap;
 }
 
 .space-meta svg {
+    flex: 0 0 auto;
     opacity: 0.85;
 }
 
@@ -1800,6 +1808,11 @@ button:active {
 }
 
 @media (max-width: 480px) {
+    .space-meta {
+        gap: 6px 10px;
+        font-size: 0.74rem;
+    }
+
     .card-header {
         padding: 0.85rem 1rem 0.75rem;
     }

@@ -8,7 +8,7 @@ if (!defined('ROL_ESTUDIANTE')) {
     define('ROL_PERSONAL', 3);
     define('ROL_ADMIN', 4);
 }
-// â”€â”€ ConexiÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Conexión ─────────────────────────────────────────────────────────────────
 $ruta_conexion = __DIR__ . '/../app/models/Conexion.php';
 if (!file_exists($ruta_conexion)) {
     $ruta_conexion = __DIR__ . '/../PHP/conexion.php';
@@ -32,12 +32,12 @@ if (isset($_GET['msg'])) {
     $mensaje = htmlspecialchars($_GET['msg']);
 }
 
-// â”€â”€ Crear espacio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Crear espacio ────────────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_espacio'])) {
     $nombre = trim($_POST['nombre_espacio']);
     $imagen = trim($_POST['portada'] ?? '');
     if ($nombre === '') {
-        $error = 'El nombre del espacio no puede estar vacÃ­o.';
+        $error = 'El nombre del espacio no puede estar vacío.';
     } elseif ($imagen === '') {
         $error = 'Debes seleccionar una imagen para el espacio.';
     } else {
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_espacio'])) {
     }
 }
 
-// â”€â”€ Eliminar espacio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Eliminar espacio ─────────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['eliminar_espacio'])) {
     $id_eliminar = intval($_POST['id_espacio_eliminar']);
     if ($id_eliminar > 0) {
@@ -107,7 +107,7 @@ if ($id_espacio > 0) {
     } else {
         $espacio_actual = mysqli_fetch_assoc($espacio_query);
 
-        // â”€â”€ Invitar / Re-invitar estudiantes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Invitar / Re-invitar estudiantes ────────────────────────────────
         // ON DUPLICATE KEY UPDATE permite re-invitar a quienes rechazaron
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['invitar'])) {
             $seleccionados = $_POST['estudiantes'] ?? [];
@@ -140,7 +140,7 @@ if ($id_espacio > 0) {
             }
         }
 
-        // â”€â”€ Eliminar miembro del espacio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Eliminar miembro del espacio ─────────────────────────────────────
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['eliminar_miembro'])) {
             $id_miembro = intval($_POST['id_miembro']);
             if ($id_miembro > 0) {
@@ -165,7 +165,7 @@ if ($id_espacio > 0) {
             }
         }
 
-        // â”€â”€ Asignar simulaciÃ³n a todo el espacio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Asignar simulación a todo el espacio ─────────────────────────────
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['asignar_simulacion_tarea'])) {
             $id_simulacion = intval($_POST['simulacion'] ?? 0);
             $modo_asignacion = $_POST['modo_asignacion'] ?? 'todos';
@@ -257,14 +257,14 @@ if ($id_espacio > 0) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['asignar_espacio'])) {
             $id_simulacion = intval($_POST['simulacion']);
             if ($id_simulacion <= 0) {
-                $error = 'Elige una simulaciÃ³n.';
+                $error = 'Elige una simulación.';
             } else {
                 $miembros_asig = mysqli_query($conn,
                     "SELECT id_estudiante FROM espacio_estudiantes
                      WHERE id_espacio = $id_espacio AND estado = 'aceptado'"
                 );
                 if (!$miembros_asig || mysqli_num_rows($miembros_asig) === 0) {
-                    $error = 'El espacio no tiene estudiantes que hayan aceptado la invitaciÃ³n.';
+                    $error = 'El espacio no tiene estudiantes que hayan aceptado la invitación.';
                 } else {
                     $sim_nombre = '';
                     $sim_query = mysqli_query($conn,
@@ -284,21 +284,21 @@ if ($id_espacio > 0) {
                             $id_est = $m['id_estudiante'];
                             mysqli_stmt_bind_param($stmt_a, "iiii", $id_docente, $id_est, $id_simulacion, $id_espacio);
                             mysqli_stmt_execute($stmt_a);
-                            $msg = "Nueva simulaciÃ³n en el espacio: " . $sim_nombre;
+                            $msg = "Nueva simulación en el espacio: " . $sim_nombre;
                             mysqli_stmt_bind_param($stmt_n, "is", $id_est, $msg);
                             mysqli_stmt_execute($stmt_n);
                         }
                         mysqli_stmt_close($stmt_a);
                         mysqli_stmt_close($stmt_n);
-                        $mensaje = 'SimulaciÃ³n asignada a todos los miembros.';
+                        $mensaje = 'Simulación asignada a todos los miembros.';
                     } else {
-                        $error = 'Error al preparar las consultas de asignaciÃ³n.';
+                        $error = 'Error al preparar las consultas de asignación.';
                     }
                 }
             }
         }
 
-        // â”€â”€ Miembros: aceptados + pendientes + rechazados â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Miembros: aceptados + pendientes + rechazados ────────────────────
         $miembros = mysqli_query($conn,
             "SELECT u.id, u.username, u.email, u.google_id, ee.estado
              FROM espacio_estudiantes ee
@@ -309,7 +309,7 @@ if ($id_espacio > 0) {
         );
         if (!$miembros) $miembros = false;
 
-        // â”€â”€ IDs de quienes rechazaron (para mostrar etiqueta en lista de invitar) â”€â”€
+        // ── IDs de quienes rechazaron (para mostrar etiqueta en lista de invitar) ──
         $rechazados_ids = [];
         $res_rech = mysqli_query($conn,
             "SELECT id_estudiante FROM espacio_estudiantes
@@ -321,8 +321,8 @@ if ($id_espacio > 0) {
             }
         }
 
-        // â”€â”€ Estudiantes disponibles para invitar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-        // Excluye solo pendientes y aceptados; los que rechazaron SÃ aparecen
+        // ── Estudiantes disponibles para invitar ─────────────────────────────
+        // Excluye solo pendientes y aceptados; los que rechazaron SÍ aparecen
         $estudiantes_disponibles = mysqli_query($conn,
             "SELECT id, username, email, google_id FROM usuarios
              WHERE rol_id = 1 AND id NOT IN (
@@ -333,7 +333,7 @@ if ($id_espacio > 0) {
         );
         if (!$estudiantes_disponibles) $estudiantes_disponibles = false;
 
-        // â”€â”€ Simulaciones â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Simulaciones ─────────────────────────────────────────────────────
         $simulaciones = mysqli_query($conn, "SELECT id, nombre, descripcion, ruta FROM simulaciones ORDER BY id");
         if (!$simulaciones) $simulaciones = false;
         $simulaciones_lista = [];
@@ -357,7 +357,7 @@ if ($id_espacio > 0) {
             }
         }
 
-        // â”€â”€ Tareas â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // ── Tareas ───────────────────────────────────────────────────────────
         $tareas_pendientes = mysqli_query($conn,
             "SELECT a.id, s.nombre AS sim_nombre, u.username,
                     a.fecha_asignacion, a.estado
@@ -397,7 +397,7 @@ if ($id_espacio > 0) {
     }
 }
 
-// â”€â”€ Lista principal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Lista principal ──────────────────────────────────────────────────────────
 if ($id_espacio === 0) {
     $espacios = mysqli_query($conn,
         "SELECT e.id, e.nombre, e.fecha_creacion, e.portada,
@@ -410,17 +410,17 @@ if ($id_espacio === 0) {
     if (!$espacios) $espacios = false;
 }
 
-// â”€â”€ Las 6 imÃ¡genes disponibles para fondos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Las 6 imágenes disponibles para fondos ────────────────────────────────────
 $fondos_disponibles = [
     ['ruta' => '../public/media/backgrounds/espacios1.png', 'alt' => 'Bosque tropical'],
-    ['ruta' => '../public/media/backgrounds/espacios2.png', 'alt' => 'OcÃ©ano azul'],
+    ['ruta' => '../public/media/backgrounds/espacios2.png', 'alt' => 'Océano azul'],
     ['ruta' => '../public/media/backgrounds/espacios3.png', 'alt' => 'Pradera verde'],
-    ['ruta' => '../public/media/backgrounds/espacios4.png', 'alt' => 'MontaÃ±as nevadas'],
+    ['ruta' => '../public/media/backgrounds/espacios4.png', 'alt' => 'Montañas nevadas'],
     ['ruta' => '../public/media/backgrounds/espacios5.png', 'alt' => 'Desierto dorado'],
     ['ruta' => '../public/media/backgrounds/espacios6.png', 'alt' => 'Arrecife coral'],
 ];
 
-// â”€â”€ Helper: URL del avatar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Helper: URL del avatar ────────────────────────────────────────────────────
 function getAvatarUrl(string $email, ?string $google_id): string {
     if (!empty($google_id)) {
         return "https://lh3.googleusercontent.com/a/{$google_id}=s80-c";
@@ -429,7 +429,7 @@ function getAvatarUrl(string $email, ?string $google_id): string {
     return "https://www.gravatar.com/avatar/{$hash}?s=80&d=identicon";
 }
 
-// â”€â”€ Helper: badge de estado de miembro â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Helper: badge de estado de miembro ───────────────────────────────────────
 function estadoBadge(string $estado): string {
     switch ($estado) {
         case 'aceptado':
@@ -442,7 +442,7 @@ function estadoBadge(string $estado): string {
         case 'rechazado':
             return '<span class="member-badge badge-rechazado">
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                        RechazÃ³
+                        Rechazó
                     </span>';
         default:
             return '';
@@ -504,8 +504,8 @@ function estadoBadge(string $estado): string {
                         <div>
                             <h1><?php echo htmlspecialchars($espacio_actual['nombre']); ?></h1>
                             <div class="classroom-meta">
-                                <span>CÃ³digo del aula: <strong><?php echo strtoupper(substr(md5($espacio_actual['id']), 0, 6)); ?></strong></span>
-                                <span>â€¢ Creado el <?php echo date('d/m/Y', strtotime($espacio_actual['fecha_creacion'])); ?></span>
+                                <span>Código del aula: <strong><?php echo strtoupper(substr(md5($espacio_actual['id']), 0, 6)); ?></strong></span>
+                                <span>• Creado el <?php echo date('d/m/Y', strtotime($espacio_actual['fecha_creacion'])); ?></span>
                             </div>
                         </div>
                     </div>
@@ -526,7 +526,7 @@ function estadoBadge(string $estado): string {
 
         <div class="classroom-grid">
 
-            <!-- â”€â”€ Miembros â”€â”€ -->
+            <!-- ── Miembros ── -->
             <div class="classroom-card">
                 <div class="card-header">
                     <div class="card-icon">
@@ -581,7 +581,7 @@ function estadoBadge(string $estado): string {
                 </div>
             </div>
 
-            <!-- â”€â”€ Invitar / Re-invitar estudiantes â”€â”€ -->
+            <!-- ── Invitar / Re-invitar estudiantes ── -->
             <div class="classroom-card">
                 <div class="card-header">
                     <div class="card-icon">
@@ -615,7 +615,7 @@ function estadoBadge(string $estado): string {
                                             <strong>
                                                 <?php echo htmlspecialchars($est['username']); ?>
                                                 <?php if ($es_rechazado): ?>
-                                                    <span class="tag-rechazado">RechazÃ³ antes</span>
+                                                    <span class="tag-rechazado">Rechazó antes</span>
                                                 <?php endif; ?>
                                             </strong>
                                             <span><?php echo htmlspecialchars($est['email']); ?></span>
@@ -628,13 +628,13 @@ function estadoBadge(string $estado): string {
                     <?php else: ?>
                         <div class="empty-state">
                             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dadce0" stroke-width="1"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                            <p>Todos los estudiantes ya estÃ¡n en el espacio</p>
+                            <p>Todos los estudiantes ya están en el espacio</p>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
 
-            <!-- â”€â”€ Tareas â”€â”€ -->
+            <!-- ── Tareas ── -->
             <div class="classroom-card full-width">
                 <div class="card-header">
                     <div class="card-icon">
@@ -661,7 +661,7 @@ function estadoBadge(string $estado): string {
                                     </div>
                                     <div class="task-info">
                                         <strong><?php echo htmlspecialchars($t['sim_nombre']); ?></strong>
-                                        <span>Asignada a <?php echo htmlspecialchars($t['username']); ?> Â· <?php echo date('d/m/Y', strtotime($t['fecha_asignacion'])); ?></span>
+                                        <span>Asignada a <?php echo htmlspecialchars($t['username']); ?> · <?php echo date('d/m/Y', strtotime($t['fecha_asignacion'])); ?></span>
                                     </div>
                                     <span class="pill-pending"><?php echo $t['estado'] === 'en_progreso' ? 'En progreso' : 'Pendiente'; ?></span>
                                 </div>
@@ -682,7 +682,7 @@ function estadoBadge(string $estado): string {
                                     </div>
                                     <div class="task-info">
                                         <strong><?php echo htmlspecialchars($t['sim_nombre']); ?></strong>
-                                        <span>Completada por <?php echo htmlspecialchars($t['username']); ?> Â· <?php echo date('d/m/Y', strtotime($t['fecha_asignacion'])); ?></span>
+                                        <span>Completada por <?php echo htmlspecialchars($t['username']); ?> · <?php echo date('d/m/Y', strtotime($t['fecha_asignacion'])); ?></span>
                                         <?php if (!empty($t['observaciones'])): ?>
                                             <div class="teacher-observations">
                                                 <?php foreach (explode('||', $t['observaciones']) as $obs_txt): ?>
@@ -701,20 +701,20 @@ function estadoBadge(string $estado): string {
                         <?php else: ?>
                             <div class="empty-state" style="padding:24px 0">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#dadce0" stroke-width="1"><path d="M20 6L9 17l-5-5"/></svg>
-                                <p>No hay tareas completadas aÃºn</p>
+                                <p>No hay tareas completadas aún</p>
                             </div>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
 
-            <!-- â”€â”€ Asignar simulaciÃ³n â”€â”€ -->
+            <!-- ── Asignar simulación ── -->
             <div class="classroom-card full-width">
                 <div class="card-header">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24"><path d="M21 6h-7.59l3.29-3.29L16 2l-4 4-4-4-.71.71L10.59 6H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
                     </div>
-                    <h2>Asignar simulaciÃ³n</h2>
+                    <h2>Asignar simulación</h2>
                 </div>
                 <div class="teacher-sim-grid">
                     <?php foreach ($simulaciones_lista as $sim): ?>
@@ -800,11 +800,11 @@ function estadoBadge(string $estado): string {
         <div class="classroom-hero" id="crear-clase">
             <div class="hero-content">
                 <h1>Mis espacios</h1>
-                <p>Organiza tus clases, invita estudiantes y asigna simulaciones ecolÃ³gicas</p>
+                <p>Organiza tus clases, invita estudiantes y asigna simulaciones ecológicas</p>
             </div>
             <div class="create-space-card">
                 <div class="create-form">
-                    <input type="text" id="inputNombreEspacio" placeholder="Nombre del espacio, ej. BiologÃ­a 4Â°A">
+                    <input type="text" id="inputNombreEspacio" placeholder="Nombre del espacio, ej. Biología 4°A">
                     <button type="button" class="btn-create" id="btnAbrirModal">+ Crear espacio</button>
                 </div>
                 <form method="POST" id="formCrearEspacio" style="display:none;">
@@ -886,7 +886,7 @@ function estadoBadge(string $estado): string {
 
     </main>
 
-    <!-- ====== MODAL SELECCIÃ“N DE FONDO ====== -->
+    <!-- ====== MODAL SELECCIÓN DE FONDO ====== -->
     <div id="modalFondo" class="modal-overlay" aria-hidden="true">
         <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <div class="modal-header">
