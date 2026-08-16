@@ -55,7 +55,7 @@ class Chatbot {
             "📱 Blue EcoSim se adapta a móviles.",
             "🔐 Verifica tu correo antes del primer inicio de sesión.",
             "🌿 En 'RECURSOS' encontrarás la línea del tiempo de Los Cóbanos.",
-            "📚 Las cuatro tarjetas de RECURSOS abren actualmente el mismo PDF.",
+            "📚 La biblioteca de RECURSOS reúne documentos oficiales de MARN y MINEDUCYT.",
             "🪸 Los Cóbanos reúne arrecifes rocosos y coralinos del Pacífico salvadoreño.",
             "🚫 Akira no responde sobre fauna terrestre o agua dulce ni la atribuye a Blue EcoSim."
         ];

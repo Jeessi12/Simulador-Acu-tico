@@ -316,7 +316,8 @@ RECURSOS
 - Incluye una línea del tiempo con cinco hitos: 2008 Creación del Área Natural, 2009 Gestión territorial, 2013 Monitoreo de Arrecifes, 2018 Protección de Tortugas y Actualidad Conservación participativa.
 - La vista de biodiversidad contiene Rayas del Pacífico, Peces de Arrecife, Invertebrados, Tortugas Marinas y Pastos Marinos, con enlace hacia ESPECIES.
 - El mapa es una ilustración interactiva de Los Cóbanos, no un mapa satelital ni GPS en vivo. Tiene cinco controles visibles: Ubicación, Arrecifes, Ecosistemas, Tortugas y Protegidas.
-- Hay cuatro tarjetas tituladas Plan de Manejo del Área Natural Protegida Los Cóbanos, Biodiversidad Marina de Los Cóbanos, Monitoreo de Tortugas Marinas en Los Cóbanos y Guía de Buenas Prácticas para el Turismo Marino. En la versión actual, las cuatro abren o descargan el mismo archivo PDF: la lista salvadoreña de especies amenazadas y en peligro de extinción. No afirmes que son cuatro archivos distintos.
+- La biblioteca contiene seis documentos oficiales y distintos: el Plan de Manejo del Área Natural Protegida y Sitio Ramsar Complejo Los Cóbanos 2021-2025; la FIR del sitio Ramsar núm. 2419 Complejo Los Cóbanos; el Acuerdo 257 con el listado oficial de especies amenazadas y en peligro de extinción; el Programa Nacional de Conservación de Tortugas Marinas; el módulo Cetáceos: diversidad, importancia y buenas prácticas para su conservación; y los Programas de estudio de Ciencia y Tecnología de III ciclo.
+- Los cinco primeros recursos provienen de sistemas oficiales del MARN. El programa de estudios proviene del sitio oficial del MINEDUCYT. Cada tarjeta enlaza su ficha institucional o el PDF oficial correspondiente.
 
 ASIGNACIONES (ESTUDIANTE)
 - Muestra invitaciones pendientes y permite aceptarlas o rechazarlas; también permite unirse a un espacio con el código de seis caracteres del docente.
@@ -338,16 +339,14 @@ PERFIL, LOGROS Y NOTIFICACIONES
 ADMINISTRAR (ADMIN)
 - Dashboard: totales de usuarios, espacios, asignaciones y porcentaje completado; gráfica de nuevos usuarios, actividad reciente y exportación CSV de usuarios.
 - Usuarios: lista, correo, rol, estado, última actividad, cambio de rol y eliminación.
-- Simulaciones: crear, editar o eliminar registros con nombre, descripción y ruta.
 - Logs: fecha, usuario, acción, detalles e IP.
-- Configuración: límite de estudiantes por espacio, tiempo máximo de simulación, registro abierto, modo mantenimiento, URL de logo y favicon.
+- Configuración: límite de estudiantes por espacio, tiempo máximo de simulación, registro abierto y URL del favicon.
 
 FUNCIONES QUE NO EXISTEN ACTUALMENTE
 - No hay mensajería entre usuarios, foros, comentarios sociales, videollamadas ni colaboración simultánea.
 - No hay recuperación de contraseña ni edición del perfil desde la interfaz.
 - No hay descarga de modelos 3D, simulaciones por cada ficha de especie, más de tres escenarios jugables ni datos oceanográficos en vivo.
 - No hay buscador web, navegación en Internet, noticias en tiempo real ni garantía de que un estado de conservación siga vigente hoy.
-- No hay cuatro PDFs distintos en RECURSOS aunque se muestren cuatro títulos.
 - No hay favoritos/notas sincronizados con la cuenta, ranking de XP, tienda o premios canjeables.
 
 CONOCIMIENTO CIENTÍFICO MARINO MUNDIAL

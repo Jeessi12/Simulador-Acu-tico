@@ -4,43 +4,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('resources-ready');
 
-    const navbar = document.querySelector('.navbar');
-    const syncResourcesViewport = () => {
-        const navbarBottom = navbar?.getBoundingClientRect().bottom || 92;
-        const clearance = Math.ceil(Math.max(72, navbarBottom + 12));
-        document.documentElement.style.setProperty('--resources-header-clearance', `${clearance}px`);
-    };
-
-    syncResourcesViewport();
-    window.addEventListener('resize', syncResourcesViewport, { passive: true });
-    window.addEventListener('orientationchange', syncResourcesViewport, { passive: true });
-
-    if (navbar && typeof ResizeObserver !== 'undefined') {
-        const navbarObserver = new ResizeObserver(syncResourcesViewport);
-        navbarObserver.observe(navbar);
-    }
-
-    document.fonts?.ready.then(syncResourcesViewport).catch(() => {});
-
-    const progressBar = document.getElementById('resourcesScrollProgress') || (() => {
-        const bar = document.createElement('div');
-        bar.id = 'resourcesScrollProgress';
-        bar.className = 'resources-scroll-progress';
-        document.body.prepend(bar);
-        return bar;
-    })();
-
-    const updatePageProgress = () => {
-        const pageHeight = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const progress = Math.min(100, Math.max(0, (window.scrollY / pageHeight) * 100));
-        document.documentElement.style.setProperty('--page-progress', `${progress}%`);
-        progressBar.style.width = `${progress}%`;
-    };
-
-    window.addEventListener('scroll', updatePageProgress, { passive: true });
-    window.addEventListener('resize', updatePageProgress);
-    updatePageProgress();
-
     const revealItems = [
         ...document.querySelectorAll('.content-section, .timeline-context, .map-panel-wrapper, .map-story-panel, .doc-card-fluid')
     ];

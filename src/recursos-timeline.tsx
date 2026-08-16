@@ -71,7 +71,7 @@ const biodiversityItems: FocusRailItem[] = [
     title: "Peces de Arrecife",
     description: "Peces ángel, cirujanos y otras especies mantienen el equilibrio del arrecife de Los Cóbanos.",
     meta: "24 especies • Especies clave",
-    imageSrc: "../public/media/backgrounds/peces de arrecife.png",
+    imageSrc: "../public/media/Species/recurpeces.webp",
     href: "especies.php",
   },
   {
@@ -79,7 +79,7 @@ const biodiversityItems: FocusRailItem[] = [
     title: "Invertebrados",
     description: "Estrellas, moluscos, nudibranquios y organismos del fondo marino reciclan nutrientes.",
     meta: "31 registros • Diversidad",
-    imageSrc: "../public/media/Species/estrella-de-mar.png",
+    imageSrc: "../public/media/Species/recurestrella.png",
     href: "especies.php",
   },
   {
@@ -87,7 +87,7 @@ const biodiversityItems: FocusRailItem[] = [
     title: "Tortugas Marinas",
     description: "La tortuga carey, verde y otras especies encuentran alimento y refugio en estas aguas.",
     meta: "4 especies • Protección",
-    imageSrc: "../public/media/Species/Tortuga-Carey.png",
+    imageSrc: "../public/media/Species/recurtortuga.png",
     href: "especies.php",
   },
   {
@@ -95,7 +95,7 @@ const biodiversityItems: FocusRailItem[] = [
     title: "Pastos Marinos",
     description: "Hábitats esenciales para la alimentación, el crecimiento de juveniles y la salud costera.",
     meta: "3 biomas • Hábitats",
-    imageSrc: "../public/media/Species/caballito-de-mar.png",
+    imageSrc: "../public/media/Species/recurpasto.webp",
     href: "especies.php",
   },
   {
@@ -103,7 +103,7 @@ const biodiversityItems: FocusRailItem[] = [
     title: "Rayas del Pacífico",
     description: "Las mantarrayas recorren las aguas abiertas y conectan distintos ambientes del ecosistema marino.",
     meta: "Nueva colección • Vida pelágica",
-    imageSrc: "../public/media/Species/mantarraya.png",
+    imageSrc: "../public/media/Species/recurraya.png",
     href: "especies.php",
   },
 ];

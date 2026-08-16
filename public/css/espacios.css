@@ -28,18 +28,21 @@ body {
 }
 
 #particles {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: fixed;
+    inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.95;
-    border-radius: inherit;
+    opacity: 1;
 }
 
 .classroom-container {
+    position: relative;
+    z-index: 2;
+}
+
+footer.site-footer {
     position: relative;
     z-index: 2;
 }

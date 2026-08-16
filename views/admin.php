@@ -57,57 +57,7 @@ if (isset($_POST['eliminar']) && isset($_POST['usuario_id'])) {
     }
 }
 
-// ---------- 3. Gestión de simulaciones (CRUD) ----------
-// Crear simulación
-if (isset($_POST['crear_simulacion'])) {
-    $nombre = trim($_POST['nombre_simulacion']);
-    $descripcion = trim($_POST['descripcion_simulacion']);
-    $ruta = trim($_POST['ruta_simulacion']);
-    if ($nombre && $descripcion && $ruta) {
-        $stmt = $conn->prepare("INSERT INTO simulaciones (nombre, descripcion, ruta) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $nombre, $descripcion, $ruta);
-        if ($stmt->execute()) {
-            $mensaje = "Simulación '$nombre' creada.";
-            registrarLog($conn, $id_admin, $_SESSION['usuario'], "Creó simulación ID " . $stmt->insert_id);
-        } else {
-            $error = "Error al crear simulación.";
-        }
-    } else {
-        $error = "Completa todos los campos de la simulación.";
-    }
-}
-
-// Editar simulación
-if (isset($_POST['editar_simulacion']) && isset($_POST['id_simulacion'])) {
-    $id_sim = intval($_POST['id_simulacion']);
-    $nombre = trim($_POST['nombre_simulacion_edit']);
-    $descripcion = trim($_POST['descripcion_simulacion_edit']);
-    $ruta = trim($_POST['ruta_simulacion_edit']);
-    if ($nombre && $descripcion && $ruta) {
-        $stmt = $conn->prepare("UPDATE simulaciones SET nombre=?, descripcion=?, ruta=? WHERE id=?");
-        $stmt->bind_param("sssi", $nombre, $descripcion, $ruta, $id_sim);
-        if ($stmt->execute()) {
-            $mensaje = "Simulación actualizada.";
-            registrarLog($conn, $id_admin, $_SESSION['usuario'], "Editó simulación ID $id_sim");
-        } else {
-            $error = "Error al actualizar.";
-        }
-    } else {
-        $error = "Completa todos los campos.";
-    }
-}
-
-// Eliminar simulación (vía GET)
-if (isset($_GET['eliminar_sim']) && is_numeric($_GET['eliminar_sim'])) {
-    $id_sim = intval($_GET['eliminar_sim']);
-    $conn->query("DELETE FROM simulaciones WHERE id = $id_sim");
-    $mensaje = "Simulación eliminada.";
-    registrarLog($conn, $id_admin, $_SESSION['usuario'], "Eliminó simulación ID $id_sim");
-    header("Location: admin.php?tab=simulaciones");
-    exit();
-}
-
-// ---------- 4. Reporte CSV ----------
+// ---------- 3. Reporte CSV ----------
 if (isset($_GET['exportar_csv'])) {
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="usuarios_blueecosim.csv"');
@@ -121,26 +71,37 @@ if (isset($_GET['exportar_csv'])) {
     exit();
 }
 
-// ---------- 5. Configuración del sistema ----------
+// ---------- 4. Configuración del sistema ----------
 if (isset($_POST['guardar_config'])) {
-    $limite = intval($_POST['limite_estudiantes']);
-    $tiempo = intval($_POST['tiempo_simulacion']);
+    $limite = max(1, min(200, intval($_POST['limite_estudiantes'] ?? 30)));
+    $tiempo = max(0, intval($_POST['tiempo_simulacion'] ?? 0));
     $registro = isset($_POST['registro_abierto']) ? 1 : 0;
-    $mantenimiento = isset($_POST['modo_mantenimiento']) ? 1 : 0;
-    $logo = trim($_POST['logo_url']);
-    $favicon = trim($_POST['favicon_url']);
-    
-    $conn->query("UPDATE config SET valor='$limite' WHERE clave='limite_estudiantes_espacio'");
-    $conn->query("UPDATE config SET valor='$tiempo' WHERE clave='tiempo_simulacion_maximo'");
-    $conn->query("UPDATE config SET valor='$registro' WHERE clave='registro_abierto'");
-    $conn->query("UPDATE config SET valor='$mantenimiento' WHERE clave='modo_mantenimiento'");
-    $conn->query("UPDATE config SET valor='$logo' WHERE clave='logo_url'");
-    $conn->query("UPDATE config SET valor='$favicon' WHERE clave='favicon_url'");
-    $mensaje = "Configuración actualizada.";
-    registrarLog($conn, $id_admin, $_SESSION['usuario'], "Actualizó configuración del sistema");
+    $favicon = trim($_POST['favicon_url'] ?? '');
+
+    $settings = [
+        'limite_estudiantes_espacio' => (string) $limite,
+        'tiempo_simulacion_maximo' => (string) $tiempo,
+        'registro_abierto' => (string) $registro,
+        'favicon_url' => $favicon,
+    ];
+    $configStatement = mysqli_prepare(
+        $conn,
+        'INSERT INTO config (clave, valor) VALUES (?, ?) ON DUPLICATE KEY UPDATE valor = VALUES(valor)'
+    );
+    if ($configStatement) {
+        foreach ($settings as $settingKey => $settingValue) {
+            mysqli_stmt_bind_param($configStatement, 'ss', $settingKey, $settingValue);
+            mysqli_stmt_execute($configStatement);
+        }
+        mysqli_stmt_close($configStatement);
+        $mensaje = "Configuración actualizada.";
+        registrarLog($conn, $id_admin, $_SESSION['usuario'], "Actualizó configuración del sistema");
+    } else {
+        $error = 'No fue posible guardar la configuración.';
+    }
 }
 
-// ---------- 6. Obtener datos para estadísticas ----------
+// ---------- 5. Obtener datos para estadísticas ----------
 // Usuarios registrados por mes (últimos 6 meses)
 $meses = [];
 $usuariosPorMes = [];
@@ -163,9 +124,6 @@ $total_estudiantes_espacios = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COU
 // Logs (últimos 50)
 $logs = mysqli_query($conn, "SELECT * FROM logs ORDER BY fecha DESC LIMIT 50");
 
-// Lista de simulaciones
-$simulaciones = mysqli_query($conn, "SELECT * FROM simulaciones ORDER BY id");
-
 // Lista de usuarios completa (para la pestaña Usuarios)
 $usuarios_todos = mysqli_query($conn, "SELECT u.id, u.username, u.email, r.rol, u.estado, u.fecha_registro, u.ultima_actividad FROM usuarios u JOIN roles r ON u.rol_id = r.id ORDER BY u.id");
 
@@ -175,9 +133,17 @@ $res_config = mysqli_query($conn, "SELECT clave, valor FROM config");
 while ($row = mysqli_fetch_assoc($res_config)) {
     $config[$row['clave']] = $row['valor'];
 }
+$config += [
+    'limite_estudiantes_espacio' => '30',
+    'tiempo_simulacion_maximo' => '0',
+    'registro_abierto' => '1',
+    'favicon_url' => '/Simulador-Acu-tico-main/public/media/Web/logo.png',
+];
 
 // Obtener pestaña activa (por GET)
-$tab_activa = $_GET['tab'] ?? 'dashboard';
+$tabsPermitidas = ['dashboard', 'usuarios', 'logs', 'config'];
+$tabSolicitada = $_GET['tab'] ?? 'dashboard';
+$tab_activa = in_array($tabSolicitada, $tabsPermitidas, true) ? $tabSolicitada : 'dashboard';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -185,7 +151,7 @@ $tab_activa = $_GET['tab'] ?? 'dashboard';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración · Blue EcoSim</title>
-    <link rel="icon" href="<?php echo $config['favicon_url']; ?>" type="image/png">
+    <link rel="icon" href="<?php echo htmlspecialchars($config['favicon_url'], ENT_QUOTES, 'UTF-8'); ?>" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/navbar-footer.css">
@@ -194,7 +160,7 @@ $tab_activa = $_GET['tab'] ?? 'dashboard';
 </head>
 <body class="admin-page">
     <?php include 'fragments/navbar.php'; ?>
-    <canvas id="particles"></canvas>
+    <canvas id="particles" data-particle-count="160" aria-hidden="true"></canvas>
 
     <main class="admin-container">
         <div class="admin-header">
@@ -214,7 +180,6 @@ $tab_activa = $_GET['tab'] ?? 'dashboard';
         <div class="admin-tabs">
             <a href="?tab=dashboard" class="admin-tab <?php echo $tab_activa == 'dashboard' ? 'active' : ''; ?>"><i class="fas fa-chart-line"></i> Dashboard</a>
             <a href="?tab=usuarios" class="admin-tab <?php echo $tab_activa == 'usuarios' ? 'active' : ''; ?>"><i class="fas fa-users"></i> Usuarios</a>
-            <a href="?tab=simulaciones" class="admin-tab <?php echo $tab_activa == 'simulaciones' ? 'active' : ''; ?>"><i class="fas fa-gamepad"></i> Simulaciones</a>
             <a href="?tab=logs" class="admin-tab <?php echo $tab_activa == 'logs' ? 'active' : ''; ?>"><i class="fas fa-history"></i> Logs</a>
             <a href="?tab=config" class="admin-tab <?php echo $tab_activa == 'config' ? 'active' : ''; ?>"><i class="fas fa-cogs"></i> Configuración</a>
         </div>
@@ -330,51 +295,6 @@ $tab_activa = $_GET['tab'] ?? 'dashboard';
         </div>
         <?php endif; ?>
 
-        <!-- ======================== SIMULACIONES ======================== -->
-        <?php if ($tab_activa == 'simulaciones'): ?>
-        <div class="admin-card">
-            <div class="admin-card-header"><h2><i class="fas fa-plus-circle"></i> Crear nueva simulación</h2></div>
-            <div class="admin-card-body">
-                <form method="post" class="form-crear-simulacion">
-                    <input type="text" name="nombre_simulacion" placeholder="Nombre" required>
-                    <input type="text" name="descripcion_simulacion" placeholder="Descripción" required>
-                    <input type="text" name="ruta_simulacion" placeholder="Ruta (ej: simulador.php?id=4)" required>
-                    <button type="submit" name="crear_simulacion">Crear</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="admin-card">
-            <div class="admin-card-header"><h2><i class="fas fa-list"></i> Simulaciones existentes</h2></div>
-            <div class="admin-card-body">
-                <div class="table-responsive">
-                    <table class="admin-table simulaciones-tabla">
-                        <thead>
-                            <tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Ruta</th><th>Acciones</th></tr>
-                        </thead>
-                        <tbody>
-                            <?php while($sim = mysqli_fetch_assoc($simulaciones)): ?>
-                            <tr>
-                                <form method="post" style="display:contents;">
-                                    <input type="hidden" name="id_simulacion" value="<?php echo $sim['id']; ?>">
-                                    <td><?php echo $sim['id']; ?></td>
-                                    <td><input type="text" name="nombre_simulacion_edit" value="<?php echo htmlspecialchars($sim['nombre']); ?>" required></td>
-                                    <td><input type="text" name="descripcion_simulacion_edit" value="<?php echo htmlspecialchars($sim['descripcion']); ?>" required></td>
-                                    <td><input type="text" name="ruta_simulacion_edit" value="<?php echo htmlspecialchars($sim['ruta']); ?>" required></td>
-                                    <td style="white-space: nowrap;">
-                                        <button type="submit" name="editar_simulacion" class="btn-mini"><i class="fas fa-save"></i> Guardar</button>
-                                        <a href="?eliminar_sim=<?php echo $sim['id']; ?>&tab=simulaciones" class="btn-mini btn-mini-danger" onclick="return confirm('¿Eliminar simulación?')"><i class="fas fa-trash"></i> Eliminar</a>
-                                    </td>
-                                </form>
-                            </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <?php endif; ?>
-
         <!-- ======================== LOGS ======================== -->
         <?php if ($tab_activa == 'logs'): ?>
         <div class="admin-card">
@@ -410,25 +330,18 @@ $tab_activa = $_GET['tab'] ?? 'dashboard';
                 <form method="post" class="config-panel">
                     <div class="config-group">
                         <label>Límite de estudiantes por espacio:</label>
-                        <input type="number" name="limite_estudiantes" value="<?php echo $config['limite_estudiantes_espacio']; ?>" min="1" max="200">
+                        <input type="number" name="limite_estudiantes" value="<?php echo intval($config['limite_estudiantes_espacio']); ?>" min="1" max="200" required>
                     </div>
                     <div class="config-group">
                         <label>Tiempo máximo de simulación (segundos, 0 = ilimitado):</label>
-                        <input type="number" name="tiempo_simulacion" value="<?php echo $config['tiempo_simulacion_maximo']; ?>" min="0">
+                        <input type="number" name="tiempo_simulacion" value="<?php echo max(0, intval($config['tiempo_simulacion_maximo'])); ?>" min="0" required>
                     </div>
                     <div class="config-group">
                         <label class="config-checkbox"><input type="checkbox" name="registro_abierto" value="1" <?php echo $config['registro_abierto'] == '1' ? 'checked' : ''; ?>> <span>Permitir registro de nuevos usuarios</span></label>
                     </div>
                     <div class="config-group">
-                        <label class="config-checkbox"><input type="checkbox" name="modo_mantenimiento" value="1" <?php echo $config['modo_mantenimiento'] == '1' ? 'checked' : ''; ?>> <span>Modo mantenimiento (solo administradores)</span></label>
-                    </div>
-                    <div class="config-group">
-                        <label>URL del logo:</label>
-                        <input type="text" name="logo_url" value="<?php echo htmlspecialchars($config['logo_url']); ?>">
-                    </div>
-                    <div class="config-group">
                         <label>URL del favicon:</label>
-                        <input type="text" name="favicon_url" value="<?php echo htmlspecialchars($config['favicon_url']); ?>">
+                        <input type="text" name="favicon_url" value="<?php echo htmlspecialchars($config['favicon_url'], ENT_QUOTES, 'UTF-8'); ?>">
                     </div>
                     <button type="submit" name="guardar_config" class="btn-guardar-config"><i class="fas fa-save"></i> Guardar configuración</button>
                 </form>

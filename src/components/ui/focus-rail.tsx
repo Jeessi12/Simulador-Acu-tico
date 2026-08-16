@@ -39,7 +39,6 @@ export function FocusRail({
 }: FocusRailProps) {
   const [active, setActive] = React.useState(initialIndex);
   const [isHovering, setIsHovering] = React.useState(false);
-  const lastWheelTime = React.useRef(0);
   const count = items.length;
 
   if (!count) return null;
@@ -63,15 +62,6 @@ export function FocusRail({
     return () => window.clearInterval(timer);
   }, [autoPlay, handleNext, interval, isHovering]);
 
-  const onWheel = (event: React.WheelEvent) => {
-    const now = Date.now();
-    if (now - lastWheelTime.current < 400) return;
-    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-    if (Math.abs(delta) <= 20) return;
-    delta > 0 ? handleNext() : handlePrev();
-    lastWheelTime.current = now;
-  };
-
   const onDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const swipe = Math.abs(info.offset.x) * info.velocity.x;
     if (swipe < -10000 || info.offset.x < -80) handleNext();
@@ -90,7 +80,6 @@ export function FocusRail({
         if (event.key === "ArrowLeft") handlePrev();
         if (event.key === "ArrowRight") handleNext();
       }}
-      onWheel={onWheel}
       role="region"
       aria-roledescription="carrusel"
       aria-label="Biodiversidad marina"

@@ -11,13 +11,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/../app/models/Conexion.php';
+require_once __DIR__ . '/../app/support/SpeciesModelResolver.php';
 
 class EspeciesAPI {
     private $conn;
+    private SpeciesModelResolver $modelResolver;
 
     public function __construct() {
         $database = new Conexion();
         $this->conn = $database->getSpeciesConnection();
+        $this->modelResolver = new SpeciesModelResolver(
+            __DIR__ . '/../public/media/3D_Models',
+            '../public/media/3D_Models'
+        );
     }
 
     public function getAllSpecies() {
@@ -56,6 +62,13 @@ class EspeciesAPI {
     }
 
     private function formatSpeciesData($row) {
+        $model = $this->modelResolver->resolve(
+            $row['nombre'],
+            $row['nombre_cientifico'],
+            $row['categoria'],
+            $row['model_path'] ?? null
+        );
+
         return [
             'id'              => (int)$row['id'],
             'name'            => $row['nombre'],
@@ -79,7 +92,9 @@ class EspeciesAPI {
             'zona_geografica' => $row['zona_geografica'],
             'map_x'           => (int)$row['map_x'],
             'map_y'           => (int)$row['map_y'],
-            'modelPath'       => $row['model_path'],
+            'modelPath'       => $model['path'],
+            'modelView'       => $model['view'],
+            'modelSource'     => $model['source'],
             'scale'           => (float)$row['scale_3d'],
             'posY'            => (float)$row['pos_y'],
             'rotY'            => (float)$row['rot_y'],

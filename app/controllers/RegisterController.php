@@ -12,7 +12,7 @@ use PHPMailer\PHPMailer\Exception;
 // ========== CONFIGURACIÓN SMTP ==========
 // ⚠️ CAMBIA ESTOS VALORES POR LOS REALES
 define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_USER', 'correo@gmail.com');
+define('SMTP_USER', 'aqui va el secreto');
 define('SMTP_PASS', 'aqui va el secreto');
 define('SMTP_PORT', 587);
 define('FROM_EMAIL', SMTP_USER);

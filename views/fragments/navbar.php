@@ -54,8 +54,8 @@ if (!function_exists('getRoleAvatarSrc')) {
 
         <div class="nav-links">
             <a href="index.php">INICIO</a>
-            <a href="simuladores.php">SIMULACION</a>
-            <a href="especies.php">ESPECIES</a>
+            <a href="simuladores.php"<?php if (!isset($_SESSION['usuario'])): ?> data-requires-auth="true" data-auth-feature="las simulaciones"<?php endif; ?>>SIMULACION</a>
+            <a href="especies.php"<?php if (!isset($_SESSION['usuario'])): ?> data-requires-auth="true" data-auth-feature="el catálogo de especies"<?php endif; ?>>ESPECIES</a>
             <a href="recursos.php">RECURSOS</a>
             <a href="mapa.php">MAPA</a>
 
@@ -106,6 +106,63 @@ if (!function_exists('getRoleAvatarSrc')) {
         <?php endif; ?>
     </div>
 </nav>
+
+<?php if (!isset($_SESSION['usuario'])): ?>
+    <div class="auth-gate" id="authGate" hidden aria-hidden="true">
+        <div class="auth-gate__backdrop" data-auth-modal-close></div>
+
+        <section
+            class="auth-gate__dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="authGateTitle"
+            aria-describedby="authGateDescription"
+            tabindex="-1"
+        >
+            <button
+                type="button"
+                class="auth-gate__close"
+                data-auth-modal-close
+                aria-label="Cerrar ventana"
+                title="Cerrar"
+            >
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+
+            <div class="auth-gate__visual" aria-hidden="true">
+                <span class="auth-gate__bubble auth-gate__bubble--one"></span>
+                <span class="auth-gate__bubble auth-gate__bubble--two"></span>
+                <span class="auth-gate__bubble auth-gate__bubble--three"></span>
+                <div class="auth-gate__logo-wrap">
+                    <img src="/Simulador-Acu-tico-main/public/media/Web/logo.png" alt="">
+                </div>
+            </div>
+
+            <div class="auth-gate__content">
+                <span class="auth-gate__eyebrow">
+                    <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                    Acceso protegido
+                </span>
+                <h2 id="authGateTitle">Continúa tu experiencia en BlueEcoSim</h2>
+                <p id="authGateDescription">
+                    Para continuar con <strong data-auth-feature-label>este apartado</strong>, necesitas iniciar sesión o crear una cuenta.
+                </p>
+
+                <div class="auth-gate__actions">
+                    <a class="auth-gate__action auth-gate__action--primary" href="/Simulador-Acu-tico-main/views/login.php">
+                        Iniciar sesión
+                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                    <a class="auth-gate__action auth-gate__action--secondary" href="/Simulador-Acu-tico-main/views/registro.php">
+                        Registrarse
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="/Simulador-Acu-tico-main/public/js/auth-modal.js?v=20260803" defer></script>
+<?php endif; ?>
 
 <script src="/Simulador-Acu-tico-main/public/js/theme-toggle.js" defer></script>
 <script src="/Simulador-Acu-tico-main/public/js/translator.js" defer></script>

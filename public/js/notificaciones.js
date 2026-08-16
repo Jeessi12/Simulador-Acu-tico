@@ -183,6 +183,9 @@ function responderInvitacion(accion, idNotif, idEspacio) {
                 const tipo  = accion === 'aceptar' ? 'success' : 'info';
                 showToast(msg, tipo);
                 setTimeout(() => loadContent('recibidos', 1, ''), 800);
+            } else {
+                showToast(data.message || 'No fue posible procesar la invitación.', 'error');
+                setTimeout(() => loadContent('recibidos', 1, ''), 800);
             }
         })
         .catch(() => showToast('Error al procesar la invitación.', 'error'));

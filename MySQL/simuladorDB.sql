@@ -173,7 +173,7 @@ CREATE TABLE `config` (
 -- Dumping data for table `config`
 --
 
-INSERT INTO `config` VALUES ('favicon_url','/Simulador-Acu-tico-main/public/media/Web/logo.png','URL del favicon'),('limite_estudiantes_espacio','30','Número máximo de estudiantes por espacio'),('logo_url','/Simulador-Acu-tico-main/public/media/Web/logo.png','URL del logo'),('modo_mantenimiento','0','Modo mantenimiento (1=Activo, 0=Inactivo)'),('registro_abierto','1','Permitir registro de nuevos usuarios (1=Si, 0=No)'),('tiempo_simulacion_maximo','0','Tiempo máximo en segundos (0 = sin límite)');
+INSERT INTO `config` VALUES ('favicon_url','/Simulador-Acu-tico-main/public/media/Web/logo.png','URL del favicon'),('limite_estudiantes_espacio','30','Número máximo de estudiantes por espacio'),('registro_abierto','1','Permitir registro de nuevos usuarios (1=Si, 0=No)'),('tiempo_simulacion_maximo','0','Tiempo máximo en segundos (0 = sin límite)');
 
 --
 -- Table structure for table `espacio_estudiantes`

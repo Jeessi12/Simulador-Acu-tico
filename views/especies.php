@@ -259,7 +259,7 @@ AchievementPageTracker::track('species');
 </style>
 
 <script src="../public/js/burbujas.js" defer></script>
-<script type="module" src="../public/js/especies.js"></script>
+<script type="module" src="../public/js/especies.js?v=20260806-10"></script>
 <script src="../public/js/session.js" defer></script>
 <?php include __DIR__ . '/fragments/achievement-notifications.php'; ?>
 

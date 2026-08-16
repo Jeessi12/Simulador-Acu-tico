@@ -467,7 +467,7 @@ function estadoBadge(string $estado): string {
 </head>
 <body>
     <?php include 'fragments/navbar.php'; ?>
-    <canvas id="particles"></canvas>
+    <canvas id="particles" data-particle-count="150" aria-hidden="true"></canvas>
 
     <main class="classroom-container">
 

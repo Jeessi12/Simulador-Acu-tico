@@ -5,8 +5,51 @@ document.addEventListener('DOMContentLoaded', async function () {
     // ========== ESTADO ==========
     let speciesData = [];
 
+    const CATEGORY_STORAGE_KEY = 'blueEcoSpeciesCategory';
+    const VALID_CATEGORIES = new Set(['todos', 'peces', 'cetaceos', 'tortugas', 'crustaceos', 'moluscos']);
+    const INITIAL_ROTATION_Y_BY_SPECIES = new Map([
+        ['eretmochelys imbricata', Math.PI],
+        ['lepidochelys olivacea', -Math.PI / 2],
+        ['dermochelys coriacea', -Math.PI / 2],
+        ['chelonia mydas agassizii', -Math.PI / 2],
+        ['squilla aculeata', Math.PI],
+        ['holacanthus passer', Math.PI],
+        ['caranx caballus', 0],
+        ['abudefduf troschelii', Math.PI],
+        ['abudefduf concolor', 0],
+        ['stegastes acapulcoensis', 0],
+        ['chromis atrilobata', 0],
+        ['prionurus punctatus', 0],
+        ['acanthurus xanthopterus', Math.PI],
+        ['haemulon steindachneri', -Math.PI / 2],
+        ['lutjanus argentiventris', 0],
+        ['serranus psittacinus', 0],
+        ['rhincodon typus', -Math.PI / 2],
+        ['istiophorus platypterus', 0],
+        ['scarus perrico', 0],
+        ['scorpaena mystes', 0],
+        ['gymnothorax castaneus', 0]
+    ]);
+
+    function getPersistedCategory() {
+        try {
+            const category = localStorage.getItem(CATEGORY_STORAGE_KEY);
+            return VALID_CATEGORIES.has(category) ? category : 'todos';
+        } catch (error) {
+            return 'todos';
+        }
+    }
+
+    function persistCategory(category) {
+        try {
+            localStorage.setItem(CATEGORY_STORAGE_KEY, category);
+        } catch (error) {
+            // El filtro sigue funcionando aunque el navegador bloquee localStorage.
+        }
+    }
+
     let state = {
-        currentCategory: 'todos',
+        currentCategory: getPersistedCategory(),
         currentSearch: '',
         favorites: new Set(),
         notes: JSON.parse(localStorage.getItem('blueEcoNotes') || '[]'),
@@ -23,6 +66,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     const filterBtns   = document.querySelectorAll('.ftab');
     const speciesGrid  = document.getElementById('speciesGrid');
     const noResultsDiv = document.getElementById('noResults');
+
+    filterBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === state.currentCategory);
+    });
 
     // ========== CARGA DE DATOS DESDE LA API ==========
     async function loadSpeciesData() {
@@ -141,11 +188,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     };
 
     // ========== MODELO 3D ==========
-    async function init3DModel(containerId, modelPath, scaleValue = 0.7, posYValue = 0, rotYValue = 0, camDistance = 3.5, camHeight = 1, isDetail = false) {
+    async function init3DModel(containerId, modelPath, modelView = 'side', isDetail = false, preserveOriginalLighting = false, rotationYOverride = null) {
         try {
             const THREE = await import('three');
             const { OrbitControls } = await import('three/addons/controls/OrbitControls.js');
             const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+            const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
 
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -154,10 +202,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             while (container.firstChild) container.removeChild(container.firstChild);
             delete container.dataset.initialized;
 
+            if (!modelPath) {
+                container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(125,249,240,0.6);font-size:0.9rem;text-align:center;position:relative;z-index:20;"><i class="fas fa-fish" style="margin-right:8px;"></i> Modelo 3D no disponible</div>`;
+                return;
+            }
+
             const w = container.clientWidth;
             const h = container.clientHeight;
             if (w === 0 || h === 0) {
-                setTimeout(() => init3DModel(containerId, modelPath, scaleValue, posYValue, rotYValue, camDistance, camHeight, isDetail), 100);
+                setTimeout(() => init3DModel(containerId, modelPath, modelView, isDetail, preserveOriginalLighting, rotationYOverride), 100);
                 return;
             }
 
@@ -174,66 +227,157 @@ document.addEventListener('DOMContentLoaded', async function () {
                     break;
                 } catch(e) { /* continuar */ }
             }
-            if (bgTexture) scene.background = bgTexture;
+            if (bgTexture) {
+                // La Tortuga verde conserva tambien el tratamiento original del fondo.
+                if (!preserveOriginalLighting) bgTexture.encoding = THREE.sRGBEncoding;
+                scene.background = bgTexture;
+            }
             else scene.background = new THREE.Color(0x071828);
 
             const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
-            camera.position.set(0, camHeight, camDistance);
+            camera.position.set(0, 0.25, 4);
             camera.lookAt(0, 0, 0);
 
             const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
             renderer.setSize(w, h);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            if (preserveOriginalLighting) {
+                renderer.outputEncoding = THREE.LinearEncoding;
+                renderer.toneMapping = THREE.NoToneMapping;
+                renderer.toneMappingExposure = 1;
+            } else {
+                renderer.outputEncoding = THREE.sRGBEncoding;
+                renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                renderer.toneMappingExposure = 0.9;
+            }
             renderer.domElement.style.position = 'absolute';
             renderer.domElement.style.inset = '0';
             renderer.domElement.style.zIndex = '1';
             container.style.position = 'relative';
             container.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(isDetail ? 0x88ccff : 0xffffff, isDetail ? 0.65 : 0.6);
-            scene.add(ambientLight);
-            const mainLight = new THREE.DirectionalLight(isDetail ? 0xaaddff : 0xffffff, isDetail ? 1.4 : 1);
-            mainLight.position.set(3, 5, 2);
-            scene.add(mainLight);
-            const fillLight = new THREE.PointLight(isDetail ? 0x44aaff : 0x88aaff, isDetail ? 0.9 : 0.5);
-            fillLight.position.set(-2, 2, 3);
-            scene.add(fillLight);
-            if (isDetail) {
-                const backLight = new THREE.PointLight(0x0066cc, 0.7);
-                backLight.position.set(0, -2, -2);
-                scene.add(backLight);
-                const rimLight = new THREE.PointLight(0x00aaff, 0.6);
-                rimLight.position.set(2, 2, -3);
-                scene.add(rimLight);
-                const biolumLight = new THREE.PointLight(0x7df9f0, 0.4);
-                biolumLight.position.set(-3, 0, 2);
-                scene.add(biolumLight);
+            let environmentRenderTarget = null;
+            if (preserveOriginalLighting) {
+                // Configuracion exacta que tenia el visor antes de los ajustes de iluminacion.
+                const ambientLight = new THREE.AmbientLight(isDetail ? 0x88ccff : 0xffffff, isDetail ? 0.65 : 0.6);
+                scene.add(ambientLight);
+                const mainLight = new THREE.DirectionalLight(isDetail ? 0xaaddff : 0xffffff, isDetail ? 1.4 : 1);
+                mainLight.position.set(3, 5, 2);
+                scene.add(mainLight);
+                const fillLight = new THREE.PointLight(isDetail ? 0x44aaff : 0x88aaff, isDetail ? 0.9 : 0.5);
+                fillLight.position.set(-2, 2, 3);
+                scene.add(fillLight);
+                if (isDetail) {
+                    const backLight = new THREE.PointLight(0x0066cc, 0.7);
+                    backLight.position.set(0, -2, -2);
+                    scene.add(backLight);
+                    const rimLight = new THREE.PointLight(0x00aaff, 0.6);
+                    rimLight.position.set(2, 2, -3);
+                    scene.add(rimLight);
+                    const biolumLight = new THREE.PointLight(0x7df9f0, 0.4);
+                    biolumLight.position.set(-3, 0, 2);
+                    scene.add(biolumLight);
+                }
+            } else {
+                // El entorno PBR neutro ilumina los materiales del GLB por si solo.
+                // Evitamos sumar luces directas que quemen los colores y eliminen contraste.
+                const pmremGenerator = new THREE.PMREMGenerator(renderer);
+                const roomEnvironment = new RoomEnvironment();
+                environmentRenderTarget = pmremGenerator.fromScene(roomEnvironment, 0.04);
+                scene.environment = environmentRenderTarget.texture;
+                roomEnvironment.traverse(child => {
+                    if (child.geometry) child.geometry.dispose();
+                    if (child.material) child.material.dispose();
+                });
+                pmremGenerator.dispose();
             }
 
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
-            controls.autoRotate = true;
-            controls.autoRotateSpeed = isDetail ? 0.8 : 1.5;
+            controls.autoRotate = false;
             controls.enableZoom = isDetail;
             controls.enablePan = false;
 
-           let mixer = null;
-const clock = new THREE.Clock();
-let model = null;
+            let mixer = null;
+            const clock = new THREE.Clock();
+            let model = null;
+            let basePositionY = 0;
+            let fittedSize = null;
+            let animationFrameId = null;
+
+            function fitCameraToModel() {
+                if (!fittedSize) return;
+
+                const verticalFov = THREE.MathUtils.degToRad(camera.fov);
+                const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * camera.aspect);
+                const verticalDistance = (fittedSize.y / 2) / Math.tan(verticalFov / 2);
+                const horizontalDistance = (fittedSize.x / 2) / Math.tan(horizontalFov / 2);
+                const cameraDistance = (Math.max(verticalDistance, horizontalDistance) + fittedSize.z / 2) * 1.08;
+
+                camera.position.set(0, fittedSize.y * 0.03, cameraDistance);
+                camera.near = Math.max(cameraDistance / 100, 0.01);
+                camera.far = Math.max(cameraDistance * 20, 100);
+                camera.updateProjectionMatrix();
+                controls.target.set(0, 0, 0);
+                controls.minDistance = cameraDistance * 0.55;
+                controls.maxDistance = cameraDistance * 2.2;
+                controls.update();
+            }
 
 const loader = new GLTFLoader();
 loader.load(modelPath,
     (gltf) => {
 
         model = gltf.scene;
-        model.scale.set(scaleValue, scaleValue, scaleValue);
-        model.position.set(0, posYValue, 0);
-        model.rotation.y = rotYValue;
+        // El frente estandar del GLB se conserva para cangrejos y jaibas.
+        // Peces y especies alargadas se giran para mostrarse de lado.
+        model.rotation.y = Number.isFinite(rotationYOverride)
+            ? rotationYOverride
+            : (modelView === 'front' ? 0 : Math.PI / 2);
+        model.updateMatrixWorld(true);
+
+        const initialBounds = new THREE.Box3().setFromObject(model);
+        const initialSize = initialBounds.getSize(new THREE.Vector3());
+        const largestDimension = Math.max(initialSize.x, initialSize.y, initialSize.z);
+
+        if (!Number.isFinite(largestDimension) || largestDimension <= 0) {
+            console.error('El modelo GLB no contiene una geometria visible:', modelPath);
+            model = null;
+            container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(125,249,240,0.6);font-size:0.9rem;text-align:center;position:relative;z-index:20;"><i class="fas fa-fish" style="margin-right:8px;"></i> Modelo 3D no disponible</div>`;
+            return;
+        }
+
+        const normalizedSize = isDetail ? 2.6 : 1.8;
+        model.scale.setScalar(normalizedSize / largestDimension);
+        model.updateMatrixWorld(true);
+
+        const scaledBounds = new THREE.Box3().setFromObject(model);
+        const center = scaledBounds.getCenter(new THREE.Vector3());
+        model.position.sub(center);
+        basePositionY = model.position.y;
         model.traverse(c => {
-            if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; }
+            if (c.isMesh) {
+                c.castShadow = true;
+                c.receiveShadow = true;
+
+                const materials = Array.isArray(c.material) ? c.material : [c.material];
+                materials.forEach(material => {
+                    if (!preserveOriginalLighting && (material?.isMeshStandardMaterial || material?.isMeshPhysicalMaterial)) {
+                        // Reduce solo el brillo recibido del entorno; el color base del GLB no se modifica.
+                        material.envMapIntensity = isDetail ? 0.62 : 0.7;
+                        material.needsUpdate = true;
+                    }
+                });
+            }
         });
         scene.add(model);
+
+        // La camara calcula automaticamente el zoom necesario para el modelo completo.
+        model.updateMatrixWorld(true);
+        const fittedBounds = new THREE.Box3().setFromObject(model);
+        fittedSize = fittedBounds.getSize(new THREE.Vector3());
+        fitCameraToModel();
 
         // ── Reproducir animaciones si existen ──
         if (gltf.animations && gltf.animations.length > 0) {
@@ -254,7 +398,7 @@ loader.load(modelPath,
 
 function animate() {
 
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
 
     const delta = clock.getDelta();
 
@@ -267,7 +411,7 @@ if (model) {
     const t = Date.now() * 0.001;
 
     // Flota ligeramente
-    model.position.y = posYValue + Math.sin(t * 2) * 0.08;
+    model.position.y = basePositionY + Math.sin(t * 2) * 0.08;
 
     // Se balancea de lado a lado
     model.rotation.z = Math.sin(t * 3) * 0.12;
@@ -292,10 +436,18 @@ animate();
                     camera.aspect = nw / nh;
                     camera.updateProjectionMatrix();
                     renderer.setSize(nw, nh);
+                    fitCameraToModel();
                 }
             });
             resizeObserver.observe(container);
-            container._cleanup3d = () => resizeObserver.disconnect();
+            container._cleanup3d = () => {
+                resizeObserver.disconnect();
+                if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
+                controls.dispose();
+                renderer.dispose();
+                if (bgTexture) bgTexture.dispose();
+                if (environmentRenderTarget) environmentRenderTarget.dispose();
+            };
 
         } catch (e) {
             console.error('Error en init3DModel:', e);
@@ -608,7 +760,10 @@ animate();
         generateUnderwaterBubbles();
 
         setTimeout(() => {
-            init3DModel('detail3dContainer', species.modelPath, species.scale, species.posY, species.rotY, species.camDistance, species.camHeight, true);
+            const normalizedScientificName = species.scientificName?.trim().toLowerCase() || '';
+            const preserveOriginalLighting = normalizedScientificName === 'chelonia mydas';
+            const rotationYOverride = INITIAL_ROTATION_Y_BY_SPECIES.get(normalizedScientificName) ?? null;
+            init3DModel('detail3dContainer', species.modelPath, species.modelView, true, preserveOriginalLighting, rotationYOverride);
         }, 120);
     }
 
@@ -854,6 +1009,7 @@ animate();
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             state.currentCategory = btn.dataset.category;
+            persistCategory(state.currentCategory);
             renderCards();
         });
     });

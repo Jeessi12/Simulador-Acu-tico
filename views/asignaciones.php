@@ -1,6 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../app/support/AuthRedirect.php';
+require_once __DIR__ . '/../app/support/SpaceCapacity.php';
 include __DIR__ . '/../app/models/Conexion.php';
 include __DIR__ . '/../app/models/ObservacionesSchema.php';
 $conn = (new Conexion())->getConnection();
@@ -62,11 +63,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['responder_inv'])) {
     $id_esp_inv = intval($_POST['id_espacio_inv']);
     $accion_inv = $_POST['accion_inv'] ?? '';
     if ($id_esp_inv > 0 && in_array($accion_inv, ['aceptar', 'rechazar'])) {
-        $nuevo_estado = $accion_inv === 'aceptar' ? 'aceptado' : 'rechazado';
-        mysqli_query($conn,
-            "UPDATE espacio_estudiantes SET estado = '$nuevo_estado'
-             WHERE id_espacio = $id_esp_inv AND id_estudiante = $id_estudiante"
-        );
+        if ($accion_inv === 'aceptar') {
+            $joinResult = acceptStudentIntoSpace($conn, $id_esp_inv, $id_estudiante, true);
+            if (!$joinResult['ok']) {
+                $joinError = $joinResult['status'] === 'capacity_reached'
+                    ? 'Este espacio alcanzo el limite de ' . $joinResult['limit'] . ' estudiantes.'
+                    : 'No fue posible unirte al espacio. Intenta de nuevo.';
+                header("Location: asignaciones.php?error=" . urlencode($joinError));
+                exit();
+            }
+        } else {
+            mysqli_query($conn,
+                "UPDATE espacio_estudiantes SET estado = 'rechazado'
+                 WHERE id_espacio = $id_esp_inv AND id_estudiante = $id_estudiante"
+            );
+        }
         mysqli_query($conn,
             "UPDATE notificaciones SET leida = 1
              WHERE id_usuario = $id_estudiante AND id_espacio = $id_esp_inv AND tipo = 'invitacion'"
@@ -101,39 +112,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['unirse_codigo'])) {
             $error = 'Código no válido. Verifica e intenta de nuevo.';
         } else {
             $id_esp = $encontrado['id'];
-            $existe = mysqli_query($conn,
-                "SELECT estado FROM espacio_estudiantes
-                 WHERE id_espacio = $id_esp AND id_estudiante = $id_estudiante"
-            );
-            if ($existe && mysqli_num_rows($existe) > 0) {
-                $row_e = mysqli_fetch_assoc($existe);
-                if ($row_e['estado'] === 'aceptado') {
-                    $error = 'Ya eres miembro de este espacio.';
-                } elseif ($row_e['estado'] === 'pendiente') {
-                    mysqli_query($conn,
-                        "UPDATE espacio_estudiantes SET estado = 'aceptado'
-                         WHERE id_espacio = $id_esp AND id_estudiante = $id_estudiante"
-                    );
-                    $mensaje = '¡Te uniste a "' . htmlspecialchars($encontrado['nombre']) . '" correctamente!';
-                } else {
-                    mysqli_query($conn,
-                        "UPDATE espacio_estudiantes SET estado = 'aceptado'
-                         WHERE id_espacio = $id_esp AND id_estudiante = $id_estudiante"
-                    );
-                    $mensaje = '¡Te uniste a "' . htmlspecialchars($encontrado['nombre']) . '" correctamente!';
-                }
-            } else {
-                mysqli_query($conn,
-                    "INSERT INTO espacio_estudiantes (id_espacio, id_estudiante, estado)
-                     VALUES ($id_esp, $id_estudiante, 'aceptado')"
-                );
+            $joinResult = acceptStudentIntoSpace($conn, $id_esp, $id_estudiante);
+            if ($joinResult['ok'] && $joinResult['status'] === 'already_member') {
+                $error = 'Ya eres miembro de este espacio.';
+            } elseif ($joinResult['ok']) {
                 $mensaje = '¡Te uniste a "' . htmlspecialchars($encontrado['nombre']) . '" correctamente!';
+            } elseif ($joinResult['status'] === 'capacity_reached') {
+                $error = 'Este espacio alcanzo el limite de ' . $joinResult['limit'] . ' estudiantes.';
+            } else {
+                $error = 'No fue posible unirte al espacio. Intenta de nuevo.';
             }
         }
     }
 }
 
 if (isset($_GET['msg']) && $mensaje === '') $mensaje = htmlspecialchars($_GET['msg']);
+if (isset($_GET['error']) && $error === '') $error = htmlspecialchars($_GET['error']);
 
 // ── Invitaciones pendientes ──────────────────────────────────────────────────
 $invitaciones_q = mysqli_query($conn,
@@ -241,6 +235,7 @@ if ($id_espacio_detalle > 0) {
 <body>
 
 <?php include(__DIR__ . "/fragments/navbar.php"); ?>
+<canvas id="particles" data-particle-count="130" aria-hidden="true"></canvas>
 <div class="spacer"></div>
 
 <main class="asignaciones-container">
@@ -377,7 +372,6 @@ if ($id_espacio_detalle > 0) {
 
     <!-- HERO -->
     <section class="dashboard-hero">
-         <canvas id="particles"></canvas>
         <div class="hero-content">
             <h1>Bienvenido, <?php echo htmlspecialchars($username); ?></h1>
             <p>Gestiona tus espacios, acepta invitaciones y accede a tus simulaciones ecológicas.</p>

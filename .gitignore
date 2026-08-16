@@ -8,6 +8,8 @@
 .vite/
 coverage/
 npm-debug.log*
+/reports/*
+!/reports/.gitkeep
 client_secret*.json
 *.log
 .DS_Store

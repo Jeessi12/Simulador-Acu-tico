@@ -2245,17 +2245,6 @@ body.dark-mode .doc-btn-action.download {
     width: 158px;
 }
 
-.resources-scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    width: var(--page-progress, 0%);
-    height: 4px;
-    background: linear-gradient(90deg, #ffffff, #80e2ec, #ffe08a);
-    box-shadow: 0 0 18px rgba(128, 226, 236, 0.65);
-}
-
 .resources-shell {
     position: relative;
     z-index: 2;
@@ -4230,7 +4219,7 @@ body.dark-mode #docs .docs-trust-panel {
 
 #docs .docs-grid-fluid,
 .recursos-page #docs .docs-grid-fluid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(14px, 1.6vw, 22px);
 }
 
@@ -4730,8 +4719,8 @@ body.dark-mode #timeline-section.timeline-reference-design {
 #timeline-section.timeline-reference-design .timeline-split-layout {
     position: relative;
     z-index: 1;
-    grid-template-columns: clamp(250px, 21vw, 315px) minmax(0, 1fr);
-    gap: clamp(50px, 4vw, 65px);
+    grid-template-columns: clamp(315px, 24vw, 370px) minmax(0, 1fr);
+    gap: clamp(32px, 3vw, 48px);
     width: 100%;
     height: 100%;
     align-items: stretch;
@@ -4746,8 +4735,8 @@ body.dark-mode #timeline-section.timeline-reference-design .timeline-context {
     min-height: 0;
     max-height: none;
     justify-content: center;
-    padding: clamp(24px, 2.5vw, 38px);
-    padding-left: clamp(50px, 5vw, 80px);
+    padding: clamp(24px, 2.5vw, 34px);
+    padding-left: clamp(68px, 5.2vw, 96px);
     overflow: hidden;
     border: 1px solid rgba(76, 159, 204, 0.18);
     border-radius: 28px;
@@ -4801,7 +4790,7 @@ body.dark-mode #timeline-section.timeline-reference-design .timeline-context {
 }
 
 #timeline-section.timeline-reference-design .timeline-context > p {
-    max-width: 28ch;
+    max-width: 34ch;
     margin: 0;
     color: #e8f1f7;
     font-size: clamp(0.76rem, 0.88vw, 0.88rem);
@@ -5187,36 +5176,29 @@ body.dark-mode #timeline-section.timeline-reference-design {
    ========================================================= */
 :root {
     --resources-header-clearance: 108px;
-    --resources-section-height: calc(100vh - var(--resources-header-clearance));
-}
-
-@supports (height: 100svh) {
-    :root {
-        --resources-section-height: calc(100svh - var(--resources-header-clearance));
-    }
 }
 
 html.page-recursos {
     scroll-padding-top: var(--resources-header-clearance);
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: none;
 }
 
 .recursos-page .resources-hero,
 .recursos-page .content-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
 }
 
 .recursos-page .content-section {
     box-sizing: border-box;
     width: 100%;
-    height: var(--resources-section-height) !important;
-    min-height: var(--resources-section-height) !important;
-    max-height: var(--resources-section-height) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     margin-top: 0;
     margin-bottom: 0;
-    overflow: hidden;
-    scroll-margin-top: 0;
+    overflow: visible;
+    scroll-margin-top: var(--resources-header-clearance);
     isolation: isolate;
 }
 
@@ -5224,32 +5206,32 @@ html.page-recursos {
 #biodiversity-section,
 #map,
 #docs {
-    scroll-margin-top: 0;
+    scroll-margin-top: var(--resources-header-clearance);
 }
 
 /* La ilustración y la órbita quedan contenidas exactamente en su vista. */
 #timeline-section.timeline-reference-design,
 body.dark-mode #timeline-section.timeline-reference-design {
-    height: var(--resources-section-height) !important;
-    min-height: var(--resources-section-height) !important;
-    max-height: var(--resources-section-height) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     padding: clamp(14px, 2vh, 24px) clamp(18px, 2.4vw, 38px);
+    overflow: visible;
     background-position: center bottom;
     background-size: cover;
 }
 
 #timeline-section.timeline-reference-design .timeline-split-layout {
-    height: 100%;
+    height: auto;
     min-height: 0;
 }
 
-#timeline-section.timeline-reference-design .timeline-context,
-#timeline-section.timeline-reference-design .timeline-interactive-column,
-#timeline-section.timeline-reference-design #recursos-orbital-timeline,
-#timeline-section.timeline-reference-design .timeline-orbit-stage {
-    height: 100% !important;
+#timeline-section.timeline-reference-design .timeline-context {
+    position: relative;
+    top: auto;
+    height: auto !important;
     min-height: 0;
-    max-height: 100%;
+    max-height: none;
 }
 
 /* El carrusel utiliza el espacio restante después de su único título. */
@@ -5267,13 +5249,8 @@ body.dark-mode #timeline-section.timeline-reference-design {
 
 #biodiversity-section #recursos-focus-rail {
     min-height: 0;
-    flex: 1 1 auto;
-    overflow: hidden;
-}
-
-#biodiversity-section #recursos-focus-rail .focus-rail {
-    height: 100% !important;
-    min-height: 0;
+    flex: 0 0 auto;
+    overflow: visible;
 }
 
 /* Mapa centrado dentro del alto útil; mapa y texto mantienen la misma altura. */
@@ -5303,8 +5280,9 @@ body.dark-mode #timeline-section.timeline-reference-design {
 #docs {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: clamp(16px, 2.2vh, 26px) clamp(16px, 4vw, 56px);
+    justify-content: flex-start;
+    padding: clamp(32px, 4vw, 56px) clamp(16px, 4vw, 56px) clamp(64px, 7vw, 96px);
+    overflow: visible;
 }
 
 #docs .docs-classic-header {
@@ -5314,7 +5292,7 @@ body.dark-mode #timeline-section.timeline-reference-design {
 
 #docs .docs-grid-fluid {
     min-height: 0;
-    flex: 0 1 auto;
+    flex: 0 0 auto;
 }
 
 #docs .doc-card-fluid {
@@ -5366,9 +5344,7 @@ body.dark-mode #timeline-section.timeline-reference-design {
 @media (max-width: 1100px) {
     #docs {
         justify-content: flex-start;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        scrollbar-gutter: stable;
+        overflow: visible;
     }
 
     #docs .doc-card-fluid {
@@ -5396,9 +5372,7 @@ body.dark-mode #timeline-section.timeline-reference-design {
     #timeline-section.timeline-reference-design,
     #map.map-explorer-section {
         display: block !important;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        scrollbar-gutter: stable;
+        overflow: visible;
     }
 
     #timeline-section.timeline-reference-design .timeline-split-layout {
@@ -5456,7 +5430,7 @@ body.dark-mode #timeline-section.timeline-reference-design {
 
 @media (prefers-reduced-motion: reduce) {
     html.page-recursos {
-        scroll-snap-type: y proximity;
+        scroll-snap-type: none;
     }
 }
 
@@ -5629,27 +5603,27 @@ body.dark-mode #biodiversity-section {
 #biodiversity-section .focus-rail-meta {
     display: inline-flex;
     margin-bottom: 2px;
-    color: #298fc3;
+    color: #dffbff;
     font-size: 0.62rem;
     letter-spacing: 0.16em;
-    text-shadow: none;
+    text-shadow: 0 2px 6px rgba(0, 47, 84, 0.55);
 }
 
 #biodiversity-section .focus-rail-title {
     margin: 0;
-    color: #174f83;
+    color: #ffffff;
     font-size: clamp(1.45rem, 2.2vw, 2rem);
     line-height: 1.08;
-    text-shadow: none;
+    text-shadow: 0 3px 10px rgba(0, 45, 82, 0.55);
 }
 
 #biodiversity-section .focus-rail-description {
     max-width: 54ch;
     margin: 0;
-    color: #4d7089;
+    color: rgba(255, 255, 255, 0.94);
     font-size: clamp(0.72rem, 0.88vw, 0.84rem);
     line-height: 1.48;
-    text-shadow: none;
+    text-shadow: 0 2px 7px rgba(0, 45, 82, 0.48);
 }
 
 #biodiversity-section .focus-rail-explore {
@@ -5676,30 +5650,30 @@ body.dark-mode #biodiversity-section {
     transform: translateX(-50%);
 }
 
-#biodiversity-section .focus-rail-nav {
-    border: 1px solid rgba(71, 158, 202, 0.18);
+#biodiversity-section #recursos-focus-rail .focus-rail-nav {
+    border: 1px solid rgba(255, 255, 255, 0.88);
     color: #1d6f9f;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 12px 28px rgba(35, 104, 149, 0.14);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 12px 28px rgba(35, 104, 149, 0.18), inset 0 1px 0 #ffffff;
 }
 
-#biodiversity-section .focus-rail-nav-button {
+#biodiversity-section #recursos-focus-rail .focus-rail-nav-button {
     width: 38px;
     height: 38px;
     padding: 0;
-    border: 0;
+    border: 1px solid rgba(62, 151, 197, 0.16);
     color: #287fb5;
-    background: transparent;
+    background: rgba(225, 246, 252, 0.82);
     box-shadow: none;
 }
 
-#biodiversity-section .focus-rail-nav-button:hover {
+#biodiversity-section #recursos-focus-rail .focus-rail-nav-button:hover {
     color: #ffffff;
     background: #318fc6;
     transform: none;
 }
 
-#biodiversity-section .focus-rail-nav-count {
+#biodiversity-section #recursos-focus-rail .focus-rail-nav-count {
     color: #1c6393;
     font-size: 0.7rem;
 }
@@ -6812,5 +6786,90 @@ body.dark-mode #map .map-scale {
         bottom: 12px;
         padding: 8px 12px;
         font-size: 0.62rem;
+    }
+}
+
+/* Flujo natural: las secciones crecen con su contenido y no capturan el scroll. */
+html.page-recursos {
+    scroll-snap-type: none;
+}
+
+.recursos-page .resources-hero,
+.recursos-page .content-section {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+}
+
+.recursos-page .content-section,
+#timeline-section.timeline-reference-design,
+body.dark-mode #timeline-section.timeline-reference-design,
+#biodiversity-section,
+body.dark-mode #biodiversity-section,
+#docs {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible;
+    scroll-margin-top: var(--resources-header-clearance, 108px);
+}
+
+#timeline-section.timeline-reference-design .timeline-split-layout {
+    height: auto;
+}
+
+#timeline-section.timeline-reference-design .timeline-context,
+body.dark-mode #timeline-section.timeline-reference-design .timeline-context {
+    position: relative;
+    top: auto;
+    height: auto !important;
+    min-height: 0;
+    max-height: none;
+}
+
+#timeline-section.timeline-reference-design .timeline-interactive-column,
+#timeline-section.timeline-reference-design #recursos-orbital-timeline,
+#timeline-section.timeline-reference-design .timeline-orbit-stage {
+    height: var(--timeline-visual-height) !important;
+    min-height: var(--timeline-visual-height);
+    max-height: var(--timeline-visual-height);
+}
+
+#biodiversity-section #recursos-focus-rail {
+    flex: 0 0 auto;
+    overflow: visible;
+}
+
+#biodiversity-section #recursos-focus-rail .focus-rail {
+    height: 560px !important;
+    min-height: 0;
+}
+
+#docs {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: clamp(32px, 4vw, 56px) clamp(16px, 4vw, 56px) clamp(64px, 7vw, 96px);
+}
+
+#docs .docs-grid-fluid {
+    min-height: 0;
+    flex: 0 0 auto;
+    overflow: visible;
+}
+
+#footer-container,
+.recursos-page footer.site-footer {
+    position: relative;
+    clear: both;
+    z-index: 2;
+}
+
+@media (max-width: 640px) {
+    #biodiversity-section #recursos-focus-rail .focus-rail {
+        height: 520px !important;
+    }
+
+    #docs {
+        padding: 32px 14px 56px;
     }
 }

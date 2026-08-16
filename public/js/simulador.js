@@ -237,7 +237,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 900);
 
     const params = new URLSearchParams(window.location.search);
-    if (params.get('start') === '1' && typeof window.beginSelectedSimulation === 'function') {
+    const hasConfiguredTimeLimit = Number(window.SIMULATION_TIME_LIMIT) > 0;
+    if ((params.get('start') === '1' || hasConfiguredTimeLimit)
+        && typeof window.beginSelectedSimulation === 'function') {
         window.beginSelectedSimulation();
     }
 });
@@ -373,10 +375,15 @@ function setupTimer() {
     const resetBtn = document.getElementById('reset');
     const completeBtn = document.getElementById('completeSimulation');
     const completionStatus = document.getElementById('completionStatus');
+    const timeLimitAlert = document.getElementById('simulationTimeLimitAlert');
+    const acknowledgeTimeLimit = document.getElementById('acknowledgeTimeLimit');
+    const maximumSeconds = Math.max(0, Number(window.SIMULATION_TIME_LIMIT) || 0);
     let seconds = 0;
+    let activeSeconds = 0;
     let interval = null;
     let achievementHeartbeat = null;
     let timerRunning = false;
+    let timeLimitReached = false;
 
     function setTimerState(running) {
         const timerState = document.getElementById('timerState');
@@ -400,10 +407,15 @@ function setupTimer() {
     function updateTimer() {
         if (!timerRunning) return;
         seconds++;
+        activeSeconds++;
         const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
         const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
         const secs = String(seconds % 60).padStart(2, '0');
         if (timerDisplay) timerDisplay.textContent = `${hrs}:${mins}:${secs}`;
+
+        if (maximumSeconds > 0 && activeSeconds >= maximumSeconds) {
+            reachTimeLimit();
+        }
     }
 
     function stopLocalTimer() {
@@ -414,6 +426,30 @@ function setupTimer() {
         achievementHeartbeat = null;
         setGlobal('godot_is_running', false);
         setTimerState(false);
+    }
+
+    function reachTimeLimit() {
+        if (timeLimitReached) return;
+        timeLimitReached = true;
+        stopLocalTimer();
+        pauseAchievement();
+        setCompletionStatus('Tiempo máximo alcanzado. La simulación fue detenida.', 'error');
+        [startBtn, pauseBtn, resetBtn].forEach((button) => {
+            if (button) button.disabled = true;
+        });
+
+        const timerState = document.getElementById('timerState');
+        if (timerState) {
+            timerState.classList.remove('is-running');
+            timerState.innerHTML = '<span aria-hidden="true"></span> Tiempo agotado';
+        }
+
+        if (timeLimitAlert) {
+            timeLimitAlert.hidden = false;
+            window.setTimeout(() => acknowledgeTimeLimit?.focus(), 0);
+        } else {
+            window.alert('Tiempo máximo alcanzado');
+        }
     }
 
     async function heartbeatAchievement() {
@@ -440,6 +476,10 @@ function setupTimer() {
     }
 
     async function beginTimer() {
+        if (timeLimitReached || (maximumSeconds > 0 && activeSeconds >= maximumSeconds)) {
+            reachTimeLimit();
+            return;
+        }
         if (timerRunning) return;
         setSimulationVisible(true);
         startGodot();
@@ -477,6 +517,7 @@ function setupTimer() {
     });
 
     resetBtn?.addEventListener('click', () => {
+        if (timeLimitReached) return;
         stopLocalTimer();
         pauseAchievement();
         seconds = 0;
@@ -486,6 +527,11 @@ function setupTimer() {
         setSimulationVisible(true);
         setTimerState(false);
         setCompletionStatus('Temporizador reiniciado. Puedes continuar la misma experiencia.');
+    });
+
+    acknowledgeTimeLimit?.addEventListener('click', () => {
+        if (timeLimitAlert) timeLimitAlert.hidden = true;
+        completeBtn?.focus();
     });
 
     completeBtn?.addEventListener('click', async () => {

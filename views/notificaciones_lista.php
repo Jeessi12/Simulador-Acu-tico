@@ -1,6 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 include __DIR__ . '/../app/models/Conexion.php';
+require_once __DIR__ . '/../app/support/SpaceCapacity.php';
 $conn = (new Conexion())->getConnection();
 
 if (!defined('ROL_ESTUDIANTE')) define('ROL_ESTUDIANTE', 1);
@@ -21,17 +22,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['aceptar_invitacion'])
     $id_espacio_inv = intval($_POST['id_espacio_inv']);
     $id_notif       = intval($_POST['id_notif']);
     if ($id_espacio_inv > 0) {
-        mysqli_query($conn,
-            "UPDATE espacio_estudiantes
-             SET estado = 'aceptado'
-             WHERE id_espacio = $id_espacio_inv AND id_estudiante = $id_usuario"
-        );
-        mysqli_query($conn,
-            "UPDATE notificaciones SET leida = 1, tipo = 'general'
-             WHERE id = $id_notif AND id_usuario = $id_usuario"
-        );
+        $joinResult = acceptStudentIntoSpace($conn, $id_espacio_inv, $id_usuario, true);
+        if ($joinResult['ok']) {
+            mysqli_query($conn,
+                "UPDATE notificaciones SET leida = 1, tipo = 'general'
+                 WHERE id = $id_notif AND id_usuario = $id_usuario"
+            );
+            exit(json_encode(['ok' => true]));
+        }
+
+        $message = $joinResult['status'] === 'capacity_reached'
+            ? 'Este espacio alcanzo el limite de ' . $joinResult['limit'] . ' estudiantes.'
+            : 'No fue posible unirte al espacio. Intenta de nuevo.';
+        exit(json_encode(['ok' => false, 'message' => $message]));
     }
-    exit(json_encode(['ok' => true]));
+    exit(json_encode(['ok' => false, 'message' => 'El espacio no es valido.']));
 }
 
 // ── Rechazar invitación a espacio ────────────────────────────────────────────

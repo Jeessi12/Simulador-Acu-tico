@@ -466,7 +466,7 @@ class ChatbotGroqController {
                    "• **RECURSOS** es público y se centra en Los Cóbanos.\n" .
                    "• Incluye cinco hitos históricos y una vista de biodiversidad.\n" .
                    "• Su mapa ilustrado tiene capas de ubicación, arrecifes, ecosistemas, tortugas y zonas protegidas; no es GPS ni mapa satelital en vivo. 🗺️\n" .
-                   "• Hay cuatro tarjetas de documentos, pero actualmente las cuatro abren el mismo PDF de especies amenazadas de El Salvador. 📄";
+                   "• La biblioteca reúne seis documentos oficiales distintos de **MARN** y **MINEDUCYT** sobre Los Cóbanos, biodiversidad, especies amenazadas, tortugas, cetáceos y educación marina. 📄";
         }
         
         $preguntaPerfilUsuario = $containsAny($lowerMessage, [
@@ -494,9 +494,8 @@ class ChatbotGroqController {
                    "• Ve a **'ADMINISTRAR'** en el navbar 👆\n" .
                    "• **Dashboard**: estadísticas de usuarios, espacios, asignaciones\n" .
                    "• **Usuarios**: cambiar roles, eliminar usuarios\n" .
-                   "• **Simulaciones**: crear, editar, eliminar\n" .
                    "• **Logs**: registro de actividad del sistema\n" .
-                   "• **Configuración**: límites, modo mantenimiento, logos\n\n" .
+                   "• **Configuración**: límites, registro de usuarios y favicon\n\n" .
                    "🔐 Solo usuarios con rol **ADMIN** tienen acceso.";
         }
         

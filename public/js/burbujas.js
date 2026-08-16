@@ -20,6 +20,7 @@ window.addEventListener('mousemove', (e)=>{
 });
 
 let particles = [];
+const particleCount = Math.max(1, parseInt(canvas.dataset.particleCount || '70', 10) || 70);
 
 function createParticle(){
     let size = Math.random()*6 + 4;
@@ -35,7 +36,7 @@ function createParticle(){
     };
 }
 
-for(let i=0;i<70;i++){
+for(let i=0;i<particleCount;i++){
     particles.push(createParticle());
 }
 

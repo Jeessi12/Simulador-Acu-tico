@@ -15390,24 +15390,24 @@ var Vf = {
 	return ((n - e) % r + r) % r + e;
 };
 function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, interval: i = 4e3, className: a }) {
-	let [o, s] = E.useState(t), [c, l] = E.useState(!1), u = E.useRef(0), d = e.length;
-	if (!d) return null;
-	let f = Kf(0, d, o), p = e[f], m = E.useCallback(() => {
-		!n && f === 0 || s((e) => e - 1);
-	}, [f, n]), h = E.useCallback(() => {
-		!n && f === d - 1 || s((e) => e + 1);
+	let [o, s] = E.useState(t), [c, l] = E.useState(!1), u = e.length;
+	if (!u) return null;
+	let d = Kf(0, u, o), f = e[d], p = E.useCallback(() => {
+		!n && d === 0 || s((e) => e - 1);
+	}, [d, n]), m = E.useCallback(() => {
+		!n && d === u - 1 || s((e) => e + 1);
 	}, [
-		f,
 		d,
+		u,
 		n
 	]);
 	return E.useEffect(() => {
 		if (!r || c) return;
-		let e = window.setInterval(h, i);
+		let e = window.setInterval(m, i);
 		return () => window.clearInterval(e);
 	}, [
 		r,
-		h,
+		m,
 		i,
 		c
 	]), /* @__PURE__ */ (0, I.jsx)("div", {
@@ -15415,13 +15415,7 @@ function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, int
 		onMouseEnter: () => l(!0),
 		onMouseLeave: () => l(!1),
 		onKeyDown: (e) => {
-			e.key === "ArrowLeft" && m(), e.key === "ArrowRight" && h();
-		},
-		onWheel: (e) => {
-			let t = Date.now();
-			if (t - u.current < 400) return;
-			let n = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-			Math.abs(n) <= 20 || (n > 0 ? h() : m(), u.current = t);
+			e.key === "ArrowLeft" && p(), e.key === "ArrowRight" && m();
 		},
 		role: "region",
 		"aria-roledescription": "carrusel",
@@ -15439,7 +15433,7 @@ function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, int
 				dragElastic: .2,
 				onDragEnd: (e, t) => {
 					let n = Math.abs(t.offset.x) * t.velocity.x;
-					(n < -1e4 || t.offset.x < -80) && h(), (n > 1e4 || t.offset.x > 80) && m();
+					(n < -1e4 || t.offset.x < -80) && m(), (n > 1e4 || t.offset.x > 80) && p();
 				},
 				children: [
 					[
@@ -15450,8 +15444,8 @@ function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, int
 						2
 					].map((t) => {
 						let r = o + t;
-						if (!n && (r < 0 || r >= d)) return null;
-						let i = e[Kf(0, d, r)], a = Math.abs(t), c = t === 0;
+						if (!n && (r < 0 || r >= u)) return null;
+						let i = e[Kf(0, u, r)], a = Math.abs(t), c = t === 0;
 						return /* @__PURE__ */ (0, I.jsxs)(Uf.button, {
 							type: "button",
 							"aria-label": c ? `${i.title}, elemento activo` : `Mostrar ${i.title}`,
@@ -15486,7 +15480,7 @@ function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, int
 					/* @__PURE__ */ (0, I.jsx)("button", {
 						type: "button",
 						onPointerDown: (e) => e.stopPropagation(),
-						onClick: m,
+						onClick: p,
 						className: "focus-rail-side-button focus-rail-side-prev",
 						"aria-label": "Biodiversidad anterior",
 						children: /* @__PURE__ */ (0, I.jsx)(oe, { "aria-hidden": "true" })
@@ -15494,7 +15488,7 @@ function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, int
 					/* @__PURE__ */ (0, I.jsx)("button", {
 						type: "button",
 						onPointerDown: (e) => e.stopPropagation(),
-						onClick: h,
+						onClick: m,
 						className: "focus-rail-side-button focus-rail-side-next",
 						"aria-label": "Biodiversidad siguiente",
 						children: /* @__PURE__ */ (0, I.jsx)(se, { "aria-hidden": "true" })
@@ -15525,25 +15519,25 @@ function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, int
 							transition: { duration: .3 },
 							className: "focus-rail-copy space-y-2",
 							children: [
-								p.meta && /* @__PURE__ */ (0, I.jsx)("span", {
+								f.meta && /* @__PURE__ */ (0, I.jsx)("span", {
 									className: "focus-rail-meta text-xs font-semibold uppercase tracking-[.14em] text-[#7ff0d8] [text-shadow:0_2px_8px_rgba(0,35,70,.55)]",
-									children: p.meta
+									children: f.meta
 								}),
 								/* @__PURE__ */ (0, I.jsx)("h3", {
 									className: "focus-rail-title text-2xl font-bold tracking-tight text-white [text-shadow:0_3px_14px_rgba(0,35,70,.45)] md:text-3xl",
-									children: p.title
+									children: f.title
 								}),
-								p.description && /* @__PURE__ */ (0, I.jsx)("p", {
+								f.description && /* @__PURE__ */ (0, I.jsx)("p", {
 									className: "focus-rail-description max-w-xl text-sm leading-6 text-white/85 [text-shadow:0_2px_8px_rgba(0,35,70,.5)] md:text-base md:leading-7",
-									children: p.description
+									children: f.description
 								}),
-								p.href && /* @__PURE__ */ (0, I.jsxs)("a", {
-									href: p.href,
+								f.href && /* @__PURE__ */ (0, I.jsxs)("a", {
+									href: f.href,
 									className: "focus-rail-explore inline-flex items-center gap-2 rounded-full bg-[#7fe3ef] px-5 py-3 text-sm font-semibold text-[#143a63] transition-transform hover:scale-105 active:scale-95",
 									children: ["Explorar ", /* @__PURE__ */ (0, I.jsx)(ae, { className: "h-4 w-4" })]
 								})
 							]
-						}, p.id)
+						}, f.id)
 					})
 				}), /* @__PURE__ */ (0, I.jsx)("div", {
 					className: "focus-rail-bottom-controls flex items-center gap-3",
@@ -15552,7 +15546,7 @@ function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, int
 						children: [
 							/* @__PURE__ */ (0, I.jsx)("button", {
 								type: "button",
-								onClick: m,
+								onClick: p,
 								className: "focus-rail-nav-button rounded-full p-3 transition active:scale-95",
 								"aria-label": "Biodiversidad anterior",
 								children: /* @__PURE__ */ (0, I.jsx)(oe, { className: "h-5 w-5" })
@@ -15560,14 +15554,14 @@ function qf({ items: e, initialIndex: t = 0, loop: n = !0, autoPlay: r = !1, int
 							/* @__PURE__ */ (0, I.jsxs)("span", {
 								className: "focus-rail-nav-count min-w-[58px] text-center font-mono text-xs font-semibold",
 								children: [
-									String(f + 1).padStart(2, "0"),
+									String(d + 1).padStart(2, "0"),
 									" / ",
-									String(d).padStart(2, "0")
+									String(u).padStart(2, "0")
 								]
 							}),
 							/* @__PURE__ */ (0, I.jsx)("button", {
 								type: "button",
-								onClick: h,
+								onClick: m,
 								className: "focus-rail-nav-button rounded-full p-3 transition active:scale-95",
 								"aria-label": "Biodiversidad siguiente",
 								children: /* @__PURE__ */ (0, I.jsx)(se, { className: "h-5 w-5" })
@@ -15645,7 +15639,7 @@ var Xf = [
 		title: "Peces de Arrecife",
 		description: "Peces ángel, cirujanos y otras especies mantienen el equilibrio del arrecife de Los Cóbanos.",
 		meta: "24 especies • Especies clave",
-		imageSrc: "../public/media/Species/recurpeces.webp",
+		imageSrc: "../public/media/Species/recurpeces.png",
 		href: "especies.php"
 	},
 	{

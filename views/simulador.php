@@ -3,15 +3,24 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once __DIR__ . '/../app/support/AuthRedirect.php';
+require_once __DIR__ . '/../app/models/Conexion.php';
 
 AuthRedirect::requireAuthentication();
+
+$conn = (new Conexion())->getConnection();
+$simulationTimeLimit = 0;
+$timeLimitResult = mysqli_query(
+    $conn,
+    "SELECT valor FROM config WHERE clave = 'tiempo_simulacion_maximo' LIMIT 1"
+);
+if ($timeLimitResult && ($timeLimitRow = mysqli_fetch_assoc($timeLimitResult))) {
+    $simulationTimeLimit = max(0, intval($timeLimitRow['valor']));
+}
 
 $assignmentId = 0;
 $initialObservations = [];
 if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SESSION['id'])) {
-    include __DIR__ . '/../app/models/Conexion.php';
     include __DIR__ . '/../app/models/ObservacionesSchema.php';
-    $conn = (new Conexion())->getConnection();
     ensureObservacionesSimulacionTable($conn);
     $requestedAssignment = intval($_GET['asignacion']);
     $studentId = intval($_SESSION['id']);
@@ -97,6 +106,7 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
     <script>
         window.APP_BASE = '<?php echo $appBase; ?>';
         window.ASSIGNMENT_ID = <?php echo intval($assignmentId); ?>;
+        window.SIMULATION_TIME_LIMIT = <?php echo intval($simulationTimeLimit); ?>;
         window.CURRENT_USER_NAME = <?php echo json_encode($_SESSION['usuario'] ?? 'Estudiante', JSON_UNESCAPED_UNICODE); ?>;
         window.INITIAL_OBSERVATIONS = <?php echo json_encode($initialObservations, JSON_UNESCAPED_UNICODE); ?>;
     </script>
@@ -238,6 +248,30 @@ if (isset($_GET['asignacion']) && is_numeric($_GET['asignacion']) && isset($_SES
             </button>
         </div>
         <div class="observation-thread" id="observationThread" aria-live="polite"></div>
+
+        <div id="simulationTimeLimitAlert"
+             class="simulation-modal simulation-time-limit-alert"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="simulationTimeLimitTitle"
+             aria-describedby="simulationTimeLimitMessage"
+             hidden>
+            <div class="modal-card time-limit-card">
+                <div class="time-limit-icon" aria-hidden="true">
+                    <i class="fa-solid fa-hourglass-end"></i>
+                </div>
+                <h2 id="simulationTimeLimitTitle">Tiempo máximo alcanzado</h2>
+                <p id="simulationTimeLimitMessage">
+                    La simulación se detuvo porque alcanzaste el tiempo máximo configurado.
+                </p>
+                <div class="modal-actions">
+                    <button type="button" class="modal-primary" id="acknowledgeTimeLimit">
+                        <i class="fa-solid fa-check" aria-hidden="true"></i>
+                        Entendido
+                    </button>
+                </div>
+            </div>
+        </div>
 
     </section>
 
