@@ -669,68 +669,87 @@ animate();
         const sidebar = document.getElementById('detailInfoSidebar');
         if (sidebar) {
             sidebar.innerHTML = `
-                <div class="detail-header-block">
-                    <div class="detail-title-row">
-                        <h2 class="detail-species-name">${escapeHtml(species.name)}</h2>
-                        <button class="fav-btn-detail ${isFav ? 'active' : ''}" id="detailFavBtn">
-                            <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
-                            <span>Favorito</span>
-                        </button>
+                <section class="detail-info-main" aria-label="Información de la especie">
+                    <div class="detail-header-block">
+                        <div class="detail-title-row">
+                            <h2 class="detail-species-name">${escapeHtml(species.name)}</h2>
+                            <button class="fav-btn-detail ${isFav ? 'active' : ''}" id="detailFavBtn">
+                                <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                                <span>Favorito</span>
+                            </button>
+                        </div>
+                        <span class="detail-scientific">${escapeHtml(species.scientificName)}</span>
+                        <div class="detail-status-row">
+                            <span class="detail-danger-status" style="background:${dangerBg};color:${dangerColor};">
+                                <span class="detail-danger-icon">${dangerIcon}</span>
+                                <span>${escapeHtml(species.peligro)}</span>
+                            </span>
+                            <span class="detail-iucn-status">IUCN: ${getCitesLevel(species.id)}</span>
+                        </div>
                     </div>
-                    <span class="detail-scientific">${escapeHtml(species.scientificName)}</span>
-                    <div style="display:inline-flex;align-items:center;gap:8px;background:${dangerBg};padding:6px 14px;border-radius:100px;margin-top:10px;">
-                        <span style="font-size:1rem;">${dangerIcon}</span>
-                        <span style="font-weight:700;font-size:0.75rem;color:${dangerColor};">${escapeHtml(species.peligro)}</span>
-                        <span style="font-size:0.65rem;color:#6a8aaa;">CITES ${getCitesLevel(species.id)}</span>
+
+                    <div class="detail-desc-block">
+                        <p>${escapeHtml(species.desc)}</p>
                     </div>
-                </div>
 
-                <div class="detail-desc-block">
-                    <p>${escapeHtml(species.desc)}</p>
-                </div>
-
-                <div class="detail-stats-grid">
+                    <div class="detail-stats-grid">
                     <div class="detail-stat-card">
-                        <div class="detail-stat-label"><i class="fas fa-utensils"></i> Dieta</div>
+                        <i class="fas fa-leaf detail-stat-icon"></i>
+                        <div class="detail-stat-label">Dieta</div>
                         <div class="detail-stat-value">${escapeHtml(species.dieta.split('(')[0].trim())}</div>
-                        ${species.dieta.includes('(') ? `<div class="detail-stat-sub">${escapeHtml(species.dieta.match(/\((.+)\)/)?.[1] || '')}</div>` : ''}
+                        <div class="detail-stat-sub">${escapeHtml(species.dieta.match(/\((.+)\)/)?.[1] || 'Alimentación habitual')}</div>
                     </div>
                     <div class="detail-stat-card">
-                        <div class="detail-stat-label"><i class="fas fa-clock"></i> Longevidad</div>
+                        <i class="fas fa-clock detail-stat-icon"></i>
+                        <div class="detail-stat-label">Longevidad</div>
                         <div class="detail-stat-value">${escapeHtml(species.longevidad)}</div>
                         <div class="detail-stat-sub">Silvestre</div>
                     </div>
                     <div class="detail-stat-card">
-                        <div class="detail-stat-label"><i class="fas fa-ruler"></i> Tamaño</div>
+                        <i class="fas fa-ruler detail-stat-icon"></i>
+                        <div class="detail-stat-label">Tamaño</div>
                         <div class="detail-stat-value">${escapeHtml(species.tamaño || 'Variable')}</div>
+                        <div class="detail-stat-sub">Longitud corporal</div>
                     </div>
                     <div class="detail-stat-card">
-                        <div class="detail-stat-label"><i class="fas fa-weight-hanging"></i> Peso</div>
+                        <i class="fas fa-weight-hanging detail-stat-icon"></i>
+                        <div class="detail-stat-label">Peso</div>
                         <div class="detail-stat-value">${escapeHtml(species.peso || 'Variable')}</div>
+                        <div class="detail-stat-sub">Peso promedio</div>
                     </div>
-                    <div class="detail-stat-card full-width">
-                        <div class="detail-stat-label"><i class="fas fa-map-marker-alt"></i> Hábitat</div>
+                    <div class="detail-stat-card">
+                        <i class="fas fa-water detail-stat-icon"></i>
+                        <div class="detail-stat-label">Hábitat</div>
                         <div class="detail-stat-value">${escapeHtml(species.habitat)}</div>
+                        <div class="detail-stat-sub">Entorno natural</div>
                     </div>
                     <div class="detail-stat-card">
-                        <div class="detail-stat-label"><i class="fas fa-egg"></i> Reproducción</div>
-                        <div class="detail-stat-value" style="font-size:0.85rem;">${escapeHtml(species.reproduccion)}</div>
-                        <div class="detail-stat-sub">${escapeHtml(species.huevos)}</div>
+                        <i class="fas fa-dna detail-stat-icon"></i>
+                        <div class="detail-stat-label">Reproducción</div>
+                        <div class="detail-stat-value">${escapeHtml(species.reproduccion)}</div>
+                        <div class="detail-stat-sub">${escapeHtml(species.huevos || 'Promedio por nidada')}</div>
                     </div>
-                    <div class="detail-stat-card">
-                        <div class="detail-stat-label"><i class="fas fa-skull-crossbones"></i> Depredadores</div>
-                        <div class="detail-stat-value" style="font-size:0.82rem;line-height:1.4;">${escapeHtml(species.depredadores)}</div>
                     </div>
-                </div>
 
-                <div class="detail-actions">
-                    <button class="btn-action primary" id="btnSimulacion">
-                        <i class="fas fa-play-circle"></i> Iniciar simulación
-                    </button>
-                    <button class="btn-action secondary" id="addNoteFromDetailBtn">
-                        <i class="fas fa-sticky-note"></i> Nota
-                    </button>
-                </div>
+                    <div class="detail-simulation-action">
+                        <span><i class="fas fa-microscope"></i> Simulación</span>
+                        <button type="button" class="detail-simulate-btn" id="detailSimulateBtn">
+                            <i class="fas fa-play-circle"></i> Iniciar simulación
+                        </button>
+                    </div>
+                </section>
+
+                <section class="detail-species-note" aria-label="Notas sobre la especie">
+                    <div class="detail-note-heading">
+                        <span class="detail-note-icon"><i class="fas fa-note-sticky"></i></span>
+                        <strong>Notas</strong>
+                        <button type="button" class="detail-note-edit" id="detailNotesBtn" aria-label="Agregar nota">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    </div>
+                    <p>Aquí puedes añadir observaciones, datos relevantes o recordatorios sobre esta especie.</p>
+                    <div class="detail-note-lines" aria-hidden="true"><span></span><span></span></div>
+                </section>
             `;
 
             document.getElementById('detailFavBtn')?.addEventListener('click', (e) => {
@@ -741,12 +760,12 @@ animate();
                 btn.innerHTML = `<i class="${now ? 'fas' : 'far'} fa-heart"></i><span>Favorito</span>`;
                 btn.classList.toggle('active', now);
             });
-            document.getElementById('addNoteFromDetailBtn')?.addEventListener('click', () => {
-                addNote(species.name, `Nota sobre ${species.name}`);
-                showView('notes');
+            document.getElementById('detailSimulateBtn')?.addEventListener('click', () => {
+                window.location.href = './simuladores.php';
             });
-            document.getElementById('btnSimulacion')?.addEventListener('click', () => {
-                alert(`🌊 Simulación de ecosistema para ${species.name} próximamente`);
+            document.getElementById('detailNotesBtn')?.addEventListener('click', () => {
+                addNote(species.name, `Notas de ${species.name}`);
+                showView('notes');
             });
         }
 

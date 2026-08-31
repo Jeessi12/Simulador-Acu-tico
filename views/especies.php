@@ -161,8 +161,6 @@ AchievementPageTracker::track('species');
 </div><!-- fin .page-wrapper -->
 
 <style id="species-dark-mode-final-fix">
-    body.dark-mode #view-detail .detail-info-sidebar,
-    body.dark-mode #view-detail .detail-top-area > .detail-info-sidebar,
     body.dark-mode #view-detail #interactivePanelSlot,
     body.dark-mode #view-detail .interact-content,
     body.dark-mode #view-detail .interact-pane,
@@ -181,6 +179,19 @@ AchievementPageTracker::track('species');
         border: 1px solid rgba(125, 249, 240, 0.28) !important;
         box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34) !important;
         backdrop-filter: blur(10px) saturate(1.05) !important;
+    }
+
+    body.dark-mode #view-detail .detail-info-sidebar {
+        background: linear-gradient(145deg, rgba(8, 35, 58, 0.96), rgba(4, 21, 34, 0.96)) !important;
+        border: 1px solid rgba(125, 249, 240, 0.28) !important;
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34) !important;
+        backdrop-filter: blur(18px) saturate(1.1) !important;
+    }
+
+    body.dark-mode #view-detail .detail-header-block {
+        background: transparent !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
     }
 
     body.dark-mode #view-detail .detail-header-block,
