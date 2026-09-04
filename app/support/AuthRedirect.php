@@ -55,7 +55,6 @@ final class AuthRedirect
             'created_at' => time(),
         ];
     }
-
     /**
      * Retains a browser fragment while an external OAuth round trip occurs.
      * Fragments are never sent in HTTP requests, so the login page forwards it
