@@ -23,6 +23,7 @@ if (isset($_GET['error'])) {
         'credentials'  => 'Email o contraseña incorrectos.',
         'denied'       => 'Acceso denegado.',
         'google_fallo' => 'Hubo un problema al conectar con Google. Intenta de nuevo.',
+        'locked'       => 'Inicia sesión o regístrate para continuar.',
     ];
     $msg = $errores[$_GET['error']] ?? 'Error desconocido.';
     echo "<div class='error'>$msg</div>";

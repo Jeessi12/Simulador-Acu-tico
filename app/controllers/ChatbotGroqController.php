@@ -2,7 +2,7 @@
 
 /**
  * ChatbotGroqController - Integración con Groq AI
- * Modelo: llama-3.1-8b-instant
+ * Modelo: groq/compound
  * 
  * 🔥 AKIRA - ASISTENTE DE BLUE ECOSIM
  * - Amable, carismática y respetuosa

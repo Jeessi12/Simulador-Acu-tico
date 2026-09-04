@@ -4,8 +4,8 @@ require_once __DIR__ . '/../support/AuthRedirect.php';
 
 AuthRedirect::rememberFragment($_GET['redirect_fragment'] ?? null);
 
-$clientID = 'aqui va el secreto';
-$clientSecret = 'aqui va el secreto';
+$clientID = 'secreto aqui';
+$clientSecret = 'secreto aqui';
 $redirectUri = 'http://localhost/Simulador-Acu-tico-main/views/google-callback.php';
 
 // Construir URL de autenticación de Google manualmente

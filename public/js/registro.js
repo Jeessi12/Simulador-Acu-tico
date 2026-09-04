@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const formWrapper  = document.querySelector('.form-wrapper');
     const roleInput    = document.getElementById('roleInput');
     const rolError     = document.getElementById('rolError');
+    const acceptTerms  = document.getElementById('acceptTerms');
+    const termsError   = document.getElementById('termsError');
 
     // ── Animación salida ─────────────────────────────────────────────────
     function animateAndRedirect(url) {
@@ -96,6 +98,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 valido = false;
             }
 
+            if (!acceptTerms?.checked) {
+                if (termsError) termsError.classList.add('visible');
+                showMessage('Debes aceptar los Términos y Condiciones', 'error');
+                valido = false;
+            }
+
             if (!valido) e.preventDefault();
         });
 
@@ -110,6 +118,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         regConfirm?.addEventListener('input', function () {
             this.style.borderBottom = this.value === regPassword.value ? 'none' : '1px solid #ff6b6b';
+        });
+        acceptTerms?.addEventListener('change', function () {
+            if (this.checked && termsError) termsError.classList.remove('visible');
         });
     }
 });

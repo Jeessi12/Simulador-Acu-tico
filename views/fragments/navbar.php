@@ -54,8 +54,13 @@ if (!function_exists('getRoleAvatarSrc')) {
 
         <div class="nav-links">
             <a href="index.php">INICIO</a>
+<<<<<<< HEAD
             <a href="simuladores.php"<?php if (!isset($_SESSION['usuario'])): ?> data-requires-auth="true" data-auth-feature="las simulaciones"<?php endif; ?>>SIMULACION</a>
             <a href="especies.php"<?php if (!isset($_SESSION['usuario'])): ?> data-requires-auth="true" data-auth-feature="el catálogo de especies"<?php endif; ?>>ESPECIES</a>
+=======
+            <a href="simuladores.php">SIMULACION</a>
+            <a href="especies.php">ESPECIES</a>
+>>>>>>> ac78e33b52b9a12815a66f81251449ef231d044b
             <a href="recursos.php">RECURSOS</a>
             <a href="mapa.php">MAPA</a>
 
@@ -107,6 +112,7 @@ if (!function_exists('getRoleAvatarSrc')) {
     </div>
 </nav>
 
+<<<<<<< HEAD
 <?php if (!isset($_SESSION['usuario'])): ?>
     <div class="auth-gate" id="authGate" hidden aria-hidden="true">
         <div class="auth-gate__backdrop" data-auth-modal-close></div>
@@ -164,5 +170,7 @@ if (!function_exists('getRoleAvatarSrc')) {
     <script src="/Simulador-Acu-tico-main/public/js/auth-modal.js?v=20260803" defer></script>
 <?php endif; ?>
 
+=======
+>>>>>>> ac78e33b52b9a12815a66f81251449ef231d044b
 <script src="/Simulador-Acu-tico-main/public/js/theme-toggle.js" defer></script>
 <script src="/Simulador-Acu-tico-main/public/js/translator.js" defer></script>

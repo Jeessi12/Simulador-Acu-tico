@@ -12,13 +12,18 @@ use PHPMailer\PHPMailer\Exception;
 // ========== CONFIGURACIÓN SMTP ==========
 // ⚠️ CAMBIA ESTOS VALORES POR LOS REALES
 define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_USER', 'aqui va el secreto');
-define('SMTP_PASS', 'aqui va el secreto');
+define('SMTP_USER', 'secreto aqui');
+define('SMTP_PASS', 'secreto aqui');
 define('SMTP_PORT', 587);
 define('FROM_EMAIL', SMTP_USER);
 define('FROM_NAME', 'Blue EcoSim');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['rol'])) {
+
+    if (!isset($_POST['accept_terms']) || $_POST['accept_terms'] !== '1') {
+        header("Location: /Simulador-Acu-tico-main/views/registro.php?error=terminos_no_aceptados");
+        exit();
+    }
 
     $nombre   = trim($_POST['username']);
     $email    = trim($_POST['email']);

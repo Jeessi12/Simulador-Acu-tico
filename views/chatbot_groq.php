@@ -1,7 +1,7 @@
 <?php
 /**
  * Endpoint para el chatbot con Groq
- * Modelo: llama-3.1-8b-instant
+ * Modelo: groq/compound
  * Ubicación: views/chatbot_groq.php
  * 
  * 🔥 SIEMPRE devuelve JSON

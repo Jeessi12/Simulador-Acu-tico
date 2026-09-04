@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $errores = [
     'email_duplicado'    => 'Este correo electrónico ya está registrado.',
     'envio_correo'       => 'No se pudo enviar el correo de verificación. Inténtalo de nuevo.',
+    'terminos_no_aceptados' => 'Debes leer y aceptar los Términos y Condiciones para crear tu cuenta.',
     'error_registro'     => 'No se pudo completar el registro. Inténtalo nuevamente.',
     'desconocido'        => 'Error desconocido al registrar. Intenta más tarde.'
 ];
@@ -110,6 +111,15 @@ if (isset($_SESSION['usuario'])) {
                 </div>
 
                 <input type="hidden" name="rol" id="roleInput" value="">
+
+                <div class="terms-consent">
+                    <input type="checkbox" id="acceptTerms" name="accept_terms" value="1" required>
+                    <label for="acceptTerms">
+                        He leído y acepto los
+                        <a href="/Simulador-Acu-tico-main/views/terminos_condiciones.php" target="_blank" rel="noopener noreferrer">Términos y Condiciones de Blue EcoSim</a>.
+                    </label>
+                </div>
+                <p class="terms-error" id="termsError">Debes aceptar los Términos y Condiciones para continuar.</p>
 
                 <button type="submit" class="btn-submit">
                     <span class="auth-submit__label">Registrar</span>
