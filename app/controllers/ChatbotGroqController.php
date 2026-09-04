@@ -14,7 +14,7 @@ class ChatbotGroqController
     // ============================================================
     // ⚠️ Reemplaza con tu API Key real de Groq
     // ============================================================
-    private $apiKey = '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';
+    private $apiKey = 'AQUI_VA_LA_API_KEY';
     
     private $apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
     private $model = 'groq/compound';
