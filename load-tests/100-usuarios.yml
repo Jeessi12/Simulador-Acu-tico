@@ -1,0 +1,40 @@
+# Prueba de carga segura para BlueEcoSim.
+# Solo realiza solicitudes GET a contenido público: no registra usuarios ni modifica datos.
+
+config:
+  # Si tu proyecto usa otra URL, sustitúyela aquí, por ejemplo:
+  # https://staging.tudominio.com
+  target: 'http://localhost/Simulador-Acu-tico-main'
+  http:
+    timeout: 15
+  phases:
+    - name: 'Calentamiento'
+      duration: 5
+      arrivalRate: 2
+      maxVusers: 10
+    # El escenario dura alrededor de cuatro segundos. La pausa evita que los
+    # usuarios de calentamiento se mezclen con el pico de 100.
+    - pause: 5
+    - name: '100 usuarios concurrentes'
+      # Crea 100 usuarios virtuales durante el mismo segundo.
+      arrivalCount: 100
+      duration: 1
+      # Evita que Artillery supere los 100 usuarios activos a la vez.
+      maxVusers: 100
+
+scenarios:
+  - name: 'Visita publica al catalogo'
+    flow:
+      - get:
+          url: '/views/index.php'
+      - get:
+          url: '/views/about.php'
+      - get:
+          url: '/views/api_especies.php'
+      # Repite una acción habitual para que los 100 usuarios se mantengan activos
+      # mientras se consulta el catálogo.
+      - loop:
+          - think: 1
+          - get:
+              url: '/views/recursos.php'
+        count: 3
